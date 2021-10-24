@@ -4,7 +4,7 @@
   "description": "Backend for Lusio project",
   "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
+    "client-install": "cd client && npm install",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
@@ -50,12 +50,14 @@
   "homepage": "https://github.com/xudyang1/CSE416_Lusio#readme",
   "dependencies": {
     "colors": "^1.4.0",
-    "concurrently": "^6.3.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^6.0.11"
+    "mongoose": "^6.0.11",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "concurrently": "^6.3.0",
     "nodemon": "^2.0.13"
   }
 }

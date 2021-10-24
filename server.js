@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const cors = require('cors');
+const morgan = require('morgan');
 const connectDB = require('./config/db');
 
 dotenv.config({ path: './config/config.env' });
@@ -9,15 +11,20 @@ dotenv.config({ path: './config/config.env' });
 connectDB();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
+
+if(process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+  }
 
 
 // TODO: modify this sample later
 // sample tests for backend operations
 // Instruction Via README.md
+const quizRouter = require('./routes/api/quizzes');
 // use routes
-app.use('/api/quizzes', require('./routes/api/quizzes'));
+app.use('/api/quizzes', quizRouter);
 // end of test
 
 

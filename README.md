@@ -65,7 +65,7 @@ npm run client
 # Server runs on http://localhost:5000 and client on http://localhost:3000
 ```
 
-6. Test backend connection
+## 6. Test backend connection
 - There is some sample test code for GET/POST/DELETE requests (marked by `//TODO: modify this sample later`)
 - You can use POSTMAN to test each operation:
 

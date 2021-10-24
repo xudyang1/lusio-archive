@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const QuizSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Please add a name']
     },
     date: {
         type: Date,
@@ -14,4 +14,4 @@ const QuizSchema = new Schema({
     }
 });
 
-module.exports = Quiz = mongoose.model('quiz', QuizSchema);
+module.exports = Quiz = mongoose.model('Quiz', QuizSchema);
