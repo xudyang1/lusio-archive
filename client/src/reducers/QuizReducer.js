@@ -1,4 +1,4 @@
-import { GET_QUIZZES, QUIZZES_LOADING, ADD_QUIZ, DELETE_QUIZ, GET_ERRORS } from "../types/actionTypes";
+import { GET_QUIZZES, QUIZZES_LOADING, ADD_QUIZ, DELETE_QUIZ, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
 
 export const QuizReducer = (state, action) => {
   switch (action.type) {
@@ -28,6 +28,11 @@ export const QuizReducer = (state, action) => {
         ...state,
         error: action.payload
       };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null
+      }
     default:
       return state;
   }

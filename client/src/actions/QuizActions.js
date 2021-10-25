@@ -8,23 +8,24 @@ export const setQuizzesLoading = () => {
   };
 };
 
-export const getQuizzes = () => async (dispatch) => {
+export const getQuizzes = (dispatch) => async () => {
   try {
     // dispatch(setQuizzesLoading());
     const res = await axios.get('/api/quizzes');
     console.log(res);
+    console.log("getQuizzes()...");
+    console.log("dispatch"+dispatch);
     dispatch({
       type: GET_QUIZZES,
       payload: res.data.data
     });
-    console.log("getQuizzes()...");
   } catch (err) {
     console.error(err);
     // dispatch(returnErrors(err.response.data.msg, err.response.status));
   }
 };
 
-export const addQuiz = (quiz) => async(dispatch) =>{
+export const addQuiz = (dispatch, quiz) => async () =>{
   const config = {
     headers: {
       'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ export const addQuiz = (quiz) => async(dispatch) =>{
   }
 }
 
-export const deleteQuiz = (id) => async(dispatch) => {
+export const deleteQuiz = (dispatch, id) => async () => {
   try {
     await axios.delete(`/api/quizzes/${id}`);
 
