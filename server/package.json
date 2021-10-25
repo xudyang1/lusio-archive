@@ -1,17 +1,12 @@
 {
   "name": "cse416_lusio",
   "version": "1.0.0",
-  "description": "a Web application that will provide user-generated quiz platforms",
-  "main": "server/server.js",
+  "description": "Backend for Lusio project",
+  "main": "server.js",
   "scripts": {
-    "start": "cd server && npm start",
-    "client-install": "cd client && npm install",
-    "server-install": "cd server && npm install",
-    "server": "npm run server --prefix server",
-    "client": "npm start --prefix client",
-    "dev": "npm run dev --prefix server",
-    "heroku-prebuild": "npm run server-install",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "concurrently \"npm run server\" \"cd ../client && npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -51,9 +46,15 @@
   },
   "homepage": "https://github.com/xudyang1/CSE416_Lusio#readme",
   "dependencies": {
-    
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.11",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    
+    "concurrently": "^6.3.0",
+    "nodemon": "^2.0.13"
   }
 }
