@@ -1,2 +1,4 @@
 node_modules/
 config/config.env
+package-lock.json
+client/package-lock.json

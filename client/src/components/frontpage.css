@@ -1,0 +1,12 @@
+.nav-wrapper form{
+    margin: auto;
+    width: 50%;
+}
+
+.nav-wrapper .input-field{
+    padding-top: 7px;
+}
+
+.nav-wrapper form #search{
+    height: 50px;
+}
