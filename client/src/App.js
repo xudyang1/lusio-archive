@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { AppNavBar } from './components/AppNavBar';
+import { AppNavBar } from './components/AppNavbar';
 import { QuizSections } from './components/QuizSections';
 import { QuizzesProvider } from './context/QuizState';
 import { GlobalProvider } from './context/GlobalState';

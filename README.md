@@ -1,5 +1,24 @@
 # CSE416_Lusio
 
+## UPDATE (Since 10/25)
+- The file structure is updated: 
+```bash
+        CSE416_Lusio/
+                 |
+                 |
+                 |----client/ (frontend)
+                 |      |
+                 |      |--src/... and other files
+                 |
+                 |
+                 |----server/ (backend)
+                 |      |
+                 |      |--server.js & other files
+                 |
+                 |
+                 |----README.md, .gitignore, LICENSE, package.json (for basic scripts)
+```
+
 ## Quick Start
 
 ## 1. Clone the repository
