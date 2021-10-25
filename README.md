@@ -43,7 +43,17 @@ Collection name
 ```
 6. -> Create
 
-## 4. Change configuration
+## 4. Change configuration 
+**(UPDATE)**
+- File `config/config.env` is delete to prevent updating unwanted mongoDB URI when fetching or pulling from remote. In case you want to check with the original file:
+
+```bash
+NODE_ENV=development
+PORT=5000
+MONGO_URI=YOUR_DATABASE_URI
+```
+
+(OLD)
 - change config.env file in config folder: replace YOUR_DATABASE_URI with your mongoDB URI such as `"mongodb+srv://<username>:<password>@<clustername.something>.mongodb.net/<DataBaseName>?retryWrites=true&w=majority"` 
 
 > You can find the URI via `mongodb.com ->Databases -> Cluster0 (or your customized cluster) -> Connect -> Connect your application -> disable "Include full driver code example" -> URI`
@@ -65,7 +75,7 @@ npm run client
 # Server runs on http://localhost:5000 and client on http://localhost:3000
 ```
 
-6. Test backend connection
+## 6. Test backend connection
 - There is some sample test code for GET/POST/DELETE requests (marked by `//TODO: modify this sample later`)
 - You can use POSTMAN to test each operation:
 
