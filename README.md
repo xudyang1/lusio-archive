@@ -42,7 +42,7 @@ cd CSE416_Lusio
 
 ```bash
 # Install dependencies for server
-npm install
+npm run server-install
 
 # Install dependencies for client
 npm run client-install
