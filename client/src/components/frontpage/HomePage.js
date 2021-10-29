@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppNavbar } from '../AppNavbar';
+import { AppNavbar } from '../common/AppNavbar';
 import HomeContent from './HomeContent';
 
 
