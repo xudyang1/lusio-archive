@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import 'materialize-css';
-import './frontpage.css'
+import '../frontpage.css'
 // import M from 'materialize-css';
-import SearchBar from './SearchBar';
+import SearchBar from '../SearchBar';
 
 
 export const AppNavbar = () => {
