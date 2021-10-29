@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// a sample quiz schema
+// a sample platform schema
 // TODO: modify this sample later
-const QuizSchema = new Schema({
+const PlatformSchema = new Schema({
     name: {
         type: String,
         required: [true, 'Please add a name']
@@ -18,4 +18,4 @@ const QuizSchema = new Schema({
     }
 });
 
-module.exports = Quiz = mongoose.model('Quiz', QuizSchema);
+module.exports = Platform = mongoose.model('Platform', PlatformSchema);
