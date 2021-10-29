@@ -1,1 +1,16 @@
+:root {
+  /*Color*/
+  --color-blanched-almond: #ffebcd;
 
+  /*Font Size*/
+  --font-xlarge: 48px;
+  --font-large: 36px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+
+  /*Font Weight*/
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+}

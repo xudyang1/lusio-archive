@@ -34,7 +34,7 @@ export const QuizSections = () => {
           </div>
           <div>
             <p>quiz: {name}</p>
-            <p>date creaeted: {date}</p>
+            <p>date created: {date}</p>
           </div>
         </div>
       </div>
