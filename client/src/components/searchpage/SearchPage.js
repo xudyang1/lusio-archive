@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom';
 import { AppNavbar } from '../common/AppNavbar';
 import 'materialize-css';
-import QuizCardWraper from "./frontpage/QuizCardWraper";
+import QuizCardWraper from "../frontpage/QuizCardWraper";
 
 // sample data
 const quiz = [
