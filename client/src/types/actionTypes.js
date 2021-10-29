@@ -2,5 +2,11 @@ export const QUIZZES_LOADING = 'QUIZZES_LOADING';
 export const GET_QUIZZES = 'GET_QUIZZES';
 export const ADD_QUIZ = 'ADD_QUIZ';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
+
+export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
+export const GET_PLATFORMS = 'GET_PLATFORMS';
+export const ADD_PLATFORM = 'ADD_PLATFORM';
+export const DELETE_PLATFORM = 'DELETE_PLATFORM';
+
 export const GET_ERRORS = "GET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
