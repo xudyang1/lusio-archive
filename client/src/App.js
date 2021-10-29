@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
-import { AppNavBar } from './components/AppNavbar';
+import { AppNavbar } from './components/AppNavbar';
+import Content from './components/frontpage/Content';
 import { QuizSections } from './components/QuizSections';
 import { QuizzesProvider } from './context/QuizState';
 import { GlobalProvider } from './context/GlobalState';
@@ -18,11 +19,8 @@ function App() {
           </div>
         </QuizzesProvider>
       </ GlobalProvider> */}
-      <AppNavBar/>
-      <PlatformSections/>
-      <PlatformSections/>
-      <PlatformSections/>
-      <PlatformSections/>
+      <AppNavbar/>
+      <Content/>
     </div>
   );
 

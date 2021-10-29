@@ -3,7 +3,7 @@ import 'materialize-css';
 import './frontpage.css'
 // import M from 'materialize-css';
 
-export const AppNavBar = () => {
+export const AppNavbar = () => {
   return (
     <nav>
       <div className="nav-wrapper">
@@ -14,10 +14,10 @@ export const AppNavBar = () => {
           <li><a>Register</a></li>
         </ul>
         <form>
-            <div class="input-field">
+            <div className="input-field">
                 <input id="search" type="search" name="search" placeholder="SEARCH"/>
-                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                <i class="material-icons">close</i>
+                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                <i className="material-icons">close</i>
             </div>
         </form>
       </div>
