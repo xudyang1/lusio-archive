@@ -1,5 +1,16 @@
 # CSE416_Lusio
 
+## UPDATE (Since 10/29)
+- Please modify `server/config/config.env` by adding a line `JWT_SECRET=myJWTSecret` as following (this is simply a key for the JWT token and used by authentication middleware):
+
+```bash
+    NODE_ENV=development
+    JWT_SECRET=myJWTSecret
+    PORT=5000
+    MONGO_URI=YOUR_DATABASE_URI
+```
+> Since `server/config/config.env` is untracked, Git will not ask you to commit the change.
+
 ## UPDATE (Since 10/25)
 - The file structure is updated: 
 ```bash
