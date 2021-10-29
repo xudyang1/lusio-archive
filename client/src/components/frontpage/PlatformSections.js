@@ -22,7 +22,7 @@ class PlatformSections extends Component{
                 <div className="col">
                     {
                         quiz.map((element, index)=>(
-                            <QuizCardWraper id={index} name={element[0]+" from "+this.props.name} desc={element[1]}/>
+                            <QuizCardWraper key={index} id={index} name={element[0]+" from "+this.props.name} desc={element[1]}/>
                         ))
                     }
                 </div>
