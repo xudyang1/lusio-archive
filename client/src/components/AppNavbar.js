@@ -5,7 +5,7 @@ import './frontpage.css'
 import SearchBar from './SearchBar';
 
 
-export const AppNavBar = () => {
+export const AppNavbar = () => {
   return (
     <nav>
       <div className="nav-wrapper">
