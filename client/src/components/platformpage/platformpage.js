@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppNavbar } from '../common/AppNavbar';
+import AppNavbar from '../common/AppNavbar';
 import PlatformHeader from './PlatformHeader';
 import GeneralSections from '../common/GeneralSections';
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom';
