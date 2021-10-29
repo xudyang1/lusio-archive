@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom';
-import { AppNavbar } from './AppNavbar';
+import { AppNavbar } from '../AppNavbar';
 
 
 

@@ -5,7 +5,7 @@ import 'materialize-css';
 import '../frontpage.css'
 
 
-class Content extends Component{
+class HomeContent extends Component{
     render(){
         var tempPlatform = ["MoMA", "Motion Pictures", "NASA", "NYC Dept of Edu", "ABCD"];
         
@@ -32,4 +32,4 @@ class Content extends Component{
     }
 }
 
-export default Content
+export default HomeContent
