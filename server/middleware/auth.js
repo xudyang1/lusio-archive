@@ -1,7 +1,6 @@
-const config = require('config');
 const jwt = require("jsonwebtoken");
 
-const { JWT_SECRET } = config;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 module.exports = (req, res, next) => {
     const token = req.header('x-auth-token');
@@ -19,5 +18,4 @@ module.exports = (req, res, next) => {
     } catch (e) {
         res.status(400).json({ msg: 'Token is not valid' });
     }
-
 };

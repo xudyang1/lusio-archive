@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-// TODO: modify this sample later
+// TODO: may have some add-ons
 const UserAccountSchema = new Schema({
-    user_name: {
+    name: {
         type: String,
         required: [true, 'Please add an username']
     },
-    user_email: { 
+    email: { 
         type: String, 
         required: true, unique: true 
     },
-    user_password: { 
+    password: { 
         type: String, 
         required: [true, 'Please add a password'] 
     },
@@ -22,4 +22,4 @@ const UserAccountSchema = new Schema({
     }
 });
 
-module.exports = UserAccountSchema = mongoose.model('UserAccount', UserAccountSchema);
+module.exports = mongoose.model('UserAccount', UserAccountSchema);
