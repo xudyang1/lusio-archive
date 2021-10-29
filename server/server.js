@@ -23,8 +23,10 @@ if(process.env.NODE_ENV === 'development') {
 // sample tests for backend operations
 // Instruction Via README.md
 const quizRouter = require('./routes/api/quizzes');
+const platformRouter = require('./routes/api/platforms');
 // use routes
 app.use('/api/quizzes', quizRouter);
+app.use('/api/platforms', platformRouter);
 // end of test
 
 

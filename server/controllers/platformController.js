@@ -10,7 +10,7 @@ exports.getPlatforms = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      count: quizzes.length,
+      count: platforms.length,
       data: platforms
     });
   } catch (err) {
