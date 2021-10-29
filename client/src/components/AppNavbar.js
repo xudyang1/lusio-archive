@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import 'materialize-css';
 import './frontpage.css'
 // import M from 'materialize-css';
+import SearchBar from './SearchBar';
+
 
 export const AppNavbar = () => {
   return (
@@ -13,13 +15,7 @@ export const AppNavbar = () => {
           <li><a>Login</a></li>
           <li><a>Register</a></li>
         </ul>
-        <form>
-            <div className="input-field">
-                <input id="search" type="search" name="search" placeholder="SEARCH"/>
-                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                <i className="material-icons">close</i>
-            </div>
-        </form>
+        <SearchBar />
       </div>
     </nav>
   );
