@@ -14,7 +14,7 @@ function App() {
   return (
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route path="/search/" component={SearchPage} />
+      <Route path="/search/:key" component={SearchPage} />
       <Route path="/profile/:id" component={ProfilePage} />
       <Route path="/platform/:id" component={PlatformPage} />
     </Switch>
