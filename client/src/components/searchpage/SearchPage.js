@@ -74,7 +74,7 @@ function SearchPage () {
     
     return(
         <div>
-            <AppNavbar/>
+            
             <div class="row">
                 <div class="input-field col s2">
                     <select className="browser-default" onChange={(e) => setSortType(e.target.value)}>
