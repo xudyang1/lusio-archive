@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom';
 import { AppNavbar } from '../common/AppNavbar';
 import 'materialize-css';
-import QuizCardWraper from "../frontpage/QuizCardWraper";
 
 // sample data
 const quiz = [
@@ -17,40 +16,61 @@ const platform = [
     {id: '2', name: 'MoMA'},
     {id: '3', name: 'Shuttle'}
 ]
-function findPlatformName(a){
-    const platf = platform.find(b => b.id === a.platform_id);
-    return platf.name;
-}
+
+
+
 function SearchPage () {
+    function findPlatformName(a){
+        const platf = platform.find(b => b.id === a.platform_id);
+        return platf.name;
+    }
     const { search } = window.location;
-    const filterQuizzes = (quiz, query) => {
+    const filterQuizzes = (quiz, query, filter) => {
         if (!query){
             return quiz;
         }
-        return (
-            quiz.filter((quiz) => {
-            const quizName = quiz.name.toLowerCase() + quiz.author.toLowerCase() + findPlatformName(quiz).toLowerCase();
-            return quizName.includes(query.toLowerCase());
-        }));
+        if(filter === 'all'){
+            return (
+                quiz.filter((quiz) => {
+                    return (quiz.name.toLowerCase() + quiz.author.toLowerCase() + findPlatformName(quiz).toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
+        else if (filter === 'quiz'){
+            return (
+                quiz.filter((quiz) => {
+                    return (quiz.name.toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
+        else if (filter === 'platform'){
+            return (
+                quiz.filter((quiz) => {
+                    return (findPlatformName(quiz).toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
+        else{
+            return (
+                quiz.filter((quiz) => {
+                    return (quiz.author.toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
     };
     const query = new URLSearchParams(search).get('search');
-    const filteredQuizzes = filterQuizzes(quiz, query);
-
     const [data, setData] = useState([]);
-    const [sortType, setSortType] = useState('1');
+    const [sortType, setSortType] = useState('name');
+    const [filterType, setFilterType] = useState('all');
     useEffect(() => {
         const sortArray = type => {
-            const types = {
+            const stypes = {
                 name: 'name',
                 created: 'created',
                 likes: 'likes'
             };
-            const sortProperty = types[type];
-            const sorted = [...filteredQuizzes].sort((a, b) => b[sortProperty] - a[sortProperty]);
+            const sortTypes = stypes[type];
+            const sorted = [...filterQuizzes(quiz, query, filterType)].sort((a, b) => b[sortTypes] - a[sortTypes]);
             setData(sorted);
         };
-        sortArray(sortType);
-    }, [sortType]);
+        sortArray(sortType, filterType);
+    }, [sortType, filterType]);
     
     return(
         <div>
@@ -65,8 +85,8 @@ function SearchPage () {
                     </select>
                 </div>
                 <div class="input-field col s2">
-                    <select className="browser-default">
-                        <option value="" disabled selected>Filter</option>
+                    <select className="browser-default" onChange={(e) => setFilterType(e.target.value)}>
+                        <option value='all' selected>All</option>
                         <option value='quiz'>Quiz</option>
                         <option value='platform'>Platform</option>
                         <option value='author'>User (Author)</option>
