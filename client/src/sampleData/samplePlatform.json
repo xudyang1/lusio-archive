@@ -1,0 +1,42 @@
+{
+    "platforms":[
+        {
+            "platformID": 1,
+            "platformName" : "MoMA",
+            "platformOwnerID": 1,
+            "platformAdminsID": [2, 3, 4],
+            "platformImgURL": "https://robbreport.com/wp-content/uploads/2019/05/moma-pick--e1557163243773.png?w=1000",
+            "platformSections": [
+                {
+                    "sectionName": "Simple Quizzes",
+                    "quizzesID": [2, 4, 5] 
+                },
+                {
+                    "sectionName": "Hard Quizzes",
+                    "quizzesID": [1, 3, 7, 8, 9, 10] 
+                }
+            ]
+        },
+        {
+            "platformID": 2,
+            "platformName" : "NASA",
+            "platformOwnerID": 5,
+            "platformAdminsID": [1, 2],
+            "platformImgURL": "http://www.nasa.gov/sites/default/files/thumbnails/image/nasa_town_hall_bam_screen-dr.png",
+            "platformSections": [
+                {
+                    "sectionName": "Space Quizzes",
+                    "quizzesID": [10, 12, 13] 
+                },
+                {
+                    "sectionName": "Earth Quizzes",
+                    "quizzesID": [11, 14, 15, 20] 
+                },
+                {
+                    "sectionName": "Moon Quizzes",
+                    "quizzesID": [16, 17, 18, 19] 
+                }
+            ]
+        }
+    ]
+}

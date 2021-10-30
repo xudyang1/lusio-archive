@@ -1,8 +1,5 @@
 import React from 'react';
 
-
-
-
 const SearchBar = () => (
     <form action="/search/" method="GET">
         <div className="input-field">

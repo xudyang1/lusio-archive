@@ -1,0 +1,52 @@
+{
+    "Users":[
+        {
+            "userID": 0,
+            "userName": "Alex",
+            "userAccountStatus": 1,
+            "userLevel": 5,
+            "userEXPCurrent": 10,
+            "userEXPMAX": 1000,
+            "userAcheivements": [1, 2, 3, 4],
+            "userProfileIconImgURL": "",
+            "userBannerImgURL": "",
+            "userProfileBoarderImgURL": "",
+            "userSubscribedUsers": [1, 2, 3],
+            "userSubscribedPlat": [1, 2, 3],
+            "userLikedQuizzes": [1, 2, 3],
+            "userQuizHistory": [1, 2, 3]
+        },
+        {
+            "userID": 1,
+            "userName": "Bill",
+            "userAccountStatus": 1,
+            "userLevel": 6,
+            "userEXPCurrent": 20,
+            "userEXPMAX": 1000,
+            "userAcheivements": [3, 4],
+            "userProfileIconImgURL": "",
+            "userBannerImgURL": "",
+            "userProfileBoarderImgURL": "",
+            "userSubscribedUsers": [1, 2, 3],
+            "userSubscribedPlat": [1, 2, 3],
+            "userLikedQuizzes": [1, 2, 3],
+            "userQuizHistory": [1, 2, 3]
+        },
+        {
+            "userID": 2,
+            "userName": "Charlie",
+            "userAccountStatus": 1,
+            "userLevel": 7,
+            "userEXPCurrent": 30,
+            "userEXPMAX": 1000,
+            "userAcheivements": [1, 2],
+            "userProfileIconImgURL": "",
+            "userBannerImgURL": "",
+            "userProfileBoarderImgURL": "",
+            "userSubscribedUsers": [1, 2, 3],
+            "userSubscribedPlat": [1, 2, 3],
+            "userLikedQuizzes": [1, 2, 3],
+            "userQuizHistory": [1, 2, 3]
+        }
+    ]
+}
