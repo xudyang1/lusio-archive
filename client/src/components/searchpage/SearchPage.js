@@ -1,61 +1,114 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom';
 import AppNavbar from '../common/AppNavbar';
 import 'materialize-css';
-import QuizCardWraper from "../frontpage/QuizCardWraper";
 
 // sample data
 const quiz = [
-    {id: '1', name: 'Q1', description: 'Description for Q1'},
-    {id: '2', name: 'Q2', description: 'Description for Q2'},
-    {id: '3', name: 'Q3', description: 'Description for Q3'},
-    {id: '4', name: 'Q4', description: 'Description for Q4'}
+    {id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22')},
+    {id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platform_id: '2', likes: 1, created: new Date('2010/01/21')},
+    {id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platform_id: '2', likes: 10, created: new Date('2021/10/22')},
+    {id: '4', name: 'Qtop', description: 'Description for Q4', author: 'desktop', platform_id: '3', likes: 0, created: new Date('2021/01/22')},
+    {id: '5', name: 'Q25', description: 'Description for Q25', author: 'shinetop', platform_id: '3', likes: 200, created: new Date('2021/01/22')}
+]
+const platform = [
+    {id: '1', name: 'ABC'},
+    {id: '2', name: 'MoMA'},
+    {id: '3', name: 'Shuttle'}
 ]
 
-const SearchPage = () => {
+
+
+function SearchPage () {
+    function findPlatformName(a){
+        const platf = platform.find(b => b.id === a.platform_id);
+        return platf.name;
+    }
     const { search } = window.location;
-    const filterQuizzes = (quiz, query) => {
+    const filterQuizzes = (quiz, query, filter) => {
         if (!query){
             return quiz;
         }
-        return (
-            quiz.filter((quiz) => {
-            const quizName = quiz.name.toLowerCase();
-            return quizName.includes(query.toLowerCase());
-        }));
+        if(filter === 'all'){
+            return (
+                quiz.filter((quiz) => {
+                    return (quiz.name.toLowerCase() + quiz.author.toLowerCase() + findPlatformName(quiz).toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
+        else if (filter === 'quiz'){
+            return (
+                quiz.filter((quiz) => {
+                    return (quiz.name.toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
+        else if (filter === 'platform'){
+            return (
+                quiz.filter((quiz) => {
+                    return (findPlatformName(quiz).toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
+        else{
+            return (
+                quiz.filter((quiz) => {
+                    return (quiz.author.toLowerCase()).includes(query.toLowerCase());
+            }));
+        }
     };
     const query = new URLSearchParams(search).get('search');
-    const filteredQuizzes = filterQuizzes(quiz, query);
+    const [data, setData] = useState([]);
+    const [sortType, setSortType] = useState('name');
+    const [filterType, setFilterType] = useState('all');
+    useEffect(() => {
+        const sortArray = type => {
+            const stypes = {
+                name: 'name',
+                created: 'created',
+                likes: 'likes'
+            };
+            const sortTypes = stypes[type];
+            const sorted = [...filterQuizzes(quiz, query, filterType)].sort((a, b) => b[sortTypes] - a[sortTypes]);
+            setData(sorted);
+        };
+        sortArray(sortType, filterType);
+    }, [sortType, filterType]);
     
     return(
         <div>
             <AppNavbar/>
             <div class="row">
                 <div class="input-field col s2">
-                    <select className="browser-default">
-                        <option value="" disabled selected>Sort</option>
-                        <option value="1">Relevance</option>
-                        <option value="2">Date Created</option>
-                        <option value="3">Likes</option>
-                        <option value="4">Name (A-Z)</option>
+                    <select className="browser-default" onChange={(e) => setSortType(e.target.value)}>
+                        <option value='' disabled selected>Sort</option>
+                        <option value='name'>Name (A-Z)</option>
+                        <option value='created'>Date Created</option>
+                        <option value='likes'>Likes</option>
                     </select>
                 </div>
                 <div class="input-field col s2">
-                    <select className="browser-default">
-                        <option value="" disabled selected>Filter</option>
-                        <option value="1">Quiz</option>
-                        <option value="2">Platform</option>
-                        <option value="3">User (Author)</option>
+                    <select className="browser-default" onChange={(e) => setFilterType(e.target.value)}>
+                        <option value='all' selected>All</option>
+                        <option value='quiz'>Quiz</option>
+                        <option value='platform'>Platform</option>
+                        <option value='author'>User (Author)</option>
                     </select>
                 </div>
             </div>
             <div>
-                {filteredQuizzes.length > 0 ? (
-                    filteredQuizzes.map((quiz) => (
-                        <QuizCardWraper id={quiz.id} name={quiz.name} description={quiz.description} />
-                ))) : (
-                    <div>Sorry, No Results Found</div>
-                )}
+                {data.length > 0 ? (
+                    data.map(quiz => (
+                        <div key={quiz.id}>
+                            <div>{`Quiz: ${quiz.name}`}</div>
+                            <div>{`Description: ${quiz.description}`}</div>
+                            <div>{`Author: ${quiz.author}`}</div>
+                            <div>{`Platform: ${findPlatformName(quiz)}`}</div>
+                            <div>{`Created: ${quiz.created}`}</div>
+                            <div>{`Likes: ${quiz.likes}`}</div>
+                            <br></br>
+                        </div>
+                    ))) : (
+                        <div>Sorry, No Results Found</div>
+                    )
+                }
             </div>
         </div>
     )
