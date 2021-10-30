@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Route, useParams, useRouteMatch } from 'react-router-dom';
-import { AppNavbar } from '../common/AppNavbar';
+import AppNavbar from '../common/AppNavbar';
 import 'materialize-css';
 
 // sample data
