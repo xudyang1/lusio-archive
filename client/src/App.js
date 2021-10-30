@@ -8,13 +8,13 @@ import { Link, Route, Switch } from "react-router-dom";
 import HomePage from './components/frontpage/HomePage';
 import SearchPage from './components/searchpage/SearchPage';
 import ProfilePage from './components/profilepage/ProfilePage';
-import PlatformPage from './components/platformpage/platformpage';
+import PlatformPage from './components/platformpage/PlatformPage';
 
 function App() {
   return (
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route path="/search/:key" component={SearchPage} />
+      <Route path="/search/" component={SearchPage} />
       <Route path="/profile/:id" component={ProfilePage} />
       <Route path="/platform/:id" component={PlatformPage} />
     </Switch>
