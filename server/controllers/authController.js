@@ -90,7 +90,8 @@ exports.login = async (req, res, next) => {
             }
         });
     } catch (e) {
-        res.status(400).json({ error: e.message });
+        console.log(e);
+        res.status(400).json({ msg: e.message });
     }
 }
 
