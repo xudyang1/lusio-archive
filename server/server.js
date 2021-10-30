@@ -24,9 +24,11 @@ if(process.env.NODE_ENV === 'development') {
 // Instruction Via README.md
 const quizRouter = require('./routes/api/quizzes');
 const platformRouter = require('./routes/api/platforms');
+const authRouter = require('./routes/api/auth');
 // use routes
 app.use('/api/quizzes', quizRouter);
 app.use('/api/platforms', platformRouter);
+app.use('/api/auth', authRouter);
 // end of test
 
 
