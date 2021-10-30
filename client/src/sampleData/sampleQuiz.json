@@ -1,0 +1,225 @@
+{
+    "quizzes":[
+        {
+            "quizID": 1,
+            "quizAuthor": 1,
+            "quizName": "What is MoMA",
+            "quizDesc": "This quiz is about MoMA",
+            "quizEXP": 100,
+            "quizQuestions" : [
+                {
+                    "question": "What does MoMA stand for",
+                    "score": 10,
+                    "choices": [
+                        "Mother of Merry Adams",
+                        "Meusume of Modern Art",
+                        "Machines of Mondern Architecture",
+                        "Message-Oriented Middleware Association",
+                        "My Own Modular Architecture",
+                        "Ministry of Minority Affairs"
+                    ],
+                    "correctAnswer": 1
+                },
+                {
+                    "question": "Where is MoMA",
+                    "score": 10,
+                    "choices": [
+                        "7214 Victoria St. Waterbury, CT 06705",
+                        "771 Pheasant St. Rochester, NY 14606",
+                        "349 E. Hill Field Road Hickory, NC 28601",
+                        "203 Lake Forest Ave. North Augusta, SC 29841",
+                        "11 W 53rd St, New York, NY 10019"
+                    ],
+                    "correctAnswer": 4
+                },
+                {
+                    "question": "MoMA is Cool!",
+                    "score": 10,
+                    "choices": [
+                        "True",
+                        "False"
+                    ],
+                    "correctAnswer": 0
+                }
+            ],
+            "scoreboard":[
+                {
+                    "userID": 1,
+                    "score": 30
+                },
+                {
+                    "userID": 2,
+                    "score": 20
+                },
+                {
+                    "userID": 3,
+                    "score": 20
+                },
+                {
+                    "userID": 5,
+                    "score": 10
+                }
+            ]
+        },
+        {
+            "quizID": 2,
+            "quizAuthor": 2,
+            "quizName": "Who AM I",
+            "quizDesc": "This Quiz is about the creators of this web application",
+            "quizEXP": 100,
+            "quizQuestions" : [
+                {
+                    "question": "What is My Name",
+                    "score": 10,
+                    "choices": [
+                        "Liuxin Li",
+                        "XuDong Yang",
+                        "Clare Lee"
+                    ],
+                    "correctAnswer": 0
+                },
+                {
+                    "question": "I AM is Cool!",
+                    "score": 10,
+                    "choices": [
+                        "True",
+                        "False"
+                    ],
+                    "correctAnswer": 0
+                }
+            ],
+            "scoreboard":[
+                {
+                    "userID": 1,
+                    "score": 20
+                },
+                {
+                    "userID": 4,
+                    "score": 20
+                },
+                {
+                    "userID": 5,
+                    "score": 10
+                },
+                {
+                    "userID": 3,
+                    "score": 0
+                }
+            ]
+        },
+        {
+            "quizID": 3,
+            "quizAuthor": 4,
+            "quizName": "What is This",
+            "quizDesc": "I have ran out of ideas to put in a quiz schema",
+            "quizEXP": 100,
+            "quizQuestions" : [
+                {
+                    "question": "We're no strangers to love",
+                    "score": 10,
+                    "choices": [
+                        "You know the rules and so do I",
+                        "A full commitment's what I'm thinking of",
+                        "You wouldn't get this from any other guy",
+                        "I just wanna tell you how I'm feeling"
+                    ],
+                    "correctAnswer": 0
+                },
+                {
+                    "question": "Gotta make you understand",
+                    "score": 10,
+                    "choices": [
+                        "Never gonna give you up",
+                        "Never gonna let you down"
+                    ],
+                    "correctAnswer": 0
+                },
+                {
+                    "question": "Never gonna run around and desert you",
+                    "score": 10,
+                    "choices": [
+                        "Never gonna make you cry",
+                        "Never gonna say goodbye",
+                        "Never gonna tell a lie and hurt you"
+                    ],
+                    "correctAnswer": 0
+                }
+            ],
+            "scoreboard":[
+                {
+                    "userID": 1,
+                    "score": 20
+                },
+                {
+                    "userID": 4,
+                    "score": 20
+                },
+                {
+                    "userID": 5,
+                    "score": 10
+                },
+                {
+                    "userID": 3,
+                    "score": 0
+                }
+            ]
+        },
+        {
+            "quizID": 4,
+            "quizAuthor": 3,
+            "quizName": "What is This 2",
+            "quizDesc": "Take this Rick Roll and leave me alone", 
+            "quizEXP": 100,
+            "quizQuestions" : [
+                {
+                    "question": "We've known each other for so long",
+                    "score": 10,
+                    "choices": [
+                        "Your heart's been aching but you're too shy to say it",
+                        "Inside we both know what's been going on",
+                        "We know the game and we're gonna play it",
+                        "And if you ask me how I'm feeling"
+                    ],
+                    "correctAnswer": 0
+                },
+                {
+                    "question": "Don't tell me you're too blind to see",
+                    "score": 10,
+                    "choices": [
+                        "Never gonna give you up",
+                        "Never gonna let you down"
+                    ],
+                    "correctAnswer": 0
+                },
+                {
+                    "question": "Never gonna run around and desert you",
+                    "score": 10,
+                    "choices": [
+                        "Never gonna make you cry",
+                        "Never gonna say goodbye",
+                        "Never gonna tell a lie and hurt you"
+                    ],
+                    "correctAnswer": 0
+                }
+            ],
+            "scoreboard":[
+                {
+                    "userID": 1,
+                    "score": 20
+                },
+                {
+                    "userID": 4,
+                    "score": 20
+                },
+                {
+                    "userID": 5,
+                    "score": 10
+                },
+                {
+                    "userID": 3,
+                    "score": 0
+                }
+            ]
+        }
+    ]
+}

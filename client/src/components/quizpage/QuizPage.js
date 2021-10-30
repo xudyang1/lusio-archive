@@ -1,12 +1,12 @@
 import React from 'react';
-import { AppNavbar } from '../AppNavbar';
+//import { AppNavbar } from '../AppNavbar';
 
 
 
 export default function QuizPage(){
     return(
     <div>
-      <AppNavbar/>
+      
     </div>
     )
 }
