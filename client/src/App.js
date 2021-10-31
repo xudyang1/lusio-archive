@@ -1,5 +1,5 @@
-import './App.css';
-import React from 'react';
+import './css/App.css';
+import React, { useContext, useEffect } from 'react';
 import { QuizSections } from './components/QuizSections';
 import { QuizzesProvider } from './context/QuizState';
 import { GlobalProvider } from './context/GlobalState';
@@ -10,16 +10,18 @@ import SearchPage from './components/searchpage/SearchPage';
 import ProfilePage from './components/profilepage/ProfilePage';
 import PlatformPage from './components/platformpage/platformpage';
 import AppNavbar from './components/common/AppNavbar';
-
+import { AuthProvider } from './context/AuthState';
 function App() {
   return (
-    // <Switch>
-    //   <Route exact path="/" component={HomePage} />
-    //   <Route path="/search/:key" component={SearchPage} />
-    //   <Route path="/profile/:id" component={ProfilePage} />
-    //   <Route path="/platform/:id" component={PlatformPage} />
-    // </Switch>
-    <AppNavbar />
+    <AuthProvider>
+      <AppNavbar />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route path="/search/:key" component={SearchPage} />
+        <Route path="/profile/:id" component={ProfilePage} />
+        <Route path="/platform/:id" component={PlatformPage} />
+      </Switch>
+    </AuthProvider>
   );
 
 }

@@ -1,26 +1,107 @@
-import React, { Component } from "react";
-import { Button, Modal, ModalHeader, ModalBody, Input, Label, Form, FormGroup, NavLink, Alert } from 'reactstrap';
-import { connect } from 'react-redux';
-import PropTypes from "prop-types";
-import { register } from "../../actions/authActions";
-// import errorReducer from "../../reducers/errorReducer";
-import { clearErrors } from "../../actions/errorActions";
+import React, { useContext, useState, useEffect } from "react";
+import { AuthContext } from '../../context/AuthState';
+import M from "materialize-css";
+import "materialize-css/dist/css/materialize.min.css";
+// import "materialize-css/dist/js/materialize.min.js";
+import "../../css/auth.css";
 
-class RegisterModal extends Component {
-    state = {
+export const RegisterModal = () => {
+    const initialState = {
         modal: false,
         name: '',
         email: '',
         password: '',
         msg: null
     };
+    const [state, setState] = useState(initialState);
+    // console.log(state);
+    const { register, error, isAuthenticated, clearErrors } = useContext(AuthContext);
+   
+    useEffect(() => {
+        // check for register error
+        console.log("modal.error msg", state.msg);
+        if (error && error.id === 'REGISTER_FAIL')
+            setState({ ...state, msg: error.msg });
+        else
+            setState({ ...state, msg: null });
+        if (state.modal && isAuthenticated)
+            toggle();
+    }, [error, isAuthenticated]);
 
-    static propTypes = {
-        isAuthenticated: PropTypes.bool,
-        error: PropTypes.object.isRequired,
-        register: PropTypes.func.isRequired,
-        clearErrors: PropTypes.func.isRequired
+    const toggle = () => {
+        clearErrors();
+        // close modal
+        console.log("toggle", error);
+        setState({ ...state, modal: !state.modal });
     };
+
+    const handleOnChange = e => {
+        setState({ ...state, [e.target.name]: e.target.value });
+    };
+
+    // login
+    const handleOnSubmit = e => {
+        e.preventDefault();
+
+        const user = { email: state.email, password: state.password };
+        console.log("login attempt, data", user);
+        // attemp to login
+        login(user);
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var elem = document.querySelectorAll('#loginModal');
+        M.Modal.init(elem);
+    });
+
+    // close modal if login successfully
+    useEffect(() => {
+        if (isAuthenticated) {
+            var elem = document.querySelector('#loginModal');
+            var instance = M.Modal.getInstance(elem);
+            console.log("instance:", { instance: instance });
+            instance.close();
+        }
+    }, [isAuthenticated]);
+
+    return (
+        <div>
+            <a className="modal-trigger" href="#loginModal" onClick={toggle}>Login</a>
+            <div id="loginModal" className="modal black-text ">
+                <div className="modal-content">
+                    <h3 className="modalHeader col s12">Login</h3>
+                    <div className="row">
+                        <div>
+                            {state.msg ? (<p className="deep-orange-text text-accent-4">{state.msg}</p>) : null}
+                        </div>
+                        <form className="col s12" onSubmit={handleOnSubmit}>
+                            <div className="input-field col s12">
+                                <i className="material-icons prefix">account_circle</i>
+                                <input id="email" type="email" className="validate" name="email" onChange={handleOnChange} />
+                                <label htmlFor="email">Email</label>
+                            </div>
+
+                            <div className="input-field col s12">
+                                <i className="material-icons prefix">
+                                    lock_open
+                                </i>
+                                <input id="password" type="password" className="validate" name="password" onChange={handleOnChange} />
+                                <label htmlFor="password">Password</label>
+                            </div>
+                            <button className="btn blue accent-2 sendBtn" type="submit" name="action">
+                                Login<span className="material-icons right sendIcon">send</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div className="modal-footer">
+                    <a className="modal-close waves-effect waves-green btn-flat">Back</a>
+                </div>
+            </div >
+        </div >
+    );
+};;
+class RegisterModal extends Component {
 
     componentDidUpdate(prevProps) {
         const { error, isAuthenticated } = this.props;
@@ -132,12 +213,3 @@ class RegisterModal extends Component {
         );
     }
 }
-
-const mapStateToProps = state => (
-    {
-        isAuthenticated: state.auth.isAuthenticated,
-        error: state.error
-    }
-);
-
-export default connect(mapStateToProps, { register, clearErrors })(RegisterModal);

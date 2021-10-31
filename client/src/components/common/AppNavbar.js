@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, useContext, useEffect } from 'react';
 import Modal from "react-responsive-modal";
 import 'materialize-css';
-import '../frontpage.css';
+import '../../css/frontpage.css';
 // import M from 'materialize-css';
 import SearchBar from '../SearchBar';
 import { LoginModal } from '../auth/LoginModal';
-import { AuthProvider } from '../../context/AuthState';
+import { AuthContext } from '../../context/AuthState';
 
 const AppNavbar = () => {
+
+  const { loadUser } = useContext( AuthContext );
+  //load user
+  useEffect(() => { loadUser(); }, []);
 
   return (
     <nav>
@@ -15,9 +19,9 @@ const AppNavbar = () => {
 
         <a href="/" className="brand-logo" style={{ paddingLeft: '1em' }}>Lusio</a>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li><AuthProvider>
+          <li>
             <LoginModal />
-          </AuthProvider></li>
+          </li>
           <li><a href="https://github.com/xudyang1/CSE416_Lusio">Github</a></li>
         </ul>
         <SearchBar />

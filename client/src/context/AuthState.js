@@ -18,16 +18,21 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: false,
     isLoading: false,
-    user: null,
+    user: {
+        id: null,
+        email: null,
+        name: null
+    },
     error: {
-        msg: {},
+        msg: null,
         status: null,
         id: null
     }
 };
 
-// Create context
+// Create Context
 export const AuthContext = createContext(initialState);
+// Create Provider
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
@@ -60,19 +65,18 @@ export const AuthProvider = ({ children }) => {
                 type: USER_LOADED,
                 payload: res.data
             });
+            console.log("Called loadUser(): user loaded", state);
         } catch (err) {
-            console.log("M", err.response.data.msg);
+            
             dispatch({
-                type: GET_ERRORS,
+                type: AUTH_ERROR,
                 payload: {
                     msg: err.response.data.msg,
                     status: err.response.status,
-                    id: null
+                    id: 'AUTH_ERROR'
                 }
             });
-            dispatch({
-                type: AUTH_ERROR
-            });
+            console.log("Called loadUser(): error", state);
         }
     }
     // Register user
@@ -95,15 +99,12 @@ export const AuthProvider = ({ children }) => {
         }
         catch (err) {
             dispatch({
-                type: GET_ERRORS,
+                type: REGISTER_FAIL,
                 payload: {
                     msg: err.response.data.msg,
                     status: err.response.status,
                     id: 'REGISTER_FAIL'
                 }
-            });
-            dispatch({
-                type: REGISTER_FAIL
             });
         }
     };
@@ -118,45 +119,42 @@ export const AuthProvider = ({ children }) => {
         };
         // request body
         const body = JSON.stringify({ email, password });
-
+        console.log("Before login");
         try {
             const res = await axios.post('/api/auth/login', body, config);
-            console.log("login state", res);
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
+            console.log("After login, success, state: ", state);
         }
         catch (err) {
             dispatch({
-                type: GET_ERRORS,
+                type: LOGIN_FAIL,
                 payload: {
                     msg: err.response.data.msg,
                     status: err.response.status,
                     id: 'LOGIN_FAIL'
                 }
             });
-
-            dispatch({
-                type: LOGIN_FAIL
-            });
+            console.log("After login, failed, state: ", state);
         }
     };
 
 
     // logout user
     function logout() {
-        return () => dispatch({
+        dispatch({
             type: LOGOUT_SUCCESS
         });
     };
 
     // clear errors
     function clearErrors() {
-        console.log("clearErrors()");
-        return () => dispatch({
+        dispatch({
             type: CLEAR_ERRORS
         });
+        console.log("Called clearErrors()");
     };
 
     return (<AuthContext.Provider value={{
@@ -165,13 +163,6 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         clearErrors,
-        // loginModal: state.loginModal,
-        // registerModal: state.registerModal,
-        // token: state.token,
-        // isAuthenticated: state.isAuthenticated,
-        // isLoading: state.isLoading,
-        // user: state.user,
-        // error: state.error,
         ...state
     }}>
         {children}

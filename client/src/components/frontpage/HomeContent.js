@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import PlatformSections from "./PlatformSections";
 import DailyChallengeSection from "./DailyChallengeSection";
 import 'materialize-css';
-import '../frontpage.css'
+import '../../css/frontpage.css'
 
 
 class HomeContent extends Component{
