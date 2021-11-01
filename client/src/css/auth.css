@@ -25,16 +25,17 @@ p.deep-orange-text{
 i.material-icons.prefix{
     font-size: 2em
 }
-input#email.validate{
-    height: 60px;
-    font-size: 34px;
-}
-input#password.validate{
-    height: 60px;
-    font-size: 34px;
+input#loginEmail,
+input#loginPassword,
+input#registerName,
+input#registerEmail,
+input#registerPassword{
+    height: 2em;
+    font-size: 1.5em;
+    line-height: 1em;
 }
 .input-field label{
-    font-size: 30px;
+    font-size: 1.4em;
 }
 
 .sendBtn {
@@ -46,9 +47,10 @@ input#password.validate{
     border-radius: 10px;
 }
 .sendIcon{
-    padding-top: 0.3em;
+    padding-top: 0em;
     padding-right: 0em;
-    margin-left: 0em;
+    margin-left: -0.6em;
+    font-size: 1.5em
 }
 .modal-footer{
     height: auto

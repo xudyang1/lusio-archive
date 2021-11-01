@@ -26,8 +26,21 @@ export const LoginModal = () => {
             setState({ ...state, msg: null });
     }, [error]);
 
-    // close modal if login success
+    // init modal & close modal if login success
     useEffect(() => {
+        if (!isAuthenticated) {
+            console.log("Loading Modal Init....................");
+            var elem = document.querySelector('#loginModal');
+            // clear errors before open and after close
+            var options = {
+                preventScrolling: false,
+                onOpenStart: clearErrors,
+                onCloseEnd: clearErrors
+            };
+            M.Modal.init(elem, options);
+            // set modal instance
+            state.modalInstance = M.Modal.getInstance(elem);
+        };
         // console.log("outside if, state: ", { modalInstance: state.modalInstance, auth: isAuthenticated });
         if (isAuthenticated && state.modalInstance.isOpen) {
             // console.log("Inside if, state: ", { modalInstance: state.modalInstance, auth: isAuthenticated });
@@ -44,22 +57,12 @@ export const LoginModal = () => {
     const handleOnSubmit = e => {
         e.preventDefault();
 
-        const user = { email: state.email, password: state.password };
+        const { email, password } = state;
+        const user = { email, password };
         // console.log("login attempt, data", user);
         // attemp to login
         login(user);
     };
-
-    document.addEventListener('DOMContentLoaded', function () {
-        var elem = document.querySelector('#loginModal');
-        // clear errors before open and after close
-        
-        var options = { onOpenStart: clearErrors, onCloseEnd: clearErrors };
-        M.Modal.init(elem, options);
-        
-        // set modal instance
-        state.modalInstance = M.Modal.getInstance(elem);
-    });
 
     return (
         <div>
@@ -74,19 +77,19 @@ export const LoginModal = () => {
                         <form className="col s12" onSubmit={handleOnSubmit}>
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">account_circle</i>
-                                <input id="email" type="email" className="validate" name="email" onChange={handleOnChange} />
-                                <label htmlFor="email">Email</label>
+                                <input id="loginEmail" type="email" className="validate" name="email" onChange={handleOnChange} />
+                                <label htmlFor="loginEmail">Email</label>
                             </div>
 
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">
                                     lock_open
                                 </i>
-                                <input id="password" type="password" className="active validate" name="password" onChange={handleOnChange} />
-                                <label htmlFor="password">Password</label>
+                                <input id="loginPassword" type="password" className="active validate" name="password" onChange={handleOnChange} />
+                                <label htmlFor="loginPassword">Password</label>
                             </div>
                             <button className="btn blue accent-2 sendBtn" type="submit" name="action">
-                                Login<span className="material-icons right sendIcon">send</span>
+                                Login<span className="material-icons right sendIcon">login</span>
                             </button>
                         </form>
                     </div>
