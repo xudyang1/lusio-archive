@@ -14,11 +14,11 @@ const JWT_SECRET = process.env.JWT_SECRET;
 exports.register = async (req, res, next) => {
     const { name, email, password } = req.body;
 
+    try {
     // simple validation
     if (!name || !email || !password) {
         throw Error('Please enter all fields!');
     }
-    try {
         // check the existing user
         const user = await UserAccount.findOne({ email });
         if (user) throw Error('User already exists');
