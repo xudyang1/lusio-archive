@@ -12,6 +12,7 @@ import {
     REGISTER_FAIL
 } from "../types/actionTypes";
 import axios from 'axios';
+import { loadUser } from '../actions/AuthActions';
 
 // Initial state
 const initialState = {
@@ -37,48 +38,51 @@ export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
     // set up config/headers and token
-    const tokenConfig = state => {
-        // get token from localstorage
-        const token = state.token;
+    // const tokenConfig = state => {
+    //     // get token from localstorage
+    //     const token = state.token;
 
-        // headers
-        const config = {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        };
+    //     // headers
+    //     const config = {
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     };
 
-        // if token, add to headers
-        if (token) {
-            config.headers['x-auth-token'] = token;
-        }
-        return config;
-    };
-    // check token & load user
-    async function loadUser() {
-        try {
-            // user loading
-            dispatch({ type: USER_LOADING });
+    //     // if token, add to headers
+    //     if (token) {
+    //         config.headers['x-auth-token'] = token;
+    //     }
+    //     return config;
+    // };
+    // // check token & load user
+    // async function loadUser() {
+    //     try {
+    //         // user loading
+    //         dispatch({ type: USER_LOADING });
 
-            const res = await axios.get('/api/auth/user', tokenConfig(state));
-            dispatch({
-                type: USER_LOADED,
-                payload: res.data
-            });
-            console.log("Called loadUser(): user loaded", state);
-        } catch (err) {
+    //         const res = await axios.get('/api/auth/user', tokenConfig(state));
+    //         dispatch({
+    //             type: USER_LOADED,
+    //             payload: res.data
+    //         });
+    //         console.log("Called loadUser(): user loaded", state);
+    //     } catch (err) {
             
-            dispatch({
-                type: AUTH_ERROR,
-                payload: {
-                    msg: err.response.data.msg,
-                    status: err.response.status,
-                    id: 'AUTH_ERROR'
-                }
-            });
-            console.log("Called loadUser(): error", state);
-        }
-    }
+    //         dispatch({
+    //             type: AUTH_ERROR,
+    //             payload: {
+    //                 msg: err.response.data.msg,
+    //                 status: err.response.status,
+    //                 id: 'AUTH_ERROR'
+    //             }
+    //         });
+    //         console.log("Called loadUser(): error", state);
+    //     }
+    // }
+
+    const loadUserCall = (state) => loadUser(dispatch);
+
     // Register user
     async function register({ name, email, password }) {
         // headers
@@ -158,7 +162,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (<AuthContext.Provider value={{
-        loadUser,
+        loadUser: loadUserCall,
         register,
         login,
         logout,
