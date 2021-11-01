@@ -1,0 +1,65 @@
+.modal-trigger{
+    font-size: 1.5em;
+}
+.modal{
+    width:33vw;
+    height: 800px;
+    font-size: 24px;
+    text-align: center;
+}
+.modalHeader{
+    font-weight: bold;
+}
+.modal-content{
+    height: 85%;
+    width: 100%;
+    align-items: center;
+}
+p.deep-orange-text{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.input-field{
+    width: 100%;
+}
+i.material-icons.prefix{
+    font-size: 2em
+}
+input#loginEmail,
+input#loginPassword,
+input#registerName,
+input#registerEmail,
+input#registerPassword{
+    height: 2em;
+    font-size: 1.5em;
+    line-height: 1em;
+}
+.input-field label{
+    font-size: 1.4em;
+}
+
+.sendBtn {
+    font-size: 24px;
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+    width: 50%;
+    height: 60px;
+    border-radius: 10px;
+}
+.sendIcon{
+    padding-top: 0em;
+    padding-right: 0em;
+    margin-left: -0.6em;
+    font-size: 1.5em
+}
+.modal-footer{
+    height: auto
+}
+.modal-close{
+    font-size: 20px;
+    text-align: center;
+    padding: 0.5em;
+    height: 60px;
+    width: 180px;
+    border-radius: 10px;
+}

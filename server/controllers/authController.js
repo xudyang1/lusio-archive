@@ -64,10 +64,10 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
-    // simple validation
-    if (!email || !password) throw Error('Please enter all fields!');
-
     try {
+        // simple validation
+        if (!email || !password) throw Error('Please enter all fields!');
+
         // Check for existing user
         // TODO: change error message to Invalid credentials after testing
         const user = await UserAccount.findOne({ email });
@@ -90,9 +90,9 @@ exports.login = async (req, res, next) => {
             }
         });
     } catch (e) {
-        res.status(400).json({ error: e.message });
+        res.status(400).json({ msg: e.message });
     }
-}
+};
 
 
 
@@ -109,4 +109,4 @@ exports.getUser = async (req, res, next) => {
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }
-}
+};

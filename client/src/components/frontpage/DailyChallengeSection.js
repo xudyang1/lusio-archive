@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import QuizCards from "./QuizCard";
 import 'materialize-css';
-import '../frontpage.css'
+import '../../css/frontpage.css'
 
 class DailyChallengeSection extends Component{
     render(){

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import 'materialize-css';
-import '../frontpage.css'
+import '../../css/frontpage.css'
 
 class QuizCards extends Component{
     render(){
