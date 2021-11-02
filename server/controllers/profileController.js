@@ -4,14 +4,14 @@ const UserProfile = require('../models/UserProfile');
 // @desc    Get all platforms
 // @route   GET /api/platforms
 // @access  Public
-exports.getProfile = async (req, res, next) => {
+exports.getProfiles = async (req, res, next) => {
   try {
-    const profile = await UserProfile.find();
+    const profiles = await UserProfile.find();
 
     return res.status(200).json({
       success: true,
-      count: profile.length,
-      data: profile
+      count: profiles.length,
+      data: profiles
     });
   } catch (err) {
     return res.status(500).json({
@@ -20,3 +20,28 @@ exports.getProfile = async (req, res, next) => {
     });
   }
 }
+exports.deleteAccount= async (req, res, next) => {
+    try {
+      const profile = await UserProfile.findById(req.params.id);
+  
+      if(!profile) {
+        return res.status(404).json({
+          success: false,
+          msg: 'No platform found'
+        });
+      }
+  
+      await profile.remove();
+  
+      return res.status(200).json({
+        success: true,
+        data: {}
+      });
+  
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        msg: 'Server Error'
+      });
+    }
+  }
