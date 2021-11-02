@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 //import AppNavbar from '../common/AppNavbar';
 import ProfileSidebar from './ProfileSidebar';
 import '../../css/frontpage.css';
-import banner from '../../bannerimg.jpg';
+
 import sampleUserProfile from '../../sampleData/sampleUser.json'
 
 export default class ProfilePage extends Component{
@@ -11,8 +11,8 @@ export default class ProfilePage extends Component{
     
     this.state={
       userID: this.props.match.params.id,
-      profileIcon: banner,
-      bannerURI: banner,
+      profileIcon: '',
+      bannerURI: '',
       description:""
     }
   }
