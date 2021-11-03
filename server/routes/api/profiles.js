@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const {getProfiles, deleteAccount} = require('../../controllers/profileController');
+const {getProfiles, addProfile, deleteAccount} = require('../../controllers/profileController');
 
 router
   .route('/')
-  .get(getProfiles);
+  .get(getProfiles)
+  .post(addProfile);
 
 router
   .route('/:id')
-  .delete(deleteAccount);
+  .delete( deleteAccount);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import { GET_PROFILES, PROFILES_LOADING, UPDATE_PROFILE, DELETE_ACCOUNT, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
+import { GET_PROFILES, PROFILES_LOADING, DELETE_ACCOUNT, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
 
 export const ProfileReducer = (state, action) => {
   switch (action.type) {
@@ -17,11 +17,6 @@ export const ProfileReducer = (state, action) => {
       return {
         ...state,
         transactions: [...state.profiles, action.payload]
-      };
-    case UPDATE_PROFILE:
-      return {
-        ...state,
-        profile: action.payload
       };
     case DELETE_ACCOUNT:
       return {

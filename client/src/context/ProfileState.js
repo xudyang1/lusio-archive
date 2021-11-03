@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import { ProfileReducer } from '../reducers/ProfileReducer';
-import { PROFILES_LOADING, GET_PROFILES, ADD_PROFILE, UPDATE_PROFILE, DELETE_ACCOUNT, GET_ERRORS } from '../types/actionTypes';
+import { PROFILES_LOADING, GET_PROFILES, ADD_PROFILE, DELETE_ACCOUNT, GET_ERRORS } from '../types/actionTypes';
 import axios from 'axios';
 
 // Initial state
@@ -46,12 +46,14 @@ export const ProfilesProvider = ({ children }) => {
       }
     };
 
-    try {
-      const res = await axios.post('/api/profiles', profile, config);
+    const body = JSON.stringify(profile);
 
+    try {
+      const res = await axios.post('/api/profiles', body, config);
+      
       dispatch({
         type: ADD_PROFILE,
-        payload: res.data.data
+        payload: res.data
       });
     } catch (err) {
       dispatch({
@@ -61,27 +63,7 @@ export const ProfilesProvider = ({ children }) => {
     }
   }
 
-  async function updateProfile(profile) {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
-    try {
-      const res = await axios.put('/api/profiles', profile, config);
-
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.data
-      });
-    } catch (err) {
-      dispatch({
-        type: GET_ERRORS,
-        payload: { msg: err.response.data.msg, status: err.response.status }
-      });
-    }
-  }
+  
 
   async function deleteAccount(id) {
     try {
@@ -100,13 +82,10 @@ export const ProfilesProvider = ({ children }) => {
   }
 
   return (<ProfilesContext.Provider value={{
-    profiles: state.profiles,
-    error: state.error,
-    loading: state.loading,
     getProfiles,
     addProfile,
-    updateProfile,
-    deleteAccount
+    deleteAccount,
+    ...state
   }}>
     {children}
   </ProfilesContext.Provider>);
