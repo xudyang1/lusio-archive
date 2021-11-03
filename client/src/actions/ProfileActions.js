@@ -17,7 +17,7 @@ export const getProfiles = (dispatch) => async () => {
     console.log("dispatch"+dispatch);
     dispatch({
       type: GET_PROFILES,
-      payload: res.data.data
+      payload: res.data
     });
   } catch (err) {
     console.error(err);
@@ -32,17 +32,16 @@ export const addProfile = (dispatch, profile) => async () =>{
     }
   };
   const body = JSON.stringify(profile);
-  try {
-
-    const res = await axios.post('/api/profiles', body, config);
-    dispatch({
-      type: ADD_PROFILE,
-      payload: res.data.data
+    const res = await axios.post('/api/profiles', body, config)
+    .then(res => dispatch({
+        type: ADD_PROFILE,
+        payload: res.data
+    }))
+    .catch(err => {
+        dispatch(returnErrors(err.response.data.error))
     });
-  } catch (err) {
-    dispatch(returnErrors(err.response.data.error));
-  }
-}
+       
+};
 
 export const deleteAccount = (dispatch, id) => async () => {
   try {

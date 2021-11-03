@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import M from 'materialize-css';
+import ProfilePage from './ProfilePage';
 
 
 export default class ProfileSidebar extends Component{
@@ -7,6 +8,15 @@ export default class ProfileSidebar extends Component{
         super(props);
         var elems = document.querySelectorAll('.sidenav');
         var instances = M.Sidenav.init(elems);
+        this.state={
+            profileIconURI: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png"
+        }
+
+      }
+      componentWillReceiveProps(nextProps){
+        if(this.props !== nextProps){
+            this.setState(nextProps)
+        }
       }
     render(){
         return(
@@ -16,7 +26,8 @@ export default class ProfileSidebar extends Component{
                     <div className="background">
                     {/* <img src="images/office.jpg"/> */}
                     </div>
-                    <a href="#user"><img className="circle" src="https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png" width='65%' height='300px' /></a><br/>
+                    <a href="#user"><img className="circle" src={this.state.profileIconURI} width='65%' height='300px' /></a>
+                    <br/>
                     <a href="#name"><span className="name">John Doe</span></a><br/>
                     <a href="#email"><span className="email">jdandturk@gmail.com</span></a>
                 </div></li>

@@ -74,11 +74,13 @@ export default class ProfilePage extends Component{
     <div class='row'>
       <div className="col s3 z-depth-3">
         <ProfileSidebar profileIconURI={this.state.profileIconURI}/>
+        <input type="file" name="profileIcon" onChange={this.onChangeProfileIcon} />
       </div>
       <div className="col s9 z-depth-3">
         <img className="profile-banner" alt="Banner" width="100%" height="250" src={this.state.bannerURI}>  
         </img>
         <input type="file" name="bannerImage" onChange={this.onChangeBanner} />
+        
         <textarea id="profileDescription" type="text" row="5" style={{fontSize: 25, height:100}} className="description" name="profileDescrition" value={this.state.description} size="30" onChange={this.onChangeDescription}/>
         <button color="dark" style={{ marginTop: '2rem' }} block onClick={this.onSubmit} >
           Finish Edit

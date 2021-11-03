@@ -22,7 +22,7 @@ export const ProfilesProvider = ({ children }) => {
       const res = await axios.get('/api/profiles');
       dispatch({
         type: GET_PROFILES,
-        payload: res.data.data
+        payload: res.data
       });
       // console.log("return: ", res.data.data);
     } catch (err) {
@@ -47,14 +47,15 @@ export const ProfilesProvider = ({ children }) => {
     };
 
     const body = JSON.stringify(profile);
-
     try {
-      const res = await axios.post('/api/profiles', body, config);
-      
+      const res = await axios.post('/api/profiles/add', body, config);
+
       dispatch({
         type: ADD_PROFILE,
         payload: res.data
       });
+
+      console.log("After adding profile, success, state: ", state);
     } catch (err) {
       dispatch({
         type: GET_ERRORS,

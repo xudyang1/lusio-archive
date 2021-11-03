@@ -4,9 +4,11 @@ const {getProfiles, addProfile, deleteAccount} = require('../../controllers/prof
 
 router
   .route('/')
-  .get(getProfiles)
-  .post(addProfile);
+  .get(getProfiles);
 
+router
+    .route('/add')
+    .post(addProfile);
 router
   .route('/:id')
   .delete( deleteAccount);
