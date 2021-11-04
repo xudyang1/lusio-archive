@@ -12,9 +12,9 @@ export const getPlatforms = (dispatch) => async () => {
   try {
     
     const res = await axios.get('/api/platforms');
-    console.log(res);
-    console.log("getPlatforms()...");
-    console.log("dispatch"+dispatch);
+    // console.log(res);
+    // console.log("getPlatforms()...");
+    // console.log("dispatch"+dispatch);
     dispatch({
       type: GET_PLATFORM,
       payload: res.data.data

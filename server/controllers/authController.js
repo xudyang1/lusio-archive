@@ -105,6 +105,7 @@ exports.getUser = async (req, res, next) => {
     try {
         const user = await UserAccount.findById(req.user.id).select('-password'); //don't select 'password'
         if (!user) throw Error('User does not exist');
+        // console.log(user)
         res.json(user);
     } catch (e) {
         res.status(400).json({ msg: e.message });

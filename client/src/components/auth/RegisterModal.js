@@ -19,7 +19,7 @@ export const RegisterModal = () => {
 
     useEffect(() => {
         // check for register error
-        console.log("modal.error msg", state.msg);
+        // console.log("modal.error msg", state.msg);
         if (error && error.id === 'REGISTER_FAIL')
             setState({ ...state, msg: error.msg });
         else
@@ -29,7 +29,7 @@ export const RegisterModal = () => {
     // init modal & close modal if register success
     useEffect(() => {
         if (!isAuthenticated) {
-            console.log("Loading Modal Init....................");
+            // console.log("Loading Modal Init....................");
             var elem = document.querySelector('#registerModal');
             // clear errors before open and after close
             var options = {
@@ -55,7 +55,7 @@ export const RegisterModal = () => {
         e.preventDefault();
 
         const user = { name: state.name, email: state.email, password: state.password };
-        console.log("register attempt, data", user);
+        // console.log("register attempt, data", user);
         // attemp to register
         register(user);
     };

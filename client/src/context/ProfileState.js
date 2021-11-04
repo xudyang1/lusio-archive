@@ -55,7 +55,7 @@ export const ProfilesProvider = ({ children }) => {
         payload: res.data
       });
 
-      console.log("After adding profile, success, state: ", state);
+      // console.log("After adding profile, success, state: ", state);
     } catch (err) {
       dispatch({
         type: GET_ERRORS,
