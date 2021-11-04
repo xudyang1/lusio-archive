@@ -8,7 +8,7 @@ router
   .post(addPlatform);
 
 router
-  .route('/:id')
+  .route('/:id')  
   .delete(deletePlatform);
 
 module.exports = router;
