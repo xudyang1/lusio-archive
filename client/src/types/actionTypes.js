@@ -8,6 +8,14 @@ export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
 export const GET_PLATFORMS = 'GET_PLATFORMS';
 export const ADD_PLATFORM = 'ADD_PLATFORM';
 export const DELETE_PLATFORM = 'DELETE_PLATFORM';
+
+// profiles (accounts)
+export const PROFILES_LOADING = 'PROFILES_LOADING';
+export const GET_PROFILES= 'GET_PROFILES';
+export const ADD_PROFILE = 'ADD_PROFILE';
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+
 // errors
 export const GET_ERRORS = "GET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";

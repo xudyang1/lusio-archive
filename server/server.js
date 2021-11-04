@@ -25,10 +25,12 @@ if(process.env.NODE_ENV === 'development') {
 const quizRouter = require('./routes/api/quizzes');
 const platformRouter = require('./routes/api/platforms');
 const authRouter = require('./routes/api/auth');
+const profileRouter = require('./routes/api/profiles');
 // use routes
 app.use('/api/quizzes', quizRouter);
 app.use('/api/platforms', platformRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/profiles', profileRouter);
 // end of test
 
 

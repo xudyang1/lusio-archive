@@ -1,0 +1,10 @@
+textarea.description {
+  font: 30px;
+  height: 150px;
+}
+
+.side-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
