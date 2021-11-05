@@ -3,8 +3,18 @@ textarea.description {
   height: 150px;
 }
 
-.side-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.parallax-container {
+  height: 300px;
 }
+
+/* .circle {
+  display: flex;
+  justify-content: center;
+  width: 65%;
+  height: 300px;
+} */
+
+/* .sidenav {
+  overflow: hidden;
+  margin-top: 90px;
+} */

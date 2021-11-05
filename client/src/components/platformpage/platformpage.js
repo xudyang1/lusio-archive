@@ -8,19 +8,19 @@ import sampleQuiz from '../../sampleData/sampleQuiz.json'
 
 function parseSections(sections){
     var newSections = []
-    console.log(sections)
+    // console.log(sections)
     sections.forEach(element => {
         var quizzes = [element.sectionName]
         var qs = sampleQuiz.quizzes.filter((quiz)=>(
             element.quizzesID.includes(quiz.quizID)
         ));
-        console.log(qs)
+        // console.log(qs)
         qs.forEach(element => {
             quizzes.push([element.quizName, element.quizDesc]);
         });
         newSections.push(quizzes);
     });
-    console.log(newSections)
+    // console.log(newSections)
     return newSections;
 }
 
@@ -53,7 +53,7 @@ export default function PlatformPage(props){
     if(plat){
         name = plat.platformName;
         img = plat.platformImgURL;
-        console.log(plat.platformSections)
+        // console.log(plat.platformSections)
         sections = parseSections(plat.platformSections);
     }
 
@@ -65,7 +65,7 @@ export default function PlatformPage(props){
             <div className="center-align"><img className="responsive-img" src={img}/></div>
             {
                 sections.map((element, index)=>(
-                    <GeneralSections key={index} name={element[0]} quiz={element.slice(1, element.length)}/>
+                    <GeneralSections key={index} name={element[0]} items={element.slice(1, element.length)}/>
                 ))
             }
         </div>

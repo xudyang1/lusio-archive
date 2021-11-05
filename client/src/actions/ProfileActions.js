@@ -12,9 +12,9 @@ export const getProfiles = (dispatch) => async () => {
   try {
     // dispatch(setQuizzesLoading());
     const res = await axios.get('/api/profiles');
-    console.log(res);
-    console.log("getProfiles()...");
-    console.log("dispatch"+dispatch);
+    // console.log(res);
+    // console.log("getProfiles()...");
+    // console.log("dispatch"+dispatch);
     dispatch({
       type: GET_PROFILES,
       payload: res.data
