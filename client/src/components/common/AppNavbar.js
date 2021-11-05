@@ -23,19 +23,21 @@ const AppNavbar = () => {
     }
 
     return (
-        <nav>
-            <div className="nav-wrapper">
+        <div className="navbar-fixed">
+            <nav>
+                <div className="nav-wrapper">
 
-                <a href="/" className="brand-logo" style={{ paddingLeft: '1em' }}>Lusio</a>
-                <ul id="nav-mobile" className="right hide-on-med-and-down">
-                    {isAuthenticated ? (<span><li><AccountProfileButton /></li><li><Logout /></li></span>) :
-                        (<span><li><LoginModal /></li><li><RegisterModal /></li></span>)}
-                    <li><a href="https://github.com/xudyang1/CSE416_Lusio" style={{ fontSize: "1.5em" }}>Github</a></li>
-                    {/* <li><button style={{ fontSize: "1.5em" }} onClick={clickMe}>GetUser</button></li> */}
-                </ul>
-                <SearchBar />
-            </div>
-        </nav>
+                    <a href="/" className="brand-logo" style={{ paddingLeft: '1em' }}>Lusio</a>
+                    <ul id="nav-mobile" className="right hide-on-med-and-down">
+                        {isAuthenticated ? (<span><li><AccountProfileButton /></li><li><Logout /></li></span>) :
+                            (<span><li><LoginModal /></li><li><RegisterModal /></li></span>)}
+                        <li><a href="https://github.com/xudyang1/CSE416_Lusio" style={{ fontSize: "1.5em" }}>Github</a></li>
+                        {/* <li><button style={{ fontSize: "1.5em" }} onClick={clickMe}>GetUser</button></li> */}
+                    </ul>
+                    <SearchBar />
+                </div>
+            </nav>
+        </div>
     );
 };
 

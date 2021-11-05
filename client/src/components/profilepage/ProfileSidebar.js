@@ -53,7 +53,7 @@ export default function ProfileSidebar() {
                 <li><a className="subheader">Subheader</a></li>
                 <li><a className="waves-effect" href="#!">Third Link With Waves</a></li> */}
             </ul>
-            <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+            <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons" style={{position:'fixed', fontSize: '3em'}}>menu</i></a>
         </div>
     );
     //}
