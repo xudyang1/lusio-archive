@@ -33,16 +33,12 @@ export default function AuthReducer(state, action) {
                 isLoading: true
             };
         case USER_LOADED:
-            console.log("Inside USER_LOADED", action.payload);
+            // console.log("Inside USER_LOADED", action.payload);
             return {
                 ...state,
                 isAuthenticated: true,
                 isLoading: false,
-                user: {
-                    id: action.payload.id,
-                    name: action.payload.name,
-                    email: action.payload.email
-                }
+                user: action.payload.user
             };
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
@@ -52,11 +48,7 @@ export default function AuthReducer(state, action) {
                 ...state,
                 isAuthenticated: true,
                 isLoading: false,
-                user: {
-                    id: action.payload.user.id,
-                    name: action.payload.user.name,
-                    email: action.payload.user.email
-                },
+                user: action.payload.user,
                 error: {
                     msg: null,
                     status: null,
