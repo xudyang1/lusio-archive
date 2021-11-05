@@ -52,7 +52,7 @@ export default function ProfileHeader(props) {
     return (
         <div>
             <h2 className="center">HOME</h2>
-            <div class="parallax-container">
+            <div className="parallax-container">
                 <div class="parallax">
                     <img src={state.bannerURI}/>
                 </div>

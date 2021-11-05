@@ -30,8 +30,8 @@ export default function ProfilePage() {
     }, [])
 
     return (
-        <div class='row'>
-            {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI={this.state.profileIconURI} /> : <div/>}
+        <div className='row'>
+            {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI="{this.state.profileIconURI}" /> : <div/>}
             <div className="container z-depth-3">
                 <ProfileHeader user={user} />
                 <MyQuizzesSection/>
