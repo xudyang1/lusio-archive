@@ -4,8 +4,9 @@ import ProfileHeader from './ProfileHeader';
 import MyQuizzesSection from './MyQuizzesSection';
 import AchievementsSection from './AchievementsSection';
 
-import { useContext, useEffect } from "react"
-import { AuthContext } from "../../context/AuthState"
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthState";
+
 import '../../css/frontpage.css';
 import { useParams } from 'react-router';
 
@@ -29,7 +30,7 @@ export default function ProfilePage() {
     }, [])
 
     return (
-        <div class='row'>
+        <div className='row'>
             {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI="{this.state.profileIconURI}" /> : <div/>}
             <div className="container z-depth-3">
                 <ProfileHeader user={user} />

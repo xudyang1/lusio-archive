@@ -39,14 +39,14 @@ export const ProfilesProvider = ({ children }) => {
     };
   };
 
-  async function addProfile(profile) {
+  async function addProfile({description, bannerURI, profileIconURI}) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
 
-    const body = JSON.stringify(profile);
+    const body = JSON.stringify({description, bannerURI, profileIconURI});
     try {
       const res = await axios.post('/api/profiles/add', body, config);
 

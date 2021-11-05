@@ -41,11 +41,17 @@ export default function ProfileSidebar() {
                     <a href="#name"><span className="name">{user.name}</span></a>
                     <a href="#email"><span className="email">{user.email}</span></a>
                 </div></li>
-                <li><a href="#!"><i className="material-icons">cloud</i>First Link With Icon</a></li>
+                <li><a href="#!"><i className="material-icons">home</i>Home</a></li>
+                <li><a href="#!"><i className="material-icons">description</i>My Quizzes</a></li>
+                <li><a href="#!"><i className="material-icons">emoji_events</i>My Achievements</a></li>
+                <li><a href="#!"><i className="material-icons">contact_page</i>Subscribed User</a></li>
+                <li><a href="#!"><i className="material-icons">subscriptions</i>Subscribed Platforms</a></li>
+                <li><a href="#!"><i className="material-icons">settings</i>Account Setting</a></li>
+                {/* <li><a href="#!"><i className="material-icons">cloud</i>First Link With Icon</a></li>
                 <li><a href="#!">Second Link</a></li>
                 <li><div className="divider"></div></li>
                 <li><a className="subheader">Subheader</a></li>
-                <li><a className="waves-effect" href="#!">Third Link With Waves</a></li>
+                <li><a className="waves-effect" href="#!">Third Link With Waves</a></li> */}
             </ul>
             <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
         </div>
