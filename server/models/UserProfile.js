@@ -4,18 +4,66 @@ const Schema = mongoose.Schema;
 
 // TODO: may have some add-ons
 const UserProfileSchema = new Schema({
+    userId: {
+        type: Number,
+        required: true
+    },
+    accountStatus: {
+        type: Number,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true
     },
-    bannerURI: { 
-        type: String, 
+    profileIcon: {
+        type: String,
         required: true
     },
-    profileIconURI: { 
-        type: String, 
+    profileBanner: {
+        type: String,
         required: true
-    }
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    level: {
+        type: Number,
+        required: true
+    },
+    currentExp: {
+        type: Number,
+        required: true
+    },
+    maxExp: {
+        type: String,
+        required: true
+    },
+    achievements: {
+        type: [String],
+        required: true
+    },
+    quizzes: {
+        type: [String],
+        required: true
+    },
+    subscribedUser: {
+        type: [String],
+        required: true
+    },
+    subscribedPlat: {
+        type: [String],
+        required: true
+    },
 });
 
 module.exports = mongoose.model('UserProfile', UserProfileSchema);

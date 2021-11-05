@@ -11,18 +11,6 @@ import {
     CLEAR_ERRORS
 } from "../types/actionTypes";
 
-// const initialState = {
-//     token: localStorage.getItem('token'),
-//     isAuthenticated: null,
-//     isLoading: false,
-//     user: null,
-//     error: {
-//         msg: null,
-//         status: null,
-//         id: null
-//     }
-// };
-
 export default function AuthReducer(state, action) {
     console.log("PAYLOAD FROM AUTHREDUCER:", action.type, action.payload, state)
     switch (action.type) {

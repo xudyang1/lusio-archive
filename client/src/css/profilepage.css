@@ -3,14 +3,18 @@ textarea.description {
   height: 150px;
 }
 
-.circle {
+.parallax-container {
+  height: 300px;
+}
+
+/* .circle {
   display: flex;
   justify-content: center;
   width: 65%;
   height: 300px;
-}
+} */
 
-.sidenav {
+/* .sidenav {
   overflow: hidden;
-  margin-top: 400px;
-}
+  margin-top: 90px;
+} */
