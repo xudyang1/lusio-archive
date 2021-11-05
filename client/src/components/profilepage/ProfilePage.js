@@ -12,7 +12,7 @@ export default class ProfilePage extends Component{
     
     this.state={
       userID: this.props.match.params.id,
-      profileIconURI: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png",
+      profileIconURI: "",
       bannerURI: '',
       description:""
     }
@@ -72,20 +72,26 @@ export default class ProfilePage extends Component{
   render(){
     return(
     <div class='row'>
-      <div className="col s3 z-depth-3">
-        <ProfileSidebar profileIconURI={this.state.profileIconURI}/>
-        <input type="file" name="profileIcon" onChange={this.onChangeProfileIcon} />
+      <div className="col s12 m4 l2" style={{display: "absolute", marginLeft: 0}}>
+        <input type="file" name="profileIcon" onChange={this.onChangeProfileIcon} /> <br/>
+        <img className="circle" src={this.state.profileIconURI}/>
       </div>
-      <div className="col s9 z-depth-3">
+      <ProfileSidebar profileIconURI={this.state.profileIconURI}/>
+      <div className="col s12 m4 l8 z-depth-3">
         <img className="profile-banner" alt="Banner" width="100%" height="250" src={this.state.bannerURI}>  
         </img>
         <input type="file" name="bannerImage" onChange={this.onChangeBanner} />
         
         <textarea id="profileDescription" type="text" row="5" style={{fontSize: 25, height:100}} className="description" name="profileDescrition" value={this.state.description} size="30" onChange={this.onChangeDescription}/>
+        
         <button color="dark" style={{ marginTop: '2rem' }} block onClick={this.onSubmit} >
           Finish Edit
           <i className="material-icons prefix" ></i>
         </button>
+        <button color="dark" style={{ marginTop: '2rem'}} block >
+          Delete Account
+        </button>
+        
       </div>
     </div>
     )
