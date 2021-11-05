@@ -31,7 +31,8 @@ exports.addProfile = async (req, res, next) => {
     });
     try {
         const savedProfile = await newProfile.save();
-    
+        if (!savedProfile) throw Error('Something went wrong saving the user profile');
+        
         res.status(200).json({
         userProfile: {
             id: savedProfile.id,

@@ -10,7 +10,7 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL
-} from "../actions/types";
+} from "../types/actionTypes";
 
 // check token & load user
 export const loadUser = () => (dispatch, getState) => {
