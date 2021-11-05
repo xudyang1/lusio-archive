@@ -9,6 +9,7 @@ import HomePage from './components/frontpage/HomePage';
 import SearchPage from './components/searchpage/SearchPage';
 import ProfilePage from './components/profilepage/ProfilePage';
 import PlatformPage from './components/platformpage/PlatformPage';
+import EditQuizPage from './components/editquizpage/EditQuizPage';
 import AppNavbar from './components/common/AppNavbar';
 import { AuthProvider } from './context/AuthState';
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/search/:key" component={SearchPage} />
         <Route path="/profile/:id" component={ProfilePage} />
         <Route path="/platform/:id" component={PlatformPage} />
+        <Route path="/edit/:id" component={EditQuizPage} />
       </Switch>
     </AuthProvider>
   );

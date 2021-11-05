@@ -65,7 +65,7 @@ export default function PlatformPage(props){
             <div className="center-align"><img className="responsive-img" src={img}/></div>
             {
                 sections.map((element, index)=>(
-                    <GeneralSections key={index} name={element[0]} quiz={element.slice(1, element.length)}/>
+                    <GeneralSections key={index} name={element[0]} items={element.slice(1, element.length)}/>
                 ))
             }
         </div>
