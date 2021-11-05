@@ -9,7 +9,7 @@ export const QuizSections = () => {
 
   const handler = () => {
     getQuizzes();
-    console.log("123"+quizzes[0]);
+    // console.log("123"+quizzes[0]);
   }
   
   const name = quizzes[0]? quizzes[0].name : "none";

@@ -19,9 +19,9 @@ const initialState = {
     isAuthenticated: false,
     isLoading: false,
     user: {
-        id: null,
-        email: null,
-        name: null
+        id: 0,
+        email: "null",
+        name: "null"
     },
     error: {
         msg: null,
@@ -56,16 +56,18 @@ export const AuthProvider = ({ children }) => {
     };
     // check token & load user
     async function loadUser() {
+        console.log("CALLED LoadUser()")
         try {
             // user loading
             dispatch({ type: USER_LOADING });
 
             const res = await axios.get('/api/auth/user', tokenConfig(state));
+            console.log("res.data = ", res.data)
             dispatch({
                 type: USER_LOADED,
                 payload: res.data
             });
-            console.log("Called loadUser(): user loaded", state);
+            //console.log("Called loadUser(): user loaded", state);
         } catch (err) {
             
             dispatch({
@@ -76,7 +78,7 @@ export const AuthProvider = ({ children }) => {
                     id: 'AUTH_ERROR'
                 }
             });
-            console.log("Called loadUser(): error", state);
+            // console.log("Called loadUser(): error", state);
         }
     }
     // Register user
@@ -119,9 +121,10 @@ export const AuthProvider = ({ children }) => {
         };
         // request body
         const body = JSON.stringify({ email, password });
-        console.log("Before login");
+        // console.log("Before login");
         try {
             const res = await axios.post('/api/auth/login', body, config);
+            console.log("Login() LOGIN_SUCCESS", res.data)
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
@@ -137,7 +140,7 @@ export const AuthProvider = ({ children }) => {
                     id: 'LOGIN_FAIL'
                 }
             });
-            console.log("After login, failed, state: ", state);
+            // console.log("After login, failed, state: ", state);
         }
     };
 
@@ -154,7 +157,7 @@ export const AuthProvider = ({ children }) => {
         dispatch({
             type: CLEAR_ERRORS
         });
-        console.log("Called clearErrors()");
+        // console.log("Called clearErrors()");
     };
 
     return (<AuthContext.Provider value={{

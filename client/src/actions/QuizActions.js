@@ -12,9 +12,9 @@ export const getQuizzes = (dispatch) => async () => {
   try {
     // dispatch(setQuizzesLoading());
     const res = await axios.get('/api/quizzes');
-    console.log(res);
-    console.log("getQuizzes()...");
-    console.log("dispatch"+dispatch);
+    // console.log(res);
+    // console.log("getQuizzes()...");
+    // console.log("dispatch"+dispatch);
     dispatch({
       type: GET_QUIZZES,
       payload: res.data.data
