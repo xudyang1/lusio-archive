@@ -2,9 +2,12 @@
     "quizzes":[
         {
             "quizID": 1,
+            "platformID": 1,
             "quizAuthor": 1,
             "quizName": "What is MoMA",
             "quizDesc": "This quiz is about MoMA",
+            "quizLikes": 4,
+            "quizCreated": "2015-01-22",
             "quizEXP": 100,
             "quizQuestions" : [
                 {
@@ -63,9 +66,12 @@
         },
         {
             "quizID": 2,
-            "quizAuthor": 2,
+            "platformID": 2,
+            "quizAuthor": 0,
             "quizName": "Who AM I",
             "quizDesc": "This Quiz is about the creators of this web application",
+            "quizLikes": 1,
+            "quizCreated": "2010-01-21",
             "quizEXP": 100,
             "quizQuestions" : [
                 {
@@ -109,9 +115,12 @@
         },
         {
             "quizID": 3,
-            "quizAuthor": 4,
+            "platformID": 2,
+            "quizAuthor": 2,
             "quizName": "What is This",
             "quizDesc": "I have ran out of ideas to put in a quiz schema",
+            "quizLikes": 0,
+            "quizCreated": "2021-10-22",
             "quizEXP": 100,
             "quizQuestions" : [
                 {
@@ -166,9 +175,12 @@
         },
         {
             "quizID": 4,
-            "quizAuthor": 3,
+            "platformID": 2,
+            "quizAuthor": 2,
             "quizName": "What is This 2",
             "quizDesc": "Take this Rick Roll and leave me alone", 
+            "quizLikes": 200,
+            "quizCreated": "2021-01-21",
             "quizEXP": 100,
             "quizQuestions" : [
                 {
