@@ -80,6 +80,58 @@ exports.addProfile = async (req, res, next) => {
 }
 
 
+exports.updateProfile = async (req, res, next) => {
+  const profile = await UserProfile.findById(req.params.id);
+  const updatedProfile = new UserProfile({
+    id: profile.id,
+    accountStatus: profile.accountStatus,
+    name: profile.name,
+    email: profile.email,
+    description: profile.description,
+    profileIcon: profile.profileIcon,
+    profileBanner: profile.profileBanner,
+    level: profile.level,
+    currentExp: profile.currentExp,
+    maxExp: profile.maxExp,
+    achievements: profile.achievements,
+    quizzes: profile.quizzes,
+    subscribedUser: profile.subscribedUser,
+    subscribedPlat: profile.subscribedPlat
+  });
+  try {
+      const savedProfile = await updatedProfile.save();
+      res.status(200).json({
+        userProfile: {
+          id: savedProfile.id,
+          accountStatus: savedProfile.accountStatus,
+          name: savedProfile.name,
+          email: savedProfile.email,
+          description: savedProfile.description,
+          profileIcon: savedProfile.profileIcon,
+          profileBanner: savedProfile.profileBanner,
+          level: savedProfile.level,
+          currentExp: savedProfile.currentExp,
+          maxExp: savedProfile.maxExp,
+          achievements: savedProfile.achievements,
+          quizzes: savedProfile.quizzes,
+          subscribedUser: savedProfile.subscribedUser,
+          subscribedPlat: savedProfile.subscribedPlat
+      }
+    });
+      if (!profile) {
+          return res.status(404).json({
+              success: false,
+              msg: 'No user profile found'
+          });
+      }
+  } catch (err) {
+      return res.status(500).json({
+          success: false,
+          msg: 'Server Error'
+      });
+  }
+}
+
 exports.deleteAccount = async (req, res, next) => {
     try {
         const profile = await UserProfile.findById(req.params.id);
