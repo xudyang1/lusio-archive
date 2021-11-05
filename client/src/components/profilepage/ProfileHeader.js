@@ -53,7 +53,7 @@ export default function ProfileHeader(props) {
         <div>
             <h2 className="center">HOME</h2>
             <div className="parallax-container">
-                <div class="parallax">
+                <div className="parallax">
                     <img src={state.bannerURI}/>
                 </div>
             </div>
@@ -61,13 +61,13 @@ export default function ProfileHeader(props) {
 
             <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />
 
-            <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
+            {/* <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
                 Finish Edit
                 <i className="material-icons prefix" ></i>
             </button>
             <button color="dark" style={{ marginTop: '2rem' }} onClick={onDelete}>
                 Delete Account
-            </button>
+            </button> */}
         </div>
     )
 }

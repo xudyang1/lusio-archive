@@ -72,8 +72,8 @@ function SearchPage () {
     
     return(
         <div>
-            <div class="row">
-                <div class="input-field col s2">
+            <div className="row">
+                <div className="input-field col s2">
                     <select className="browser-default" onChange={(e) => setSortType(e.target.value)}>
                         <option value='' disabled selected>Sort</option>
                         <option value='name'>Name (A-Z)</option>
@@ -81,7 +81,7 @@ function SearchPage () {
                         <option value='likes'>Likes</option>
                     </select>
                 </div>
-                <div class="input-field col s2">
+                <div className="input-field col s2">
                     <select className="browser-default" onChange={(e) => setFilterType(e.target.value)}>
                         <option value='all' selected>All</option>
                         <option value='quiz'>Quiz</option>
