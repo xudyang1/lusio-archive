@@ -12,17 +12,17 @@ import PlatformPage from './components/platformpage/PlatformPage';
 import AppNavbar from './components/common/AppNavbar';
 import { AuthProvider } from './context/AuthState';
 function App() {
-  return (
-    <AuthProvider>
-      <AppNavbar />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/search/:key" component={SearchPage} />
-        <Route path="/profile/:id" component={ProfilePage} />
-        <Route path="/platform/:id" component={PlatformPage} />
-      </Switch>
-    </AuthProvider>
-  );
+    return (
+        <AuthProvider>
+            <AppNavbar />
+            <Switch>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/search/:key" component={SearchPage} />
+                <Route path="/profile/:id" component={ProfilePage} />
+                <Route path="/platform/:id" component={PlatformPage} />
+            </Switch>
+        </AuthProvider>
+    );
 
 }
 
