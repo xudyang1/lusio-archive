@@ -39,7 +39,7 @@ export default function AuthReducer(state, action) {
                 isAuthenticated: true,
                 isLoading: false,
                 user: {
-                    id: action.payload.id,
+                    id: action.payload._id,
                     name: action.payload.name,
                     email: action.payload.email
                 }
