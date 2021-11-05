@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getProfiles, addProfile, deleteAccount} = require('../../controllers/profileController');
+const {getProfiles, addProfile, updateProfile, deleteAccount} = require('../../controllers/profileController');
 
 router
   .route('/')
@@ -9,6 +9,11 @@ router
 router
     .route('/add')
     .post(addProfile);
+
+router
+  .route('/add/:id')
+  .put(updateProfile);
+
 router
   .route('/:id')
   .delete( deleteAccount);

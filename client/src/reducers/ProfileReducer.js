@@ -1,4 +1,4 @@
-import { GET_PROFILES, PROFILES_LOADING, DELETE_ACCOUNT, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
+import { ADD_PROFILE, GET_PROFILES, PROFILES_LOADING, DELETE_ACCOUNT, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
 
 export const ProfileReducer = (state, action) => {
   switch (action.type) {

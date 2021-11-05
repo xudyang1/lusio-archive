@@ -4,8 +4,9 @@ import ProfileHeader from './ProfileHeader';
 import MyQuizzesSection from './MyQuizzesSection';
 import AchievementsSection from './AchievementsSection';
 
-import { useContext, useEffect } from "react"
-import { AuthContext } from "../../context/AuthState"
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthState";
+
 import '../../css/frontpage.css';
 import { useParams } from 'react-router';
 
