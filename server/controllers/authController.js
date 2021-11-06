@@ -7,6 +7,7 @@ const UserAccount = require('../models/UserAccount');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
+ * TODO: set up default profile for a new registered user
  * @desc  Register new user
  * @route POST api/auth/register
  * @access Public
@@ -15,10 +16,10 @@ exports.register = async (req, res, next) => {
     const { name, email, password } = req.body;
 
     try {
-    // simple validation
-    if (!name || !email || !password) {
-        throw Error('Please enter all fields!');
-    }
+        // simple validation
+        if (!name || !email || !password) {
+            throw Error('Please enter all fields!');
+        }
         // check the existing user
         const user = await UserAccount.findOne({ email });
         if (user) throw Error('User already exists');
@@ -105,8 +106,13 @@ exports.getUser = async (req, res, next) => {
     try {
         const user = await UserAccount.findById(req.user.id).select('-password'); //don't select 'password'
         if (!user) throw Error('User does not exist');
-        // console.log(user)
-        res.json(user);
+        res.json({
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }

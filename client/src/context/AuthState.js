@@ -12,6 +12,7 @@ import {
     REGISTER_FAIL
 } from "../types/actionTypes";
 import axios from 'axios';
+// import { loadUser } from '../actions/AuthActions';
 
 // Initial state
 const initialState = {
@@ -161,7 +162,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (<AuthContext.Provider value={{
-        loadUser,
+        loadUser/*: loadUserCall*/,
         register,
         login,
         logout,
