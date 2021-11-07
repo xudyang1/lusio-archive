@@ -98,6 +98,7 @@ exports.addProfile = async (req, res, next) => {
 exports.updateProfile = async (req, res, next) => {
   const profile = await UserProfile.findByIdAndUpdate(req.params.id,{
     id: req.body.id,
+    userId: req.body.userId,
     accountStatus: req.body.accountStatus,
     name: req.body.name,
     email: req.body.email,
