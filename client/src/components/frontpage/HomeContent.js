@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import PlatformSections from "./PlatformSections";
+//import PlatformSections from "./PlatformSections";
 import DailyChallengeSection from "./DailyChallengeSection";
 import 'materialize-css';
 import '../../css/frontpage.css'
+import GeneralSections from "../common/GeneralSections";
 
 
 class HomeContent extends Component{
@@ -20,7 +21,7 @@ class HomeContent extends Component{
                 <div className="col s9">
                     {
                         tempPlatform.map((element, index)=>(
-                            <PlatformSections key={index} name={element}/>
+                            <GeneralSections key={index} name={element} type={"quiz"}/>
                         ))
                     }
                 </div>

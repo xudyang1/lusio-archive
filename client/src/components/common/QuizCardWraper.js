@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import QuizCards from "./QuizCard";
+import QuizCards from "../frontpage/QuizCard";
 import 'materialize-css';
 
 class QuizCardWraper extends Component{

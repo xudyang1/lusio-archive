@@ -1,31 +1,50 @@
 import React, { Component } from "react";
-import QuizCardWraper from "../frontpage/QuizCardWraper";
+import AchievementCard from "./AchievementCard";
+import QuizCardWraper from "./QuizCardWraper";
 
-class GeneralSections extends Component {
-    render() {
-
-        var items = this.props.items ? this.props.items :
-            [["Q1", "Description for Q1"], ["Q2", "Something Something"], ["Q3", "No Description"], ["Q4", "No Description"], ["Q4", "No Description"]]
-
-        var name = this.props.name ? this.props.name : "SectionName"
-        var type = this.props.type ? this.props.type : "quiz"
-
+function getCards(t, index, element) {
+    console.log("called getCards with type: ", t)
+    if (t == "quiz")
         return (
-            <div className="row z-depth-3">
-                <div>
-                    <h4>{name}</h4>
-                    <a>more{">"}{">"}</a>
-                </div>
-                <div className="col">
-                    {
-                        items.map((element, index) => (
-                            <QuizCardWraper key={index} id={index} name={element[0] + " from " + this.props.name} desc={element[1]} />
-                        ))
-                    }
-                </div>
-            </div>
+            <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
         )
-    }
+    if (t == "achievement")
+        return (
+            <AchievementCard key={index} id={index} name={element[0]} desc={element[1]} />
+        )
+    if (t == "subUser")
+        return (
+            <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
+        )
+    if (t == "subPlat")
+        return (
+            <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
+        )
 }
 
-export default GeneralSections
+
+export default function GeneralSections(props) {
+    var items = props.items ? props.items :
+        [["Quiz1", "Description for Q1"], ["Quiz2", "Something Something"], ["Quiz3", "No Description"], ["Quiz4", "No Description"], ["Quiz5", "No Description"]]
+
+    var name = props.name ? props.name : "SectionName"
+    var type = props.type ? props.type : "quiz"
+
+    return (
+        <div className="row z-depth-3">
+            <div>
+                <h4>{name}</h4>
+                <a>more{">"}{">"}</a>
+            </div>
+            <div className="col">
+                {
+                    // if(type == "quiz")
+                    items.map((element, index) => (
+                        //<QuizCardWraper key={index} id={index} name={element[0] + " from " + this.props.name} desc={element[1]} />
+                        getCards(type, index, element)
+                    ))
+                }
+            </div>
+        </div>
+    )
+}

@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import ProfileSidebar from './ProfileSidebar';
 import ProfileHeader from './ProfileHeader';
-import MyQuizzesSection from './MyQuizzesSection';
-import AchievementsSection from './AchievementsSection';
 
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 
 import '../../css/frontpage.css';
 import { useParams } from 'react-router';
+import { ProfileContext } from '../../context/ProfileState';
+import GeneralSections from '../common/GeneralSections';
 
-//import { addProfile } from '../../actions/ProfileActions';
-//import sampleUserProfile from '../../sampleData/sampleUser.json'
 
 const s = {
     display: "flex",
@@ -24,18 +22,21 @@ export default function ProfilePage() {
     const {id} = useParams();
 
     const {isAuthenticated, loadUser, user } = useContext(AuthContext)
+    const {userProfile, getProfiles} = useContext(ProfileContext)
+
     useEffect(() => {
         loadUser();
-        console.log(user.id, id)
+        getProfiles();
+        //console.log(user.id, id)
     }, [])
 
     return (
         <div className='row'>
-            {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI="{this.state.profileIconURI}" /> : <div/>}
+            {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI={userProfile.profileIcon} leve={userProfile.level}/> : <div/>}
             <div className="container z-depth-3">
-                <ProfileHeader user={user} />
-                <MyQuizzesSection/>
-                <AchievementsSection/>
+                <ProfileHeader name={userProfile.name} description={userProfile.description} banner={userProfile.profileBanner}/>
+                <GeneralSections items={userProfile.quizzes} type={"quiz"} name={"My Quizzes"}/>
+                <GeneralSections items={userProfile.achievements} type={"achievement"} name={"Achivements"}/>
             </div>
         </div>
     )
