@@ -12,6 +12,7 @@ export const DELETE_PLATFORM = 'DELETE_PLATFORM';
 // profiles (accounts)
 export const PROFILES_LOADING = 'PROFILES_LOADING';
 export const GET_PROFILES= 'GET_PROFILES';
+export const GET_PROFILE= 'GET_PROFILE';
 export const ADD_PROFILE = 'ADD_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
