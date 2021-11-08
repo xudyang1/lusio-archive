@@ -12,6 +12,7 @@ import PlatformPage from './components/platformpage/PlatformPage';
 import EditQuizPage from './components/editquizpage/EditQuizPage';
 import AppNavbar from './components/common/AppNavbar';
 import { AuthProvider } from './context/AuthState';
+import { ProfilesProvider } from './context/ProfileState';
 function App() {
   return (
     <AuthProvider>
@@ -19,7 +20,9 @@ function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/search/:key" component={SearchPage} />
-        <Route path="/profile/:id" component={ProfilePage} />
+        <ProfilesProvider>
+          <Route path="/profile/:id" component={ProfilePage} />
+        </ProfilesProvider>
         <Route path="/platform/:id" component={PlatformPage} />
         <Route path="/edit/:id" component={EditQuizPage} />
       </Switch>
