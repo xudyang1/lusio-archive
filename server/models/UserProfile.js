@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 // TODO: may have some add-ons
 const UserProfileSchema = new Schema({
     userId: {
-        type: String,
+        type: Number,
         required: true
     },
     accountStatus: {
