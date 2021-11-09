@@ -17,14 +17,14 @@ export default function ProfileHeader(props) {
     var elems = document.querySelectorAll('.parallax');
     var instances = M.Parallax.init(elems, {});
 
-    const { user } = useContext(AuthContext);
+    const { isAuthenticated, user } = useContext(AuthContext);
     const { updateProfile, deleteAccount } = useContext(ProfilesContext);
     {/* user.id to be used */}
     const initialState = {
-        userId: user.id,
+        userId: isAuthenticated ? user.id : "",
         accountStatus: 0,
-        name: user.name,
-        email: user.email,
+        name: isAuthenticated ? user.name : "",
+        email: isAuthenticated ? user.email : "",
         description:"write down your description here",
         profileIcon: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png",
         profileBanner: "https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg",
