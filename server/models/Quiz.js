@@ -23,7 +23,7 @@ const QuizSchema = new Schema({
         required: [true, 'Please add a description']
     },
     likes: Number,
-   author: ObjectId,
+   author: String,
     quesitons: [QuestionShema],
     date: {
         type: Date,

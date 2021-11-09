@@ -18,8 +18,8 @@ const PlatformSchema = new Schema({
         required: [true, 'Please add a description']
     },
     numSubs: Number,
-    owner: ObjectId,
-    admins: [ObjectId],
+    owner: String,
+    admins: [String],
     sections:[SectionSchema],
     date: {
         type: Date,

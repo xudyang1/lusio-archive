@@ -1,35 +1,32 @@
 import React, { createContext, useReducer } from 'react';
-// import { GlobalReducer } from '../reducers/GlobalReducer';
+import { GlobalReducer } from '../reducers/GlobalReducer';
 // import { GET_ERRORS, CLEAR_ERRORS } from '../types/actionTypes';
 
 // Initial state
-// const initialState = {
-//   errors: []
-// };
+const initialState = {
+  platforms: [],
+  dailyChallenge: null
+};
 
 // Create context
-export const GlobalContext = createContext(/*initialState*/);
+export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
-  // const [state, dispatch] = useReducer(GlobalReducer, initialState);
+  const [state, dispatch] = useReducer(GlobalReducer, initialState);
 
-  // const returnErrors = (msg, status, id = null) => {
-  //   return dispatch({
-  //     type: GET_ERRORS,
-  //     payload: { msg, status, id }
-  //   });
-  // };
+    async function getPlatforms(){
 
-  // // clear errors
-  // const clearErrors = () => {
-  //   return dispatch({
-  //     type: CLEAR_ERRORS
-  //   });
-  // };
+    };
+
+    async function getDailyChallenge(){
+
+    };
 
   return (<GlobalContext.Provider value={{
     // error: { msg: state.msg, status: state.status, id: state.id },
     // returnErrors,
     // clearErrors
+    getPlatforms,
+    getDailyChallenge,
   }}>
     {children}
   </GlobalContext.Provider>);

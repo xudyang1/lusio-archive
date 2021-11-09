@@ -2,20 +2,21 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import M from 'materialize-css';
 import '../../css/profilepage.css';
-import { ProfileContext} from "../../context/ProfileState";
-//TODO
-// _____ ___  ___   ___  
-// |_   _/ _ \|   \ / _ \ 
-//   | || (_) | |) | (_) |
-//   |_| \___/|___/ \___/
-
+import { ProfileContext } from "../../context/ProfileState";
 
 export default function ProfileHeader(props) {
 
     var elems = document.querySelectorAll('.parallax');
     var instances = M.Parallax.init(elems, {});
 
-    const {updateProfile} = useContext(ProfileContext);
+    const { updateProfile } = useContext(ProfileContext);
+
+    //TODO
+    // _____ ___  ___   ___  
+    // |_   _/ _ \|   \ / _ \ 
+    //   | || (_) | |) | (_) |
+    //   |_| \___/|___/ \___/
+
     //const {} = useContext(AuthContext);
     //const { addProfile, deleteAccount } = useContext(ProfileContext);
     // const initialState = {
@@ -57,7 +58,7 @@ export default function ProfileHeader(props) {
             <h2 className="center">HOME</h2>
             <div className="parallax-container">
                 <div className="parallax">
-                    <img src={props.banner? props.banner : "https://i.pinimg.com/originals/56/3a/db/563adbeb015fb165c4145a28a6c2e4c8.jpg"}/>
+                    <img src={props.banner ? props.banner : "https://i.pinimg.com/originals/56/3a/db/563adbeb015fb165c4145a28a6c2e4c8.jpg"} />
                 </div>
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner} />

@@ -1,25 +1,20 @@
 import React, { Component } from "react";
+import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCardWraper from "./QuizCardWraper";
 
 function getCards(t, index, element) {
     console.log("called getCards with type: ", t)
-    if (t == "quiz")
-        return (
-            <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
-        )
-    if (t == "achievement")
-        return (
-            <AchievementCard key={index} id={index} name={element[0]} desc={element[1]} />
-        )
-    if (t == "subUser")
-        return (
-            <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
-        )
-    if (t == "subPlat")
-        return (
-            <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
-        )
+    switch (t) {
+        case ACHIEVEMENT_CARD:
+            return <AchievementCard key={index} id={index} name={element[0]} desc={element[1]} />
+        case QUIZ_CARD:
+            return <QuizCardWraper key={index} id={index} name={element[0]} desc={element[1]} />
+        case SUB_PLAT_CARD:
+            break;
+        case SUB_USER_CARD:
+            break;
+    }
 }
 
 
@@ -38,9 +33,7 @@ export default function GeneralSections(props) {
             </div>
             <div className="col">
                 {
-                    // if(type == "quiz")
                     items.map((element, index) => (
-                        //<QuizCardWraper key={index} id={index} name={element[0] + " from " + this.props.name} desc={element[1]} />
                         getCards(type, index, element)
                     ))
                 }
