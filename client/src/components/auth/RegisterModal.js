@@ -51,13 +51,33 @@ export const RegisterModal = () => {
     };
 
     // register
-    const handleOnSubmit = e => {
+    const handleOnSubmit = async e => {
         e.preventDefault();
 
         const user = { name: state.name, email: state.email, password: state.password };
         // console.log("register attempt, data", user);
-        // attemp to register
-        register(user);
+        // attempt to register
+        //const id = register(user);
+        const printid = () => {
+            return (register(user))
+            .then(function(res) {
+                console.log(res);
+                return res;
+            })
+        };
+        const id = await printid();
+
+        // UserProfile will be created at the same time, as the user registers
+        const userProfile = { userId: id, accountStatus: 1, name: state.name, email: state.email, description: "Enter your description", profileIcon: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png", profileBanner: "https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg", level: 1, currentExp: 0, maxExp: 1000, achievements: [""], quizzes: [""], subscribedUser: [""], subscribedPlat: [""]};
+        const res = await fetch('/api/profiles/profile', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify(userProfile)
+        });
+        const body = await res.text();
+        console.log(body);
     };
 
     return (
