@@ -14,7 +14,8 @@ const UserAccountSchema = new Schema({
     },
     password: { 
         type: String, 
-        required: [true, 'Please add a password'] 
+        required: [true, 'Please add a password']
+        //TODO: protect sensitive info via: , select: false
     },
     registration_date: { 
         type: Date,

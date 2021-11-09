@@ -1,12 +1,15 @@
 const Platform = require('../models/Platform');
+const UserProfile = require('../models/UserProfile');
 
-// TODO: modify this sample later 
-// @desc    Get all platforms
-// @route   GET /api/platforms
-// @access  Public
-exports.getPlatforms = async (req, res, next) => {
+/**
+ * TODO: 
+ * @desc  Get a platform for view
+ * @route GET api/platform
+ * @access  Public
+ */
+exports.getPlatform = async (req, res, next) => {
   try {
-    const platforms = await Platform.find();
+    const platform = await Platform.find();
 
     return res.status(200).json({
       success: true,
@@ -21,11 +24,13 @@ exports.getPlatforms = async (req, res, next) => {
   }
 }
 
-// TODO: modify this sample later 
-// @desc    Add platform
-// @route   POST /api/platforms
-// @access  Public
-exports.addPlatform = async (req, res, next) => {
+/**
+ * TODO: 
+ * @desc  Create a platform by a logged user
+ * @route POST api/platform
+ * @access  Private
+ */
+exports.createPlatform = async (req, res, next) => {
   try {
     const { name } = req.body;
 
@@ -52,10 +57,12 @@ exports.addPlatform = async (req, res, next) => {
   }
 }
 
-// TODO: modify this sample later 
-// @desc    Delete platform
-// @route   DELETE /api/platform/:id
-// @access  Public
+/**
+ * TODO: 
+ * @desc  Delete platform by platform owner
+ * @route DELETE api/aplatform/:id
+ * @access  Private
+ */
 exports.deletePlatform = async (req, res, next) => {
   try {
     const platform = await Platform.findById(req.params.id);
@@ -74,6 +81,35 @@ exports.deletePlatform = async (req, res, next) => {
       data: {}
     });
 
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      msg: 'Server Error'
+    });
+  }
+}
+
+/**
+ * TODO: 
+ * @desc  Get platform quizlist card info for view at home page
+ * @route GET api/platform/platformQuizLists
+ * @access  Public
+ * @detail  For guest user: load most popular platforms;
+ *          For logged user: load subscribed platforms first, then most popular
+ */
+ exports.getPlatformQuizLists = async (req, res, next) => {
+  try {
+    // logged user
+    if(req.user.id){
+      const subscribed = await UserProfile.find()
+    }
+    const platform = await Platform.find();
+
+    return res.status(200).json({
+      success: true,
+      count: platforms.length,
+      data: platforms
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
