@@ -1,21 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const {getProfiles, addProfile, updateProfile, deleteAccount} = require('../../controllers/profileController');
+const {getProfiles, addProfile, updateProfile, deleteAccount, getProfile} = require('../../controllers/profileController');
 
 router
   .route('/')
   .get(getProfiles);
 
 router
-    .route('/add')
-    .post(addProfile);
+  .route('/profile')
+  .post(addProfile);
 
 router
-  .route('/add/:id')
-  .put(updateProfile);
-
-router
-  .route('/:id')
-  .delete( deleteAccount);
+  .route('/profile/:id')
+  .get(getProfile)
+  .put(updateProfile)
+  .delete(deleteAccount);
 
 module.exports = router;

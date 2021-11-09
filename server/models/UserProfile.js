@@ -45,7 +45,7 @@ const UserProfileSchema = new Schema({
         required: true
     },
     maxExp: {
-        type: String,
+        type: Number,
         required: true
     },
     achievements: {
