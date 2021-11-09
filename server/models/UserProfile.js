@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 // TODO: may have some add-ons
 const UserProfileSchema = new Schema({
     userId: {
-        type: Number,
+        type: ObjectId,
         required: true
     },
     accountStatus: {
@@ -49,19 +49,19 @@ const UserProfileSchema = new Schema({
         required: true
     },
     achievements: {
-        type: [String],
+        type: [ObjectId],
         required: true
     },
     quizzes: {
-        type: [String],
+        type: [ObjectId],
         required: true
     },
     subscribedUser: {
-        type: [String],
+        type: [ObjectId],
         required: true
     },
     subscribedPlat: {
-        type: [String],
+        type: [ObjectId],
         required: true
     },
 });
