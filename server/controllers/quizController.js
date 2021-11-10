@@ -99,7 +99,6 @@ exports.deleteQuiz = async (req, res, next) => {
         msg: 'No quiz found'
       });
     }
-
     await quiz.remove();
 
     return res.status(200).json({

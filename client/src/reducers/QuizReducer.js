@@ -27,7 +27,6 @@ export default function QuizReducer (state, action) {
         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
       }
     case ADD_QUIZ:
-      console.log("Inside ADD_QUIZ, : ", action.payload);
       return {
         ...state,
         quiz: action.payload

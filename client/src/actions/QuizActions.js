@@ -47,7 +47,7 @@ export const addQuiz = (dispatch, quiz) => async () =>{
 
 export const deleteQuiz = (dispatch, id) => async () => {
   try {
-    await axios.delete(`/api/quizzes/${id}`);
+    await axios.delete(`/api/quizzes/edit/${id}`);
 
     dispatch({
       type: DELETE_QUIZ,

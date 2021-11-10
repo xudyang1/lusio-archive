@@ -1,9 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/AuthState";
 import { QuizzesContext } from "../../context/QuizState";
-import EditQuizPage from '../../components/editquizpage/EditQuizPage';
-import { Redirect } from "react-router-dom";
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 
@@ -12,7 +9,6 @@ import "materialize-css/dist/css/materialize.min.css";
 export const CreateQuizButton = () => {
     const {isAuthenticated, user } = useContext(AuthContext);
     const { addQuiz } = useContext(QuizzesContext);
-    const history = useHistory();
 
     const handleCreate = async e => {
         e.preventDefault();
@@ -30,7 +26,6 @@ export const CreateQuizButton = () => {
         .then((responseData) => {
             console.log(responseData);
             return responseData.quiz.id;
-            //history.push(`/edit/` + responseData.quiz.id);
         })
         */
         const getID = () => {

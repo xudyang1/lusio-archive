@@ -1,12 +1,15 @@
-import React, {Component, useState, useEffect} from 'react';
-import '../../css/frontpage.css';
-import { updateQuiz, deleteQuiz } from '../../actions/QuizActions';
+import React, {useContext, useState, useEffect} from 'react';
+import { useRouteMatch } from "react-router-dom";
+import { QuizzesContext } from "../../context/QuizState";
+import M from 'materialize-css';
+import "materialize-css/dist/css/materialize.min.css";
 
 
 export default function EditQuizPage(){
-    
+    const { updateQuiz, deleteQuiz } = useContext(QuizzesContext);
     const [answerList, setAnswerList] = useState([{answer: ""}]);
     const [questionList, setQuestionList] = useState([{question: ""}]);
+    const quizId = useRouteMatch("/edit/:id");
 
     const handleAddAnswer = () => {
         setAnswerList([...answerList, { answer: "" }]);
@@ -24,7 +27,24 @@ export default function EditQuizPage(){
         if(list.length > 1){list.splice(item, 1);}
         setQuestionList(list);
     }
+    const handleDelete = async e => {
+        e.preventDefault();
+        const id = quizId.params.id;
+        deleteQuiz(id);
+        document.location.href = "/";
+    }
+
+    useEffect(() => {
+        var elem = document.querySelector('#editModal')
+        var options = {
+            preventScrolling: false,
+        };
+        M.Modal.init(elem, options);
+    })
+
+
         return(
+            
             <div className="row section" style={{padding: '35px'}}>                
                 <div className="col s6">
                     <div className="section input-field">Quiz Name
@@ -96,7 +116,18 @@ export default function EditQuizPage(){
                         <div className="col s4">
                             <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Save</a>
                             <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Publish</a>
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Delete</a>
+                            <a className="waves-effect waves-light btn-small red modal-trigger" href="#editModal" style={{margin: "5px"}}>
+                                Delete
+                            </a>
+                            <div id="editModal" className="modal">
+                                <div className="modal-content">
+                                    <h4>Will you really delete this quiz?</h4>
+                                </div>
+                                <div className="modal-footer">
+                                    <a onClick={handleDelete} className="modal-close waves-effect waves-green btn-flat red">Yes</a>
+                                    <a className="modal-close waves-effect waves-green btn-flat">No</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
             </div>

@@ -77,7 +77,7 @@ export const QuizzesProvider = ({ children }) => {
 
   async function deleteQuiz(id) {
     try {
-      await axios.delete(`/api/quizzes/${id}`);
+      await axios.delete(`/api/quizzes/edit/${id}`);
 
       dispatch({
         type: DELETE_QUIZ,
