@@ -1,7 +1,16 @@
 import React, { createContext, useReducer } from 'react';
 import { ProfileReducer } from '../reducers/ProfileReducer';
-import { PROFILES_LOADING, GET_PROFILES, ADD_PROFILE, DELETE_ACCOUNT, GET_ERRORS } from '../types/actionTypes';
+import {
+    PROFILES_LOADING,
+    GET_PROFILES,
+    GET_PROFILE,
+    ADD_PROFILE,
+    UPDATE_PROFILE,
+    DELETE_ACCOUNT,
+    GET_ERRORS
+} from '../types/actionTypes';
 import axios from 'axios';
+import { Axios } from 'axios';
 
 // Initial state
 const initialState = {
@@ -31,10 +40,10 @@ export const ProfileContext = createContext(initialState);
 export const ProfilesProvider = ({ children }) => {
     const [state, dispatch] = useReducer(ProfileReducer, initialState);
 
-    async function getProfiles(id) {
+    async function getProfiles() {
         try {
-            dispatch(setProfilesLoading());
-            const res = await axios.get(`/api/profiles/${id}`);
+            dispatch({ type: PROFILES_LOADING });
+            const res = await axios.get('/api/profiles');
             dispatch({
                 type: GET_PROFILES,
                 payload: res.data
@@ -48,35 +57,56 @@ export const ProfilesProvider = ({ children }) => {
             });
         }
     };
-    const setProfilesLoading = () => {
-        return {
-            type: PROFILES_LOADING
-        };
+
+    async function getProfile(id) {
+        try {
+            dispatch({ type: PROFILES_LOADING });
+            await axios.get(`/api/profiles/profile/${id}`);
+            dispatch({
+                type: GET_PROFILE,
+                payload: id
+            });
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS,
+                payload: { msg: err.response.data.msg, status: err.response.status }
+            });
+        }
     };
 
-    //TODO
-    // _____ ___  ___   ___  
-    // |_   _/ _ \|   \ / _ \ 
-    //   | || (_) | |) | (_) |
-    //   |_| \___/|___/ \___/
-
-    async function updateProfile(){
-
-    }
-
-    async function addProfile({ description, bannerURI, profileIconURI }) {
+    async function addProfile({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-
-        const body = JSON.stringify({ description, bannerURI, profileIconURI });
+        const body = JSON.stringify({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat });
         try {
-            const res = await axios.post('/api/profiles/add', body, config);
-
+            const res = await axios.post('http://localhost:5000/api/profiles/profile', body, config);
             dispatch({
                 type: ADD_PROFILE,
+                payload: res.data
+            });
+            // console.log("After adding profile, success, state: ", state);
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS,
+                payload: { msg: "", status: "" }
+            });
+        }
+    };
+
+    async function updateProfile({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat }, id) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const body = JSON.stringify({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat });
+        try {
+            const res = await axios.put(`/api/profiles/profile/${id}`, body, config);
+            dispatch({
+                type: UPDATE_PROFILE,
                 payload: res.data
             });
 
@@ -84,17 +114,14 @@ export const ProfilesProvider = ({ children }) => {
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
+                payload: { msg: "", status: 404 }
             });
         }
-    }
-
-
+    };
 
     async function deleteAccount(id) {
         try {
-            await axios.delete(`/api/profiles/${id}`);
-
+            await axios.delete(`/api/profiles/profile/${id}`);
             dispatch({
                 type: DELETE_ACCOUNT,
                 payload: id
@@ -105,14 +132,16 @@ export const ProfilesProvider = ({ children }) => {
                 payload: { msg: err.response.data.msg, status: err.response.status }
             });
         }
-    }
+    };
 
     return (<ProfileContext.Provider value={{
         getProfiles,
+        getProfile,
         addProfile,
+        updateProfile,
         deleteAccount,
         ...state
     }}>
         {children}
     </ProfileContext.Provider>);
-};
+}

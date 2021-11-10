@@ -1,5 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import AuthReducer from '../reducers/AuthReducer';
+import { createProfile } from './ProfileState';
 import { GET_ERRORS, CLEAR_ERRORS } from '../types/actionTypes';
 import {
     USER_LOADED,
@@ -95,10 +96,12 @@ export const AuthProvider = ({ children }) => {
 
         try {
             const res = await axios.post('/api/auth/register', body, config);
+            // console.log(res.data.user.id);
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data
             });
+            return res.data.user.id;
         }
         catch (err) {
             dispatch({
