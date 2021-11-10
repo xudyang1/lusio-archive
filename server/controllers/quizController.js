@@ -21,6 +21,22 @@ exports.getQuizzes = async (req, res, next) => {
   }
 }
 
+exports.getQuiz = async (req, res, next) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+
+    return res.status(200).json({
+      success: true,
+      data: quiz
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      msg: 'Server Error'
+    });
+  }
+}
+
 // TODO: modify this sample later 
 // @desc    Add quiz
 // @route   POST /api/quizzes
@@ -34,7 +50,8 @@ exports.addQuiz = async (req, res, next) => {
       likes: req.body.likes,
       created: req.body.created,
       EXP: req.body.EXP,
-      questions: req.body.questions
+      questions: req.body.questions,
+      answers: req.body.answers
     });
     const savedQuiz = await newQuiz.save();
     if (!savedQuiz) throw Error('Something went wrong saving the quiz');
@@ -47,7 +64,8 @@ exports.addQuiz = async (req, res, next) => {
         likes: savedQuiz.likes,
         created: savedQuiz.created,
         EXP: savedQuiz.EXP,
-        questions: savedQuiz.questions
+        questions: savedQuiz.questions,
+        answers: savedQuiz.answers
       }
     }); 
   } catch (e) {
@@ -64,7 +82,8 @@ exports.updateQuiz = async (req, res, next) => {
     likes: req.body.likes,
     created: req.body.created,
     EXP: req.body.EXP,
-    questions: req.body.questions
+    questions: req.body.questions,
+    answers: req.body.answers
   });
   try {
     res.status(200).json({

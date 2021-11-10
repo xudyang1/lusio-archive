@@ -31,6 +31,11 @@ export default function QuizReducer (state, action) {
         ...state,
         quiz: action.payload
       };
+    case UPDATE_QUIZ:
+      return {
+        ...state,
+        quiz: action.payload
+      }
     case DELETE_QUIZ:
       return {
         ...state,

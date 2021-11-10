@@ -3,14 +3,40 @@ import { useRouteMatch } from "react-router-dom";
 import { QuizzesContext } from "../../context/QuizState";
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
+import { UPDATE_PROFILE } from '../../types/actionTypes';
 
 
 export default function EditQuizPage(){
-    const { updateQuiz, deleteQuiz } = useContext(QuizzesContext);
+    const { getQuizzes ,updateQuiz, deleteQuiz } = useContext(QuizzesContext);
+    const [currentQuiz, setQuiz] = useState([]);
     const [answerList, setAnswerList] = useState([{answer: ""}]);
     const [questionList, setQuestionList] = useState([{question: ""}]);
+    
     const quizId = useRouteMatch("/edit/:id");
-
+    
+    const setCurrentQuiz = async e => {
+        const id = quizId.params.id;
+        const quizzes = () => {
+            return getQuizzes()
+            .then(function(result){
+                return result;
+                console.log("result is", result);
+            })
+        }
+        const quizL = await quizzes();
+        console.log("QuizList is ",quizL.data);
+        const quiz = quizL.data.filter(q => q._id === id);
+    
+        console.log("Quiz", quiz[0]);
+        setQuiz(quiz[0]);
+    }
+    const initiation = () => {
+        setCurrentQuiz();
+        //setQuestionList(currentQuiz.questions);
+        //setAnswerList(currentQuiz.answers);
+    }
+    
+    //updateQuiz({quizId: id, userId, name, description, likes, created, EXP, questions});
     const handleAddAnswer = () => {
         setAnswerList([...answerList, { answer: "" }]);
     }
@@ -33,7 +59,30 @@ export default function EditQuizPage(){
         deleteQuiz(id);
         document.location.href = "/";
     }
+    const nameHandler = (e) => {
+        currentQuiz.name = e.target.value;
+        console.log(currentQuiz);
+    }
+    const descriptionHandler = (e) => {
+        currentQuiz.description = e.target.value;
+        console.log(currentQuiz);
+    }
 
+    const handlePublish = async e => {
+        e.preventDefault();
+        console.log("current quiz: ", currentQuiz);
+        const publishQuiz = {
+            id: currentQuiz._id, 
+            userId: currentQuiz.userId,
+            name: currentQuiz.name,
+            description: currentQuiz.description,
+            likes: currentQuiz.likes,
+            created: currentQuiz.created,
+            EXP: currentQuiz.EXP,
+            questions: currentQuiz.questions,
+            answers: currentQuiz.answers}
+        updateQuiz(publishQuiz);
+    }
     useEffect(() => {
         var elem = document.querySelector('#editModal')
         var options = {
@@ -44,14 +93,14 @@ export default function EditQuizPage(){
 
 
         return(
-            
             <div className="row section" style={{padding: '35px'}}>                
+                <button onClick={initiation}>Retrieve Data</button>
                 <div className="col s6">
                     <div className="section input-field">Quiz Name
-                        <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" />
+                        <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" onChange={nameHandler} />
                     </div>
                     <div className="section input-field">Description
-                    <textarea id="textarea1" className="materialize-textarea" placeholder="This is about..."></textarea>
+                    <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" onChange={descriptionHandler}></textarea>
                     </div>
                 </div>
                 <div className="col s6" style={{paddingLeft: '100px', paddingTop: '30px'}}>
@@ -82,17 +131,17 @@ export default function EditQuizPage(){
                         </p>
                     </form>
                 </div>
-                {questionList.map((x) => {
+                {questionList.map((q) => {
                     return(
                         <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
                             <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" />
                             <div className="col s6" style={{padding: '20px'}}>
                                 <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleAddAnswer}><i className="material-icons">add</i></button>
                                 <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleAnswerRemove}><i className="material-icons">remove</i></button>
-                                {answerList.map((x) => {
+                                {answerList.map((a) => {
                                     return(
                                         <div className="text-box">
-                                            <input name="answer" placeholder="Answer choice" value={x.answer} />
+                                            <input name="answer" placeholder="Answer choice" />
                                         </div>
                                     )
                                 })}
@@ -115,7 +164,7 @@ export default function EditQuizPage(){
                         </div>
                         <div className="col s4">
                             <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Save</a>
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Publish</a>
+                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handlePublish}>Publish</a>
                             <a className="waves-effect waves-light btn-small red modal-trigger" href="#editModal" style={{margin: "5px"}}>
                                 Delete
                             </a>

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getQuizzes, addQuiz, deleteQuiz, updateQuiz} = require('../../controllers/quizController');
+const {getQuiz, getQuizzes, addQuiz, deleteQuiz, updateQuiz} = require('../../controllers/quizController');
 
 router
   .route('/')
@@ -12,6 +12,7 @@ router
 
 router
   .route('/edit/:id')
+  .get(getQuiz)
   .put(updateQuiz)
   .delete(deleteQuiz);
 

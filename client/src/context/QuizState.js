@@ -22,7 +22,8 @@ const initialState = {
     likes: 0,
     created: "",
     EXP: 0,
-    questions:[]
+    questions:[],
+    answers: []
   },
   error: null,
   loading: true
@@ -42,7 +43,26 @@ export const QuizzesProvider = ({ children }) => {
         type: GET_QUIZZES,
         payload: res.data
       });
-      // console.log("return: ", res.data.data);
+      console.log("quizzes are : ", res.data);
+      return res.data;
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: GET_ERRORS,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      });
+    }
+  };
+  async function getQuiz(id) {
+    try {
+      dispatch(setQuizzesLoading());
+      const res = await axios.get(`http://localhost:5000/api/quizzes/edit/${id}`);
+      dispatch({
+        type: GET_QUIZ,
+        payload: id
+      });
+      console.log("quiz is : ", res.data);
+      return res.data;
     } catch (err) {
       console.error(err);
       dispatch({
@@ -52,13 +72,13 @@ export const QuizzesProvider = ({ children }) => {
     }
   };
   
-  async function addQuiz({userId, name, description, likes, created, EXP, questions}) {
+  async function addQuiz({userId, name, description, likes, created, EXP, questions, answers}) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
-    const body = JSON.stringify({userId, name, description, likes, created, EXP, questions});
+    const body = JSON.stringify({userId, name, description, likes, created, EXP, questions, answers});
     try {
       const res = await axios.post('/api/quizzes/edit', body, config);
 
@@ -75,6 +95,27 @@ export const QuizzesProvider = ({ children }) => {
     }
   }
 
+  async function updateQuiz({id, userId, name, description, likes, created, EXP, questions, answers}) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const body = JSON.stringify({userId, name, description, likes, created, EXP, questions, answers});
+    try {
+      const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
+      dispatch({
+        type: UPDATE_QUIZ,
+        payload: res.data
+      });
+      console.log("After adding quiz, success, state: ", res.data);
+    } catch (err) {
+      dispatch({
+        type: GET_ERRORS,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      });
+    }
+  };
   async function deleteQuiz(id) {
     try {
       await axios.delete(`/api/quizzes/edit/${id}`);
@@ -100,7 +141,9 @@ export const QuizzesProvider = ({ children }) => {
     error: state.error,
     loading: state.loading,
     getQuizzes,
+    getQuiz,
     addQuiz,
+    updateQuiz,
     deleteQuiz
   }}>
     {children}

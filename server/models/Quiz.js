@@ -30,6 +30,10 @@ const QuizSchema = new Schema({
     questions: {
         type: [String],
         required: [true]
+    },
+    answers: {
+        type: [String],
+        required: [true]
     }
 });
 
