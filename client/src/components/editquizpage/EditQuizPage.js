@@ -1,8 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
 import '../../css/frontpage.css';
-import { addQuiz, deleteQuiz } from '../../actions/QuizActions';
+import { updateQuiz, deleteQuiz } from '../../actions/QuizActions';
 
-import sampleQuiz from '../../sampleData/sampleQuiz';
 
 export default function EditQuizPage(){
     

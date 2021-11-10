@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PlatformSections from "./PlatformSections";
 import DailyChallengeSection from "./DailyChallengeSection";
+import {CreateQuizButton} from "../editquizpage/CreateQuizButton";
 import 'materialize-css';
 import '../../css/frontpage.css'
 
@@ -26,6 +27,7 @@ class HomeContent extends Component{
                 </div>
                 <div className="col s3">
                     <DailyChallengeSection/>
+                    <CreateQuizButton/>
                 </div>
             </div>
         )

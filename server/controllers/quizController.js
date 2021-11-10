@@ -27,28 +27,60 @@ exports.getQuizzes = async (req, res, next) => {
 // @access  Public
 exports.addQuiz = async (req, res, next) => {
   try {
-    const { name } = req.body;
-
-    const quiz = await Quiz.create(req.body);
-  
-    return res.status(201).json({
-      success: true,
-      data: quiz
+    const newQuiz = new Quiz({
+      userId: req.body.userId,
+      name: req.body.name,
+      description: req.body.description,
+      likes: req.body.likes,
+      created: req.body.created,
+      EXP: req.body.EXP,
+      questions: req.body.questions
+    });
+    const savedQuiz = await newQuiz.save();
+    if (!savedQuiz) throw Error('Something went wrong saving the quiz');
+    res.status(200).json({
+      quiz: {
+        id: savedQuiz.id,
+        userId: savedQuiz.userId,
+        name: savedQuiz.name,
+        description: savedQuiz.description,
+        likes: savedQuiz.likes,
+        created: savedQuiz.created,
+        EXP: savedQuiz.EXP,
+        questions: savedQuiz.questions
+      }
     }); 
-  } catch (err) {
-    if(err.name === 'ValidationError') {
-      const messages = Object.values(err.errors).map(val => val.message);
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
+}
 
-      return res.status(400).json({
-        success: false,
-        msg: messages
-      });
-    } else {
-      return res.status(500).json({
-        success: false,
-        msg: 'Server Error'
-      });
+exports.updateQuiz = async (req, res, next) => {
+  const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
+    userId: req.body.userId,
+    name: req.body.name,
+    description: req.body.description,
+    likes: req.body.likes,
+    created: req.body.created,
+    EXP: req.body.EXP,
+    questions: req.body.questions
+  });
+  try {
+    res.status(200).json({
+      success: true,
+      msg: "Quiz updated"
+  });
+    if (!quiz) {
+        return res.status(404).json({
+            success: false,
+            msg: 'No quiz found'
+        });
     }
+  } catch (err) {
+      return res.status(500).json({
+          success: false,
+          msg: 'Server Error'
+      });
   }
 }
 

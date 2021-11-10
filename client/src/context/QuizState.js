@@ -1,11 +1,29 @@
 import React, { createContext, useReducer } from 'react';
-import { QuizReducer } from '../reducers/QuizReducer';
-import { QUIZZES_LOADING, GET_QUIZZES, ADD_QUIZ, DELETE_QUIZ, GET_ERRORS } from '../types/actionTypes';
+import QuizReducer from '../reducers/QuizReducer';
+import { 
+  QUIZZES_LOADING, 
+  GET_QUIZZES, 
+  GET_QUIZ,
+  UPDATE_QUIZ,
+  ADD_QUIZ, 
+  DELETE_QUIZ, 
+  GET_ERRORS 
+} from '../types/actionTypes';
 import axios from 'axios';
 
 // Initial state
 const initialState = {
   quizzes: [],
+  quiz: {
+    id: "",
+    userId: "",
+    name: "",
+    description: "",
+    likes: 0,
+    created: "",
+    EXP: 0,
+    questions:[]
+  },
   error: null,
   loading: true
 };
@@ -22,7 +40,7 @@ export const QuizzesProvider = ({ children }) => {
       const res = await axios.get('/api/quizzes');
       dispatch({
         type: GET_QUIZZES,
-        payload: res.data.data
+        payload: res.data
       });
       // console.log("return: ", res.data.data);
     } catch (err) {
@@ -33,26 +51,22 @@ export const QuizzesProvider = ({ children }) => {
       });
     }
   };
-  const setQuizzesLoading = () => {
-    return {
-      type: QUIZZES_LOADING
-    };
-  };
-
-  async function addQuiz(quiz) {
+  
+  async function addQuiz({userId, name, description, likes, created, EXP, questions}) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
-
+    const body = JSON.stringify({userId, name, description, likes, created, EXP, questions});
     try {
-      const res = await axios.post('/api/quizzes', quiz, config);
+      const res = await axios.post('/api/quizzes/edit', body, config);
 
       dispatch({
         type: ADD_QUIZ,
-        payload: res.data.data
+        payload: res.data
       });
+      return res.data.quiz.id;
     } catch (err) {
       dispatch({
         type: GET_ERRORS,
@@ -76,7 +90,11 @@ export const QuizzesProvider = ({ children }) => {
       });
     }
   }
-
+  const setQuizzesLoading = () => {
+    return {
+      type: QUIZZES_LOADING
+    };
+  };
   return (<QuizzesContext.Provider value={{
     quizzes: state.quizzes,
     error: state.error,

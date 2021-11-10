@@ -1,4 +1,4 @@
-import { QUIZZES_LOADING, GET_QUIZZES, ADD_QUIZ, DELETE_QUIZ } from '../types/actionTypes';
+import { QUIZZES_LOADING, GET_QUIZZES, GET_QUIZ, UPDATE_QUIZ, ADD_QUIZ, DELETE_QUIZ } from '../types/actionTypes';
 import axios from 'axios';
 import { returnErrors } from './ErrorActions';
 
@@ -17,7 +17,7 @@ export const getQuizzes = (dispatch) => async () => {
     // console.log("dispatch"+dispatch);
     dispatch({
       type: GET_QUIZZES,
-      payload: res.data.data
+      payload: res.data
     });
   } catch (err) {
     console.error(err);
@@ -33,11 +33,12 @@ export const addQuiz = (dispatch, quiz) => async () =>{
   };
 
   try {
-    const res = await axios.post('/api/quizzes', quiz, config);
+    const body = JSON.stringify(quiz);
+    const res = await axios.post('/api/quizzes', body, config);
 
     dispatch({
       type: ADD_QUIZ,
-      payload: res.data.data
+      payload: res.data
     });
   } catch (err) {
     dispatch(returnErrors(err.response.data.error));

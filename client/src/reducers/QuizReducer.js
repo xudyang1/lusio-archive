@@ -1,6 +1,13 @@
-import { GET_QUIZZES, QUIZZES_LOADING, ADD_QUIZ, DELETE_QUIZ, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
+import { GET_QUIZZES, 
+  GET_QUIZ,
+  QUIZZES_LOADING, 
+  ADD_QUIZ, 
+  DELETE_QUIZ, 
+  UPDATE_QUIZ,
+  GET_ERRORS, 
+  CLEAR_ERRORS } from "../types/actionTypes";
 
-export const QuizReducer = (state, action) => {
+export default function QuizReducer (state, action) {
   switch (action.type) {
     case QUIZZES_LOADING:
       return {
@@ -13,15 +20,27 @@ export const QuizReducer = (state, action) => {
         loading: false,
         quizzes: action.payload
       };
-    case ADD_QUIZ:
+    case GET_QUIZ:
       return {
         ...state,
-        transactions: [...state.quizzes, action.payload]
+        loading: false,
+        quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
+      }
+    case ADD_QUIZ:
+      console.log("Inside ADD_QUIZ, : ", action.payload);
+      return {
+        ...state,
+        quiz: action.payload
       };
     case DELETE_QUIZ:
       return {
         ...state,
         quiz: state.quizzes.filter(quiz => quiz._id !== action.payload)
+      };
+    case UPDATE_QUIZ:
+      return {
+        ...state,
+        transactions: [...state.quizzes, action.payload]
       };
     case GET_ERRORS:
       return {

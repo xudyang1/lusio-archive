@@ -1,20 +1,35 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// a sample quiz schema
-// TODO: modify this sample later
+// may modify this sample later
 const QuizSchema = new Schema({
+    userId: {
+        type: String,
+        required: [true]
+    },
     name: {
         type: String,
-        required: [true, 'Please add a name']
+        default: ""
     },
     description: {
         type: String,
-        required: [true, 'Please add a description']
+        default: ""
     },
-    date: {
+    likes: {
+        type: Number,
+        required: [true]
+    },
+    created: {
         type: Date,
         default: Date.now
+    },
+    EXP: {
+        type: Number,
+        required: [true]
+    },
+    questions: {
+        type: [String],
+        required: [true]
     }
 });
 

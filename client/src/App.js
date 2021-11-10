@@ -18,13 +18,15 @@ function App() {
     <AuthProvider>
       <AppNavbar />
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/search/:key" component={SearchPage} />
         <ProfilesProvider>
+          <QuizzesProvider>
+            <Route exact path="/" component={HomePage} />
+          </QuizzesProvider>
+          <Route path="/search/:key" component={SearchPage} />
+          <Route path="/edit/:id" component={EditQuizPage} />
           <Route path="/profile/:id" component={ProfilePage} />
         </ProfilesProvider>
         <Route path="/platform/:id" component={PlatformPage} />
-        <Route path="/edit/:id" component={EditQuizPage} />
       </Switch>
     </AuthProvider>
   );
