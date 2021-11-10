@@ -62,14 +62,14 @@ export default function EditQuizPage(){
                         </p>
                     </form>
                 </div>
-                {questionList.map((x, i) => {
+                {questionList.map((x) => {
                     return(
                         <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
                             <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" />
                             <div className="col s6" style={{padding: '20px'}}>
                                 <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleAddAnswer}><i className="material-icons">add</i></button>
                                 <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleAnswerRemove}><i className="material-icons">remove</i></button>
-                                {answerList.map((x, i) => {
+                                {answerList.map((x) => {
                                     return(
                                         <div className="text-box">
                                             <input name="answer" placeholder="Answer choice" value={x.answer} />

@@ -40,7 +40,8 @@ export const CreateQuizButton = () => {
             })
         }
         const id = await getID();
-        return id;
+        document.location.href = "/edit/" + id;
+        //return id;
     }
 
     useEffect(() => {
@@ -63,7 +64,7 @@ export const CreateQuizButton = () => {
                         <h4>Would you like to create a new quiz?</h4>
                     </div>
                     <div className="modal-footer">
-                        <a href={"/edit/" + handleCreate} className="modal-close waves-effect waves-green btn-flat">CREATE</a>
+                        <a onClick={handleCreate} className="modal-close waves-effect waves-green btn-flat">CREATE</a>
                     </div>
                 </div>) :
                 (<div>

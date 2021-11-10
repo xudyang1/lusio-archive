@@ -21,9 +21,9 @@ function App() {
         <ProfilesProvider>
           <QuizzesProvider>
             <Route exact path="/" component={HomePage} />
+            <Route path="/edit/:id" component={EditQuizPage} />
           </QuizzesProvider>
           <Route path="/search/:key" component={SearchPage} />
-          <Route path="/edit/:id" component={EditQuizPage} />
           <Route path="/profile/:id" component={ProfilePage} />
         </ProfilesProvider>
         <Route path="/platform/:id" component={PlatformPage} />

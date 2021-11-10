@@ -57,6 +57,7 @@ exports.addQuiz = async (req, res, next) => {
 
 exports.updateQuiz = async (req, res, next) => {
   const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
+    id: req.body.id,
     userId: req.body.userId,
     name: req.body.name,
     description: req.body.description,
