@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { register, login, getUser } = require('../../controllers/authController');
-const auth = require('../../middleware/auth');
+const {strictAuth} = require('../../middleware/auth');
 
 /**
  * @desc  Register new user
@@ -29,6 +29,16 @@ router
  */
 router
     .route('/user')
-    .get(auth, getUser);
+    .get(strictAuth, getUser);
+
+/**
+ * @desc  Get user account data
+ * @route GET api/auth/user
+ * @access Private
+ * @middleware auth: authentication check
+ */
+ router
+ .route('/user/delete')
+ .delete(strictAuth, deleteUser);
 
 module.exports = router;

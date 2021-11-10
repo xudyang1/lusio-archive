@@ -1,14 +1,16 @@
-
-
 const UserProfile = require('../models/UserProfile');
-// TODO: modify this sample later 
-// @desc    Get all platforms
-// @route   GET /api/platforms
-// @access  Public
 
-exports.getProfiles = async (req, res, next) => {
+/**
+ * TODO: 
+ * @desc  Get a profile for view
+ * @route GET api/platform
+ * @access  Public/Private
+ * @detail  View other user profile: send only guest info;
+ *          View own profile: send additional owner info
+ */
+exports.getProfile = async (req, res, next) => {
     try {
-        const profiles = await UserProfile.find();
+        const profile = await UserProfile.find();
 
         return res.status(200).json({
             success: true,
@@ -23,23 +25,28 @@ exports.getProfiles = async (req, res, next) => {
     }
 }
 
-exports.getProfile = async (req, res, next) => {
-    try {
-        const profile = await UserProfile.findById(req.params.id);
+// exports.getProfile = async (req, res, next) => {
+//     try {
+//         const profile = await UserProfile.findById(req.params.id);
 
-        return res.status(200).json({
-            success: true,
-            data: profile
-        });
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            msg: 'Server Error'
-        });
-    }
-}
-
-exports.addProfile = async (req, res, next) => {
+//         return res.status(200).json({
+//             success: true,
+//             data: profile
+//         });
+//     } catch (err) {
+//         return res.status(500).json({
+//             success: false,
+//             msg: 'Server Error'
+//         });
+//     }
+// }
+/**
+ * TODO: 
+ * @desc  Create a default profile when first registeration
+ * @route POST api/profile
+ * @access  Private
+ */
+exports.createDefaultProfile = async (req, res, next) => {
     const newProfile = new UserProfile({
         userId: req.body.userId,
         accountStatus: req.body.accountStatus,
@@ -94,7 +101,12 @@ exports.addProfile = async (req, res, next) => {
     }
 }
 
-
+/**
+ * TODO: 
+ * @desc  Update the profile for the owner
+ * @route PUT api/profile/:id
+ * @access  Private
+ */
 exports.updateProfile = async (req, res, next) => {
   const profile = await UserProfile.findByIdAndUpdate(req.params.id,{
     id: req.body.id,
@@ -132,28 +144,29 @@ exports.updateProfile = async (req, res, next) => {
   }
 }
 
-exports.deleteAccount = async (req, res, next) => {
-    try {
-        const profile = await UserProfile.findById(req.params.id);
+// This part should be in authController.js
+// exports.deleteAccount = async (req, res, next) => {
+//     try {
+//         const profile = await UserProfile.findById(req.params.id);
 
-        if (!profile) {
-            return res.status(404).json({
-                success: false,
-                msg: 'No user profile found'
-            });
-        }
+//         if (!profile) {
+//             return res.status(404).json({
+//                 success: false,
+//                 msg: 'No user profile found'
+//             });
+//         }
 
-        await profile.remove();
+//         await profile.remove();
 
-        return res.status(200).json({
-            success: true,
-            data: {}
-        });
+//         return res.status(200).json({
+//             success: true,
+//             data: {}
+//         });
 
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            msg: 'Server Error'
-        });
-    }
-}
+//     } catch (err) {
+//         return res.status(500).json({
+//             success: false,
+//             msg: 'Server Error'
+//         });
+//     }
+// }
