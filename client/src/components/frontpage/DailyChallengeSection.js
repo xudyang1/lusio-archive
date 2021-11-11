@@ -10,7 +10,7 @@ class DailyChallengeSection extends Component{
                 <div className="col s12">
                     <div className="row z-depth-3">
                         <h4>Daily Challenge</h4>
-                        <QuizCards/>
+                        <QuizCards key={1} id={1} name={"Awesome Daily Challenge"} desc={"featured quiz of the day, take a challenge now, I dare you"}/>
                         <h4>Scoreboard</h4>
                     </div>
                 </div>

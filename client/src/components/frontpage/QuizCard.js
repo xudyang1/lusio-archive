@@ -8,11 +8,11 @@ class QuizCards extends Component{
             <div>
                 <div className="card blue-grey darken-1">
                     <div className="card-content white-text">
-                    <span className="card-title truncate">{this.props.name}</span>
+                    <span className="card-title truncate center">{this.props.name}</span>
                     <p>{this.props.desc}</p>
                     </div>
                     <div className="card-action">
-                    <a href="#">Play</a>
+                    <a href="#" style={{margin: "auto"}}>Play</a>
                     </div>
                 </div>
             </div>

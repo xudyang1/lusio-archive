@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, createRef, useEffect, useState } from "react";
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCardWraper from "./QuizCardWraper";
@@ -63,17 +63,19 @@ export default function GeneralSections(props) {
     var name = props.name ? props.name : "SectionName"
     var type = props.type ? props.type : "quiz"
 
-    useEffect(() => {
-        const options = {
-            numVisible: 8,
-            dist: -50,
-            padding: 100,
-            indicators: true,
-            shift: 100,
-        }
-        var elems = document.querySelectorAll('.carousel');
-        var instances = M.Carousel.init(elems, options);
-    })
+    const SectionTitle = createRef();
+
+    // useEffect(() => {
+    //     const options = {
+    //         numVisible: 8,
+    //         dist: -50,
+    //         padding: 100,
+    //         indicators: true,
+    //         shift: 100,
+    //     }
+    //     var elems = document.querySelectorAll('.carousel');
+    //     var instances = M.Carousel.init(elems, options);
+    // })
 
     // useEffect(() => {
     //     console.log(state)
@@ -121,17 +123,19 @@ export default function GeneralSections(props) {
         console.log(page)
         if (page > 0)
             setState(page - 3)
+        SectionTitle.current.scrollIntoView()
     }
 
     const pageDown = (e) => {
         console.log(page)
         if (page < items.length)
             setState(page + 3)
+        SectionTitle.current.scrollIntoView()
     }
 
     return (
         <div>
-            <div className="row z-depth-3">
+            <div className="row z-depth-3" ref={SectionTitle}>
 
                 <div>
                     <h4>{name}</h4>
