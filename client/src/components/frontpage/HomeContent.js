@@ -1,6 +1,7 @@
 import React, { Component, useContext, useEffect } from "react";
 //import PlatformSections from "./PlatformSections";
 import DailyChallengeSection from "./DailyChallengeSection";
+import {CreateQuizButton} from "../editquizpage/CreateQuizButton";
 import 'materialize-css';
 import '../../css/frontpage.css'
 import GeneralSections from "../common/GeneralSections";
@@ -11,14 +12,15 @@ import { GlobalContext } from "../../context/GlobalState";
 export default function HomeContent() {
     var tempPlatform = ["MoMA", "Motion Pictures", "NASA", "NYC Dept of Edu", "ABCD"];
     const { platforms, dailyChallenge, getPlatforms } = useContext(GlobalContext)
-
+    
     useEffect(() => {
         getPlatforms();
     })
-
+  
     return (
         <div>
             <DailyChallengeSection/>
+            <CreateQuizButton/>
             <div className="container">
                 {
                     // replace tempPlatform with platforms when finished

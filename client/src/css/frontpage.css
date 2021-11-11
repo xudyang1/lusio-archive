@@ -21,6 +21,32 @@
   background-color: darkgrey;
 }
 
+.container {
+  outline: 2px solid darkgrey;
+}
+.quiz {
+  font-size: 30px;
+  font-weight: bolder;
+}
+.question {
+  font-size: large;
+  font-weight: 300;
+  font-weight: bold;
+}
+.qpoints {
+  padding-left: 600px;
+}
+.likeicon:hover {
+  color: darkgrey;
+}
+#timer {
+  width: 20%;
+  height: 30px;
+}
+
+/* div.dailyChallenge{
+    position: fixed;
+
 .GSection{
     overflow-x: scroll;
     overflow-y: hidden;

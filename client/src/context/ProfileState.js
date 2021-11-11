@@ -74,41 +74,58 @@ export const ProfilesProvider = ({ children }) => {
         }
     };
 
-    async function addProfile({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat }) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        const body = JSON.stringify({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat });
-        try {
-            const res = await axios.post('http://localhost:5000/api/profiles/profile', body, config);
-            dispatch({
-                type: ADD_PROFILE,
-                payload: res.data
-            });
-            // console.log("After adding profile, success, state: ", state);
-        } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: "", status: "" }
-            });
-        }
+// <<<<<<< Dajung
+  async function updateProfile({id, userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat}) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
 
-    async function updateProfile({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat }, id) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        const body = JSON.stringify({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat });
-        try {
-            const res = await axios.put(`/api/profiles/profile/${id}`, body, config);
-            dispatch({
-                type: UPDATE_PROFILE,
-                payload: res.data
-            });
+    const body = JSON.stringify({userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat});
+    try {
+      const res = await axios.put(`/api/profiles/profile/${id}`, body, config);
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data
+      });
+// =======
+//     async function addProfile({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat }) {
+//         const config = {
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         };
+//         const body = JSON.stringify({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat });
+//         try {
+//             const res = await axios.post('http://localhost:5000/api/profiles/profile', body, config);
+//             dispatch({
+//                 type: ADD_PROFILE,
+//                 payload: res.data
+//             });
+//             // console.log("After adding profile, success, state: ", state);
+//         } catch (err) {
+//             dispatch({
+//                 type: GET_ERRORS,
+//                 payload: { msg: "", status: "" }
+//             });
+//         }
+//     };
+
+//     async function updateProfile({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat }, id) {
+//         const config = {
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         }
+//         const body = JSON.stringify({ userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat });
+//         try {
+//             const res = await axios.put(`/api/profiles/profile/${id}`, body, config);
+//             dispatch({
+//                 type: UPDATE_PROFILE,
+//                 payload: res.data
+//             });
+// >>>>>>> main
 
             // console.log("After adding profile, success, state: ", state);
         } catch (err) {

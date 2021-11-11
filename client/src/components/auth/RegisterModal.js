@@ -57,7 +57,6 @@ export const RegisterModal = () => {
         const user = { name: state.name, email: state.email, password: state.password };
         // console.log("register attempt, data", user);
         // attempt to register
-        //const id = register(user);
         const printid = () => {
             return (register(user))
             .then(function(res) {

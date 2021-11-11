@@ -3,6 +3,8 @@ export const QUIZZES_LOADING = 'QUIZZES_LOADING';
 export const GET_QUIZZES = 'GET_QUIZZES';
 export const ADD_QUIZ = 'ADD_QUIZ';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
+export const UPDATE_QUIZ = 'UPDATE_QUIZ';
+export const GET_QUIZ = 'GET_QUIZ';
 // platform
 export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
 export const GET_PLATFORMS = 'GET_PLATFORMS';
