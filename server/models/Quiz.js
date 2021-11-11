@@ -50,6 +50,10 @@ const QuizSchema = new Schema({
     answers: {
         type: [String],
         required: [true]
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -106,6 +106,29 @@ export default function EditQuizPage(){
     const handleSave = async e => {
         e.preventDefault();
         console.log("current quiz: ", currentQuiz);
+        const saveQuiz = {
+            id: currentQuiz._id, 
+            userId: currentQuiz.userId,
+            name: currentQuiz.name,
+            description: currentQuiz.description,
+            timed: currentQuiz.timed, 
+            retake: currentQuiz.retake, 
+            showQuestion: currentQuiz.showQuestion, 
+            showAnswer: currentQuiz.showAnswer,
+            likes: currentQuiz.likes,
+            created: currentQuiz.created,
+            EXP: currentQuiz.EXP,
+            questions: currentQuiz.questions,
+            answers: currentQuiz.answers,
+            isPublished: currentQuiz.isPublished
+        }
+        updateQuiz(saveQuiz);
+    }
+    const handlePublish = (e) => {
+        e.preventDefault();
+        currentQuiz.isPublished = true;
+        
+        console.log("current quiz: ", currentQuiz);
         const publishQuiz = {
             id: currentQuiz._id, 
             userId: currentQuiz.userId,
@@ -119,9 +142,12 @@ export default function EditQuizPage(){
             created: currentQuiz.created,
             EXP: currentQuiz.EXP,
             questions: currentQuiz.questions,
-            answers: currentQuiz.answers}
+            answers: currentQuiz.answers,
+            isPublished: currentQuiz.isPublished
+        }
         updateQuiz(publishQuiz);
     }
+
     useEffect(() => {
         var elem = document.querySelector('#editModal')
         var options = {
@@ -129,8 +155,6 @@ export default function EditQuizPage(){
         };
         M.Modal.init(elem, options);
     })
-
-
         return(
             <div className="row section" style={{padding: '35px'}}>                
                 <button onClick={initiation}>Retrieve Data</button>
@@ -203,7 +227,7 @@ export default function EditQuizPage(){
                         </div>
                         <div className="col s4">
                             <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handleSave}>Save</a>
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} >Publish</a>
+                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handlePublish}>Publish</a>
                             <a className="waves-effect waves-light btn-small red modal-trigger" href="#editModal" style={{margin: "5px"}}>
                                 Delete
                             </a>
