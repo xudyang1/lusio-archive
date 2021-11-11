@@ -21,10 +21,27 @@
   background-color: darkgrey;
 }
 
-.carousel .carousel-item {
+.GSection{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    justify-content: center;
+}
+.GSection::-webkit-scrollbar {
+    display: none;
+}
+.GSection-Cards{
+    width: 300px;
+    display: inline-block;
+    padding: 20px;
+}
+
+
+/* .carousel .carousel-item {
     opacity: 1 !important;
     width:300px !important;
-}
+} */
 
 /* a[disabled="true"] {
     pointer-events: none;

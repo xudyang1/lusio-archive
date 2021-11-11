@@ -6,13 +6,13 @@ import QuizCards from "../frontpage/QuizCard";
 import "../../css/frontpage.css"
 import M from 'materialize-css';
 
-function getCards(t, index, element) {
+function getCards(t, index, element, options) {
     console.log("called getCards with type: ", t)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="carousel-item" key={index}><AchievementCard key={index} id={index} name={element[0]} desc={element[1]} /></div>
+            return <div className="GSection-Cards center" key={index} id={options + index}><AchievementCard key={index} id={index} name={element[0]} desc={element[1]} /></div>
         case QUIZ_CARD:
-            return <div className="carousel-item" key={index}><QuizCards key={index} id={index} name={element[0]} desc={element[1]} /></div>
+            return <div className="GSection-Cards center" key={index} id={options + index}><QuizCards key={index} id={index} name={element[0]} desc={element[1]} /></div>
         case SUB_PLAT_CARD:
             break;
         case SUB_USER_CARD:
@@ -55,13 +55,15 @@ export default function GeneralSections(props) {
 
     // const [state, setState] = useState(initialState);
 
+    const [page, setState] = useState(0);
+
     const items = props.items ? props.items :
         [["Quiz1", "Description for Q1"], ["Quiz2", "Something Something"], ["Quiz3", "No Description"], ["Quiz4", "No Description"], ["Quiz5", "No Description"], ["Quiz6", "No Description"], ["Quiz7", "No Description"], ["Quiz8", "No Description"], ["Quiz9", "No Description"], ["Quiz10", "No Description"]]
 
     var name = props.name ? props.name : "SectionName"
     var type = props.type ? props.type : "quiz"
 
-    useEffect(()=>{
+    useEffect(() => {
         const options = {
             numVisible: 8,
             dist: -50,
@@ -115,9 +117,22 @@ export default function GeneralSections(props) {
 
     // }
 
+    const pageUp = (e) => {
+        console.log(page)
+        if (page > 0)
+            setState(page - 3)
+    }
+
+    const pageDown = (e) => {
+        console.log(page)
+        if (page < items.length)
+            setState(page + 3)
+    }
+
     return (
         <div>
             <div className="row z-depth-3">
+
                 <div>
                     <h4>{name}</h4>
                     <a>more{">"}{">"}</a>
@@ -128,16 +143,18 @@ export default function GeneralSections(props) {
                     <div className="right" onClick={pageDown}><a href="#!"><i className="material-icons">chevron_right</i></a></div>
                 </div>
                 {getSectionPage()} */}
-                <div className="carousel center" style={{height: "300px"}}>
-                    {
-                        items.map((element, index) => (
-                            getCards(type, index, element)
-                        ))
-                    }
-                    <div className="carousel-fixed-item center">
-                        <button className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></button>
-                        <button className=""><a href="#!"><i className="material-icons">chevron_right</i></a></button>
+                <div className="valign-wrapper">
+                    <a className="left" href={"#" + name + page} onClick={pageUp}><i className="material-icons">chevron_left</i></a>
+                    <div className="GSection anchor">
+                        {
+                            items.map((element, index) => (
+                                getCards(type, index, element, name)
+                            ))
+                        }
+
                     </div>
+
+                    <a className="right" href={"#" + name + page} onClick={pageDown}><i className="material-icons">chevron_right</i></a>
                 </div>
             </div>
         </div>
