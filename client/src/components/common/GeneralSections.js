@@ -6,13 +6,13 @@ import QuizCards from "../frontpage/QuizCard";
 import "../../css/frontpage.css"
 import M from 'materialize-css';
 
-function getCards(t, index, element, options) {
+function getCards(t, index, element) {
     console.log("called getCards with type: ", t)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={options + index}><AchievementCard key={index} id={index} name={element[0]} desc={element[1]} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={index} name={element[0]} desc={element[1]} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={options + index}><QuizCards key={index} id={index} name={element[0]} desc={element[1]} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={index} name={element[0]} desc={element[1]} /></div>
         case SUB_PLAT_CARD:
             break;
         case SUB_USER_CARD:
@@ -22,7 +22,6 @@ function getCards(t, index, element, options) {
 
 export default function GeneralSections(props) {
 
-    const [page, setState] = useState(0);
 
     const items = props.items ? props.items :
         [["Quiz1", "Description for Q1"], ["Quiz2", "Something Something"], ["Quiz3", "A loooooooooooooooooooooot of Stuff in description"], ["Quiz4", "No Description"], ["Quiz5", "No Description"], ["Quiz6", "No Description"], ["Quiz7", "No Description"], ["Quiz8", "No Description"], ["Quizteye6yuftjguykjuykghkiuhkiugkukg9", "No Description"], ["Quiz103894 037659023465", "No Description"]]
@@ -30,22 +29,14 @@ export default function GeneralSections(props) {
     var name = props.name ? props.name : "SectionName"
     var type = props.type ? props.type : "quiz"
 
-    const SectionTitle = createRef();
-
-    const clampNumber = (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
+    const Section = createRef();
 
     const pageUp = (e) => {
-        console.log(page)
-        if (page > 0)
-            setState(clampNumber(page - 2, 0, items.length-1))
-        //SectionTitle.current.scrollIntoView()
+        Section.current.scrollBy(-1000, 0)
     }
 
     const pageDown = (e) => {
-        console.log(page)
-        if (page < items.length)
-            setState(clampNumber(page + 2, 0, items.length-1))
-        //SectionTitle.current.scrollIntoView()
+        Section.current.scrollBy(1000, 0)
     }
 
     return (
@@ -54,18 +45,18 @@ export default function GeneralSections(props) {
                 <div style={{ margin: "10px" }}>
                     <div>
                         <h4>{name}</h4>
-                        <a href="">more{">"}{">"}</a>
+                        <a href={"/platform/"+props.id}>more{">"}{">"}</a>
                     </div>
                     <div className="valign-wrapper">
-                        <a className="left" href={"#" + name + page} onClick={pageUp}><i className="material-icons">chevron_left</i></a>
-                        <div className="GSection">
+                        <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>
+                        <div className="GSection" ref={Section}>
                             {
                                 items.map((element, index) => (
-                                    getCards(type, index, element, name)
+                                    getCards(type, index, element)
                                 ))
                             }
                         </div>
-                        <a className="right" href={"#" + name + page} onClick={pageDown}><i className="material-icons">chevron_right</i></a>
+                        <a className="right" onClick={pageDown}><i className="material-icons">chevron_right</i></a>
                     </div>
                 </div>
             </div>
