@@ -1,11 +1,13 @@
 import { Component, useContext, useState } from "react";
 import React from 'react';
 import { AuthContext } from "../../context/AuthState";
+import { ProfileContext } from "../../context/ProfileState";
 
 
 export default function AccountProfileButton() {
 
     const { user } = useContext(AuthContext);
+    const {userProfile, getProfiles} = useContext(ProfileContext)
 
     const s = {
         height: "50px",
@@ -17,7 +19,7 @@ export default function AccountProfileButton() {
     return (
         <div className="valign-wrapper">
             <a href={"/profile/" + user.id} style={s}>
-                <img className="circle" src="https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png" width='50px' height='50px' />
+                <img className="circle" src={userProfile.profileIcon? userProfile.profileIcon : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
             </a>
             {user.name}
         </div>

@@ -18,7 +18,7 @@ export const ProfileReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        profiles: action.payload
+        userProfile: action.payload
       };
     case GET_PROFILE:
       return {
@@ -35,12 +35,12 @@ export const ProfileReducer = (state, action) => {
     case UPDATE_PROFILE:
       return {
         ...state,
-        transactions: [...state.profiles, action.payload]
+        profile: action.payload
       };
     case DELETE_ACCOUNT:
       return {
         ...state,
-        profile: state.profiles.filter(profile => profile._id !== action.payload)
+        profile: state.userProfile.filter(userProfile => userProfile._id !== action.payload)
       };
     case GET_ERRORS:
       return {
