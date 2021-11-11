@@ -52,12 +52,8 @@ exports.softAuth = async (req, res, next) => {
         req.user = decoded;
         // profile
         if (req.params.profileId) {
-            // get Profile id for current viewer
-            const profile = await UserProfile.findOne({ owner: req.user.id }).select('_id');
-            const profileId = profile._id.toString();
-            console.log('profileId to string', profileId);
             // matched profileId: viewer is getting own profile
-            if (profileId === req.params.profileId) {
+            if (req.user.profile === req.params.profileId) {
                 req.viewType = OWNER_VIEW;
             }
         }
