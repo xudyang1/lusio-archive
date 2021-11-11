@@ -1,9 +1,6 @@
 import React, {useContext, useState, useEffect, Component} from 'react';
-import { useRouteMatch } from "react-router-dom";
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
-import {Modal} from 'react-responsive-modal';
-import { UPDATE_PROFILE } from '../../types/actionTypes';
 
 class EditQuizContent extends Component{
     static contextType = QuizzesContext;
@@ -24,13 +21,11 @@ class EditQuizContent extends Component{
             EXP: 0,
             questions:[],
             answers: [],
-            openModal: false
         };
     }
     
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
-            //const id = quizId.params.id;
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
@@ -61,25 +56,18 @@ class EditQuizContent extends Component{
             answers: quiz.answers
         });
     }
-    handleDelete = async (deleteQuiz) => {
-        deleteQuiz(this.id);
+
+    handleDelete = async e => {
+        e.preventDefault();
+        this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
-    }
-    onOpenModal = e => {
-        e.preventDefault();
-        this.setState({openModal: true});
-    }
-    onCloseModal = e => {
-        e.preventDefault();
-        this.setState({openModal: false});
     }
     componentDidMount(){
         const id = this.props.match.params.id;
-        const { getQuizzes ,updateQuiz } = this.context;
+        const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
     }
     render(){
-        const { updateQuiz, deleteQuiz } = this.context;
         //const [answerList, setAnswerList] = useState([{answer: ""}]);
         //const [questionList, setQuestionList] = useState([{question: ""}]);        
         
@@ -216,18 +204,9 @@ class EditQuizContent extends Component{
                             <div className="col s4">
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Save</a>
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} >Publish</a>
-                                <button className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.onOpenModal}>
+                                <button className="waves-effect waves-light btn-small red" style={{margin: "5px"}} onClick={this.handleDelete}>
                                     Delete
                                 </button>
-                                <Modal open={this.state.openModal}>
-                                    <div className="modal-content">
-                                        <h4>Will you really delete this quiz?</h4>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <a className="modal-close waves-effect waves-green btn-flat red" >Yes</a>
-                                        <a className="modal-close waves-effect waves-green btn-flat" onClick={this.onCloseModal}>No</a>
-                                    </div>
-                                </Modal>
                             </div>
                         </div>
                 </div>
