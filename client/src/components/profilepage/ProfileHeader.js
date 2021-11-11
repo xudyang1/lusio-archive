@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
+import { ProfileContext} from "../../context/ProfileState";
+
 import M from 'materialize-css';
 import '../../css/profilepage.css';
-import { ProfileContext} from "../../context/ProfileState";
+import axios from "axios";
 //TODO
 // _____ ___  ___   ___  
 // |_   _/ _ \|   \ / _ \ 
@@ -15,40 +17,44 @@ export default function ProfileHeader(props) {
     var elems = document.querySelectorAll('.parallax');
     var instances = M.Parallax.init(elems, {});
 
-    const {updateProfile} = useContext(ProfileContext);
-    //const {} = useContext(AuthContext);
-    //const { addProfile, deleteAccount } = useContext(ProfileContext);
-    // const initialState = {
-    //     description: "write down your description here",
-    //     bannerURI: "https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg",
-    //     profileIconURI: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png"
-    // };
-    // const [state, setState] = useState(initialState);
-
-    // useEffect(()=>{
-
-    // })
+    const { isAuthenticated, user } = useContext(AuthContext);
+    const { updateProfile, deleteAccount } = useContext(ProfileContext);
+    {/* user.id to be used */}
+    const initialState = {
+        userId: isAuthenticated ? user.id : "",
+        accountStatus: 0,
+        name: isAuthenticated ? user.name : "",
+        email: isAuthenticated ? user.email : "",
+        description:"write down your description here",
+        profileIcon: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png",
+        profileBanner: "https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg",
+        level: 0,
+        currentExp: 0,
+        maxExp: 0,
+        achievements: [""],
+        quizzes: [""],
+        subscribedUser: [""],
+        subscribedPlat: [""]  
+    };
+    const [state, setState] = useState(initialState);
 
     const onChangeBanner = (e) => {
-        // if (e.target.files && e.target.files[0]) {
-        //     let img = e.target.files[0];
-        //     setState({bannerURI : URL.createObjectURL(img)});
-        // }
+        if (e.target.files && e.target.files[0]) {
+            let img = e.target.files[0];
+            setState({profileBanner : URL.createObjectURL(img)});
+        }
     }
     const onChangeDescription = (e) => {
         // setState({ ...state, description : e.target.value });
     }
     const onSubmit = (e) => {
-        // e.preventDefault();
-        // const { description, bannerURI, profileIconURI } = state;
-        // const userProfile = { description, bannerURI, profileIconURI };
-
-        // addProfile(userProfile);
+        e.preventDefault();
+        const { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat} = state;
+        const userProfile = { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat };
+        updateProfile(userProfile);
     }
-    const onDelete = () => {
-        // const { description, bannerURI, profileIconURI } = state;
-        // const userProfile = { description, bannerURI, profileIconURI };
-
+    const onDelete = (e) => {
+        e.preventDefault();
         //deleteAccount(userProfile);
     }
 
@@ -57,12 +63,20 @@ export default function ProfileHeader(props) {
             <h2 className="center">HOME</h2>
             <div className="parallax-container">
                 <div className="parallax">
-                    <img src={props.banner? props.banner : "https://i.pinimg.com/originals/56/3a/db/563adbeb015fb165c4145a28a6c2e4c8.jpg"}/>
+                    <img src={state.profileBanner}/>
                 </div>
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner} />
 
-            <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={props.description} size="30" onChange={onChangeDescription} />
+            <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />
+
+            <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
+                Finish Edit
+                <i className="material-icons prefix" ></i>
+            </button>
+            <button color="dark" style={{ marginTop: '2rem' }} onClick={onDelete}>
+                Delete Account
+            </button> 
         </div>
     )
 }

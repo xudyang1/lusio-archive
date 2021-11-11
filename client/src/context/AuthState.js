@@ -95,10 +95,12 @@ export const AuthProvider = ({ children }) => {
 
         try {
             const res = await axios.post('/api/auth/register', body, config);
+            // console.log(res.data.user.id);
             dispatch({
                 type: REGISTER_SUCCESS,
                 payload: res.data
             });
+            return res.data.user.id;
         }
         catch (err) {
             dispatch({

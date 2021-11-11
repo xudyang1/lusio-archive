@@ -1,4 +1,11 @@
-import { ADD_PROFILE, GET_PROFILES, PROFILES_LOADING, DELETE_ACCOUNT, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
+import { ADD_PROFILE, 
+  GET_PROFILES, 
+  GET_PROFILE, 
+  UPDATE_PROFILE, 
+  PROFILES_LOADING, 
+  DELETE_ACCOUNT, 
+  GET_ERRORS, 
+  CLEAR_ERRORS } from "../types/actionTypes";
 
 export const ProfileReducer = (state, action) => {
   switch (action.type) {
@@ -13,10 +20,22 @@ export const ProfileReducer = (state, action) => {
         loading: false,
         userProfile: action.payload
       };
+    case GET_PROFILE:
+      return {
+        ...state,
+        loading: false,
+        profile: state.profiles.filter(profile => profile._id === action.payload)
+      };
     case ADD_PROFILE:
       return {
         ...state,
-        transactions: [...state.userProfile, action.payload]
+        loading: false,
+        profile: action.payload
+      };
+    case UPDATE_PROFILE:
+      return {
+        ...state,
+        profile: action.payload
       };
     case DELETE_ACCOUNT:
       return {
@@ -36,4 +55,4 @@ export const ProfileReducer = (state, action) => {
     default:
       return state;
   }
-};
+}

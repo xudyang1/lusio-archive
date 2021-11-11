@@ -29,10 +29,15 @@ QuestionSchema.path('choices').validate(function (value) {
     }
 });
 
+
 const QuizSchema = new Schema({
+    userId: {
+        type: String,
+        required: [true]
+    },
     name: {
         type: String,
-        required: [true, 'Please add a name']
+        default: ""
     },
     author: { type: Schema.Types.ObjectId, required: [true, 'Please add an author'] },
     description: { type: String, required: [true, 'Please add a description'] },

@@ -21,6 +21,60 @@
   background-color: darkgrey;
 }
 
-/* div.dailyChallenge{
-    position: fixed;
+/* .container {
+  outline: 2px solid darkgrey;
+} */
+.quiz {
+  font-size: 30px;
+  font-weight: bolder;
+}
+.question {
+  font-size: large;
+  font-weight: 300;
+  font-weight: bold;
+}
+.qpoints {
+  padding-left: 600px;
+}
+.likeicon:hover {
+  color: darkgrey;
+}
+#timer {
+  width: 20%;
+  height: 30px;
+}
+
+.GSection{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    justify-content: center;
+}
+.GSection::-webkit-scrollbar {
+    display: none;
+}
+.GSection-Cards{
+    width: 332px;
+    display: inline-block;
+    padding: 20px;
+}
+
+.cardText{
+    white-space: break-spaces;
+    height: 300px;
+}
+
+
+/* .carousel .carousel-item {
+    opacity: 1 !important;
+    width:300px !important;
+} */
+
+/* a[disabled="true"] {
+    pointer-events: none;
+    visibility: hidden;
+}
+a[disabled="false"] {
+    visibility: visible;
 } */
