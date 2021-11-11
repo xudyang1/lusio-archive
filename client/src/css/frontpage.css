@@ -21,6 +21,15 @@
   background-color: darkgrey;
 }
 
-/* div.dailyChallenge{
-    position: fixed;
+.carousel .carousel-item {
+    opacity: 1 !important;
+    width:300px !important;
+}
+
+/* a[disabled="true"] {
+    pointer-events: none;
+    visibility: hidden;
+}
+a[disabled="false"] {
+    visibility: visible;
 } */

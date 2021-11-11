@@ -12,8 +12,7 @@ class QuizCards extends Component{
                     <p>{this.props.desc}</p>
                     </div>
                     <div className="card-action">
-                    <a href="#">This is a link</a>
-                    <a href="#">This is a link</a>
+                    <a href="#">Play</a>
                     </div>
                 </div>
             </div>

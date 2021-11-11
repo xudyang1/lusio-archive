@@ -11,6 +11,7 @@ import { ProfileContext } from '../../context/ProfileState';
 import GeneralSections from '../common/GeneralSections';
 import { ACHIEVEMENT_CARD, QUIZ_CARD } from '../../types/cardTypes';
 
+import M from 'materialize-css';
 
 const s = {
     display: "flex",
@@ -31,6 +32,19 @@ export default function ProfilePage() {
         //console.log(user.id, id)
     }, [])
 
+    // useEffect(()=>{
+    //     const options = {
+    //         numVisible: 8,
+    //         dist: -50,
+    //         padding: 100,
+    //         indicators: true,
+    //         shift: 100,
+    //     }
+    //     var elems = document.querySelectorAll('.carousel');
+    //     var instances = M.Carousel.init(elems, options);
+    // })
+
+    
     return (
         <div className='row'>
             {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI={userProfile.profileIcon} leve={userProfile.level}/> : <div/>}
