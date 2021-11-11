@@ -39,6 +39,8 @@ export default function EditQuizPage(){
     //updateQuiz({quizId: id, userId, name, description, likes, created, EXP, questions});
     const handleAddAnswer = () => {
         setAnswerList([...answerList, { answer: "" }]);
+        currentQuiz.answers = [...currentQuiz.answers, ""];
+
     }
     const handleAnswerRemove = item => {
         const list = [...answerList];
@@ -47,6 +49,7 @@ export default function EditQuizPage(){
     }
     const handleAddQuestion = () => {
         setQuestionList([...questionList, { question: "" }]);
+        currentQuiz.questions = [...currentQuiz.questions, ""];
     }
     const handleQuestionRemove = item => {
         const list = [...questionList];
@@ -67,8 +70,40 @@ export default function EditQuizPage(){
         currentQuiz.description = e.target.value;
         console.log(currentQuiz);
     }
-
-    const handlePublish = async e => {
+    const questionHandler = (e) => {
+        const l = currentQuiz.questions.length;
+        if (l != 1 ){
+            currentQuiz.questions[l-1] = e.target.value;
+        }
+        else{
+            currentQuiz.questions[0] = e.target.value;
+        }
+        
+        console.log(currentQuiz.questions);
+    }
+    const answerHandler = (e) => {
+        const l = currentQuiz.answers.length;
+        if (l != 1 ){
+            currentQuiz.answers[l-1] = e.target.value;
+        }
+        else{
+            currentQuiz.answers[0] = e.target.value;
+        }
+        console.log(currentQuiz.answers);
+    }
+    const timedHandler = () => {
+        currentQuiz.timed = !currentQuiz.timed;
+    }
+    const retakeHandler = () => {
+        currentQuiz.retake = !currentQuiz.retake;
+    }
+    const showQHandler = () => {
+        currentQuiz.showQuestion = !currentQuiz.showQuestion;
+    }
+    const showAHandler = () => {
+        currentQuiz.showAnswer = !currentQuiz.showAnswer;
+    }
+    const handleSave = async e => {
         e.preventDefault();
         console.log("current quiz: ", currentQuiz);
         const publishQuiz = {
@@ -76,6 +111,10 @@ export default function EditQuizPage(){
             userId: currentQuiz.userId,
             name: currentQuiz.name,
             description: currentQuiz.description,
+            timed: currentQuiz.timed, 
+            retake: currentQuiz.retake, 
+            showQuestion: currentQuiz.showQuestion, 
+            showAnswer: currentQuiz.showAnswer,
             likes: currentQuiz.likes,
             created: currentQuiz.created,
             EXP: currentQuiz.EXP,
@@ -107,25 +146,25 @@ export default function EditQuizPage(){
                     <form action="#">
                         <p>
                             <label>
-                                <input type="checkbox" className="filled-in" />
+                                <input type="checkbox" className="filled-in" onClick={timedHandler} />
                                 <span>Timed quiz</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" className="filled-in" />
+                                <input type="checkbox" className="filled-in" onClick={retakeHandler}/>
                                 <span>Allow retake</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" className="filled-in" />
+                                <input type="checkbox" className="filled-in" onClick={showQHandler}/>
                                 <span>Show questions one at a time</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" className="filled-in" />
+                                <input type="checkbox" className="filled-in" onClick={showAHandler} />
                                 <span>Show answer after submission</span>
                             </label>
                         </p>
@@ -134,14 +173,14 @@ export default function EditQuizPage(){
                 {questionList.map((q) => {
                     return(
                         <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
-                            <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" />
+                            <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={questionHandler} />
                             <div className="col s6" style={{padding: '20px'}}>
                                 <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleAddAnswer}><i className="material-icons">add</i></button>
                                 <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleAnswerRemove}><i className="material-icons">remove</i></button>
                                 {answerList.map((a) => {
                                     return(
                                         <div className="text-box">
-                                            <input name="answer" placeholder="Answer choice" />
+                                            <input name="answer" placeholder="Answer choice" onChange={answerHandler} />
                                         </div>
                                     )
                                 })}
@@ -163,8 +202,8 @@ export default function EditQuizPage(){
                             <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleQuestionRemove}><i className="material-icons">remove</i></button>
                         </div>
                         <div className="col s4">
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Save</a>
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handlePublish}>Publish</a>
+                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handleSave}>Save</a>
+                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} >Publish</a>
                             <a className="waves-effect waves-light btn-small red modal-trigger" href="#editModal" style={{margin: "5px"}}>
                                 Delete
                             </a>

@@ -15,6 +15,22 @@ const QuizSchema = new Schema({
         type: String,
         default: ""
     },
+    timed: {
+        type: Boolean,
+        default: false
+    },
+    retake: {
+        type: Boolean,
+        default: false
+    },
+    showQuestion: {
+        type: Boolean,
+        default: false
+    },
+    showAnswer: {
+        type: Boolean,
+        default: false
+    },
     likes: {
         type: Number,
         required: [true]

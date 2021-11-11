@@ -35,7 +35,7 @@ export const ProfileReducer = (state, action) => {
     case UPDATE_PROFILE:
       return {
         ...state,
-        transactions: [...state.profiles, action.payload]
+        profile: action.payload
       };
     case DELETE_ACCOUNT:
       return {
