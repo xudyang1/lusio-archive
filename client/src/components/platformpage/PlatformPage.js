@@ -25,6 +25,7 @@ function parseSections(sections){
 }
 
 export default function PlatformPage(props){
+    console.log("called platform page")
     const {url, path } = useRouteMatch();
     const {id} = useParams();
 

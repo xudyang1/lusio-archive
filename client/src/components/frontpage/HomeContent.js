@@ -8,27 +8,24 @@ import { QUIZ_CARD } from "../../types/cardTypes";
 import { GlobalContext } from "../../context/GlobalState";
 
 
-export default function HomeContent(){
+export default function HomeContent() {
     var tempPlatform = ["MoMA", "Motion Pictures", "NASA", "NYC Dept of Edu", "ABCD"];
-    
-    const {platforms, dailyChallenge, getPlatforms} = useContext(GlobalContext)
+    const { platforms, dailyChallenge, getPlatforms } = useContext(GlobalContext)
 
-    useEffect(()=>{
+    useEffect(() => {
         getPlatforms();
     })
 
     return (
-        <div className="row">
-            <div className="col s9">
+        <div>
+            <DailyChallengeSection/>
+            <div className="container">
                 {
                     // replace tempPlatform with platforms when finished
                     tempPlatform.map((element, index) => (
-                        <GeneralSections key={index} name={element} type={QUIZ_CARD} options={index}/>
+                        <GeneralSections key={index} name={element} type={QUIZ_CARD} options={index} />
                     ))
                 }
-            </div>
-            <div className="col s3">
-                <DailyChallengeSection />
             </div>
         </div>
     )

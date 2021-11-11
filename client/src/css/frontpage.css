@@ -32,9 +32,14 @@
     display: none;
 }
 .GSection-Cards{
-    width: 300px;
+    width: 332px;
     display: inline-block;
     padding: 20px;
+}
+
+.cardText{
+    white-space: break-spaces;
+    height: 300px;
 }
 
 

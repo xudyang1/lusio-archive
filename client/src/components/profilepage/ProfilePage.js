@@ -5,7 +5,6 @@ import ProfileHeader from './ProfileHeader';
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 
-import '../../css/frontpage.css';
 import { useParams } from 'react-router';
 import { ProfileContext } from '../../context/ProfileState';
 import GeneralSections from '../common/GeneralSections';
@@ -46,7 +45,7 @@ export default function ProfilePage() {
 
     
     return (
-        <div className='row'>
+        <div>
             {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI={userProfile.profileIcon} leve={userProfile.level}/> : <div/>}
             <div className="container z-depth-3">
                 <ProfileHeader name={userProfile.name} description={userProfile.description} banner={userProfile.profileBanner}/>
