@@ -69,10 +69,12 @@ exports.softAuth = async (req, res, next) => {
             const ownerId = platform.owner.toString();
             const adminsId = platform.admins.map(id => id.toString());
 
+            
+
             // matched profileId: viewer is getting own profile
-            if (ownerId === req.user.id) {
+            if (ownerId === req.user.profile) {
                 req.viewType = OWNER_VIEW;
-            } else if (adminsId.includes(req.user.id)) {
+            } else if (adminsId.includes(req.user.profile)) {
                 req.viewType = ADMIN_VIEW;
             }
         }

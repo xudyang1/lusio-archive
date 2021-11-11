@@ -26,10 +26,10 @@ const PlatformSchema = new Schema({
     numSubscribers: { type: Number, default: 0 },
     quizSections: [{
         sectionName: { type: String },
-        sectionIndex: { type: Number, unique: true },
+        sectionIndex: { type: Number},
         sectionQuizzes: [{
             quiz: { type: Schema.Types.ObjectId, ref: 'Quiz' },
-            quizIndex: { type: Number, unique: true }
+            quizIndex: { type: Number}
         }],
     }],
 }, { timestamps: true });

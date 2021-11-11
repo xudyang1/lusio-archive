@@ -4,12 +4,14 @@ const {getPlatform, addPlatform, deletePlatform} = require('../../controllers/pl
 const { softAuth, strictAuth } = require('../../middleware/auth');
 
 router
-  .route('/:id')
+  .route('/platform/:platformId')
   .get(softAuth, getPlatform)
+  
+router.route('/platform/:platformId').delete(strictAuth, deletePlatform)
   // .patch(updatePlatform);
 
-// router
-//   .route('/:id')  
-//   .delete(deletePlatform);
+router
+  .route('/add')  
+  .post(strictAuth, addPlatform);
 
 module.exports = router;

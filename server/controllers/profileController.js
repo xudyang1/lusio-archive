@@ -11,17 +11,6 @@ const UserProfile = require('../models/UserProfile');
  */
 exports.getProfile = async (req, res, next) => {
     try {
-        var VIEW_TYPE = 'GUEST_VIEW';
-        // token verified, a logged user
-        if (req.user) {
-            // get Profile id for current viewer
-            const selected = await UserAccount.findById(req.user.id).select('profile');
-            const profileId = selected.profile.toString();
-            // matched profileId: viewer is getting own profile
-            if (profileId === req.params.profileId) {
-                VIEW_TYPE = 'OWNER_VIEW';
-            }
-        }
         // don't send owner id 
         const selectedProfile = await UserProfile.findById(req.params.profileId).select('-owner');
 
@@ -34,7 +23,7 @@ exports.getProfile = async (req, res, next) => {
         }
 
         return res.status(200).json({
-            type: VIEW_TYPE,
+            type: req.viewType,
             profile: selectedProfile
         });
     } catch (err) {
@@ -71,6 +60,14 @@ exports.getProfile = async (req, res, next) => {
 exports.updateProfile = async (req, res, next) => {
     try {
         // Note, to verify user id, use req.user.id rather than req.params.profileId
+        
+        if(!req.body.profile){
+            return res.status(400).json({
+                success: false,
+                msg: 'Invalid payload, nothing is updated'
+            });
+        }
+        
         // destructure
         const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
         const MODE = req.body.mode;
@@ -105,7 +102,7 @@ exports.updateProfile = async (req, res, next) => {
                 // non matched mode
                 return res.status(400).json({
                     success: false,
-                    msg: 'Invalid mode provided'
+                    msg: 'You must provide a valid mode'
                 });
         }
         // no valid content provided

@@ -24,19 +24,14 @@ exports.register = async (req, res, next) => {
 
     try {
         // simple validation
-        if (!name || !email || !password) {
-            throw Error('Please enter all fields!');
-        }
+        if (!name || !email || !password) { throw Error('Please enter all fields!'); }
         // check the existing user
         const user = await UserAccount.findOne({ email });
-        if (user) throw Error('User already exists');
-
+        if (user) { throw Error('User already exists'); }
         const salt = await bcrypt.genSalt(10);
-        if (!salt) throw Error('Something went wrong with bcrypt');
-
+        if (!salt) { throw Error('Something went wrong with bcrypt'); }
         const hash = await bcrypt.hash(password, salt);
-        if (!hash) throw Error('Something went wrong hashing the password');
-
+        if (!hash) { throw Error('Something went wrong hashing the password'); }
         const newUser = new UserAccount({
             name,
             email,
@@ -44,8 +39,7 @@ exports.register = async (req, res, next) => {
         });
 
         const savedUser = await newUser.save();
-        if (!savedUser) throw Error('Something went wrong saving the user');
-
+        if (!savedUser) { throw Error('Something went wrong saving the user'); }
         // set up default profile
         const profile = new UserProfile({
             owner: savedUser._id
@@ -55,12 +49,11 @@ exports.register = async (req, res, next) => {
         if (!savedProfile) throw Error('Something went wrong saving the default profile');
         // add profile id to user
         const updatedUser = await UserAccount.findByIdAndUpdate(savedUser._id,
-            { $set: { profile: savedProfile._id } }, {new: true});
-        console.log("updated user", updatedUser)
-        if (!updatedUser) throw Error('Something went wrong adding profile id to user account');
+            { $set: { profile: savedProfile._id } }, { new: true });
 
+        if (!updatedUser) { throw Error('Something went wrong adding profile id to user account'); }
         // generate token
-        const token = jwt.sign({ id: savedUser._id }, JWT_SECRET, {
+        const token = jwt.sign({ id: updatedUser._id, profile: updatedUser.profile }, JWT_SECRET, {
             // TODO: discuss about the expiry time
             expiresIn: 3600
         });
@@ -100,7 +93,7 @@ exports.login = async (req, res, next) => {
         if (!isMatch) throw Error('Invalid credentials');
 
         // TODO: discuss about the expiry time
-        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: 3600 });
+        const token = jwt.sign({ id: user._id, profile: user.profile }, JWT_SECRET, { expiresIn: 3600 });
 
         if (!token) throw Error('Could not sign the token');
 
