@@ -15,7 +15,7 @@ class QuizCards extends Component {
                         </div>
                     </div>
                     <div className="card-action">
-                        <a href="#" style={{ margin: "auto" }}>Play</a>
+                        <a href={"/quiz/"+this.props.id} style={{ margin: "auto" }}>Play</a>
                     </div>
                 </div>
             </div>

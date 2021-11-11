@@ -19,13 +19,13 @@ export default function HomeContent() {
   
     return (
         <div>
-            <DailyChallengeSection/>
             <CreateQuizButton/>
+            <DailyChallengeSection/>
             <div className="container">
                 {
                     // replace tempPlatform with platforms when finished
                     tempPlatform.map((element, index) => (
-                        <GeneralSections key={index} name={element} type={QUIZ_CARD} options={index} />
+                        <GeneralSections key={index} name={element} type={QUIZ_CARD} options={index} id={index}/>
                     ))
                 }
             </div>

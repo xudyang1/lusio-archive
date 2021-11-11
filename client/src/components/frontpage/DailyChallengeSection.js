@@ -32,7 +32,7 @@ export default function DailyChallengeSection() {
         //         </div>
         //     </div>
         // </div>
-        <div className="dailyChallenge center">
+        <div className="center">
             <ul id="slide-out" className="sidenav">
                 <div className="row z-depth-3">
                     <h4>Daily Challenge</h4>
