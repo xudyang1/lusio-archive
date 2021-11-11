@@ -59,7 +59,7 @@ class EditQuizContent extends Component{
 
     handleDelete = async e => {
         e.preventDefault();
-        this.context.deleteQuiz(this.state.id);
+        await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
     }
     componentDidMount(){
