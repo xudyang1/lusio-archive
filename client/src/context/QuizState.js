@@ -108,7 +108,7 @@ export const QuizzesProvider = ({ children }) => {
     };
     const body = JSON.stringify({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished});
     try {
-      const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
+      const res = await axios.put(`http://localhost:5000/api/quizzes/edit/${id}`, body, config);
       dispatch({
         type: UPDATE_QUIZ,
         payload: res.data
