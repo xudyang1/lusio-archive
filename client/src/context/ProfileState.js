@@ -4,7 +4,6 @@ import {
     PROFILES_LOADING,
     GET_PROFILES,
     GET_PROFILE,
-    ADD_PROFILE,
     UPDATE_PROFILE,
     DELETE_ACCOUNT,
     GET_ERRORS
@@ -154,7 +153,6 @@ export const ProfilesProvider = ({ children }) => {
     return (<ProfileContext.Provider value={{
         getProfiles,
         getProfile,
-        addProfile,
         updateProfile,
         deleteAccount,
         ...state

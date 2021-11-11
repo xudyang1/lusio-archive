@@ -11,6 +11,7 @@ import PlayQuizPage from './components/playquizpage/PlayQuizPage';
 import AppNavbar from './components/common/AppNavbar';
 import { AuthProvider } from './context/AuthState';
 import { ProfilesProvider } from './context/ProfileState';
+import { QuizzesProvider} from './context/QuizState';
 function App() {
   return (
     <AuthProvider>
