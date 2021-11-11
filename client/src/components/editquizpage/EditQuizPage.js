@@ -147,6 +147,29 @@ export default function EditQuizPage(){
         }
         updateQuiz(publishQuiz);
     }
+    const handleUnpublish = (e) => {
+        e.preventDefault();
+        currentQuiz.isPublished = false;
+        
+        console.log("quiz 'published' status: ", currentQuiz.isPublished);
+        const publishQuiz = {
+            id: currentQuiz._id, 
+            userId: currentQuiz.userId,
+            name: currentQuiz.name,
+            description: currentQuiz.description,
+            timed: currentQuiz.timed, 
+            retake: currentQuiz.retake, 
+            showQuestion: currentQuiz.showQuestion, 
+            showAnswer: currentQuiz.showAnswer,
+            likes: currentQuiz.likes,
+            created: currentQuiz.created,
+            EXP: currentQuiz.EXP,
+            questions: currentQuiz.questions,
+            answers: currentQuiz.answers,
+            isPublished: currentQuiz.isPublished
+        }
+        updateQuiz(publishQuiz);
+    }
 
     useEffect(() => {
         var elem = document.querySelector('#editModal')
@@ -226,8 +249,11 @@ export default function EditQuizPage(){
                             <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={handleQuestionRemove}><i className="material-icons">remove</i></button>
                         </div>
                         <div className="col s4">
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handleSave}>Save</a>
-                            <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handlePublish}>Publish</a>
+                            <div className="row">
+                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handleSave}>Save</a>
+                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handlePublish}>Publish</a>
+                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={handleUnpublish}>Unpublish</a>
+                            </div>
                             <a className="waves-effect waves-light btn-small red modal-trigger" href="#editModal" style={{margin: "5px"}}>
                                 Delete
                             </a>
