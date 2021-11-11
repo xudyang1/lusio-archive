@@ -7,6 +7,7 @@
             "quizName": "What is MoMA",
             "quizDesc": "This quiz is about MoMA",
             "quizLikes": 4,
+            "quizPlays": 100,
             "quizCreated": "2015-01-22",
             "quizEXP": 100,
             "quizQuestions" : [
