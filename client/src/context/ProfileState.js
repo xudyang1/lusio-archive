@@ -98,7 +98,7 @@ export const ProfilesProvider = ({ children }) => {
     }
   };
 
-  async function updateProfile({userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat}) {
+  async function updateProfile({id, userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat}) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -107,7 +107,7 @@ export const ProfilesProvider = ({ children }) => {
 
     const body = JSON.stringify({userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat});
     try {
-      const res = await axios.put(`/api/profiles/profile/${userId}`, body, config);
+      const res = await axios.put(`/api/profiles/profile/${id}`, body, config);
       dispatch({
         type: UPDATE_PROFILE,
         payload: res.data

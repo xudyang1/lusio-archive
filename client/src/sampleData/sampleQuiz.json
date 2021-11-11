@@ -1,7 +1,7 @@
 {
     "quizzes":[
         {
-            "quizID": 1,
+            "quizID": 0,
             "platformID": 1,
             "quizAuthor": 1,
             "quizName": "What is MoMA",
