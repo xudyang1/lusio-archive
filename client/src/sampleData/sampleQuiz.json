@@ -66,6 +66,71 @@
             ]
         },
         {
+            "quizID": 1,
+            "platformID": 1,
+            "quizAuthor": 1,
+            "quizName": "What is MoMA",
+            "quizDesc": "This quiz is about MoMA",
+            "quizLikes": 4,
+            "quizPlays": 100,
+            "quizCreated": "2015-01-22",
+            "quizEXP": 100,
+            "quizQuestions" : [
+                {
+                    "question": "What does MoMA stand for",
+                    "score": 10,
+                    "choices": [
+                        "Mother of Merry Adams",
+                        "Meusume of Modern Art",
+                        "Machines of Mondern Architecture",
+                        "Message-Oriented Middleware Association",
+                        "My Own Modular Architecture",
+                        "Ministry of Minority Affairs"
+                    ],
+                    "correctAnswer": 1
+                },
+                {
+                    "question": "Where is MoMA",
+                    "score": 10,
+                    "choices": [
+                        "7214 Victoria St. Waterbury, CT 06705",
+                        "771 Pheasant St. Rochester, NY 14606",
+                        "349 E. Hill Field Road Hickory, NC 28601",
+                        "203 Lake Forest Ave. North Augusta, SC 29841",
+                        "11 W 53rd St, New York, NY 10019"
+                    ],
+                    "correctAnswer": 4
+                },
+                {
+                    "question": "MoMA is Cool!",
+                    "score": 10,
+                    "choices": [
+                        "True",
+                        "False"
+                    ],
+                    "correctAnswer": 0
+                }
+            ],
+            "scoreboard":[
+                {
+                    "userID": 1,
+                    "score": 30
+                },
+                {
+                    "userID": 2,
+                    "score": 20
+                },
+                {
+                    "userID": 3,
+                    "score": 20
+                },
+                {
+                    "userID": 5,
+                    "score": 10
+                }
+            ]
+        },
+        {
             "quizID": 2,
             "platformID": 2,
             "quizAuthor": 0,
