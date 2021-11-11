@@ -55,7 +55,8 @@ exports.addQuiz = async (req, res, next) => {
       created: req.body.created,
       EXP: req.body.EXP,
       questions: req.body.questions,
-      answers: req.body.answers
+      answers: req.body.answers,
+      isPublished: req.body.isPublished
     });
     const savedQuiz = await newQuiz.save();
     if (!savedQuiz) throw Error('Something went wrong saving the quiz');
@@ -73,7 +74,8 @@ exports.addQuiz = async (req, res, next) => {
         created: savedQuiz.created,
         EXP: savedQuiz.EXP,
         questions: savedQuiz.questions,
-        answers: savedQuiz.answers
+        answers: savedQuiz.answers,
+        isPublished: savedQuiz.isPublished
       }
     }); 
   } catch (e) {
@@ -95,7 +97,8 @@ exports.updateQuiz = async (req, res, next) => {
     created: req.body.created,
     EXP: req.body.EXP,
     questions: req.body.questions,
-    answers: req.body.answers
+    answers: req.body.answers,
+    isPublished: req.body.isPublished
   });
   try {
     res.status(200).json({

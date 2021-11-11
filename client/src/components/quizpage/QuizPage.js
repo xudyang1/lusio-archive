@@ -53,55 +53,55 @@ export default function QuizPage(){
     }
     
     return(
-        <div class="container z-depth-3" >
-            <div class = "row">
-                <div class="col s7 push-s5">
+        <div className="container z-depth-3" >
+            <div className = "row">
+                <div className="col s7 push-s5">
                     <br/>
-                    <span class="flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
+                    <span className="flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
                         {name}
                     </span>
-                    <a class="waves-effect waves-light btn" style={{left: "150px"}}><i class="material-icons right">report</i>Report</a>
+                    <a className="waves-effect waves-light btn" style={{left: "150px"}}><i className="material-icons right">report</i>Report</a>
                     <br/> 
-                    <span class="flow-text">
+                    <span className="flow-text">
                         Platform {platformId}
                     </span><br/>
-                    <span class="flow-text">
+                    <span className="flow-text">
                         <div style={{fontSize:"15px"}}>Description: <br/></div>
                         {description}
                     </span>
                 </div>
-                <div class="col s5 pull-s7">
-                    <span class="flow-text">
+                <div className="col s5 pull-s7">
+                    <span className="flow-text">
                         <img src="https://www.moma.org/assets/visit/entrance-image--museum-crop-7516b01003659172f2d9dbc7a6c2e9d9.jpg" style={{width:"350px",height:"200px", paddingTop: "10px"}}></img>
                     </span> 
                 </div>
             </div>
-            <div class="row">
-                <div class="col s3">
+            <div className="row">
+                <div className="col s3">
                     Related Tags : wishlist
                 </div>
-                <div class="col s9">
-                    <div class="row" style={{paddingLeft:"250px"}}>
+                <div className="col s9">
+                    <div className="row" style={{paddingLeft:"250px"}}>
                         <span> 
                             {plays} plays
-                            <i class="material-icons likeicon" onClick={onClick}>thumb_up</i>
+                            <i className="material-icons likeicon" onClick={onClick}>thumb_up</i>
                             <span> {likes}</span>
                         </span>
                     </div>
                 </div>
             </div>      
             <hr></hr>
-            <div class="row" >
-                <div class="col s4">
+            <div className="row" >
+                <div className="col s4">
                 <table>
                     <tr>
                         <th bgcolor="lightgrey"></th>
                         <th bgcolor="lightgrey">Ranking</th>
                         <th bgcolor="lightgrey">Score</th>
                     </tr>
-                    {quizScoreboard.map((user)=> {
+                    {quizScoreboard.map((user, index)=> {
                         return(
-                            <tr>
+                            <tr key={index}>
                                 <td>{user.userID}</td>
                                 <td>User Name</td>
                                 <td>{user.score}</td>
@@ -110,27 +110,27 @@ export default function QuizPage(){
                     })}
                 </table>
                 </div>
-                <div class="col s8">
+                <div className="col s8">
                     
                     <div className="container">
-                        <div class="row" style={{textAlign: 'center', fontSize: "20px"}}>
-                            <div class="col s4"># OF QUESTIONS</div>
-                            <div class="col s4">TIMER SET</div>
-                            <div class="col s4">PERSONAL SCORE</div>
+                        <div className="row" style={{textAlign: 'center', fontSize: "20px"}}>
+                            <div className="col s4"># OF QUESTIONS</div>
+                            <div className="col s4">TIMER SET</div>
+                            <div className="col s4">PERSONAL SCORE</div>
                         </div>
-                        <div class="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
-                            <div class="col s4">{quizQs}</div>
-                            <div class="col s4">{timer}</div>
-                            <div class="col s4">N/A</div>
+                        <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
+                            <div className="col s4">{quizQs}</div>
+                            <div className="col s4">{timer}</div>
+                            <div className="col s4">N/A</div>
                         </div>
                     </div>
                     <br/>
-                    <div class="row" style={{maxWidth:"100%", maxHeight:"100%"}}>
-                        <div class= "col s8">
-                            <a class="waves-effect waves-light btn" style={{left:"230px"}} onClick={numPlayHandler}>Play Quiz</a>
+                    <div className="row" style={{maxWidth:"100%", maxHeight:"100%"}}>
+                        <div className= "col s8">
+                            <a href={"/play/"+id} className="waves-effect waves-light btn" style={{left:"230px"}} onClick={numPlayHandler}>Play Quiz</a>
                         </div>
-                        <div class= 'col s4'>
-                            <a class="waves-effect waves-light btn" >View Quiz Statistics</a>
+                        <div className= 'col s4'>
+                            <a className="waves-effect waves-light btn" >View Quiz Statistics</a>
                         </div>
                     </div>
                 </div>

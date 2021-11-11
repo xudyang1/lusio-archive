@@ -27,7 +27,8 @@ const initialState = {
     created: "",
     EXP: 0,
     questions:[],
-    answers: []
+    answers: [],
+    isPublished: false
   },
   error: null,
   loading: true
@@ -76,13 +77,13 @@ export const QuizzesProvider = ({ children }) => {
     }
   };
   
-  async function addQuiz({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers}) {
+  async function addQuiz({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished}) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
-    const body = JSON.stringify({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers});
+    const body = JSON.stringify({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished});
     try {
       const res = await axios.post('/api/quizzes/edit', body, config);
 
@@ -99,13 +100,13 @@ export const QuizzesProvider = ({ children }) => {
     }
   }
 
-  async function updateQuiz({id, userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers}) {
+  async function updateQuiz({id, userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished}) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
-    const body = JSON.stringify({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers});
+    const body = JSON.stringify({userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished});
     try {
       const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
       dispatch({

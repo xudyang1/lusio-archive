@@ -1,9 +1,5 @@
 import './css/App.css';
 import React, { useContext, useEffect } from 'react';
-import { QuizSections } from './components/QuizSections';
-import { QuizzesProvider } from './context/QuizState';
-import { GlobalProvider } from './context/GlobalState';
-import QuizCards from './components/frontpage/QuizCard';
 import { Link, Route, Switch } from "react-router-dom";
 import HomePage from './components/frontpage/HomePage';
 import SearchPage from './components/searchpage/SearchPage';
@@ -15,26 +11,25 @@ import PlayQuizPage from './components/playquizpage/PlayQuizPage';
 import AppNavbar from './components/common/AppNavbar';
 import { AuthProvider } from './context/AuthState';
 import { ProfilesProvider } from './context/ProfileState';
-function App() {
-  return (
-    <AuthProvider>
-      <AppNavbar />
-      <Switch>
-        <ProfilesProvider>
-          <QuizzesProvider>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/quiz/:id" component={QuizPage} />
-            <Route path="/edit/:id" component={EditQuizPage} />
-            <Route path="/play/:id" component={PlayQuizPage} />
-          </QuizzesProvider>
-          <Route path="/search/:key" component={SearchPage} />
-          <Route path="/profile/:id" component={ProfilePage} />
-        </ProfilesProvider>
-        <Route path="/platform/:id" component={PlatformPage} />
-      </Switch>
-    </AuthProvider>
-  );
+import { QuizzesProvider } from './context/QuizState';
 
+function App() {
+    return (
+        <AuthProvider>
+            <AppNavbar />
+            <ProfilesProvider>
+                <QuizzesProvider>
+                    <Route exact path="/" component={HomePage} />
+                    <Route path="/quiz/:id" component={QuizPage} />
+                    <Route path="/edit/:id" component={EditQuizPage} />
+                    <Route path="/play/:id" component={PlayQuizPage} />
+                </QuizzesProvider>
+                <Route path="/search/:key" component={SearchPage} />
+                <Route path="/profile/:id" component={ProfilePage} />
+            </ProfilesProvider>
+            <Route path="/platform/:id" component={PlatformPage} />
+        </AuthProvider>
+    );
 }
 
 export default App;

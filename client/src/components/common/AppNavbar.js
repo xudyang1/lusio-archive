@@ -23,7 +23,7 @@ const AppNavbar = () => {
     }
 
     return (
-        <div className="navbar-fixed">
+        <div className="">
             <nav>
                 <div className="nav-wrapper">
 

@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// may modify this sample later
+// <<<<<<< Dajung
+// // may modify this sample later
+// =======
+// // a sample quiz schema
+// // TODO: modify this sample later
+// const QuestionShema = new Schema({
+//     questionTitle: String,
+//     question_option_timed: Boolean,
+//     question_option_time: Number,
+//     question_option_retake: Boolean,
+//     choices:[String],
+//     correct: Number,
+//     score: Number
+// });
+
+// >>>>>>> main
 const QuizSchema = new Schema({
     userId: {
         type: String,
@@ -31,11 +46,18 @@ const QuizSchema = new Schema({
         type: Boolean,
         default: false
     },
+// <<<<<<< Dajung
     likes: {
         type: Number,
         required: [true]
     },
     created: {
+// =======
+//     likes: Number,
+//    author: String,
+//     quesitons: [QuestionShema],
+//     date: {
+// >>>>>>> main
         type: Date,
         default: Date.now
     },
@@ -50,6 +72,10 @@ const QuizSchema = new Schema({
     answers: {
         type: [String],
         required: [true]
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
     }
 });
 

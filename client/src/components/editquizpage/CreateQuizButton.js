@@ -13,7 +13,7 @@ export const CreateQuizButton = () => {
     const handleCreate = async e => {
         e.preventDefault();
 
-        const quiz = { userId: user.id, name: "Quiz Name", description: "Description", timed: false, retake: false, showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [""]};
+        const quiz = { userId: user.id, name: "Quiz Name", description: "Description", timed: false, retake: false, showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [""], isPublished: false};
         /*
         const res = await fetch('/api/quizzes/edit', {
             method: 'POST',
