@@ -5,7 +5,7 @@ import ProfilePage from './ProfilePage';
 import { AuthContext } from '../../context/AuthState';
 
 
-export default function ProfileSidebar() {
+export default function ProfileSidebar(props) {
     // constructor(props){
     //     super(props);
 
@@ -18,18 +18,6 @@ export default function ProfileSidebar() {
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems, {});
 
-    //     this.state={
-    //         profileIconURI: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png"
-    //     }
-
-    //   }
-
-    //   componentWillReceiveProps(nextProps){
-    //     if(this.props !== nextProps){
-    //         this.setState(nextProps)
-    //     }
-    //   }
-    // render(){
     return (
         <div>
             <ul id="slide-out" className="sidenav">
@@ -37,7 +25,7 @@ export default function ProfileSidebar() {
                     <div className="background">
                         {/* <img src="images/office.jpg"/> */}
                     </div>
-                    <a href="#user"><img className="circle" src="https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png" width='65%' height='300px' /></a>
+                    <a href="#user"><img className="circle" src={props.profileIconURI? props.profileIconURI : "https://static.thenounproject.com/png/363633-200.png"} width='65%' height='300px' /></a>
                     <a href="#name"><span className="name">{user.name}</span></a>
                     <a href="#email"><span className="email">{user.email}</span></a>
                 </div></li>
@@ -47,11 +35,6 @@ export default function ProfileSidebar() {
                 <li><a href="#!"><i className="material-icons">contact_page</i>Subscribed User</a></li>
                 <li><a href="#!"><i className="material-icons">subscriptions</i>Subscribed Platforms</a></li>
                 <li><a href="#!"><i className="material-icons">settings</i>Account Setting</a></li>
-                {/* <li><a href="#!"><i className="material-icons">cloud</i>First Link With Icon</a></li>
-                <li><a href="#!">Second Link</a></li>
-                <li><div className="divider"></div></li>
-                <li><a className="subheader">Subheader</a></li>
-                <li><a className="waves-effect" href="#!">Third Link With Waves</a></li> */}
             </ul>
             <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons" style={{position:'fixed', fontSize: '3em'}}>menu</i></a>
         </div>

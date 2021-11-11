@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
-import { ProfilesContext} from "../../context/ProfileState";
+import { ProfileContext} from "../../context/ProfileState";
 
 import M from 'materialize-css';
 import '../../css/profilepage.css';
@@ -18,7 +18,7 @@ export default function ProfileHeader(props) {
     var instances = M.Parallax.init(elems, {});
 
     const { isAuthenticated, user } = useContext(AuthContext);
-    const { updateProfile, deleteAccount } = useContext(ProfilesContext);
+    const { updateProfile, deleteAccount } = useContext(ProfileContext);
     {/* user.id to be used */}
     const initialState = {
         userId: isAuthenticated ? user.id : "",
@@ -38,7 +38,6 @@ export default function ProfileHeader(props) {
     };
     const [state, setState] = useState(initialState);
 
-    
     const onChangeBanner = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
@@ -46,7 +45,7 @@ export default function ProfileHeader(props) {
         }
     }
     const onChangeDescription = (e) => {
-        setState({ ...state, description : e.target.value });
+        // setState({ ...state, description : e.target.value });
     }
     const onSubmit = (e) => {
         e.preventDefault();
