@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const {getPlatforms, addPlatform, deletePlatform} = require('../../controllers/platformController');
+const {getPlatform, addPlatform, deletePlatform} = require('../../controllers/platformController');
+const { softAuth, strictAuth } = require('../../middleware/auth');
 
 router
-  .route('/')
-  .get(getPlatforms)
-  .post(addPlatform);
+  .route('/:id')
+  .get(softAuth, getPlatform)
+  // .patch(updatePlatform);
 
-router
-  .route('/:id')  
-  .delete(deletePlatform);
+// router
+//   .route('/:id')  
+//   .delete(deletePlatform);
 
 module.exports = router;

@@ -5,11 +5,11 @@ const Schema = mongoose.Schema;
 const PlatformSchema = new Schema({
     name: { type: String, required: [true, 'Please add a name'] },
     owner: {
-        type: Schema.Types.ObjectId, ref: 'UserAccount',
-        required: [true, 'Please add an owner']
+        type: Schema.Types.ObjectId, ref: 'UserProfile',
+        required: [true, 'Platform owner is missing']
     },
-    admins: [{ type: Schema.Types.ObjectId, ref: 'UserAccount' }],
-    subscribers: [{ type: Schema.Types.ObjectId, ref: 'UserAccount' }],
+    admins: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }],
+    subscribers: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }],
     description: { type: String, defualt: 'Default Platform Description' },
     bannerURI: {
         type: String,
@@ -21,12 +21,16 @@ const PlatformSchema = new Schema({
     },
     quizzes: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
     likes: { type: Number, default: 0 },
-    visits: { type: Number, default: 0 },
+    // TODO: might be difficult to implement
+    // visits: { type: Number, default: 0 },
     numSubscribers: { type: Number, default: 0 },
     quizSections: [{
         sectionName: { type: String },
-        displayIndex: { type: Number, unique: true },
-        sectionQuizzes: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+        sectionIndex: { type: Number, unique: true },
+        sectionQuizzes: [{
+            quiz: { type: Schema.Types.ObjectId, ref: 'Quiz' },
+            quizIndex: { type: Number, unique: true }
+        }],
     }],
 }, { timestamps: true });
 

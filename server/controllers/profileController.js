@@ -1,21 +1,41 @@
+const UserAccount = require('../models/UserAccount');
 const UserProfile = require('../models/UserProfile');
 
 /**
  * TODO: 
- * @desc  Get a profile for view
- * @route GET api/platform
- * @access  Public/Private
+ * @desc  Get a user's profile for view
+ * @route GET api/profiles/profile/:profileId
+ * @access  Public
  * @detail  View other user profile: send only guest info;
  *          View own profile: send additional owner info
  */
 exports.getProfile = async (req, res, next) => {
     try {
-        const profile = await UserProfile.find();
+        var VIEW_TYPE = 'GUEST_VIEW';
+        // token verified, a logged user
+        if (req.user) {
+            // get Profile id for current viewer
+            const selected = await UserAccount.findById(req.user.id).select('profile');
+            const profileId = selected.profile.toString();
+            // matched profileId: viewer is getting own profile
+            if (profileId === req.params.profileId) {
+                VIEW_TYPE = 'OWNER_VIEW';
+            }
+        }
+        // don't send owner id 
+        const selectedProfile = await UserProfile.findById(req.params.profileId).select('-owner');
+
+        console.log("profile doc: ", selectedProfile);
+        if (!selectedProfile) {
+            return res.status(404).json({
+                success: false,
+                msg: 'The profile does not exist.'
+            });
+        }
 
         return res.status(200).json({
-            success: true,
-            count: profiles.length,
-            data: profiles
+            type: VIEW_TYPE,
+            profile: selectedProfile
         });
     } catch (err) {
         return res.status(500).json({
@@ -23,150 +43,96 @@ exports.getProfile = async (req, res, next) => {
             msg: 'Server Error'
         });
     }
-}
-
-// exports.getProfile = async (req, res, next) => {
-//     try {
-//         const profile = await UserProfile.findById(req.params.id);
-
-//         return res.status(200).json({
-//             success: true,
-//             data: profile
-//         });
-//     } catch (err) {
-//         return res.status(500).json({
-//             success: false,
-//             msg: 'Server Error'
-//         });
-//     }
-// }
-/**
- * TODO: 
- * @desc  Create a default profile when first registeration
- * @route POST api/profile
- * @access  Private
- */
-exports.createDefaultProfile = async (req, res, next) => {
-    const newProfile = new UserProfile({
-        userId: req.body.userId,
-        accountStatus: req.body.accountStatus,
-        name: req.body.name,
-        email: req.body.email,
-        description: req.body.description,
-        profileIcon: req.body.profileIcon,
-        profileBanner: req.body.profileBanner,
-        level: req.body.level,
-        currentExp: req.body.currentExp,
-        maxExp: req.body.maxExp,
-        achievements: req.body.achievements,
-        quizzes: req.body.quizzes,
-        subscribedUser: req.body.subscribedUser,
-        subscribedPlat: req.body.subscribedPlat
-    });
-    try {
-        const savedProfile = await newProfile.save();
-        if (!savedProfile) throw Error('Something went wrong saving the user profile');
-        res.status(200).json({
-            userProfile: {
-                id: savedProfile.id,
-                userId: savedProfile.userId,
-                accountStatus: savedProfile.accountStatus,
-                name: savedProfile.name,
-                email: savedProfile.email,
-                description: savedProfile.description,
-                profileIcon: savedProfile.profileIcon,
-                profileBanner: savedProfile.profileBanner,
-                level: savedProfile.level,
-                currentExp: savedProfile.currentExp,
-                maxExp: savedProfile.maxExp,
-                achievements: savedProfile.achievements,
-                quizzes: savedProfile.quizzes,
-                subscribedUser: savedProfile.subscribedUser,
-                subscribedPlat: savedProfile.subscribedPlat
-            }
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return res.status(400).json({
-                success: false,
-                msg: messages
-            });
-        } else {
-            return res.status(500).json({
-                success: false,
-                msg: 'Server Error'
-            });
-        }
-    }
-}
+};
 
 /**
- * TODO: 
+ * TODO: might have some change
  * @desc  Update the profile for the owner
- * @route PUT api/profile/:id
+ * @route PATCH api/profiles/profile/edit/:profileId
  * @access  Private
+ * @detail  Client side can only send limited updated content:
+ *              edit existing: {description, iconURI, bannerURI}
+ *              add or delete: {platformsCreated, 
+ *                              quizzesCreated, 
+ *                              subscribedUsers,
+ *                              subscribedPlatforms, 
+ *                              fans}
+ * 
+ *              Other fields should not be updated here.
+ * 
+ * @payload req.body = 
+ *      { mode: "EDIT", profile: description | iconURI | bannerURI } 
+ *  Or
+ *      {
+ *        mode: "ADD" | "DELETE", 
+ *        profile: platformsCreated |quizzesCreated |subscribedUsers | subscribedPlatforms | fans
+ *      }
  */
 exports.updateProfile = async (req, res, next) => {
-  const profile = await UserProfile.findByIdAndUpdate(req.params.id,{
-    id: req.body.id,
-    userId: req.body.userId,
-    accountStatus: req.body.accountStatus,
-    name: req.body.name,
-    email: req.body.email,
-    description: req.body.description,
-    profileIcon: req.body.profileIcon,
-    profileBanner: req.body.profileBanner,
-    level: req.body.level,
-    currentExp: req.body.currentExp,
-    maxExp: req.body.maxExp,
-    achievements: req.body.achievements,
-    quizzes: req.body.quizzes,
-    subscribedUser: req.body.subscribedUser,
-    subscribedPlat: req.body.subscribedPlat
-    });
-  try {
-      res.status(200).json({
-        success: true,
-        msg: "User profile updated"
-    });
-      if (!profile) {
-          return res.status(404).json({
-              success: false,
-              msg: 'No user profile found'
-          });
-      }
-  } catch (err) {
-      return res.status(500).json({
-          success: false,
-          msg: 'Server Error'
-      });
-  }
-}
+    try {
+        // Note, to verify user id, use req.user.id rather than req.params.profileId
+        // destructure
+        const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
+        const MODE = req.body.mode;
 
-// This part should be in authController.js
-// exports.deleteAccount = async (req, res, next) => {
-//     try {
-//         const profile = await UserProfile.findById(req.params.id);
+        var provided = keys = updated = null;
 
-//         if (!profile) {
-//             return res.status(404).json({
-//                 success: false,
-//                 msg: 'No user profile found'
-//             });
-//         }
+        // get profile id
+        const userProfile = await UserAccount.findById(req.user.id).select('profile');
+        const profileId = userProfile.profile.toString();
+        // set options
+        const options = { runValidators: true, new: true };
 
-//         await profile.remove();
-
-//         return res.status(200).json({
-//             success: true,
-//             data: {}
-//         });
-
-//     } catch (err) {
-//         return res.status(500).json({
-//             success: false,
-//             msg: 'Server Error'
-//         });
-//     }
-// }
+        switch (MODE) {
+            case "EDIT":
+                provided = { description, iconURI, bannerURI };
+                keys = Object.keys(provided);
+                updated = await UserProfile.findByIdAndUpdate(profileId, provided, options).select(keys);
+                console.log("updated", updated);
+                break;
+            case "ADD":
+                provided = { platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans };
+                keys = Object.keys(provided);
+                console.log('$pushAll provided: ', provided)
+                updated = await UserProfile.findByIdAndUpdate(profileId, { $push: provided }, options).select(keys);
+                break;
+            case "DELETE":
+                provided = { platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans };
+                keys = Object.keys(provided);
+                updated = await UserProfile.findByIdAndUpdate(profileId, { $pullAll: provided }, options).select(keys);
+                break;
+            default:
+                // non matched mode
+                return res.status(400).json({
+                    success: false,
+                    msg: 'Invalid mode provided'
+                });
+        }
+        // no valid content provided
+        if (!provided || Object.keys(provided).length === 0) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Invalid content provided, nothing is updated'
+            });
+        }
+        // no query returned
+        else if (!updated) {
+            return res.status(400).json({
+                success: false,
+                msg: 'Unable to update the content'
+            });
+        }
+        // success
+        return res.status(200).json({
+            success: true,
+            mode: MODE,
+            content: updated
+        });
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+            success: false,
+            msg: 'Server Error'
+        });
+    }
+};

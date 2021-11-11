@@ -18,8 +18,7 @@ const QuestionSchema = new Schema({
         }
     }],
     answerKey: { type: Number, required: [true, 'Answer key must be provided'] },
-    score: { type: Number, default: 50 },
-    validate: [arrayLimit]
+    score: { type: Number, default: 50 }
 });
 // Validation for choices array size
 QuestionSchema.path('choices').validate(function (value) {
@@ -38,15 +37,18 @@ const QuizSchema = new Schema({
     author: { type: Schema.Types.ObjectId, required: [true, 'Please add an author'] },
     description: { type: String, required: [true, 'Please add a description'] },
     likes: { type: Number, default: 0 },
-    quesitons: [QuestionSchema]
+    quesitons: {
+        type: [QuestionSchema],
+        validate: [(val) => val.length<=50, 'No more than 50 questions allowed']
+    }
 }, { timestamps: true });
 // Validation for questions array size
-QuizSchema.path('questions').validate(function (value) {
-    console.log(value.length);
-    // TODO: discuss size limit
-    if (value.length > 50) {
-        throw new Error("No more than 50 quizzes allowed");
-    }
-});
+// QuizSchema.path('questions').validate(function (value) {
+//     console.log(value.length);
+//     // TODO: discuss size limit
+//     if (value.length > 50) {
+//         throw new Error("No more than 50 quizzes allowed");
+//     }
+// });
 
 module.exports = mongoose.model('Quiz', QuizSchema);

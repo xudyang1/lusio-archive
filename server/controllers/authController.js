@@ -1,17 +1,19 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Platform = require('../models/Platform');
 
 // User model
 const UserAccount = require('../models/UserAccount');
 const UserProfile = require('../models/UserProfile');
 const Platform = require('../models/Platform');
 const Quiz = require('../models/Quiz');
+
 // JWT key
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// TODO: remove _id in res, add profileId instead
+
 /**
- * TODO: check
+ * TODO: check & error handling improvements
  * @desc  Register new user
  * @route POST api/auth/register
  * @access  Public
@@ -46,13 +48,15 @@ exports.register = async (req, res, next) => {
 
         // set up default profile
         const profile = new UserProfile({
-            userId: savedUser._id
+            owner: savedUser._id
         });
         const savedProfile = await profile.save();
+        console.log("saved profile", savedProfile);
         if (!savedProfile) throw Error('Something went wrong saving the default profile');
         // add profile id to user
-        const updatedUser = await UserAccount.updateOne({ _id: savedUser._id },
-            { $set: { profile: savedProfile._id } });
+        const updatedUser = await UserAccount.findByIdAndUpdate(savedUser._id,
+            { $set: { profile: savedProfile._id } }, {new: true});
+        console.log("updated user", updatedUser)
         if (!updatedUser) throw Error('Something went wrong adding profile id to user account');
 
         // generate token
@@ -64,13 +68,14 @@ exports.register = async (req, res, next) => {
         res.status(201).json({
             token,
             user: {
-                id: savedUser.id,
-                name: savedUser.name,
-                email: savedUser.email
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                profile: updatedUser.profile
             }
         });
-    } catch (e) {
-        res.status(400).json({ msg: e.message });
+    } catch (err) {
+        res.status(400).json({ msg: err.message });
     }
 };
 
@@ -81,14 +86,14 @@ exports.register = async (req, res, next) => {
  */
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;
-
     try {
         // simple validation
         if (!email || !password) throw Error('Please enter all fields!');
 
         // Check for existing user
         // TODO: change error message to Invalid credentials after testing
-        const user = await UserAccount.findOne({ email });
+        const user = await UserAccount.findOne({ email }).select('+password');
+
         if (!user) throw Error('User does not exist');
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -97,18 +102,19 @@ exports.login = async (req, res, next) => {
         // TODO: discuss about the expiry time
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: 3600 });
 
-        if (!token) throw Error('Couldnt sign the token');
+        if (!token) throw Error('Could not sign the token');
 
         res.status(200).json({
             token,
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                profile: user.profile
             }
         });
-    } catch (e) {
-        res.status(400).json({ msg: e.message });
+    } catch (err) {
+        res.status(400).json({ msg: err.message });
     }
 };
 
@@ -131,17 +137,17 @@ exports.getUser = async (req, res, next) => {
                 email: user.email
             }
         });
-    } catch (e) {
-        res.status(400).json({ msg: e.message });
+    } catch (err) {
+        res.status(400).json({ msg: err.message });
     }
 };
 
 /**
- * TODO: discuss about detailed implementations
+ * TODO: discuss about detailed implementations (decrease likes count, remove subscribes?)
  * @desc  Delete an user account
  * @route DELETE api/auth/user/delete
  * @access  Private
- * @detail  User profile, platforms, quizzes will also be deleted
+ * @detail  User profile, created platforms, created quizzes will also be deleted
  */
 exports.deleteUser = async (req, res, next) => {
     try {
@@ -168,7 +174,7 @@ exports.deleteUser = async (req, res, next) => {
             },
             success: true
         });
-    } catch (e) {
-        res.status(400).json({ msg: e.message, success: false });
+    } catch (err) {
+        res.status(400).json({ msg: err.message, success: false });
     }
 };
