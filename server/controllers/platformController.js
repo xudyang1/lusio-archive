@@ -91,11 +91,103 @@ exports.addPlatform = async (req, res, next) => {
 /**
  * TODO: 
  * @desc  Update platform content by platform 
- * @route PATCH api/platforms/platform/:platformId
+ * @route PATCH api/platforms/platform/edit/:platformId
  * @access  Private
+ * @detail  Client side can only send limited updated content:
+ *              edit existing: {owner, description, bannerURI, backgroundURI}
+ *              add or delete: {admins, 
+ *                              quizzes, 
+ *                              quizSections}
+ * 
+ *  
+ * 
+ * @payload req.body = 
+ *      { mode: "EDIT", platform: owner | description | iconURI | bannerURI } 
+ *  Or
+ *      {
+ *        mode: "ADD" | "DELETE", 
+ *        platform: admins | quizzes | quizSections
+ *      }
  */
 exports.updatePlatform = async (req, res, next) => {
+  try {
+    // Note, to verify user id, use req.user.id rather than req.params.profileId
 
+    if (!req.body.platform) {
+      return res.status(400).json({
+        success: false,
+        msg: 'Invalid payload, nothing is updated'
+      });
+    }
+
+    // destructure
+
+    const { owner, description, bannerURI, backgroundURI, admins, quizzes, quizSections } = req.body.platform;
+    const MODE = req.body.mode;
+
+    var provided = keys = updated = null;
+    console.log("req.viewtyoe", req.viewType)
+    if(req.viewType!=='OWNER_VIEW' && req.viewType!=='ADMIN_VIEW'){
+      return res.status(400).json({
+        success: false,
+        msg: 'No authorization'
+      });
+    }
+    // set options
+    const options = { runValidators: true, new: true };
+
+    switch (MODE) {
+      case "EDIT":
+        provided = { owner, description, bannerURI, backgroundURI };
+        keys = Object.keys(provided);
+        updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
+        console.log("updated", updated);
+        break;
+      case "ADD":
+        provided = { admins, quizzes, quizSections  };
+        keys = Object.keys(provided);
+        console.log('$pushAll provided: ', provided);
+        updated = await Platform.findByIdAndUpdate(req.params.platformId, { $push: provided }, options).select(keys);
+        break;
+      case "DELETE":
+        provided = { admins, quizzes, quizSections  };
+        keys = Object.keys(provided);
+        updated = await Platform.findByIdAndUpdate(req.params.platformId, { $pullAll: provided }, options).select(keys);
+        break;
+      default:
+        // non matched mode
+        return res.status(400).json({
+          success: false,
+          msg: 'You must provide a valid mode'
+        });
+    }
+    // no valid content provided
+    if (!provided || Object.keys(provided).length === 0) {
+      return res.status(400).json({
+        success: false,
+        msg: 'Invalid content provided, nothing is updated'
+      });
+    }
+    // no query returned
+    else if (!updated) {
+      return res.status(400).json({
+        success: false,
+        msg: 'Unable to update the content'
+      });
+    }
+    // success
+    return res.status(200).json({
+      success: true,
+      mode: MODE,
+      content: updated
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      msg: 'Server Error'
+    });
+  }
 };
 
 /**
