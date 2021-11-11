@@ -2,8 +2,7 @@ import React, {useContext, useState, useEffect, Component} from 'react';
 import { useRouteMatch } from "react-router-dom";
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
-import M from 'materialize-css';
-import "materialize-css/dist/css/materialize.min.css";
+import {Modal} from 'react-responsive-modal';
 import { UPDATE_PROFILE } from '../../types/actionTypes';
 
 class EditQuizContent extends Component{
@@ -24,7 +23,8 @@ class EditQuizContent extends Component{
             created: "",
             EXP: 0,
             questions:[],
-            answers: []
+            answers: [],
+            openModal: false
         };
     }
     
@@ -56,31 +56,34 @@ class EditQuizContent extends Component{
             showAnswer: quiz.showAnswer,
             likes: quiz.likes,
             created: quiz.created,
-            EXP: quiz.EXP
+            EXP: quiz.EXP,
+            questions: quiz.questions,
+            answers: quiz.answers
         });
+    }
+    handleDelete = async (deleteQuiz) => {
+        deleteQuiz(this.id);
+        document.location.href = "/";
+    }
+    onOpenModal = e => {
+        e.preventDefault();
+        this.setState({openModal: true});
+    }
+    onCloseModal = e => {
+        e.preventDefault();
+        this.setState({openModal: false});
     }
     componentDidMount(){
         const id = this.props.match.params.id;
-        const { getQuizzes ,updateQuiz, deleteQuiz } = this.context;
+        const { getQuizzes ,updateQuiz } = this.context;
         this.getItem(id, getQuizzes);
     }
     render(){
-    
-        //const [currentQuiz, setQuiz] = useState([]);
+        const { updateQuiz, deleteQuiz } = this.context;
         //const [answerList, setAnswerList] = useState([{answer: ""}]);
-        //const [questionList, setQuestionList] = useState([{question: ""}]);
-        
-        //const quizId = useRouteMatch("/edit/:id");
-        
+        //const [questionList, setQuestionList] = useState([{question: ""}]);        
         
 /*
-        const initiation = async e => {
-            getItem(id);
-            console.log("NAME: " + this.state._id);
-            //setQuestionList(currentQuiz.questions);
-            //setAnswerList(currentQuiz.answers);
-        }
-        
         //updateQuiz({quizId: id, userId, name, description, likes, created, EXP, questions});
         const handleAddAnswer = () => {
             setAnswerList([...answerList, { answer: "" }]);
@@ -100,12 +103,6 @@ class EditQuizContent extends Component{
             const list = [...questionList];
             if(list.length > 1){list.splice(item, 1);}
             setQuestionList(list);
-        }
-        const handleDelete = async e => {
-            e.preventDefault();
-            const id = quizId.params.id;
-            deleteQuiz(id);
-            document.location.href = "/";
         }
         const nameHandler = (e) => {
             currentQuiz.name = e.target.value;
@@ -166,19 +163,10 @@ class EditQuizContent extends Component{
                 questions: currentQuiz.questions,
                 answers: currentQuiz.answers}
             updateQuiz(publishQuiz);
-        }
-        useEffect(() => {
-            var elem = document.querySelector('#editModal')
-            var options = {
-                preventScrolling: false,
-            };
-            M.Modal.init(elem, options);
-        })
+        }*/
 
-*/
             return(
                 <div className="row section" style={{padding: '35px'}}>                
-                    <button>Retrieve Data</button>
                     <div className="col s6">
                         <div className="section input-field">Quiz Name
                             <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name}/>
@@ -191,25 +179,25 @@ class EditQuizContent extends Component{
                         <form action="#">
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" />
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.timed}/>
                                     <span>Timed quiz</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" />
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.retake}/>
                                     <span>Allow retake</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in"/>
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showQuestion}/>
                                     <span>Show questions one at a time</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" />
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showAnswer}/>
                                     <span>Show answer after submission</span>
                                 </label>
                             </p>
@@ -228,18 +216,18 @@ class EditQuizContent extends Component{
                             <div className="col s4">
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Save</a>
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} >Publish</a>
-                                <a className="waves-effect waves-light btn-small red modal-trigger" href="#editModal" style={{margin: "5px"}}>
+                                <button className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.onOpenModal}>
                                     Delete
-                                </a>
-                                <div id="editModal" className="modal">
+                                </button>
+                                <Modal open={this.state.openModal}>
                                     <div className="modal-content">
                                         <h4>Will you really delete this quiz?</h4>
                                     </div>
                                     <div className="modal-footer">
-                                        <a className="modal-close waves-effect waves-green btn-flat red">Yes</a>
-                                        <a className="modal-close waves-effect waves-green btn-flat">No</a>
+                                        <a className="modal-close waves-effect waves-green btn-flat red" >Yes</a>
+                                        <a className="modal-close waves-effect waves-green btn-flat" onClick={this.onCloseModal}>No</a>
                                     </div>
-                                </div>
+                                </Modal>
                             </div>
                         </div>
                 </div>
