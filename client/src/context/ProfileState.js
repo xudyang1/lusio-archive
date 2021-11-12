@@ -104,6 +104,7 @@ export const ProfilesProvider = ({ children }) => {
      *        mode: "ADD" | "DELETE", 
      *        profile: platformsCreated |quizzesCreated |subscribedUsers | subscribedPlatforms | fans
      *      }
+     * ex. 
      */
     async function updateProfile(payload) {
         const config = {
@@ -114,15 +115,15 @@ export const ProfilesProvider = ({ children }) => {
 
         const body = JSON.stringify(payload);
         try {
-            // const res = await axios.put(`/api/profiles/profile/${id}`, body, config);
-            // dispatch({
-            //     type: UPDATE_PROFILE,
-            //     payload: res.data
-            // });
+            const res = await axios.patch(`/api/profiles/profile/edit/${state.profile._id}`, body, config);
+            dispatch({
+                type: UPDATE_PROFILE,
+                payload: res.data
+            });
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
-                payload: { msg: "", status: 404 }
+                payload: { msg: err.response.data.msg, status: err.response.status }
             });
         }
     };
