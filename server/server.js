@@ -22,17 +22,15 @@ if(process.env.NODE_ENV === 'development') {
 // TODO: modify this sample later
 // sample tests for backend operations
 // Instruction Via README.md
-const quizRouter = require('./routes/api/quizzes');
-const platformRouter = require('./routes/api/platforms');
 const authRouter = require('./routes/api/auth');
 const profileRouter = require('./routes/api/profiles');
+const platformRouter = require('./routes/api/platforms');
+const quizRouter = require('./routes/api/quizzes');
 // use routes
-app.use('/api/quizzes', quizRouter);
-app.use('/api/platforms', platformRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/profiles', profileRouter);
-
-
+app.use('/api/platforms', platformRouter);
+app.use('/api/quizzes', quizRouter);
 // end of test
 
 
