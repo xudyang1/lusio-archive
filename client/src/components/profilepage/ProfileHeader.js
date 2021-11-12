@@ -79,16 +79,16 @@ export default function ProfileHeader(props) {
                 </div>
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner} />
-// <<<<<<< LiuxinLi
+{/* // <<<<<<< LiuxinLi */}
 
             <textarea ref={textRef} id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" defaultValue={props.description? props.description : ""} size="30"/>
 
-// =======
-//             {/*<textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />*/}
+{/* // =======
+             <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />
 //             <div className="text-box">
 //                 <input name="profileDescription" placeholder="Description" onChange={onChangeDescription} defaultValue={state.description}/>
 //             </div>
-// >>>>>>> main
+// >>>>>>> main */}
             <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
                 Finish Edit
                 <i className="material-icons prefix" ></i>
