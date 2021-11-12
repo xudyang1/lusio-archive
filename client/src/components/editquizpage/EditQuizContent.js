@@ -91,11 +91,12 @@ class EditQuizContent extends Component{
         console.log("Current state",this.state);
     }
     handleQuestionRemove = item => {
+        const lastIndex = this.state.questions.length - 1;
         const list = [...this.state.questions];
-        if(list.length > 1){list.splice(item, 1);}
+        const alist = [...this.state.answers];
+        if(list.length > 1){list.splice(item, 1); alist.splice(item, 1);}
         this.setState({questions: list});
-        
-        
+        this.setState({answers: alist})
     }
     questionHandler = (qi, e) => {
         this.state.questions[qi] = e;
