@@ -24,7 +24,7 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         loading: false,
-        quiz: action.payload
+        quiz: action.payload.data
       }
     case ADD_QUIZ:
       return {

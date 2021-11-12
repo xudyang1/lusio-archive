@@ -11,10 +11,10 @@ export default function PlayQuizPage(props) {
     const { id } = useParams();
 
 
-    useEffect(() => {
-        getQuiz(id)
-        console.log(quiz)
-    });
+    // useEffect(() => {
+    //     getQuiz(id)
+    //     console.log(quiz)
+    // });
 
     // var quiz = sampleQuiz.quizzes.filter((quiz)=>(
     //     quiz.quizID == id

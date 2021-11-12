@@ -15,21 +15,24 @@ import axios from 'axios';
 const initialState = {
     quizzes: [],
     quiz: {
-        id: "",
-        userId: "",
+        id: null,
+        userId: null,
         name: "",
         description: "",
+        platformId: "", //Needs update
         timed: false,
         time: 5, // Needs update
         retake: false,
         showQuestion: false,
         showAnswer: false,
         likes: 0,
+        plays: 0, // Needs update
         created: "",
         EXP: 0,
         questions: [],
         answers: [],
         correctAnswers: [], // Needs update
+        scoreboard: [], //Needsupdate
         isPublished: false
     },
     error: null,
@@ -62,8 +65,8 @@ export const QuizzesProvider = ({ children }) => {
     };
     async function getQuiz(id) {
         try {
-            dispatch(setQuizzesLoading());
-            const res = await axios.get(`http://localhost:5000/api/quizzes/edit/${id}`);
+            //dispatch(setQuizzesLoading());
+            const res = await axios.get(`/api/quizzes/edit/${id}`);
             dispatch({
                 type: GET_QUIZ,
                 payload: res.data

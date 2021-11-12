@@ -29,32 +29,19 @@ export default function ProfilePage() {
     const { url, path } = useRouteMatch();
 
     const { isAuthenticated, loadUser, user } = useContext(AuthContext)
-    const { profile, getProfile } = useContext(ProfileContext)
+    const { profile, getProfile, viewType } = useContext(ProfileContext)
 
     useEffect(() => {
-        //getProfile();
+        getProfile(id);
         //console.log(user.id, id)
     }, [isAuthenticated])
 
-    // useEffect(()=>{
-    //     const options = {
-    //         numVisible: 8,
-    //         dist: -50,
-    //         padding: 100,
-    //         indicators: true,
-    //         shift: 100,
-    //     }
-    //     var elems = document.querySelectorAll('.carousel');
-    //     var instances = M.Carousel.init(elems, options);
-    // })
-
-
     return (
         <div>
-            {(isAuthenticated && user.id == id) ? <ProfileSidebar profileIconURI={profile.iconURI} leve={profile.level} path={url} /> : <div />}
+            {(viewType === "OWNER_VIEW") ? <ProfileSidebar profileIconURI={profile.iconURI} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
                 <Switch>
-                    <Route exact path={url}><ProfileHome profile={profile} /></Route>
+                    <Route exact path={url}><ProfileHome profile={profile} name={user.name}/></Route>
                     <Route path={url + "/allquiz"}><SectionList items={profile.quizzesCreated} name={"All Quizzes"} type={QUIZ_CARD}/></Route>
                     <Route path={url + "/allplatforms"}><SectionList items={profile.platformsCreated} name={"Participated Platforms"} type={SUB_PLAT_CARD}/></Route>
                     <Route path={url + "/achievements"}><SectionList items={profile.achievements} name={"Achievements"} type={ACHIEVEMENT_CARD}/></Route>
