@@ -24,10 +24,10 @@ export default function SectionList(props){
 
     const items = props.items ? props.items :
         [["Quiz1", "Description for Q1"], ["Quiz2", "Something Something"], ["Quiz3", "A loooooooooooooooooooooot of Stuff in description"], ["Quiz4", "No Description"], ["Quiz5", "No Description"], ["Quiz6", "No Description"], ["Quiz7", "No Description"], ["Quiz8", "No Description"], ["Quizteye6yuftjguykjuykghkiuhkiugkukg9", "No Description"], ["Quiz103894 037659023465", "No Description"]]
-    items.map(element => {
-        var quiz = getQuiz(element)
-        return [quiz.name, quiz.description]
-    });
+    // items.map(element => {
+    //     var quiz = getQuiz(element)
+    //     return [quiz.name, quiz.description]
+    // });
     const name = props.name ? props.name : ""
     console.log(props.items)
 
