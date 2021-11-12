@@ -13,6 +13,7 @@ import axios from 'axios';
 
 // Initial state
 const initialState = {
+// <<<<<<< LiuxinLi
     quizzes: [],
     quiz: {
         id: null,
@@ -37,6 +38,27 @@ const initialState = {
     },
     error: null,
     loading: true
+// =======
+//   quizzes: [],
+//   quiz: {
+//     id: "",
+//     userId: "",
+//     name: "",
+//     description: "",
+//     timed: false, 
+//     retake: false, 
+//     showQuestion: false, 
+//     showAnswer: false,
+//     likes: 0,
+//     created: "",
+//     EXP: 0,
+//     questions:[],
+//     answers: [[""],[""],[""],[""],[""]],
+//     isPublished: false
+//   },
+//   error: null,
+//   loading: true
+// >>>>>>> main
 };
 
 // Create context
