@@ -106,15 +106,9 @@ export const ProfilesProvider = ({ children }) => {
      * ex. 
      */
     async function updateProfile(payload) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
         const body = JSON.stringify(payload);
         try {
-            const res = await axios.patch(`/api/profiles/profile/edit/${state.profile._id}`, body, config);
+            const res = await axios.patch(`/api/profiles/profile/edit/${state.profile._id}`, body, tokenConfig(token));
             dispatch({
                 type: UPDATE_PROFILE,
                 payload: res.data

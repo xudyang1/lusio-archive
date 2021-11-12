@@ -25,9 +25,9 @@ function App() {
                     <Route path="/play/:id" component={PlayQuizPage} />
                     <Route path="/search/:key" component={SearchPage} />
                     <Route path="/profile/:id" component={ProfilePage} />
+                    <Route path="/platform/:id" component={PlatformPage} />
                 </QuizzesProvider>
             </ProfilesProvider>
-            <Route path="/platform/:id" component={PlatformPage} />
         </AuthProvider>
     );
 }
