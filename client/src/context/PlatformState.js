@@ -67,8 +67,8 @@ export const PlatformProvider = ({ children }) => {
         }
     };
 
-    async function createPlatform() {
-
+    async function createPlatform({}) {
+        
     };
 
     async function updatePlatform() {
