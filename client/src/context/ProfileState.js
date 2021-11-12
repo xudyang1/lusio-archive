@@ -93,8 +93,7 @@ export const ProfilesProvider = ({ children }) => {
             });
         }
     };
-
-    // <<<<<<< Dajung
+    
     /**
      * @param payload format: 
      *        
@@ -102,7 +101,7 @@ export const ProfilesProvider = ({ children }) => {
      *  Or
      *      {
      *        mode: "ADD" | "DELETE", 
-     *        profile: platformsCreated |quizzesCreated |subscribedUsers | subscribedPlatforms | fans
+     *        profile: quizzesCreated |subscribedUsers | subscribedPlatforms | fans
      *      }
      * ex. 
      */
