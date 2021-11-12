@@ -1,69 +1,37 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
-// TODO: may have some add-ons
+// TODO: discuss about defaults
+// TODO: determine the format of banner? bannerURI
 const UserProfileSchema = new Schema({
-    userId: {
+    owner: {
+        type: Schema.Types.ObjectId, ref: 'UserAccount',
+        required: [true, 'The owner of the profile is missing']
+    },
+    platformsCreated: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],
+    quizzesCreated: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+    // TODO: uncomment this part after adding report system
+    // accountStatus: { type: String, enum: ['active', 'suspended'], default: 'active' },
+    description: { type: String, default: 'Hello, World!' },
+    iconURI: {
         type: String,
-        required: true
+        default: 'https://cdn.icon-icons.com/icons2/2620/PNG/512/among_us_player_red_icon_156942.png'
     },
-    accountStatus: {
-        type: Number,
-        required: true
-    },
-    name: {
+    /*TODO: need boarderURI or not */
+    // boarderURI: { type: String/* add default: ''*/ },
+    bannerURI: {
         type: String,
-        required: true
+        default: 'https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/162788448/original/57ec2876b1b13f69cd3b3baf81f5d4035aa3c7eb/design-your-profile-banner-for-social-media.png'
     },
-    email: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    profileIcon: {
-        type: String,
-        required: true
-    },
-    profileBanner: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    level: {
-        type: Number,
-        required: true
-    },
-    currentExp: {
-        type: Number,
-        required: true
-    },
-    maxExp: {
-        type: Number,
-        required: true
-    },
-    achievements: {
-        type: [String],
-        required: true
-    },
-    quizzes: {
-        type: [String],
-        required: true
-    },
-    subscribedUser: {
-        type: [String],
-        required: true
-    },
-    subscribedPlat: {
-        type: [String],
-        required: true
-    },
-});
+    level: { type: Number, default: 0 },
+    currentExp: { type: Number, default: 0 },
+    maxExp: { type: Number, default: 500 },
+    achievements: [{ type: Schema.Types.ObjectId, ref: 'Badge' }],
+    quizzesTaken: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+    likedQuizzes: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+    subscribedUsers: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }],
+    subscribedPlatforms: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],
+    fans: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }]
+}, { timestamps: true });
 
 module.exports = mongoose.model('UserProfile', UserProfileSchema);
