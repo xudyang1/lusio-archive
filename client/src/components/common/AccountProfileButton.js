@@ -2,18 +2,22 @@ import { Component, useContext, useEffect, useState } from "react";
 import React from 'react';
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
+import { useParams } from "react-router";
 
 
 export default function AccountProfileButton() {
 
-    const { user } = useContext(AuthContext);
+    const { user, isAuthenticated } = useContext(AuthContext);
     const { profile, getProfile } = useContext(ProfileContext)
 
+    const { id } = useParams()
+
     useEffect(() => {
-        //console.log(user.profile)
+        console.log("BEFORE GETPROFILE id:", id, "  profile:", user.profile)
+        console.log("BEFORE GETPROFILE", profile)
         getProfile(user.profile);
-        // console.log(userProfile);
-    }, []);
+        console.log("FROM ACCOUNT BUTTON", profile);
+    }, [isAuthenticated]);
 
     const s = {
         height: "50px",

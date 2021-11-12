@@ -13,7 +13,7 @@ const { dropEntries, selectEntries, nonNullJson } = require('../util/jsonTool');
 exports.getProfile = async (req, res, next) => {
     try {
         const selectedProfile = await UserProfile.findById(req.params.profileId);
-        console.log("profile doc: ", selectedProfile);
+        // console.log("profile doc: ", selectedProfile);
         if (!selectedProfile) {
             return res.status(404).json({
                 success: false,
@@ -89,6 +89,7 @@ exports.updateProfile = async (req, res, next) => {
         switch (MODE) {
             case "EDIT":
                 provided = { description, iconURI, bannerURI };
+                provided = nonNullJson(provided);
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(profileId, provided, options).select(keys);
                 // console.log("updated", updated);

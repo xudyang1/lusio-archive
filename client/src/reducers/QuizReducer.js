@@ -18,7 +18,7 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         loading: false,
-        quizzes: action.payload
+        quizzes: state.quizzes.filter(quiz => quiz._id === action.payload)
       };
     case GET_QUIZ:
       return {

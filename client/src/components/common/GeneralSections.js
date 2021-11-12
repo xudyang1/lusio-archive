@@ -45,7 +45,7 @@ export default function GeneralSections(props) {
                 <div style={{ margin: "10px" }}>
                     <div>
                         <h4>{name}</h4>
-                        <a href={"/platform/"+props.id}>more{">"}{">"}</a>
+                        {props.profilepage? <div></div> : <a href={"/platform/"+props.id}>more{">"}{">"}</a>}
                     </div>
                     <div className="valign-wrapper">
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>

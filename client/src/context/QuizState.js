@@ -54,7 +54,7 @@ export const QuizzesProvider = ({ children }) => {
                 payload: res.data
             });
             console.log("quizzes are : ", res.data);
-            // return res.data;
+            return res.data;
         } catch (err) {
             console.error(err);
             dispatch({
@@ -65,14 +65,14 @@ export const QuizzesProvider = ({ children }) => {
     };
     async function getQuiz(id) {
         try {
-            //dispatch(setQuizzesLoading());
+            dispatch(setQuizzesLoading());
             const res = await axios.get(`/api/quizzes/edit/${id}`);
             dispatch({
                 type: GET_QUIZ,
-                payload: res.data
+                payload: id
             });
             console.log("quiz is : ", res.data);
-            // return res.data;
+            return res.data;
         } catch (err) {
             console.error(err);
             dispatch({
@@ -96,7 +96,7 @@ export const QuizzesProvider = ({ children }) => {
                 type: ADD_QUIZ,
                 payload: res.data
             });
-            // return res.data.quiz.id;
+            return res.data.quiz.id;
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
