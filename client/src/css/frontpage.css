@@ -65,6 +65,10 @@
     height: 300px;
 }
 
+.LSection{
+    white-space: break-spaces;
+}
+
 
 /* .carousel .carousel-item {
     opacity: 1 !important;

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext} from "../../context/ProfileState";
 
@@ -19,6 +19,8 @@ export default function ProfileHeader(props) {
 
     const { isAuthenticated, user } = useContext(AuthContext);
     const { updateProfile, deleteAccount } = useContext(ProfileContext);
+
+    const textRef = createRef()
     {/* user.id to be used */}
     const initialState = {
         userId: isAuthenticated ? user.id : "",
@@ -52,7 +54,16 @@ export default function ProfileHeader(props) {
         e.preventDefault();
         const { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat} = state;
         const userProfile = { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat };
-        updateProfile(userProfile);
+        //updateProfile(userProfile);
+
+        console.log(textRef.current.value)
+        updateProfile({
+            mode: "EDIT",
+            profile:{
+                description: textRef.current.value
+            }
+        })
+
     }
     const onDelete = (e) => {
         e.preventDefault();
@@ -61,24 +72,27 @@ export default function ProfileHeader(props) {
 
     return (
         <div>
-            <h2 className="center">HOME</h2>
+            <h2 className="center">{props.name+"'s Home"}</h2>
             <div className="parallax-container">
                 <div className="parallax">
-                    <img src={state.profileBanner}/>
+                    <img src={props.banner}/>
                 </div>
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner} />
-            {/*<textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />*/}
-            <div className="text-box">
-                <input name="profileDescription" placeholder="Description" onChange={onChangeDescription} defaultValue={state.description}/>
-            </div>
+// <<<<<<< LiuxinLi
+
+            <textarea ref={textRef} id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" defaultValue={props.description? props.description : ""} size="30"/>
+
+// =======
+//             {/*<textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />*/}
+//             <div className="text-box">
+//                 <input name="profileDescription" placeholder="Description" onChange={onChangeDescription} defaultValue={state.description}/>
+//             </div>
+// >>>>>>> main
             <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
                 Finish Edit
                 <i className="material-icons prefix" ></i>
             </button>
-            <button color="dark" style={{ marginTop: '2rem' }} onClick={onDelete}>
-                Delete Account
-            </button> 
         </div>
     )
 }

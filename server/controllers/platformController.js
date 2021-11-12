@@ -23,7 +23,7 @@ exports.getPlatform = async (req, res, next) => {
     }
 
     return res.status(200).json({
-      type: req.viewType,
+      viewType: req.viewType,
       platform: selectedPlatform
     });
   } catch (err) {

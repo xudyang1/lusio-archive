@@ -90,7 +90,7 @@ exports.softAuth = async (req, res, next) => {
         else {
             req.viewType = GUEST_VIEW;
         }
-        console.log("before next, viewTYpe:", req.viewType);
+        // console.log("before next, viewTYpe:", req.viewType);
         // run next handler
         next();
     } catch (e) {

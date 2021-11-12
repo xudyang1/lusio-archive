@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import AuthReducer from '../reducers/AuthReducer';
-import { GET_ERRORS, CLEAR_ERRORS } from '../types/actionTypes';
+import { GET_ERRORS, CLEAR_ERRORS, DELETE_ACCOUNT } from '../types/actionTypes';
 import {
     USER_LOADED,
     USER_LOADING,
@@ -22,7 +22,8 @@ const initialState = {
     user: {
         id: 0,
         email: "null",
-        name: "null"
+        name: "null",
+        profile: null
     },
     error: {
         msg: null,
@@ -57,20 +58,20 @@ export const AuthProvider = ({ children }) => {
     };
     // check token & load user
     async function loadUser() {
-        console.log("CALLED LoadUser()")
+        console.log("CALLED LoadUser()");
         try {
             // user loading
             dispatch({ type: USER_LOADING });
 
             const res = await axios.get('/api/auth/user', tokenConfig(state));
-            console.log("res.data = ", res.data)
+            console.log("res.data = ", res.data);
             dispatch({
                 type: USER_LOADED,
                 payload: res.data
             });
             //console.log("Called loadUser(): user loaded", state);
         } catch (err) {
-            
+            console.log("err", err);
             dispatch({
                 type: AUTH_ERROR,
                 payload: {
@@ -127,7 +128,7 @@ export const AuthProvider = ({ children }) => {
         // console.log("Before login");
         try {
             const res = await axios.post('/api/auth/login', body, config);
-            console.log("Login() LOGIN_SUCCESS", res.data)
+            console.log("Login() LOGIN_SUCCESS", res.data);
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
@@ -147,6 +148,25 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    async function deleteAccount() {
+        try {
+            const res = await axios.delete('/api/auth/user/delete', tokenConfig(state));
+            console.log("res.data = ", res.data);
+            dispatch({
+                type: DELETE_ACCOUNT,
+                payload: res.data //deleted user info
+            });
+        } catch (err) {
+            dispatch({
+                type: 'DELETE_FAIL',
+                payload: {
+                    msg: err.response.data.msg,
+                    status: err.response.status,
+                    id: 'DELETE_FAIL'
+                }
+            });
+        }
+    }
 
     // logout user
     function logout() {
@@ -169,6 +189,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         clearErrors,
+        deleteAccount,
         ...state
     }}>
         {children}

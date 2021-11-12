@@ -15,7 +15,7 @@ export default function HomeContent() {
     
     useEffect(() => {
         getPlatforms();
-    })
+    }, [])
   
     return (
         <div>

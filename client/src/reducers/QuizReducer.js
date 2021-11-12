@@ -18,19 +18,24 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         loading: false,
-        quizzes: action.payload
+        quizzes: state.quizzes.filter(quiz => quiz._id === action.payload)
       };
     case GET_QUIZ:
       return {
         ...state,
         loading: false,
-        quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
-      };
+//<<<<<<< LiuxinLi
+        quiz: action.payload.data
+      }
+// =======
+//         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
+//       };
     case DELETE_QUIZ:
       return {
         ...state,
         quiz: state._id !== action.payload
       };
+//>>>>>>> main
     case ADD_QUIZ:
       return {
         ...state,
@@ -40,6 +45,14 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         quiz: action.payload
+// <<<<<<< LiuxinLi
+//       }
+//     case DELETE_QUIZ:
+//       return {
+//         ...state,
+//         quiz: action.payload
+// =======
+// >>>>>>> main
       };
     case UPDATE_QUIZ:
       return {

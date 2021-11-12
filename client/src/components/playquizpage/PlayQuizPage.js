@@ -1,11 +1,21 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router';
+import { QuizzesContext } from '../../context/QuizState';
 import '../../css/frontpage.css';
 import sampleQuiz from '../../sampleData/sampleQuiz';
 //import "materialize-css/dist/css/materialize.min.css";
 
-export default function PlayQuizPage(props){ 
-    const {id} = useParams();
+export default function PlayQuizPage(props) {
+    // const { quiz, getQuiz } = useContext(QuizzesContext)
+
+    const { id } = useParams();
+
+
+    // useEffect(() => {
+    //     getQuiz(id)
+    //     //console.log(quiz)
+    // }, []);
+
     var quiz = sampleQuiz.quizzes.filter((quiz)=>(
         quiz.quizID == id
     ))
@@ -28,20 +38,20 @@ export default function PlayQuizPage(props){
     }
     return (
         <div className="row">
-            <div className="container" style={{backgroundColor: 'ivory', height: "60px"}}>
+            <div className="container" style={{ backgroundColor: 'ivory', height: "60px" }}>
                 <div>
-                    <h className="quiz">{name}</h> 
-                    <span id="timer" style={{paddingLeft: '340px', height: "20px"}}>Time Left: {timer}</span>
-                 </div>
+                    <h className="quiz">{name}</h>
+                    <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {timer}</span>
+                </div>
             </div>
-            <div className="col s6" style={{paddingLeft: '100px', paddingTop: '30px'}}>
+            <div className="col s6" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
                 <div className="description"> Quiz Description: {description}</div>
                 {questionList.map((x, i) => {
-                    return(
-                        <div className="question">{x.question}<div className="qpoints" >({x.score}points)</div>   
+                    return (
+                        <div className="question">{x.question}<div className="qpoints" >({x.score}points)</div>
                             {x.choices.map((choice) => {
                                 return (
-                                    <div class = "row">
+                                    <div class="row">
                                         <label>
                                             <input type="checkbox" className="filled-in" />
                                             <span>{choice}</span>
@@ -51,11 +61,11 @@ export default function PlayQuizPage(props){
                             })}
                         </div>
                     )
-                })}        
+                })}
             </div>
             <div className='col s12'>
                 <a className="waves-effect waves-dark btn-small" onClick={onSubmit}>Finish</a>
             </div>
         </div>
-    )   
+    )
 }

@@ -16,18 +16,18 @@ import { QuizzesProvider } from './context/QuizState';
 function App() {
     return (
         <AuthProvider>
-            <AppNavbar />
             <ProfilesProvider>
+                <AppNavbar />
                 <QuizzesProvider>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/quiz/:id" component={QuizPage} />
                     <Route path="/edit/:id" component={EditQuizPage} />
                     <Route path="/play/:id" component={PlayQuizPage} />
+                    <Route path="/search/:key" component={SearchPage} />
+                    <Route path="/profile/:id" component={ProfilePage} />
+                    <Route path="/platform/:id" component={PlatformPage} />
                 </QuizzesProvider>
-                <Route path="/search/:key" component={SearchPage} />
-                <Route path="/profile/:id" component={ProfilePage} />
             </ProfilesProvider>
-            <Route path="/platform/:id" component={PlatformPage} />
         </AuthProvider>
     );
 }
