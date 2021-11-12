@@ -1,35 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// TODO: Discuss about defaults
-const QuestionSchema = new Schema({
-    title: { type: String, required: [true, 'Question title must be provided'] },
-    timedOption: { type: Boolean, default: false },
-    time: { type: Number, default: 0 },
-    retakeOption: { type: Boolean, default: true },
-    choices: [{
-        index: {
-            type: Number,
-            required: [true, 'Index value must be provided for an answer choice']
-        },
-        content: {
-            type: String,
-            required: [true, 'Answer choice cannot be empty']
-        }
-    }],
-    answerKey: { type: Number, required: [true, 'Answer key must be provided'] },
-    score: { type: Number, default: 50 }
-});
-// Validation for choices array size
-QuestionSchema.path('choices').validate(function (value) {
-    console.log(value.length);
-    // TODO: discuss limit
-    if (value.length > 10) {
-        throw new Error("Choice size can't be greater than 10!");
-    }
-});
+// <<<<<<< Dajung
+// // may modify this sample later
+// =======
+// // a sample quiz schema
+// // TODO: modify this sample later
+// const QuestionShema = new Schema({
+//     questionTitle: String,
+//     question_option_timed: Boolean,
+//     question_option_time: Number,
+//     question_option_retake: Boolean,
+//     choices:[String],
+//     correct: Number,
+//     score: Number
+// });
 
-
+// >>>>>>> main
 const QuizSchema = new Schema({
     userId: {
         type: String,
@@ -39,21 +26,57 @@ const QuizSchema = new Schema({
         type: String,
         default: ""
     },
-    author: { type: Schema.Types.ObjectId, required: [true, 'Please add an author'] },
-    description: { type: String, required: [true, 'Please add a description'] },
-    likes: { type: Number, default: 0 },
-    quesitons: {
-        type: [QuestionSchema],
-        validate: [(val) => val.length<=50, 'No more than 50 questions allowed']
+    description: {
+        type: String,
+        default: ""
+    },
+    timed: {
+        type: Boolean,
+        default: false
+    },
+    retake: {
+        type: Boolean,
+        default: false
+    },
+    showQuestion: {
+        type: Boolean,
+        default: false
+    },
+    showAnswer: {
+        type: Boolean,
+        default: false
+    },
+// <<<<<<< Dajung
+    likes: {
+        type: Number,
+        required: [true]
+    },
+    created: {
+// =======
+//     likes: Number,
+//    author: String,
+//     quesitons: [QuestionShema],
+//     date: {
+// >>>>>>> main
+        type: Date,
+        default: Date.now
+    },
+    EXP: {
+        type: Number,
+        required: [true]
+    },
+    questions: {
+        type: [String],
+        required: [true]
+    },
+    answers: {
+        type: [String],
+        required: [true]
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
     }
-}, { timestamps: true });
-// Validation for questions array size
-// QuizSchema.path('questions').validate(function (value) {
-//     console.log(value.length);
-//     // TODO: discuss size limit
-//     if (value.length > 50) {
-//         throw new Error("No more than 50 quizzes allowed");
-//     }
-// });
+});
 
-module.exports = mongoose.model('Quiz', QuizSchema);
+module.exports = Quiz = mongoose.model('Quiz', QuizSchema);
