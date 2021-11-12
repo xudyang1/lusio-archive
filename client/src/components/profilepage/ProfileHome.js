@@ -6,8 +6,8 @@ export default function ProfileHome(props) {
     var profile = props.profile
     return (
         <div>
-            <ProfileHeader name={profile.name} description={profile.description} banner={profile.bannerURI} />
-            <GeneralSections items={profile.quizzes} type={QUIZ_CARD} name={"My Quizzes"} />
+            <ProfileHeader name={props.name} description={profile.description} banner={profile.bannerURI} />
+            <GeneralSections items={profile.quizzesCreated} type={QUIZ_CARD} name={"My Quizzes"} />
             <GeneralSections items={profile.achievements} type={ACHIEVEMENT_CARD} name={"Achivements"} />
         </div>
     )

@@ -1,54 +1,65 @@
-import React , { useState, useEffect} from 'react';
+import React , { useState, useEffect, useContext} from 'react';
 //import { AppNavbar } from '../AppNavbar';
 import { useParams } from 'react-router';
+import { QuizzesContext } from '../../context/QuizState';
 import sampleQuiz from '../../sampleData/sampleQuiz';
 
 
 export default function QuizPage(){
-    const {id} = useParams();
-    var quiz = sampleQuiz.quizzes.filter((quiz)=>(
-        quiz.quizID == id
-    ))
-    var name = '';
-    var description = '';
-    var platformId = 0;
-    var timer = 5.3;
-    var quizQs = 0;
-    var quizScoreboard = [];
-    quiz = quiz[0];
-    console.log(quiz);
-    if(quiz){
-        name = quiz.quizName;
-        description = quiz.quizDesc;
-        platformId = quiz.platformID;
-        timer = 5.3;
-        quizQs = quiz.quizQuestions.length;
-        quizScoreboard = quiz.scoreboard;
-    }
+    const { id } = useParams();
+    const {quiz, getQuiz} = useContext(QuizzesContext)
+    
+    useEffect(()=>{
+        //console.log("Hi")
+        getQuiz(id);
+        console.log(quiz)
+    }, [])
 
-    const [likes, setNumLikes] = useState(quiz.quizLikes);
-    const [plays, setNumPlays] = useState(quiz.quizPlays);
+
+    // const {id} = useParams();
+    // var quiz = sampleQuiz.quizzes.filter((quiz)=>(
+    //     quiz.quizID == id
+    // ))
+    // var name = '';
+    // var description = '';
+    // var platformId = 0;
+    // var timer = 5.3;
+    // var quizQs = 0;
+    // var quizScoreboard = [];
+    // quiz = quiz[0];
+    // console.log(quiz);
+    // if(quiz){
+    //     name = quiz.quizName;
+    //     description = quiz.quizDesc;
+    //     platformId = quiz.platformID;
+    //     timer = 5.3;
+    //     quizQs = quiz.quizQuestions.length;
+    //     quizScoreboard = quiz.scoreboard;
+    // }
+
+    // const [likes, setNumLikes] = useState(quiz.likes);
+    // const [plays, setNumPlays] = useState(quiz.plays);
     const [liked, setLiked] = useState(false);
     
     const condLikeHandler = () => {
         setLiked(current => !current)
     }
-    const numLikeHandler = () => {
-        if (!liked){
-            setNumLikes(current => current + 1);
-            console.log("You liked a quiz!");
-        }
-        else {
-            setNumLikes(current => current - 1);
-            console.log("You unliked the quiz.");
-        }
-    }
+    // const numLikeHandler = () => {
+    //     if (!liked){
+    //         setNumLikes(current => current + 1);
+    //         console.log("You liked a quiz!");
+    //     }
+    //     else {
+    //         setNumLikes(current => current - 1);
+    //         console.log("You unliked the quiz.");
+    //     }
+    // }
     const numPlayHandler = () => {
-        setNumPlays(current => current + 1);
+        //setNumPlays(current => current + 1);
         console.log("You played a quiz");
     }
     const onClick = () =>{
-        numLikeHandler();
+        //numLikeHandler();
         condLikeHandler();
     }
     
@@ -58,16 +69,16 @@ export default function QuizPage(){
                 <div className="col s7 push-s5">
                     <br/>
                     <span className="flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
-                        {name}
+                        {quiz.name}
                     </span>
                     <a className="waves-effect waves-light btn" style={{left: "150px"}}><i className="material-icons right">report</i>Report</a>
                     <br/> 
                     <span className="flow-text">
-                        Platform {platformId}
+                        Platform {quiz.platformId}
                     </span><br/>
                     <span className="flow-text">
                         <div style={{fontSize:"15px"}}>Description: <br/></div>
-                        {description}
+                        {quiz.description}
                     </span>
                 </div>
                 <div className="col s5 pull-s7">
@@ -83,9 +94,9 @@ export default function QuizPage(){
                 <div className="col s9">
                     <div className="row" style={{paddingLeft:"250px"}}>
                         <span> 
-                            {plays} plays
+                            {quiz.plays} plays
                             <i className="material-icons likeicon" onClick={onClick}>thumb_up</i>
-                            <span> {likes}</span>
+                            <span> {quiz.likes}</span>
                         </span>
                     </div>
                 </div>
@@ -99,7 +110,7 @@ export default function QuizPage(){
                         <th bgcolor="lightgrey">Ranking</th>
                         <th bgcolor="lightgrey">Score</th>
                     </tr>
-                    {quizScoreboard.map((user, index)=> {
+                    {quiz.questions.map((user, index)=> {
                         return(
                             <tr key={index}>
                                 <td>{user.userID}</td>
@@ -119,15 +130,15 @@ export default function QuizPage(){
                             <div className="col s4">PERSONAL SCORE</div>
                         </div>
                         <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
-                            <div className="col s4">{quizQs}</div>
-                            <div className="col s4">{timer}</div>
+                            <div className="col s4">{quiz.questions.length}</div>
+                            <div className="col s4">{quiz.timer}</div>
                             <div className="col s4">N/A</div>
                         </div>
                     </div>
                     <br/>
                     <div className="row" style={{maxWidth:"100%", maxHeight:"100%"}}>
                         <div className= "col s8">
-                            <a href={"/play/"+id} className="waves-effect waves-light btn" style={{left:"230px"}} onClick={numPlayHandler}>Play Quiz</a>
+                            <a href={"/play/"+quiz.id} className="waves-effect waves-light btn" style={{left:"230px"}} onClick={numPlayHandler}>Play Quiz</a>
                         </div>
                         <div className= 'col s4'>
                             <a className="waves-effect waves-light btn" >View Quiz Statistics</a>

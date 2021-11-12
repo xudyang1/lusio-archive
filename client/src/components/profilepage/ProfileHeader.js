@@ -60,15 +60,15 @@ export default function ProfileHeader(props) {
 
     return (
         <div>
-            <h2 className="center">HOME</h2>
+            <h2 className="center">{props.name+"'s Home"}</h2>
             <div className="parallax-container">
                 <div className="parallax">
-                    <img src={state.profileBanner}/>
+                    <img src={props.banner}/>
                 </div>
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner} />
 
-            <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />
+            <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={props.description} size="30" onChange={onChangeDescription} />
 
             <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
                 Finish Edit
