@@ -29,13 +29,12 @@ export default function ProfilePage() {
     const { url, path } = useRouteMatch();
 
     const { isAuthenticated, loadUser, user } = useContext(AuthContext)
-    const { profile, getProfiles } = useContext(ProfileContext)
+    const { profile, getProfile } = useContext(ProfileContext)
 
     useEffect(() => {
-        loadUser();
-        getProfiles();
+        getProfile();
         //console.log(user.id, id)
-    }, [])
+    }, [isAuthenticated])
 
     // useEffect(()=>{
     //     const options = {

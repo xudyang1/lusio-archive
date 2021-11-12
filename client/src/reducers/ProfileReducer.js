@@ -24,24 +24,25 @@ export const ProfileReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        profile: action.payload.profile
+        profile: action.payload.profile,
+        viewType: action.payload.viewType
       };
-    case ADD_PROFILE:
-      return {
-        ...state,
-        loading: false,
-        userProfile: action.payload
-      };
+    // case ADD_PROFILE:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     userProfile: action.payload
+    //   };
     case UPDATE_PROFILE:
       return {
         ...state,
         userProfile: action.payload
       };
-    case DELETE_ACCOUNT:
-      return {
-        ...state,
-        userProfile: null
-      };
+    // case DELETE_ACCOUNT:
+    //   return {
+    //     ...state,
+    //     userProfile: null
+    //   };
     case GET_ERRORS:
       return {
         ...state,
