@@ -23,7 +23,7 @@ exports.getProfile = async (req, res, next) => {
         }
 
         return res.status(200).json({
-            type: req.viewType,
+            viewType: req.viewType,
             profile: selectedProfile
         });
     } catch (err) {

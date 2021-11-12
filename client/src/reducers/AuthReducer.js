@@ -8,11 +8,29 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     GET_ERRORS,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    DELETE_ACCOUNT,
+    DELETE_FAIL
 } from "../types/actionTypes";
+const initialState = {
+    token: localStorage.getItem('token'),
+    isAuthenticated: false,
+    isLoading: false,
+    user: {
+        id: 0,
+        email: "null",
+        name: "null",
+        profile: null
+    },
+    error: {
+        msg: null,
+        status: null,
+        id: null
+    }
+};
 
 export default function AuthReducer(state, action) {
-    console.log("PAYLOAD FROM AUTHREDUCER:", action.type, action.payload, state)
+    console.log("PAYLOAD FROM AUTHREDUCER:", action.type, action.payload, state);
     switch (action.type) {
         case USER_LOADING:
             // console.log('Inside USER_LOADING')
@@ -47,6 +65,7 @@ export default function AuthReducer(state, action) {
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
         case REGISTER_FAIL:
+        case DELETE_FAIL:
             localStorage.removeItem('token');
             // console.log('Inside ERROR')
             return {
@@ -57,6 +76,9 @@ export default function AuthReducer(state, action) {
                 isLoading: false,
                 error: action.payload
             };
+        case DELETE_ACCOUNT:
+            localStorage.removeItem('token');
+            return initialState;
         case CLEAR_ERRORS:
             // console.log('Inside CLEAR_ERROR')
             return {

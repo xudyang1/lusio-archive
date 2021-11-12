@@ -29,7 +29,7 @@ export default function ProfilePage() {
     const { url, path } = useRouteMatch();
 
     const { isAuthenticated, loadUser, user } = useContext(AuthContext)
-    const { userProfile, getProfiles } = useContext(ProfileContext)
+    const { profile, getProfiles } = useContext(ProfileContext)
 
     useEffect(() => {
         loadUser();
@@ -52,12 +52,12 @@ export default function ProfilePage() {
 
     return (
         <div>
-            {(isAuthenticated && user.id == id) ? <ProfileSidebar profileIconURI={userProfile.profileIcon} leve={userProfile.level} path={url} /> : <div />}
+            {(isAuthenticated && user.id == id) ? <ProfileSidebar profileIconURI={profile.profileIcon} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
-                {/* <ProfileHome userProfile={userProfile} /> */}
-                {/* <ProfileHome userProfile={userProfile}/> */}
+                {/* <ProfileHome profile={profile} /> */}
+                {/* <ProfileHome profile={profile}/> */}
                 <Switch>
-                    <Route exact path={url}><ProfileHome userProfile={userProfile} /></Route>
+                    <Route exact path={url}><ProfileHome profile={profile} /></Route>
                     <Route path={url + "/allquiz"}><SectionList name={"All Quizzes"} type={QUIZ_CARD}/></Route>
                     <Route path={url + "/achievements"}><SectionList name={"Achievements"} type={ACHIEVEMENT_CARD}/></Route>
                     <Route path={url + "/subusers"}><SectionList name={"Subscribed Users"} type={SUB_USER_CARD}/></Route>

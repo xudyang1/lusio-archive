@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import { ProfileReducer } from '../reducers/ProfileReducer';
 import {
     PROFILES_LOADING,
@@ -10,34 +10,55 @@ import {
 } from '../types/actionTypes';
 import axios from 'axios';
 import { Axios } from 'axios';
+import { AuthContext, AuthProvider } from './AuthState';
 
 // Initial state
 const initialState = {
-    userProfile: {
-        id: 0,
-        accountStatus: 1,
-        name: "",
-        email: "",
-        description: "",
-        profileIcon: "",
-        profileBanner: "",
+    profile: {
+        _id: null,
+        owner: null,
+        platformsCreated: [],
+        quizzesCreated: [],
+        description: null,
+        iconURI: null,
+        bannerURI: null,
         level: 0,
         currentExp: 0,
-        maxExp: 0,
+        maxExp: 500,
         achievements: [],
-        quizzes: [],
-        subscribedUser: [],
-        subscribedPlat: []
+        quizzesTaken: [],
+        likedQuizzes: [],
+        subscribedUsers:[],
+        subscribedPlatforms: [],
+        fans: []
     },
     error: null,
-    loading: true
+    loading: true,
+    viewType: 'GUEST_VIEW' // 'GUEST_VIEW' or 'OWNER_VIEW'
 };
 
 // Create context
 export const ProfileContext = createContext(initialState);
 
 export const ProfilesProvider = ({ children }) => {
+    const {token} = useContext(AuthContext);
     const [state, dispatch] = useReducer(ProfileReducer, initialState);
+
+    // set up config/headers and token
+    const tokenConfig = token => {
+        // headers
+        const config = {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+
+        // if token, add to headers
+        if (token) {
+            config.headers['x-auth-token'] = token;
+        }
+        return config;
+    };
 
     async function getProfiles() {
         try {
@@ -60,11 +81,11 @@ export const ProfilesProvider = ({ children }) => {
     async function getProfile(id) {
         try {
             dispatch({ type: PROFILES_LOADING });
-            const res = await axios.get(`/api/profiles/profile/${id}`);
-            console.log(res)
+            const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
+            console.log("res", res)
             dispatch({
                 type: GET_PROFILE,
-                payload: id
+                payload: res.data
             });
         } catch (err) {
             dispatch({

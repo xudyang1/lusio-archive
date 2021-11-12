@@ -5,6 +5,8 @@ export const ADD_QUIZ = 'ADD_QUIZ';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
 export const UPDATE_QUIZ = 'UPDATE_QUIZ';
 export const GET_QUIZ = 'GET_QUIZ';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export const DELETE_FAIL = 'DELETE_FAIL';
 // platform
 export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
 export const GET_PLATFORMS = 'GET_PLATFORMS';
@@ -17,7 +19,6 @@ export const GET_PROFILES= 'GET_PROFILES';
 export const GET_PROFILE= 'GET_PROFILE';
 export const ADD_PROFILE = 'ADD_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
-export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 
 // errors
 export const GET_ERRORS = "GET_ERRORS";

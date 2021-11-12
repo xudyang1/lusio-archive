@@ -16,7 +16,6 @@ import { QuizzesProvider } from './context/QuizState';
 function App() {
     return (
         <AuthProvider>
-
             <ProfilesProvider>
                 <AppNavbar />
                 <QuizzesProvider>

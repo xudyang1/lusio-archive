@@ -24,7 +24,7 @@ export const ProfileReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        userProfile: action.payload
+        profile: action.payload.profile
       };
     case ADD_PROFILE:
       return {
