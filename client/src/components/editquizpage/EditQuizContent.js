@@ -21,6 +21,8 @@ class EditQuizContent extends Component{
             EXP: 0,
             questions:[],
             answers: [],
+            isPublished: false,
+            openModal: false
         };
     }
     
@@ -53,158 +55,243 @@ class EditQuizContent extends Component{
             created: quiz.created,
             EXP: quiz.EXP,
             questions: quiz.questions,
-            answers: quiz.answers
+            answers: quiz.answers,
+            isPublished: quiz.isPublished
         });
     }
-
     handleDelete = async e => {
         e.preventDefault();
         await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
     }
+
+    nameHandler = (e) => {
+        this.setState({name: e.target.value});
+    }
+    descriptionHandler = (e) => {
+        this.setState({description: e.target.value});
+    }
+    handleAddAnswer = () => {
+        this.setState({answers: [...this.state.answers, ""]});
+    }
+    handleAnswerRemove = item => {
+        const list = [...this.state.answers];
+        if(list.length > 1){list.splice(item, 1);}
+        this.setState({answers: list});
+    }
+    handleAddQuestion = () => {
+        this.setState({questions: [...this.state.questions, ""]});
+    }
+    handleQuestionRemove = item => {
+        const list = [...this.state.questions];
+        if(list.length > 1){list.splice(item, 1);}
+        this.setState({questions: list});
+    }
+    questionHandler = (e) => {
+        const l = this.state.questions.length;
+        if (l != 1 ){
+            this.state.questions[l-1] = e.target.value;
+        }
+        else{
+            this.state.questions[0] = e.target.value;
+        }
+        console.log(this.state.questions);
+    }
+    //+answers would be nested as it corresponds to different questions
+    //so answerHandler would be changed 
+    answerHandler = (e) => {
+        const l = this.state.answers.length;
+        if (l != 1 ){
+            this.state.answers[l-1] = e.target.value;
+        }
+        else{
+            this.state.answers[0] = e.target.value;
+        }
+        console.log(this.state.answers);
+    }
+    timedHandler = () => {
+        this.state.timed = !this.state.timed;
+        console.log(this.state);
+    }
+    retakeHandler = () => {
+        this.state.retake = !this.state.retake;
+        console.log(this.state);
+    }
+    showQHandler = () => {
+        this.state.showQuestion = !this.state.showQuestion;
+        console.log(this.state);
+    }
+    showAHandler = () => {
+        this.state.showAnswer = !this.state.showAnswer;
+        console.log(this.state);
+    }
+
+
+    handleSave = async e => {
+        e.preventDefault();
+        console.log("current quiz: ", this.state);
+        
+        const { updateQuiz } = this.context;
+        const updateFQuiz = {
+            id: this.state.id, 
+            userId: this.state.userId,
+            name: this.state.name,
+            description: this.state.description,
+            timed: this.state.timed, 
+            retake: this.state.retake, 
+            showQuestion: this.state.showQuestion, 
+            showAnswer: this.state.showAnswer,
+            likes: this.state.likes,
+            created: this.state.created,
+            EXP: this.state.EXP,
+            questions: this.state.questions,
+            answers: this.state.answers,
+            isPublished: this.state.isPublished    
+        }
+        updateQuiz(updateFQuiz);
+    }
+    handlePublish = (e) => {
+        e.preventDefault();
+        this.state.isPublished = true;
+        console.log("current quiz: ", this.state);
+        
+        const { updateQuiz } = this.context;
+        const updateFQuiz = {
+            id: this.state.id, 
+            userId: this.state.userId,
+            name: this.state.name,
+            description: this.state.description,
+            timed: this.state.timed, 
+            retake: this.state.retake, 
+            showQuestion: this.state.showQuestion, 
+            showAnswer: this.state.showAnswer,
+            likes: this.state.likes,
+            created: this.state.created,
+            EXP: this.state.EXP,
+            questions: this.state.questions,
+            answers: this.state.answers,
+            isPublished: this.state.isPublished    
+        }
+        updateQuiz(updateFQuiz);
+        
+    }
+    handleUnpublish = (e) => {
+        e.preventDefault();
+        this.state.isPublished = false;
+        console.log("current quiz: ", this.state);
+        
+        const { updateQuiz } = this.context;
+        const updateFQuiz = {
+            id: this.state.id, 
+            userId: this.state.userId,
+            name: this.state.name,
+            description: this.state.description,
+            timed: this.state.timed, 
+            retake: this.state.retake, 
+            showQuestion: this.state.showQuestion, 
+            showAnswer: this.state.showAnswer,
+            likes: this.state.likes,
+            created: this.state.created,
+            EXP: this.state.EXP,
+            questions: this.state.questions,
+            answers: this.state.answers,
+            isPublished: this.state.isPublished    
+        }
+        updateQuiz(updateFQuiz);
+    }
+    
+    onOpenModal = e => {
+        e.preventDefault();
+        this.setState({openModal: true});
+    }
+    onCloseModal = e => {
+        e.preventDefault();
+        this.setState({openModal: false});
+    }
     componentDidMount(){
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
-        this.getItem(id, getQuizzes);
+        this.getItem(id, getQuizzes);  
     }
+    
+
     render(){
-        //const [answerList, setAnswerList] = useState([{answer: ""}]);
-        //const [questionList, setQuestionList] = useState([{question: ""}]);        
-        
-/*
-        //updateQuiz({quizId: id, userId, name, description, likes, created, EXP, questions});
-        const handleAddAnswer = () => {
-            setAnswerList([...answerList, { answer: "" }]);
-            currentQuiz.answers = [...currentQuiz.answers, ""];
-
-        }
-        const handleAnswerRemove = item => {
-            const list = [...answerList];
-            if(list.length > 1){list.splice(item, 1);}
-            setAnswerList(list);
-        }
-        const handleAddQuestion = () => {
-            setQuestionList([...questionList, { question: "" }]);
-            currentQuiz.questions = [...currentQuiz.questions, ""];
-        }
-        const handleQuestionRemove = item => {
-            const list = [...questionList];
-            if(list.length > 1){list.splice(item, 1);}
-            setQuestionList(list);
-        }
-        const nameHandler = (e) => {
-            currentQuiz.name = e.target.value;
-            //console.log(currentQuiz);
-        }
-        const descriptionHandler = (e) => {
-            currentQuiz.description = e.target.value;
-            //console.log(currentQuiz);
-        }
-        const questionHandler = (e) => {
-            const l = currentQuiz.questions.length;
-            if (l != 1 ){
-                currentQuiz.questions[l-1] = e.target.value;
-            }
-            else{
-                currentQuiz.questions[0] = e.target.value;
-            }
-            
-            console.log(currentQuiz.questions);
-        }
-        const answerHandler = (e) => {
-            const l = currentQuiz.answers.length;
-            if (l != 1 ){
-                currentQuiz.answers[l-1] = e.target.value;
-            }
-            else{
-                currentQuiz.answers[0] = e.target.value;
-            }
-            console.log(currentQuiz.answers);
-        }
-        const timedHandler = () => {
-            currentQuiz.timed = !currentQuiz.timed;
-        }
-        const retakeHandler = () => {
-            currentQuiz.retake = !currentQuiz.retake;
-        }
-        const showQHandler = () => {
-            currentQuiz.showQuestion = !currentQuiz.showQuestion;
-        }
-        const showAHandler = () => {
-            currentQuiz.showAnswer = !currentQuiz.showAnswer;
-        }
-        const handleSave = async e => {
-            e.preventDefault();
-            console.log("current quiz: ", currentQuiz);
-            const publishQuiz = {
-                id: currentQuiz._id, 
-                userId: currentQuiz.userId,
-                name: currentQuiz.name,
-                description: currentQuiz.description,
-                timed: currentQuiz.timed, 
-                retake: currentQuiz.retake, 
-                showQuestion: currentQuiz.showQuestion, 
-                showAnswer: currentQuiz.showAnswer,
-                likes: currentQuiz.likes,
-                created: currentQuiz.created,
-                EXP: currentQuiz.EXP,
-                questions: currentQuiz.questions,
-                answers: currentQuiz.answers}
-            updateQuiz(publishQuiz);
-        }*/
-
             return(
                 <div className="row section" style={{padding: '35px'}}>                
                     <div className="col s6">
                         <div className="section input-field">Quiz Name
-                            <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name}/>
+                            <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler}/>
                         </div>
                         <div className="section input-field">Description
-                        <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description}></textarea>
+                        <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
                         </div>
                     </div>
                     <div className="col s6" style={{paddingLeft: '100px', paddingTop: '30px'}}>
                         <form action="#">
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.timed}/>
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.timed} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.retake}/>
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.retake} onClick={this.retakeHandler}/>
                                     <span>Allow retake</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showQuestion}/>
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showQuestion} onClick={this.showQHandler}/>
                                     <span>Show questions one at a time</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showAnswer}/>
+                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showAnswer} onClick={this.showAHandler}/>
                                     <span>Show answer after submission</span>
                                 </label>
                             </p>
                         </form>
                     </div>
-                    
+                    {this.state.questions.map((q) => {
+                        return(
+                            <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
+                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={this.questionHandler}/>
+                                <div className="col s6" style={{padding: '20px'}}>
+                                    <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} ><i className="material-icons" onClick={this.handleAddAnswer}>add</i></button>
+                                    <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}}><i className="material-icons" onClick={this.handleAnswerRemove}>remove</i></button>
+                                    {this.state.answers.map((a) => {
+                                        return(
+                                            <div className="text-box">
+                                                <input name="answer" placeholder="Answer choice" onChange={this.answerHandler}/>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
+                                    Set Score:
+                                </div>
+                                <input className="col s1"></input>
+                            </div>
+                        )
+                    })}
                     <div className="section col s12" style={{padding: "20px"}}>
                             <div className="col s4">
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Undo</a>
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Redo</a>
                             </div>
                             <div className="col s4">
-                                <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} ><i className="material-icons">add</i></button>
-                                <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} ><i className="material-icons">remove</i></button>
+                                <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={this.handleAddQuestion}><i className="material-icons">add</i></button>
+                                <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={this.handleQuestionRemove}><i className="material-icons">remove</i></button>
                             </div>
                             <div className="col s4">
-                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Save</a>
-                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} >Publish</a>
-                                <button className="waves-effect waves-light btn-small red" style={{margin: "5px"}} onClick={this.handleDelete}>
+                                <div className="row">
+                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleSave}>Save</a>
+                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handlePublish} >Publish</a>
+                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Publish</a>
+                                </div>
+                                <button className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleDelete}>
                                     Delete
                                 </button>
                             </div>
