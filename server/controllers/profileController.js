@@ -14,7 +14,7 @@ exports.getProfile = async (req, res, next) => {
         // don't send owner id 
         const selectedProfile = await UserProfile.findById(req.params.profileId).select('-owner');
 
-        console.log("profile doc: ", selectedProfile);
+        // console.log("profile doc: ", selectedProfile);
         if (!selectedProfile) {
             return res.status(404).json({
                 success: false,
@@ -85,12 +85,12 @@ exports.updateProfile = async (req, res, next) => {
                 provided = { description, iconURI, bannerURI };
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(profileId, provided, options).select(keys);
-                console.log("updated", updated);
+                // console.log("updated", updated);
                 break;
             case "ADD":
                 provided = { platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans };
                 keys = Object.keys(provided);
-                console.log('$pushAll provided: ', provided)
+                // console.log('$pushAll provided: ', provided)
                 updated = await UserProfile.findByIdAndUpdate(profileId, { $push: provided }, options).select(keys);
                 break;
             case "DELETE":
@@ -126,7 +126,7 @@ exports.updateProfile = async (req, res, next) => {
             content: updated
         });
     } catch (err) {
-        console.log(err)
+        // console.log(err)
         return res.status(500).json({
             success: false,
             msg: 'Server Error'

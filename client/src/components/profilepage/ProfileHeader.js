@@ -74,9 +74,6 @@ export default function ProfileHeader(props) {
                 Finish Edit
                 <i className="material-icons prefix" ></i>
             </button>
-            <button color="dark" style={{ marginTop: '2rem' }} onClick={onDelete}>
-                Delete Account
-            </button> 
         </div>
     )
 }

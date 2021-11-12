@@ -22,7 +22,8 @@ const initialState = {
     user: {
         id: 0,
         email: "null",
-        name: "null"
+        name: "null",
+        profile: null
     },
     error: {
         msg: null,
