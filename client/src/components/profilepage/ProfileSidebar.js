@@ -30,8 +30,11 @@ export default function ProfileSidebar(props) {
                     <a href="#email"><span className="email">{user.email}</span></a>
                 </div></li>
                 <li><a href={props.path}><i className="material-icons">home</i>Home</a></li>
-                <li><a href={props.path+"/allquiz"}><i className="material-icons">description</i>My Quizzes</a></li>
+                <li><a href={props.path+"/allquiz"}><i className="material-icons">library_books</i>My Quizzes</a></li>
+                <li><a href={props.path+"/allplatforms"}><i className="material-icons">business</i>My Platforms</a></li>
                 <li><a href={props.path+"/achievements"}><i className="material-icons">emoji_events</i>My Achievements</a></li>
+                <li><a href={props.path+"/liked"}><i className="material-icons">thumb_up</i>Liked Quizzes</a></li>
+                <li><a href={props.path+"/history"}><i className="material-icons">history</i>Quiz Hisotry</a></li>
                 <li><a href={props.path+"/subusers"}><i className="material-icons">contact_page</i>Subscribed User</a></li>
                 <li><a href={props.path+"/subplats"}><i className="material-icons">subscriptions</i>Subscribed Platforms</a></li>
                 {/* //<li><a href="/"><i className="material-icons">settings</i>Account Setting</a></li> */}

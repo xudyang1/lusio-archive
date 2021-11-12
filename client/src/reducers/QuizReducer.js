@@ -24,7 +24,7 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         loading: false,
-        quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
+        quiz: action.payload
       }
     case ADD_QUIZ:
       return {
@@ -39,7 +39,7 @@ export default function QuizReducer (state, action) {
     case DELETE_QUIZ:
       return {
         ...state,
-        quiz: state.quizzes.filter(quiz => quiz._id !== action.payload)
+        quiz: action.payload
       };
     case UPDATE_QUIZ:
       return {

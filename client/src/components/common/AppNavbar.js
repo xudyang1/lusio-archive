@@ -14,7 +14,7 @@ import { ProfileContext } from '../../context/ProfileState';
 const AppNavbar = () => {
 
     const { loadUser, isAuthenticated, user } = useContext(AuthContext);
-    const { userProfile, getProfiles } = useContext(ProfileContext)
+    const { userProfile, getProfile } = useContext(ProfileContext)
     //load user
     useEffect(() => {
         loadUser();
