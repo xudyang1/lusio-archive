@@ -5,10 +5,10 @@ import {
     GET_PROFILES,
     GET_PROFILE,
     UPDATE_PROFILE,
-    GET_ERRORS
+    GET_ERRORS,
+    CLEAR_ERRORS
 } from '../types/actionTypes';
 import axios from 'axios';
-import { Axios } from 'axios';
 import { AuthContext, AuthProvider } from './AuthState';
 
 // Initial state
@@ -126,7 +126,13 @@ export const ProfilesProvider = ({ children }) => {
             });
         }
     };
-
+    // clear errors
+    function clearErrors() {
+        dispatch({
+            type: CLEAR_ERRORS
+        });
+        // console.log("Called clearErrors()");
+    };
     /** implemented inside AuthState.js */
     // async function deleteAccount(id) {
     //     try {
@@ -148,6 +154,7 @@ export const ProfilesProvider = ({ children }) => {
         getProfile,
         // addProfile,
         updateProfile,
+        clearErrors,
         ...state
     }}>
         {children}
