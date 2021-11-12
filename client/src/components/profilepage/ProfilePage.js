@@ -32,10 +32,9 @@ export default function ProfilePage() {
     const { profile, getProfile } = useContext(ProfileContext)
 
     useEffect(() => {
-        //loadUser();
-        //getProfile();
+        getProfile();
         //console.log(user.id, id)
-    }, [])
+    }, [isAuthenticated])
 
     // useEffect(()=>{
     //     const options = {

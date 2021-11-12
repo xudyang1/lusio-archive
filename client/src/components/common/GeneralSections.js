@@ -7,7 +7,7 @@ import "../../css/frontpage.css"
 import M from 'materialize-css';
 
 function getCards(t, index, element) {
-    console.log("called getCards with type: ", t)
+    // console.log("called getCards with type: ", t)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={index} name={element[0]} desc={element[1]} /></div>
