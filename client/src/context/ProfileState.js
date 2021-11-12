@@ -49,7 +49,7 @@ export const ProfilesProvider = ({ children }) => {
             });
             // console.log("return: ", res.data.data);
         } catch (err) {
-            console.error(err);
+            // console.error(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
@@ -60,7 +60,8 @@ export const ProfilesProvider = ({ children }) => {
     async function getProfile(id) {
         try {
             dispatch({ type: PROFILES_LOADING });
-            await axios.get(`/api/profiles/profile/${id}`);
+            const res = await axios.get(`/api/profiles/profile/${id}`);
+            console.log(res)
             dispatch({
                 type: GET_PROFILE,
                 payload: id

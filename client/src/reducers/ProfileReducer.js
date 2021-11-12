@@ -24,23 +24,23 @@ export const ProfileReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        profile: state.profiles.filter(profile => profile._id === action.payload)
+        userProfile: action.payload
       };
     case ADD_PROFILE:
       return {
         ...state,
         loading: false,
-        profile: action.payload
+        userProfile: action.payload
       };
     case UPDATE_PROFILE:
       return {
         ...state,
-        profile: action.payload
+        userProfile: action.payload
       };
     case DELETE_ACCOUNT:
       return {
         ...state,
-        profile: state.userProfile.filter(userProfile => userProfile._id !== action.payload)
+        userProfile: null
       };
     case GET_ERRORS:
       return {
