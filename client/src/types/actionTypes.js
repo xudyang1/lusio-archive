@@ -5,13 +5,12 @@ export const ADD_QUIZ = 'ADD_QUIZ';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
 export const UPDATE_QUIZ = 'UPDATE_QUIZ';
 export const GET_QUIZ = 'GET_QUIZ';
-export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
-export const DELETE_FAIL = 'DELETE_FAIL';
 // platform
 export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
-export const GET_PLATFORMS = 'GET_PLATFORMS';
+export const GET_PLATFORM = 'GET_PLATFORM';
 export const ADD_PLATFORM = 'ADD_PLATFORM';
 export const DELETE_PLATFORM = 'DELETE_PLATFORM';
+export const UPDATE_PLATFORM = 'UPDATE_PLATFORM';
 
 // profiles (accounts)
 export const PROFILES_LOADING = 'PROFILES_LOADING';
@@ -32,3 +31,5 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
+export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
+export const DELETE_FAIL = 'DELETE_FAIL';
