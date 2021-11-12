@@ -137,6 +137,57 @@ exports.getUser = async (req, res, next) => {
 };
 
 /**
+ * @desc  Update user account data
+ * @route PATCH api/auth/user/edit
+ * @access  Private
+ * @detail  change username, password, or (email?)
+ *      format: { content: {name | password | (email?): newValue} }
+ *      
+ *      Note: email may have different implementation since we need to verify the email address
+ */
+exports.updateUser = async (req, res, next) => {
+    try {
+        if (!req.body.content) { throw Error('Invalid payload'); }
+        const { name, password, email } = req.body.content;
+        var target = null;
+        if (name) {
+            target = { name };
+        }
+        else if (email) {
+            const user = await UserAccount.findOne({ email });
+            if (user) throw Error('User already exists');
+            target = { email };
+        }
+        else if (password) {
+            const salt = await bcrypt.genSalt(10);
+            if (!salt) { throw Error('Something went wrong with bcrypt'); }
+            const hash = await bcrypt.hash(password, salt);
+            if (!hash) { throw Error('Something went wrong hashing the new password'); }
+            target = { password: hash };
+        }
+        else {
+            throw Error('Invalid payload, update failed');
+        }
+        console.log("target", target);
+        const newUser = await UserAccount.findByIdAndUpdate(req.user.id, { $set: target }, { new: true }).select(['name','email','profile']);
+        console.log(newUser);
+        if (!newUser) { throw Error('Something went wrong updating user account'); }
+        return res.status(200).json({
+            success: true,
+            user: {
+                email: newUser.email,
+                name: newUser.name,
+                profile: newUser.profile
+            }
+        });
+    }
+    catch (err) {
+        res.status(400).json({ msg: err.message, success: false });
+    }
+};
+
+
+/**
  * TODO: discuss about detailed implementations (decrease likes count, remove subscribes?)
  * @desc  Delete an user account
  * @route DELETE api/auth/user/delete
