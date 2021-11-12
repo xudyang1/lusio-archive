@@ -5,18 +5,22 @@ import { PlatformReducer } from "../reducers/PlatformReducer";
 
 const initialState = {
     platofrom: {
-        platform_id: null,
-        platform_name: "",
-        platform_description: "",
-        platform_banner_URL: "",
-        platform_owner: null,
-        platform_admins: [],
-        platform_sections: [],
-        platform_quizzes: [],
-        platform_subs: 0,
+        id: null,
+        name: null,
+        description: null,
+        bannerURI: null,
+        backgroundURI,
+        owner: null,
+        admins: [],
+        quizSections: [],
+        quizzes: [],
+        likes: 0,
+        numSubscribers: 0,
     },
     error: null,
-    loading: true
+    loading: true,
+    // three types: 'GUEST_VIEW' | 'OWNER_VIEW' | 'ADMIN_VIEW' (for platform)
+    viewType: 'GUEST_VIEW' 
 }
 
 export const PlatformContext = createContext(initialState);
@@ -31,7 +35,7 @@ export const PlatformProvider = ({ children }) => {
     //   |_| \___/|___/ \___/
 
     async function getPlatform(id) {
-
+        
     };
 
     async function createPlatform() {
