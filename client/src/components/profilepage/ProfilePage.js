@@ -25,6 +25,8 @@ export default function ProfilePage() {
     const {isAuthenticated, loadUser, user } = useContext(AuthContext)
     const {userProfile, getProfiles} = useContext(ProfileContext)
 
+
+
     useEffect(() => {
         loadUser();
         getProfiles();

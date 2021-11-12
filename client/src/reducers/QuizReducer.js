@@ -28,8 +28,7 @@ export default function QuizReducer (state, action) {
       };
     case DELETE_QUIZ:
       return {
-        ...state,
-        quiz: state._id !== action.payload
+        ...state
       };
     case ADD_QUIZ:
       return {
