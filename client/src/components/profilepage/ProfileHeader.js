@@ -68,7 +68,7 @@ export default function ProfileHeader(props) {
             <h2 className="center">HOME</h2>
             <div className="parallax-container">
                 <div className="parallax">
-                    <img src={state.profileBanner}/>
+                    <img src={bannerURI}/>
                 </div>
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner}/>
