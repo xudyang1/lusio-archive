@@ -1,9 +1,7 @@
 import React, {useContext, useState, useEffect, Component} from 'react';
-import { useRouteMatch } from "react-router-dom";
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
-import {Modal} from 'react-responsive-modal';
-import { UPDATE_PROFILE } from '../../types/actionTypes';
+
 
 class EditQuizContent extends Component{
     static contextType = QuizzesContext;
@@ -31,7 +29,6 @@ class EditQuizContent extends Component{
     
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
-            //const id = quizId.params.id;
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
@@ -63,8 +60,9 @@ class EditQuizContent extends Component{
             isPublished: quiz.isPublished
         });
     }
-    handleDelete = async (deleteQuiz) => {
-        deleteQuiz(this.id);
+    handleDelete = async e => {
+        e.preventDefault();
+        await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
     }
 
@@ -93,11 +91,12 @@ class EditQuizContent extends Component{
         console.log("Current state",this.state);
     }
     handleQuestionRemove = item => {
+        const lastIndex = this.state.questions.length - 1;
         const list = [...this.state.questions];
-        if(list.length > 1){list.splice(item, 1);}
+        const alist = [...this.state.answers];
+        if(list.length > 1){list.splice(item, 1); alist.splice(item, 1);}
         this.setState({questions: list});
-        
-        
+        this.setState({answers: alist})
     }
     questionHandler = (qi, e) => {
         this.state.questions[qi] = e;
@@ -229,8 +228,6 @@ class EditQuizContent extends Component{
     
 
     render(){
-        const { updateQuiz, deleteQuiz } = this.context;
-
             return(
                 <div className="row section" style={{padding: '35px'}}>                
                     <div className="col s6">
@@ -294,8 +291,8 @@ class EditQuizContent extends Component{
                                 <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
                                     Set Score:
                                 </div>
-                                */}
                                 <input className="col s1"></input>
+                                */}
                             </div>
                         )
                     })}
@@ -312,20 +309,11 @@ class EditQuizContent extends Component{
                                 <div className="row">
                                     <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleSave}>Save</a>
                                     <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handlePublish} >Publish</a>
-                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Publish</a>
+                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Unpublish</a>
                                 </div>
-                                <button className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.onOpenModal}>
+                                <button className="waves-effect waves-light btn-small red" style={{margin: "5px"}} onClick={this.handleDelete}>
                                     Delete
                                 </button>
-                                <Modal open={this.state.openModal}>
-                                    <div className="modal-content">
-                                        <h4>Will you really delete this quiz?</h4>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <a className="modal-close waves-effect waves-green btn-flat red" >Yes</a>
-                                        <a className="modal-close waves-effect waves-green btn-flat" onClick={this.onCloseModal}>No</a>
-                                    </div>
-                                </Modal>
                             </div>
                         </div>
                 </div>
