@@ -1,6 +1,8 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
+import { useContext } from "react";
+import { QuizzesContext } from "../../context/QuizState";
 
 function getCards(t, index, element) {
     console.log("called getCards with type: ", t)
@@ -18,8 +20,14 @@ function getCards(t, index, element) {
 
 export default function SectionList(props){
 
+    const {getQuiz} = useContext(QuizzesContext)
+
     const items = props.items ? props.items :
         [["Quiz1", "Description for Q1"], ["Quiz2", "Something Something"], ["Quiz3", "A loooooooooooooooooooooot of Stuff in description"], ["Quiz4", "No Description"], ["Quiz5", "No Description"], ["Quiz6", "No Description"], ["Quiz7", "No Description"], ["Quiz8", "No Description"], ["Quizteye6yuftjguykjuykghkiuhkiugkukg9", "No Description"], ["Quiz103894 037659023465", "No Description"]]
+    items.map(element => {
+        var quiz = getQuiz(element)
+        return [quiz.name, quiz.description]
+    });
     const name = props.name ? props.name : ""
     console.log(props.items)
 

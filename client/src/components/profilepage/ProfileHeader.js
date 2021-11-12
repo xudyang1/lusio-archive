@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext} from "../../context/ProfileState";
 
@@ -19,6 +19,8 @@ export default function ProfileHeader(props) {
 
     const { isAuthenticated, user } = useContext(AuthContext);
     const { updateProfile, deleteAccount } = useContext(ProfileContext);
+
+    const textRef = createRef()
     {/* user.id to be used */}
     const initialState = {
         userId: isAuthenticated ? user.id : "",
@@ -51,7 +53,16 @@ export default function ProfileHeader(props) {
         e.preventDefault();
         const { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat} = state;
         const userProfile = { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat };
-        updateProfile(userProfile);
+        //updateProfile(userProfile);
+
+        console.log(textRef.current.value)
+        updateProfile({
+            mode: "EDIT",
+            profile:{
+                description: textRef.current.value
+            }
+        })
+
     }
     const onDelete = (e) => {
         e.preventDefault();
@@ -68,7 +79,7 @@ export default function ProfileHeader(props) {
             </div>
             <input type="file" name="bannerImage" onChange={onChangeBanner} />
 
-            <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={props.description} size="30" onChange={onChangeDescription} />
+            <textarea ref={textRef} id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" defaultValue={props.description? props.description : ""} size="30"/>
 
             <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
                 Finish Edit
