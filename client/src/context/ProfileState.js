@@ -79,7 +79,6 @@ export const ProfilesProvider = ({ children }) => {
 
     async function getProfile(id) {
         try {
-            dispatch({ type: PROFILES_LOADING });
             const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
             console.log("res", res);
             dispatch({
@@ -94,7 +93,7 @@ export const ProfilesProvider = ({ children }) => {
         }
     };
 
-    // <<<<<<< Dajung
+
     /**
      * @param payload format: 
      *        
@@ -102,7 +101,7 @@ export const ProfilesProvider = ({ children }) => {
      *  Or
      *      {
      *        mode: "ADD" | "DELETE", 
-     *        profile: platformsCreated |quizzesCreated |subscribedUsers | subscribedPlatforms | fans
+     *        profile: subscribedUsers | subscribedPlatforms | fans
      *      }
      * ex. 
      */

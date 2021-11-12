@@ -32,7 +32,7 @@ export default function ProfilePage() {
     const { profile, getProfile } = useContext(ProfileContext)
 
     useEffect(() => {
-        getProfile();
+        getProfile(id);
         //console.log(user.id, id)
     }, [isAuthenticated])
 
@@ -51,7 +51,7 @@ export default function ProfilePage() {
 
     return (
         <div>
-            {(isAuthenticated && user.id == id) ? <ProfileSidebar profileIconURI={profile.profileIcon} leve={profile.level} path={url} /> : <div />}
+            {(isAuthenticated && user.id == id) ? <ProfileSidebar profileIconURI={profile.iconURI} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
                 {/* <ProfileHome profile={profile} /> */}
                 {/* <ProfileHome profile={profile}/> */}
