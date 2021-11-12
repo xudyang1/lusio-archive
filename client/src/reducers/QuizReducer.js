@@ -25,7 +25,7 @@ export default function QuizReducer (state, action) {
         ...state,
         loading: false,
 //<<<<<<< LiuxinLi
-        quiz: action.payload.data
+        quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
       }
 // =======
 //         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
