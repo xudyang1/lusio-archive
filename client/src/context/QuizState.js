@@ -27,7 +27,7 @@ const initialState = {
     created: "",
     EXP: 0,
     questions:[],
-    answers: [],
+    answers: [[""],[""],[""],[""],[""]],
     isPublished: false
   },
   error: null,

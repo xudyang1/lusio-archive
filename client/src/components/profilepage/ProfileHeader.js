@@ -46,6 +46,7 @@ export default function ProfileHeader(props) {
     }
     const onChangeDescription = (e) => {
         // setState({ ...state, description : e.target.value });
+        setState({description: e.target.value});
     }
     const onSubmit = (e) => {
         e.preventDefault();

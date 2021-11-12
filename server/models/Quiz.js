@@ -70,7 +70,7 @@ const QuizSchema = new Schema({
         required: [true]
     },
     answers: {
-        type: [String],
+        type: [[String],[String],[String],[String],[String]],
         required: [true]
     },
     isPublished: {

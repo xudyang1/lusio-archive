@@ -20,7 +20,7 @@ class EditQuizContent extends Component{
             created: "",
             EXP: 0,
             questions:[],
-            answers: [],
+            answers: [[""],[""],[""],[""],[""]],
             isPublished: false,
             openModal: false
         };
@@ -71,6 +71,7 @@ class EditQuizContent extends Component{
     descriptionHandler = (e) => {
         this.setState({description: e.target.value});
     }
+    /*
     handleAddAnswer = () => {
         this.setState({answers: [...this.state.answers, ""]});
     }
@@ -79,6 +80,7 @@ class EditQuizContent extends Component{
         if(list.length > 1){list.splice(item, 1);}
         this.setState({answers: list});
     }
+    */
     handleAddQuestion = () => {
         this.setState({questions: [...this.state.questions, ""]});
     }
@@ -87,7 +89,9 @@ class EditQuizContent extends Component{
         if(list.length > 1){list.splice(item, 1);}
         this.setState({questions: list});
     }
-    questionHandler = (e) => {
+    questionHandler = (qi, e) => {
+        this.state.questions[qi] = e;
+        /*
         const l = this.state.questions.length;
         if (l != 1 ){
             this.state.questions[l-1] = e.target.value;
@@ -95,11 +99,14 @@ class EditQuizContent extends Component{
         else{
             this.state.questions[0] = e.target.value;
         }
+        */
         console.log(this.state.questions);
     }
     //+answers would be nested as it corresponds to different questions
     //so answerHandler would be changed 
-    answerHandler = (e) => {
+    answerHandler = (qi, ai, e) => {
+        this.state.answers[qi][ai] = e;
+        /*
         const l = this.state.answers.length;
         if (l != 1 ){
             this.state.answers[l-1] = e.target.value;
@@ -107,7 +114,8 @@ class EditQuizContent extends Component{
         else{
             this.state.answers[0] = e.target.value;
         }
-        console.log(this.state.answers);
+        */
+        console.log("ANSWERS: " + this.state.answers);
     }
     timedHandler = () => {
         this.state.timed = !this.state.timed;
@@ -254,25 +262,44 @@ class EditQuizContent extends Component{
                             </p>
                         </form>
                     </div>
-                    {this.state.questions.map((q) => {
+                    {this.state.questions.map((q, qi) => {
+                        //let answerList = this.state.answers.slice(qi, qi+1) + '';
+                        //let answerArray = answerList.split('|');
                         return(
                             <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
-                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={this.questionHandler}/>
+                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q}/>
                                 <div className="col s6" style={{padding: '20px'}}>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.answers[qi][0]}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 1, e.target.value)} defaultValue={this.state.answers[qi][1]}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 2, e.target.value)} defaultValue={this.state.answers[qi][2]}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 3, e.target.value)} defaultValue={this.state.answers[qi][3]}/>
+                                </div>
+                                    {/*
                                     <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} ><i className="material-icons" onClick={this.handleAddAnswer}>add</i></button>
                                     <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}}><i className="material-icons" onClick={this.handleAnswerRemove}>remove</i></button>
+                                    
                                     {this.state.answers.map((a) => {
                                         return(
                                             <div className="text-box">
-                                                <input name="answer" placeholder="Answer choice" onChange={this.answerHandler}/>
+                                                <input name="answer" placeholder="Answer choice" onChange={this.answerHandler} defaultValue={a}/>
                                             </div>
                                         )
                                     })}
+                                    */}
                                 </div>
+                                {/*}
                                 <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
                                     Set Score:
                                 </div>
                                 <input className="col s1"></input>
+                                */}
                             </div>
                         )
                     })}
@@ -289,9 +316,9 @@ class EditQuizContent extends Component{
                                 <div className="row">
                                     <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleSave}>Save</a>
                                     <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handlePublish} >Publish</a>
-                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Publish</a>
+                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Unpublish</a>
                                 </div>
-                                <button className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleDelete}>
+                                <button className="waves-effect waves-light btn-small red" style={{margin: "5px"}} onClick={this.handleDelete}>
                                     Delete
                                 </button>
                             </div>
