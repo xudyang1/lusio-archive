@@ -29,11 +29,11 @@ export default function ProfilePage() {
     const { url, path } = useRouteMatch();
 
     const { isAuthenticated, loadUser, user } = useContext(AuthContext)
-    const { profile, getProfiles } = useContext(ProfileContext)
+    const { profile, getProfile } = useContext(ProfileContext)
 
     useEffect(() => {
-        loadUser();
-        getProfiles();
+        //loadUser();
+        //getProfile();
         //console.log(user.id, id)
     }, [])
 
@@ -54,8 +54,6 @@ export default function ProfilePage() {
         <div>
             {(isAuthenticated && user.id == id) ? <ProfileSidebar profileIconURI={profile.profileIcon} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
-                {/* <ProfileHome profile={profile} /> */}
-                {/* <ProfileHome profile={profile}/> */}
                 <Switch>
                     <Route exact path={url}><ProfileHome profile={profile} /></Route>
                     <Route path={url + "/allquiz"}><SectionList name={"All Quizzes"} type={QUIZ_CARD}/></Route>

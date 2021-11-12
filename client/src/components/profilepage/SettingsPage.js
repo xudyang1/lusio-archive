@@ -1,13 +1,15 @@
 import { useContext, useEffect } from "react";
+import { Link, useHistory} from "react-router-dom";
 import { AuthContext } from "../../context/AuthState";
 
 export default function SettingsPage() {
     const { deleteAccount, isAuthenticated } = useContext(AuthContext);
+    const history = useHistory()
 
-    // const onDelete = (e) => {
-    //     e.preventDefault();
-    //     deleteAccount();
-    // };
+    const onDelete = (e) => {
+        deleteAccount();
+        history.push('/')
+    };
     return (
         <div>
             {isAuthenticated?
@@ -17,7 +19,7 @@ export default function SettingsPage() {
                         <h4>Settings</h4>
                     </div>
                     <div className="valign-wrapper center">
-                        <button color="dark" style={{ marginTop: '2rem' }} onClick={() => deleteAccount()}>
+                        <button color="dark" style={{ marginTop: '2rem' }} onClick={onDelete}>
                             Delete Account
                         </button>
                     </div>

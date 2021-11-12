@@ -13,7 +13,7 @@ export default function ProfileSidebar(props) {
     const { loadUser, isAuthenticated, user } = useContext(AuthContext)
 
     useEffect(() => {
-        loadUser();
+        //loadUser();
     }, []);
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems, {});
