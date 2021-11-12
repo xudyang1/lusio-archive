@@ -1,9 +1,7 @@
 import React, {useContext, useState, useEffect, Component} from 'react';
-import { useRouteMatch } from "react-router-dom";
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
-import {Modal} from 'react-responsive-modal';
-import { UPDATE_PROFILE } from '../../types/actionTypes';
+
 
 class EditQuizContent extends Component{
     static contextType = QuizzesContext;
@@ -23,7 +21,7 @@ class EditQuizContent extends Component{
             created: "",
             EXP: 0,
             questions:[],
-            answers: [],
+            answers: [[""],[""],[""],[""],[""]],
             isPublished: false,
             openModal: false
         };
@@ -31,7 +29,6 @@ class EditQuizContent extends Component{
     
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
-            //const id = quizId.params.id;
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
@@ -63,8 +60,9 @@ class EditQuizContent extends Component{
             isPublished: quiz.isPublished
         });
     }
-    handleDelete = async (deleteQuiz) => {
-        deleteQuiz(this.id);
+    handleDelete = async e => {
+        e.preventDefault();
+        await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
     }
 
@@ -74,23 +72,35 @@ class EditQuizContent extends Component{
     descriptionHandler = (e) => {
         this.setState({description: e.target.value});
     }
+    /*
     handleAddAnswer = () => {
         this.setState({answers: [...this.state.answers, ""]});
     }
     handleAnswerRemove = item => {
+        //const list = [...this.state.answers];
+        //if(list.length > 1){list.splice(item, 1);}
+        //this.setState({answers: list});
         const list = [...this.state.answers];
         if(list.length > 1){list.splice(item, 1);}
         this.setState({answers: list});
+        
     }
+    */
     handleAddQuestion = () => {
         this.setState({questions: [...this.state.questions, ""]});
+        console.log("Current state",this.state);
     }
     handleQuestionRemove = item => {
+        const lastIndex = this.state.questions.length - 1;
         const list = [...this.state.questions];
-        if(list.length > 1){list.splice(item, 1);}
+        const alist = [...this.state.answers];
+        if(list.length > 1){list.splice(item, 1); alist.splice(item, 1);}
         this.setState({questions: list});
+        this.setState({answers: alist})
     }
-    questionHandler = (e) => {
+    questionHandler = (qi, e) => {
+        this.state.questions[qi] = e;
+        /*
         const l = this.state.questions.length;
         if (l != 1 ){
             this.state.questions[l-1] = e.target.value;
@@ -98,34 +108,33 @@ class EditQuizContent extends Component{
         else{
             this.state.questions[0] = e.target.value;
         }
+        */
         console.log(this.state.questions);
     }
     //+answers would be nested as it corresponds to different questions
     //so answerHandler would be changed 
-    answerHandler = (e) => {
-        const l = this.state.answers.length;
-        if (l != 1 ){
-            this.state.answers[l-1] = e.target.value;
-        }
-        else{
-            this.state.answers[0] = e.target.value;
-        }
+    answerHandler = (qi,ai,e) => {
+        this.state.answers[qi][ai] = e;
         console.log(this.state.answers);
     }
     timedHandler = () => {
         this.state.timed = !this.state.timed;
+        this.setState({timed: this.state.timed});
         console.log(this.state);
     }
     retakeHandler = () => {
         this.state.retake = !this.state.retake;
+        this.setState({retake: this.state.retake});
         console.log(this.state);
     }
     showQHandler = () => {
         this.state.showQuestion = !this.state.showQuestion;
+        this.setState({showQuestion: this.state.showQuestion});
         console.log(this.state);
     }
     showAHandler = () => {
         this.state.showAnswer = !this.state.showAnswer;
+        this.setState({showAnswer: this.state.showAnswer});
         console.log(this.state);
     }
 
@@ -219,8 +228,6 @@ class EditQuizContent extends Component{
     
 
     render(){
-        const { updateQuiz, deleteQuiz } = this.context;
-
             return(
                 <div className="row section" style={{padding: '35px'}}>                
                     <div className="col s6">
@@ -235,49 +242,57 @@ class EditQuizContent extends Component{
                         <form action="#">
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.timed} onClick={this.timedHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.timed} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.retake} onClick={this.retakeHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.retake} onClick={this.retakeHandler}/>
                                     <span>Allow retake</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showQuestion} onClick={this.showQHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showQuestion} onClick={this.showQHandler}/>
                                     <span>Show questions one at a time</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" className="filled-in" defaultChecked={this.state.showAnswer} onClick={this.showAHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnswer} onClick={this.showAHandler}/>
                                     <span>Show answer after submission</span>
                                 </label>
                             </p>
                         </form>
                     </div>
-                    {this.state.questions.map((q) => {
+                    {this.state.questions.map((q, qi) => {
                         return(
                             <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
-                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={this.questionHandler}/>
+                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q}/>
                                 <div className="col s6" style={{padding: '20px'}}>
-                                    <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} ><i className="material-icons" onClick={this.handleAddAnswer}>add</i></button>
-                                    <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}}><i className="material-icons" onClick={this.handleAnswerRemove}>remove</i></button>
-                                    {this.state.answers.map((a) => {
-                                        return(
-                                            <div className="text-box">
-                                                <input name="answer" placeholder="Answer choice" onChange={this.answerHandler}/>
-                                            </div>
-                                        )
-                                    })}
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.answers[qi][0]}/>
                                 </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 1, e.target.value)} defaultValue={this.state.answers[qi][1]}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 2, e.target.value)} defaultValue={this.state.answers[qi][2]}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 3, e.target.value)} defaultValue={this.state.answers[qi][3]}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 4, e.target.value)} defaultValue={this.state.answers[qi][4]}/>
+                                </div>
+                                </div>
+                                {/*
                                 <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
                                     Set Score:
                                 </div>
                                 <input className="col s1"></input>
+                                */}
                             </div>
                         )
                     })}
@@ -294,20 +309,11 @@ class EditQuizContent extends Component{
                                 <div className="row">
                                     <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleSave}>Save</a>
                                     <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handlePublish} >Publish</a>
-                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Publish</a>
+                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Unpublish</a>
                                 </div>
-                                <button className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.onOpenModal}>
+                                <button className="waves-effect waves-light btn-small red" style={{margin: "5px"}} onClick={this.handleDelete}>
                                     Delete
                                 </button>
-                                <Modal open={this.state.openModal}>
-                                    <div className="modal-content">
-                                        <h4>Will you really delete this quiz?</h4>
-                                    </div>
-                                    <div className="modal-footer">
-                                        <a className="modal-close waves-effect waves-green btn-flat red" >Yes</a>
-                                        <a className="modal-close waves-effect waves-green btn-flat" onClick={this.onCloseModal}>No</a>
-                                    </div>
-                                </Modal>
                             </div>
                         </div>
                 </div>
