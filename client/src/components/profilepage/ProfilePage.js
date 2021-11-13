@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
+import { Link, Route, Switch } from "react-router-dom";
 import ProfileSidebar from './ProfileSidebar';
 import ProfileHeader from './ProfileHeader';
 
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 
-import { useParams } from 'react-router';
+import { useParams, useRouteMatch } from 'react-router';
 import { ProfileContext } from '../../context/ProfileState';
 import GeneralSections from '../common/GeneralSections';
-import { ACHIEVEMENT_CARD, QUIZ_CARD } from '../../types/cardTypes';
+
 
 import M from 'materialize-css';
+import SectionList from '../common/SectionList';
+import ProfileHome from './ProfileHome';
+import SettingsPage from './SettingsPage';
+import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from '../../types/cardTypes';
 
 const s = {
     display: "flex",
@@ -20,39 +25,34 @@ const s = {
 }
 
 export default function ProfilePage() {
-    const {id} = useParams();
+    const { id } = useParams();
+    const { url, path } = useRouteMatch();
 
-    const {isAuthenticated, loadUser, user } = useContext(AuthContext)
-    const {userProfile, getProfiles} = useContext(ProfileContext)
+    const { isAuthenticated, loadUser, user } = useContext(AuthContext)
+    const { profile, getProfile, viewType } = useContext(ProfileContext)
 
 
 
     useEffect(() => {
-        loadUser();
-        getProfiles();
+        //getProfile(id);
         //console.log(user.id, id)
-    }, [])
+    }, [isAuthenticated])
 
-    // useEffect(()=>{
-    //     const options = {
-    //         numVisible: 8,
-    //         dist: -50,
-    //         padding: 100,
-    //         indicators: true,
-    //         shift: 100,
-    //     }
-    //     var elems = document.querySelectorAll('.carousel');
-    //     var instances = M.Carousel.init(elems, options);
-    // })
-
-    
     return (
         <div>
-            {(isAuthenticated && user.id == id)? <ProfileSidebar profileIconURI={userProfile.profileIcon} leve={userProfile.level}/> : <div/>}
+            {(viewType === "OWNER_VIEW") ? <ProfileSidebar profileIconURI={profile.iconURI} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
-                <ProfileHeader name={userProfile.name} description={userProfile.description} banner={userProfile.profileBanner}/>
-                <GeneralSections items={userProfile.quizzes} type={QUIZ_CARD} name={"My Quizzes"}/>
-                <GeneralSections items={userProfile.achievements} type={ACHIEVEMENT_CARD} name={"Achivements"}/>
+                <Switch>
+                    <Route exact path={url}><ProfileHome profile={profile} name={user.name}/></Route>
+                    <Route path={url + "/allquiz"}><SectionList items={profile.quizzesCreated} name={"All Quizzes"} type={QUIZ_CARD}/></Route>
+                    <Route path={url + "/allplatforms"}><SectionList items={profile.platformsCreated} name={"Participated Platforms"} type={SUB_PLAT_CARD}/></Route>
+                    <Route path={url + "/achievements"}><SectionList items={profile.achievements} name={"Achievements"} type={ACHIEVEMENT_CARD}/></Route>
+                    <Route path={url + "/subusers"}><SectionList items={profile.subscribedUsers} name={"Subscribed Users"} type={SUB_USER_CARD}/></Route>
+                    <Route path={url + "/subplats"}><SectionList items={profile.subscribedPlatforms} name={"Subscribed Platforms"} type={SUB_PLAT_CARD}/></Route>
+                    <Route path={url + "/liked"}><SectionList items={profile.likedQuizzes} name={"Liked Quizzes"} type={QUIZ_CARD}/></Route>
+                    <Route path={url + "/history"}><SectionList items={profile.quizzesTaken} name={"Quiz History"} type={QUIZ_CARD}/></Route>
+                    <Route path={url + "/accountsetting"}><SettingsPage /></Route>
+                </Switch>
             </div>
         </div>
     )

@@ -3,7 +3,6 @@ import { ADD_PROFILE,
   GET_PROFILE, 
   UPDATE_PROFILE, 
   PROFILES_LOADING, 
-  DELETE_ACCOUNT, 
   GET_ERRORS, 
   CLEAR_ERRORS } from "../types/actionTypes";
 
@@ -18,30 +17,31 @@ export const ProfileReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        userProfile: action.payload
+        profile: action.payload.profile
       };
     case GET_PROFILE:
       return {
         ...state,
         loading: false,
-        profile: state.profiles.filter(profile => profile._id === action.payload)
+        profile: action.payload.profile,
+        viewType: action.payload.viewType
       };
-    case ADD_PROFILE:
-      return {
-        ...state,
-        loading: false,
-        profile: action.payload
-      };
+    // case ADD_PROFILE:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     userProfile: action.payload
+    //   };
     case UPDATE_PROFILE:
       return {
         ...state,
-        profile: action.payload
+        profile: action.payload.profile
       };
-    case DELETE_ACCOUNT:
-      return {
-        ...state,
-        profile: state.userProfile.filter(userProfile => userProfile._id !== action.payload)
-      };
+    // case DELETE_ACCOUNT:
+    //   return {
+    //     ...state,
+    //     userProfile: null
+    //   };
     case GET_ERRORS:
       return {
         ...state,

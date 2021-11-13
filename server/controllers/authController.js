@@ -122,12 +122,13 @@ exports.getUser = async (req, res, next) => {
     try {
         const user = await UserAccount.findById(req.user.id);
         if (!user) throw Error('User does not exist');
-        console.log("see if password is loaded: ", user);
+        // console.log("see if password is loaded: ", user);
         res.json({
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                profile: user.profile
             }
         });
     } catch (err) {
@@ -163,7 +164,8 @@ exports.deleteUser = async (req, res, next) => {
             user: {
                 id: removedUser._id,
                 name: removedUser.name,
-                email: removedUser.email
+                email: removedUser.email,
+                profile: removedUser.profile
             },
             success: true
         });

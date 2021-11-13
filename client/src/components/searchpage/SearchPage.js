@@ -1,55 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import 'materialize-css';
+import SectionList from '../common/SectionList';
+import { QUIZ_CARD } from '../../types/cardTypes';
 
 // sample data
 const quiz = [
-    {id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22')},
-    {id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platform_id: '2', likes: 1, created: new Date('2010/01/21')},
-    {id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platform_id: '2', likes: 10, created: new Date('2021/10/22')},
-    {id: '4', name: 'Qtop', description: 'Description for Q4', author: 'desktop', platform_id: '3', likes: 0, created: new Date('2021/01/22')},
-    {id: '5', name: 'Q25', description: 'Description for Q25', author: 'shinetop', platform_id: '3', likes: 200, created: new Date('2021/01/22')}
+    { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
+    { id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platform_id: '2', likes: 1, created: new Date('2010/01/21') },
+    { id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platform_id: '2', likes: 10, created: new Date('2021/10/22') },
+    { id: '4', name: 'Qtop', description: 'Description for Q4', author: 'desktop', platform_id: '3', likes: 0, created: new Date('2021/01/22') },
+    { id: '5', name: 'Q25', description: 'Description for Q25', author: 'shinetop', platform_id: '3', likes: 200, created: new Date('2021/01/22') }
 ]
 const platform = [
-    {id: '1', name: 'ABC'},
-    {id: '2', name: 'MoMA'},
-    {id: '3', name: 'Shuttle'}
+    { id: '1', name: 'ABC' },
+    { id: '2', name: 'MoMA' },
+    { id: '3', name: 'Shuttle' }
 ]
 
 
 
-function SearchPage () {
-    function findPlatformName(a){
+function SearchPage() {
+    function findPlatformName(a) {
         const platf = platform.find(b => b.id === a.platform_id);
         return platf.name;
     }
     const { search } = window.location;
     const filterQuizzes = (quiz, query, filter) => {
-        if (!query){
+        if (!query) {
             return quiz;
         }
-        if(filter === 'all'){
+        if (filter === 'all') {
             return (
                 quiz.filter((quiz) => {
                     return (quiz.name.toLowerCase() + quiz.author.toLowerCase() + findPlatformName(quiz).toLowerCase()).includes(query.toLowerCase());
-            }));
+                }));
         }
-        else if (filter === 'quiz'){
+        else if (filter === 'quiz') {
             return (
                 quiz.filter((quiz) => {
                     return (quiz.name.toLowerCase()).includes(query.toLowerCase());
-            }));
+                }));
         }
-        else if (filter === 'platform'){
+        else if (filter === 'platform') {
             return (
                 quiz.filter((quiz) => {
                     return (findPlatformName(quiz).toLowerCase()).includes(query.toLowerCase());
-            }));
+                }));
         }
-        else{
+        else {
             return (
                 quiz.filter((quiz) => {
                     return (quiz.author.toLowerCase()).includes(query.toLowerCase());
-            }));
+                }));
         }
     };
     const query = new URLSearchParams(search).get('search');
@@ -69,8 +71,8 @@ function SearchPage () {
         };
         sortArray(sortType, filterType);
     }, [sortType, filterType]);
-    
-    return(
+
+    return (
         <div>
             <div className="row">
                 <div className="input-field col s2">
@@ -91,20 +93,19 @@ function SearchPage () {
                 </div>
             </div>
             <div>
-                {data.length > 0 ? (
-                    data.map(quiz => (
-                        <div key={quiz.id}>
-                            <div>{`Quiz: ${quiz.name}`}</div>
-                            <div>{`Description: ${quiz.description}`}</div>
-                            <div>{`Author: ${quiz.author}`}</div>
-                            <div>{`Platform: ${findPlatformName(quiz)}`}</div>
-                            <div>{`Created: ${quiz.created}`}</div>
-                            <div>{`Likes: ${quiz.likes}`}</div>
-                            <br></br>
-                        </div>
-                    ))) : (
-                        <div>Sorry, No Results Found</div>
-                    )
+                {data.length > 0 ?
+                    // data.map(quiz => (
+                    //     <div key={quiz.id}>
+                    //         <div>{`Quiz: ${quiz.name}`}</div>
+                    //         <div>{`Description: ${quiz.description}`}</div>
+                    //         <div>{`Author: ${quiz.author}`}</div>
+                    //         <div>{`Platform: ${findPlatformName(quiz)}`}</div>
+                    //         <div>{`Created: ${quiz.created}`}</div>
+                    //         <div>{`Likes: ${quiz.likes}`}</div>
+                    //         <br></br>
+                    //     </div>
+                    // ))) 
+                    (<SectionList items={data} type={QUIZ_CARD} name={"Search Results: "+data.length}/>) : (<div>Sorry, No Results Found</div>)
                 }
             </div>
         </div>

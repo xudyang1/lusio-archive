@@ -9,6 +9,7 @@ import { AuthContext } from '../../context/AuthState';
 import { RegisterModal } from '../auth/RegisterModal';
 import { Logout } from '../auth/Logout';
 import AccountProfileButton from './AccountProfileButton';
+import { ProfileContext } from '../../context/ProfileState';
 
 const AppNavbar = () => {
 
@@ -18,9 +19,9 @@ const AppNavbar = () => {
         loadUser();
     }, []);
 
-    const clickMe = (e) => {
-        console.log(user)
-    }
+    // const clickMe = (e) => {
+    //     console.log(user)
+    // }
 
     return (
         <div className="">

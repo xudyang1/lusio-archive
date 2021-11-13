@@ -19,7 +19,7 @@ const Schema = mongoose.Schema;
 // >>>>>>> main
 const QuizSchema = new Schema({
     userId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: [true]
     },
     name: {

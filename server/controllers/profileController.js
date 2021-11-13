@@ -1,5 +1,6 @@
 const UserAccount = require('../models/UserAccount');
 const UserProfile = require('../models/UserProfile');
+const { dropEntries, selectEntries, nonNullJson } = require('../util/jsonTool');
 
 /**
  * TODO: 
@@ -11,22 +12,27 @@ const UserProfile = require('../models/UserProfile');
  */
 exports.getProfile = async (req, res, next) => {
     try {
-        // don't send owner id 
-        const selectedProfile = await UserProfile.findById(req.params.profileId).select('-owner');
-
-        console.log("profile doc: ", selectedProfile);
+        const selectedProfile = await UserProfile.findById(req.params.profileId);
+        // console.log("profile doc: ", selectedProfile);
         if (!selectedProfile) {
             return res.status(404).json({
                 success: false,
                 msg: 'The profile does not exist.'
             });
         }
+        // get user name
+        const user = await UserAccount.findById(selectedProfile.owner).select('name');
 
+        // filter owner
+        var output = dropEntries(selectedProfile, 'owner');
+        // add user name info
+        output.name = user.name;
         return res.status(200).json({
-            type: req.viewType,
-            profile: selectedProfile
+            viewType: req.viewType,
+            profile: output
         });
     } catch (err) {
+        console.log(err);
         return res.status(500).json({
             success: false,
             msg: 'Server Error'
@@ -60,14 +66,14 @@ exports.getProfile = async (req, res, next) => {
 exports.updateProfile = async (req, res, next) => {
     try {
         // Note, to verify user id, use req.user.id rather than req.params.profileId
-        
-        if(!req.body.profile){
+
+        if (!req.body.profile) {
             return res.status(400).json({
                 success: false,
                 msg: 'Invalid payload, nothing is updated'
             });
         }
-        
+
         // destructure
         const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
         const MODE = req.body.mode;
@@ -83,14 +89,15 @@ exports.updateProfile = async (req, res, next) => {
         switch (MODE) {
             case "EDIT":
                 provided = { description, iconURI, bannerURI };
+                provided = nonNullJson(provided);
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(profileId, provided, options).select(keys);
-                console.log("updated", updated);
+                // console.log("updated", updated);
                 break;
             case "ADD":
                 provided = { platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans };
                 keys = Object.keys(provided);
-                console.log('$pushAll provided: ', provided)
+                // console.log('$pushAll provided: ', provided)
                 updated = await UserProfile.findByIdAndUpdate(profileId, { $push: provided }, options).select(keys);
                 break;
             case "DELETE":
@@ -126,7 +133,7 @@ exports.updateProfile = async (req, res, next) => {
             content: updated
         });
     } catch (err) {
-        console.log(err)
+        // console.log(err)
         return res.status(500).json({
             success: false,
             msg: 'Server Error'
