@@ -20,20 +20,20 @@ const initialState = {
         userId: null,
         name: "",
         description: "",
-        platformId: "", //Needs update
+        //platformId: "", //Needs update
         timed: false,
-        time: 5, // Needs update
+        //time: 5, // Needs update
         retake: false,
         showQuestion: false,
         showAnswer: false,
         likes: 0,
-        plays: 0, // Needs update
+        //plays: 0, // Needs update
         created: "",
         EXP: 0,
         questions: [],
-        answers: [],
-        correctAnswers: [], // Needs update
-        scoreboard: [], //Needsupdate
+        answers: [[""],[""],[""],[""],[""]],
+        //correctAnswers: [], // Needs update
+        //scoreboard: [], //Needsupdate
         isPublished: false
     },
     error: null,

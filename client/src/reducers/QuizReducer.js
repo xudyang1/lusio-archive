@@ -18,7 +18,7 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         loading: false,
-        quizzes: state.quizzes.filter(quiz => quiz._id === action.payload)
+        quizzes: action.payload
       };
     case GET_QUIZ:
       return {
@@ -32,7 +32,8 @@ export default function QuizReducer (state, action) {
 //       };
     case DELETE_QUIZ:
       return {
-        ...state
+        ...state,
+        quiz: state._id !== action.payload
       };
 //>>>>>>> main
     case ADD_QUIZ:
@@ -52,11 +53,6 @@ export default function QuizReducer (state, action) {
 //         quiz: action.payload
 // =======
 // >>>>>>> main
-      };
-    case UPDATE_QUIZ:
-      return {
-        ...state,
-        transactions: [...state.quizzes, action.payload]
       };
     case GET_ERRORS:
       return {

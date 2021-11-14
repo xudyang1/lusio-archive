@@ -146,7 +146,7 @@ export const ProfilesProvider = ({ children }) => {
     return (<ProfileContext.Provider value={{
         getProfiles,
         getProfile,
-        // addProfile,
+        //addProfile,
         updateProfile,
         clearErrors,
         ...state

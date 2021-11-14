@@ -48,7 +48,7 @@ export default function ProfileHeader(props) {
     const onChangeBanner = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
-            setBanner(URL.createObjectURL(img));
+            setState({profileBanner : URL.createObjectURL(img)});
         }
     }
     const onChangeDescription = (e) => {
