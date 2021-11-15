@@ -12,6 +12,17 @@ class EditQuizContent extends Component{
             id: "",
             userId: "",
             name: "",
+            author: "",
+            description: "",
+            questions: [], 
+            likes: 0,
+            isPublished: false,
+            openModal: false
+        };
+        /*this.state = {
+            id: "",
+            userId: "",
+            name: "",
             description: "",
             timed: false, 
             retake: false, 
@@ -25,6 +36,7 @@ class EditQuizContent extends Component{
             isPublished: false,
             openModal: false
         };
+        */
     }
     
     getItem = async (id, getQuizzes) => {
@@ -43,7 +55,31 @@ class EditQuizContent extends Component{
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        this.setState({
+        this.setState = {
+            id: "",
+            userId: "",
+            name: "",
+            author: "",
+            description: "",
+            questions: [], 
+            likes: 0,
+            isPublished: false,
+            openModal: false
+        };
+        /*
+        this.setState = {
+            id: quiz.id,
+            userId: quiz.userId,
+            name: quiz.name,
+            author: quiz.author,
+            description: quiz.description,
+            questions: quiz.questions, 
+            likes: quiz.likes,
+            isPublished: quiz.isPublished,
+            openModal: false
+        };
+        */
+        /*this.setState({
             id: quiz._id,
             userId: quiz.userId,
             name: quiz.name,
@@ -59,6 +95,7 @@ class EditQuizContent extends Component{
             answers: quiz.answers,
             isPublished: quiz.isPublished
         });
+        */
     }
     handleDelete = async e => {
         e.preventDefault();
@@ -113,6 +150,7 @@ class EditQuizContent extends Component{
     }
     //+answers would be nested as it corresponds to different questions
     //so answerHandler would be changed 
+    /*
     answerHandler = (qi,ai,e) => {
         this.state.answers[qi][ai] = e;
         console.log(this.state.answers);
@@ -138,12 +176,25 @@ class EditQuizContent extends Component{
         console.log(this.state);
     }
 
+    */
 
     handleSave = async e => {
         e.preventDefault();
         console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
+        const updateFQuiz = {
+            id: this.state.id,
+            userId: this.state.userId,
+            name: this.state.name,
+            author: this.state.author,
+            description: this.state.description,
+            questions: this.state.questions, 
+            likes: this.state.likes,
+            isPublished: this.state.isPublished
+        };
+        updateQuiz(updateFQuiz);
+        /*
         const updateFQuiz = {
             id: this.state.id, 
             userId: this.state.userId,
@@ -160,7 +211,8 @@ class EditQuizContent extends Component{
             answers: this.state.answers,
             isPublished: this.state.isPublished    
         }
-        updateQuiz(updateFQuiz);
+        */
+        
     }
     handlePublish = (e) => {
         e.preventDefault();
@@ -169,21 +221,15 @@ class EditQuizContent extends Component{
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
-            id: this.state.id, 
+            id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
+            author: this.state.author,
             description: this.state.description,
-            timed: this.state.timed, 
-            retake: this.state.retake, 
-            showQuestion: this.state.showQuestion, 
-            showAnswer: this.state.showAnswer,
+            questions: this.state.questions, 
             likes: this.state.likes,
-            created: this.state.created,
-            EXP: this.state.EXP,
-            questions: this.state.questions,
-            answers: this.state.answers,
-            isPublished: this.state.isPublished    
-        }
+            isPublished: this.state.isPublished
+        };
         updateQuiz(updateFQuiz);
         
     }
@@ -194,21 +240,15 @@ class EditQuizContent extends Component{
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
-            id: this.state.id, 
+            id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
+            author: this.state.author,
             description: this.state.description,
-            timed: this.state.timed, 
-            retake: this.state.retake, 
-            showQuestion: this.state.showQuestion, 
-            showAnswer: this.state.showAnswer,
+            questions: this.state.questions, 
             likes: this.state.likes,
-            created: this.state.created,
-            EXP: this.state.EXP,
-            questions: this.state.questions,
-            answers: this.state.answers,
-            isPublished: this.state.isPublished    
-        }
+            isPublished: this.state.isPublished
+        };
         updateQuiz(updateFQuiz);
     }
     
@@ -266,6 +306,7 @@ class EditQuizContent extends Component{
                             </p>
                         </form>
                     </div>
+                    {/*
                     {this.state.questions.map((q, qi) => {
                         return(
                             <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
@@ -287,15 +328,16 @@ class EditQuizContent extends Component{
                                     <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 4, e.target.value)} defaultValue={this.state.answers[qi][4]}/>
                                 </div>
                                 </div>
-                                {/*
+                                
                                 <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
                                     Set Score:
                                 </div>
                                 <input className="col s1"></input>
-                                */}
+                                
                             </div>
                         )
-                    })}
+                    })} 
+                    */}
                     <div className="section col s12" style={{padding: "20px"}}>
                             <div className="col s4">
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Undo</a>

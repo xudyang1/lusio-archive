@@ -1,4 +1,6 @@
+const { findById } = require('../models/Quiz');
 const Quiz = require('../models/Quiz');
+//const tmpQuiz = require('../models/tmpQuiz2');
 
 // TODO: modify this sample later 
 // @desc    Get all quizzes
@@ -47,46 +49,91 @@ exports.getQuiz = async (req, res, next) => {
 // @access  Public
 exports.addQuiz = async (req, res, next) => {
     try {
+        const dataA = [];
+        const dataQ = [];
+        
+        const questionsToPut = req.body.questions;
+        questionsToPut.forEach((q) => {
+            const answersToPut = q.choices; 
+            answersToPut.forEach((a) => {
+                dataA.push({
+                    index: a.index,
+                    content: a.content
+                });
+            });
+            dataQ.push({
+                title: q.title,
+                timedOption: q.timedOption,
+                time: q.time,
+                retakeOption: q.retakeOption,
+                choices: dataA,
+                answerKey: q.answerKey,
+                score: q.score
+            });      
+        });
+        
         const newQuiz = new Quiz({
             userId: req.body.userId,
             name: req.body.name,
+            author: req.body.author,
             description: req.body.description,
-            timed: req.body.timed,
-            retake: req.body.retake,
-            showQuestion: req.body.showQuestion,
-            showAnswer: req.body.showAnswer,
+            questions: dataQ,
             likes: req.body.likes,
-            created: req.body.created,
-            EXP: req.body.EXP,
-            questions: req.body.questions,
-            answers: req.body.answers,
             isPublished: req.body.isPublished
         });
+        
         const savedQuiz = await newQuiz.save();
+        //console.log(savedQuiz);
         if (!savedQuiz) throw Error('Something went wrong saving the quiz');
         res.status(200).json({
-            quiz: {
-                id: savedQuiz.id,
+            tmpQuiz: {
+                id: savedQuiz._id,
                 userId: savedQuiz.userId,
                 name: savedQuiz.name,
+                author: savedQuiz.author,
                 description: savedQuiz.description,
-                timed: savedQuiz.timed,
-                retake: savedQuiz.retake,
-                showQuestion: savedQuiz.showQuestion,
-                showAnswer: savedQuiz.showAnswer,
-                likes: savedQuiz.likes,
-                created: savedQuiz.created,
-                EXP: savedQuiz.EXP,
                 questions: savedQuiz.questions,
-                answers: savedQuiz.answers,
+                likes: savedQuiz.likes,
                 isPublished: savedQuiz.isPublished
             }
-        });
+        }); 
+        
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }
 }
 
+exports.updateQuiz = async (req, res, next) => {
+    const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
+        id: req.body.id,
+        userId: req.body.userId,
+        name: req.body.name,
+        author: req.body.author,
+        description: req.body.description,
+        questions: req.body.questions,
+        likes: req.body.likes,
+        isPublished: req.body.isPublished
+    });
+    try {
+        res.status(200).json({
+            success: true,
+            msg: "Quiz updated"
+        });
+        if (!quiz) {
+            return res.status(404).json({
+                success: false,
+                msg: 'No quiz found'
+            });
+        }
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            msg: 'Server Error'
+        });
+    }
+}
+
+/*
 exports.updateQuiz = async (req, res, next) => {
     const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
         id: req.body.id,
@@ -122,6 +169,7 @@ exports.updateQuiz = async (req, res, next) => {
         });
     }
 }
+*/
 
 // TODO: modify this sample later 
 // @desc    Delete quiz

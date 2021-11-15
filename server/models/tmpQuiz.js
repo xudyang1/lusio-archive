@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+// <<<<<<< Xudong
 // TODO: Discuss about defaults
 const QuestionSchema = new Schema({
     title: { type: String, required: [true, 'Question title must be provided'] },

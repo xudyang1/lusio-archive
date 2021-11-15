@@ -5,7 +5,6 @@ import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 
 
-
 export const CreateQuizButton = () => {
     const {isAuthenticated, user } = useContext(AuthContext);
     const { addQuiz } = useContext(QuizzesContext);
@@ -13,21 +12,22 @@ export const CreateQuizButton = () => {
     const handleCreate = async e => {
         e.preventDefault();
 
-        const quiz = { userId: user.id, name: "", description: "", timed: false, retake: false, showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
-        /*
-        const res = await fetch('/api/quizzes/edit', {
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-            },
-            body : JSON.stringify(quiz)
-        })
-        .then((response) => response.json())
-        .then((responseData) => {
-            console.log(responseData);
-            return responseData.quiz.id;
-        })
-        */
+        const quiz = { userId: user.id, name: "", author: user.name, description: "", 
+        questions: [{
+            title: "",
+            timedOption: false,
+            time: 0,
+            retakeOption: false,
+            choices: [{
+                index: 1,
+                content: ""
+            }], 
+            answerKey: 1,
+            score: 0
+        }], likes: 0, isPublished: false}; 
+        //showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
+        
+        console.log("Before adding quiz: ", quiz);
         const getID = () => {
             return (addQuiz(quiz))
             .then(function(res){
