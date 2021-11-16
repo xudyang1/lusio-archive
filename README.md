@@ -1,7 +1,7 @@
 # CSE416_Lusio
 
 ## UPDATE (Since 11/15)
-- New branches `build_1`, `build_2`, ..., `build_6` are created for code inspection. Please don't push directly to these branches, you should push to your own branch and use pull request to main branch. The build branches are used to store the final status of each build.
+- New branches `build_1`, `build_2`, ..., `build_5` were created for code inspection. Please don't push directly to these branches, you should push to your own branch and use pull request to main branch. The build branches are used to store the final status of each build.
 
 ## UPDATE (Since 10/29)
 - Please modify `server/config/config.env` by adding a line `JWT_SECRET=myJWTSecret` as following (this is simply a key for the JWT token and used by authentication middleware):
