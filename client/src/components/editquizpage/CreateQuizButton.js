@@ -22,10 +22,28 @@ export const CreateQuizButton = () => {
         retakeOption: false,
         questions: [{
             title: "Question",
-            choices: [{
-                index: 1,
-                content: ""
-            }], 
+            choices: [
+                {
+                    index: 1,
+                    content: ""
+                },
+                {
+                    index: 2,
+                    content: ""
+                },
+                {
+                    index: 3,
+                    content: ""
+                },
+                {
+                    index: 4,
+                    content: ""
+                },
+                {
+                    index: 5,
+                    content: ""
+                }
+            ], 
             answerKey: 1,
             score: 0
         }], 

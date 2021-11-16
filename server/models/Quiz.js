@@ -16,6 +16,7 @@ const QuestionSchema = new Schema({
 
 // platformId to be added
 // quizImgURI to be added
+// quizScoreboard to be added 
 const QuizSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,

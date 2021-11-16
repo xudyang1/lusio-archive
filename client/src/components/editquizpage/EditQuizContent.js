@@ -75,6 +75,7 @@ class EditQuizContent extends Component{
             isPublished: quiz.isPublished,
             openModal: false
         });
+        console.log("quiz questions are", this.state.questions);
         console.log("current state is ", this.state);
         /*this.setState({
             id: quiz._id,
@@ -121,8 +122,9 @@ class EditQuizContent extends Component{
         
     }
     */
+
     handleAddQuestion = () => {
-        this.setState({questions: [...this.state.questions, {title: "", choices: [{index: 1, content: ""}], answerKey:0, score:0}]});
+        this.setState({questions: [...this.state.questions, {title: "", choices: [{index: 1, content: ""},{index: 2, content: ""},{index: 3, content: ""},{index: 4, content: ""},{index: 5, content: ""}], answerKey:0, score:0}]});
         console.log("Current state",this.state);
     }
     handleQuestionRemove = () => {
@@ -147,7 +149,7 @@ class EditQuizContent extends Component{
         */
     }
     answerHandler = (qi,ai,e) => {
-        this.state.questions[qi].choices[ai] = e;
+        this.state.questions[qi].choices[ai].content = e;
         console.log(this.state.questions[qi].answers);
     }
     //+answers would be nested as it corresponds to different questions
@@ -166,6 +168,11 @@ class EditQuizContent extends Component{
     scoreHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].score = Number(e.target.value);
+        console.log(this.state.questions);
+    }
+    answerKeyHandler = (qi,e) => {
+        e.preventDefault();
+        this.state.questions[qi].answerKey = Number(e.target.value);
         console.log(this.state.questions);
     }
     /*
@@ -331,32 +338,43 @@ class EditQuizContent extends Component{
                             <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
                                 <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title}/>
                                 <div className="col s6" style={{padding: '20px'}}>
+                                {/* 
                                 {this.state.questions[qi].choices.map((a,ai)=> {
                                     return (
                                         <div className="text-box">
                                             <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.questions[qi].choices[ai].content}/>
                                         </div>
+                                        
                                     )
                                 })}
-                                {/* 
+                                */}
+                                
                                 <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 1, e.target.value)} defaultValue={this.state.answers[qi][1]}/>
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.questions[qi].choices[0].content}/>
                                 </div>
                                 <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 2, e.target.value)} defaultValue={this.state.answers[qi][2]}/>
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 1, e.target.value)} defaultValue={this.state.questions[qi].choices[1].content}/>
                                 </div>
                                 <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 3, e.target.value)} defaultValue={this.state.answers[qi][3]}/>
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 2, e.target.value)} defaultValue={this.state.questions[qi].choices[2].content}/>
                                 </div>
                                 <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 4, e.target.value)} defaultValue={this.state.answers[qi][4]}/>
-                                </div>*/}
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 3, e.target.value)} defaultValue={this.state.questions[qi].choices[3].content}/>
+                                </div>
+                                <div className="text-box">
+                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 4, e.target.value)} defaultValue={this.state.questions[qi].choices[4].content}/>
+                                </div>
+                                
                                 </div>
                                 
                                 <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
                                     Set Score: {this.state.questions[qi].score}
                                 </div>
                                 <input className="col s1" onChange={(e)=> this.scoreHandler(qi,e)}></input>
+                                <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
+                                    Set Answer: {this.state.questions[qi].answerKey}
+                                </div>
+                                <input className="col s1" onChange={(e)=> this.answerKeyHandler(qi,e)}></input>
                             </div>
                         )})
                     }
