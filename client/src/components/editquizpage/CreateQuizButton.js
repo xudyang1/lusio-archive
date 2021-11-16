@@ -12,22 +12,39 @@ export const CreateQuizButton = () => {
     const handleCreate = async e => {
         e.preventDefault();
 
-        const quiz = { userId: user.id, name: "", author: user.name, description: "", 
+        const quiz = { 
+        userId: user.id, 
+        name: "", 
+        author: user.name, 
+        description: "Description", 
+        timedOption: false,
+        time: 0,
+        retakeOption: false,
         questions: [{
-            title: "",
-            timedOption: false,
-            time: 0,
-            retakeOption: false,
+            title: "Question",
             choices: [{
                 index: 1,
                 content: ""
             }], 
             answerKey: 1,
             score: 0
-        }], likes: 0, isPublished: false}; 
+        }], 
+        likes: 0, plays: 0, isPublished: false}; 
         //showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
         
         console.log("Before adding quiz: ", quiz);
+        /*
+        const res = await fetch('/api/quizzes/edit', {
+            method: 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify(quiz)
+        });
+        const body = await res;
+        console.log(body);
+        */
+        
         const getID = () => {
             return (addQuiz(quiz))
             .then(function(res){

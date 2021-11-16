@@ -9,14 +9,13 @@ const AnswerSchema = new Schema({
 // TODO: defaults to be discussed
 const QuestionSchema = new Schema({
     title: { type: String, required: [true, 'Question title must be provided']},
-    timedOption: { type: Boolean, default: false },
-    time: { type: Number, default: 0 },
-    retakeOption: { type: Boolean, default: false },
     choices: [AnswerSchema],
     answerKey: { type: Number, required: [true, 'Answer key must be provided']},
     score: { type: Number, default: 50 }
 });
 
+// platformId to be added
+// quizImgURI to be added
 const QuizSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
@@ -34,11 +33,18 @@ const QuizSchema = new Schema({
         type: String, 
         required: [true, 'Please add a description'] 
     },
+    timedOption: { type: Boolean, default: false },
+    time: { type: Number, default: 0 },
+    retakeOption: { type: Boolean, default: false },
     questions:  {
         type: [QuestionSchema], 
         validate: [(val) => val.length <= 50, 'Number of questions are limited to 50']
     },
     likes: { 
+        type: Number, 
+        default: 0 
+    },
+    plays: { 
         type: Number, 
         default: 0 
     },

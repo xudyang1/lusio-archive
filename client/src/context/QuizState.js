@@ -22,9 +22,13 @@ const initialState = {
         name: "",
         author: "",
         description: "",
+        timedOption: false,
+        time: 0,
+        retakeOption: false,
         questions: [],
         //time: 5, // Needs update --> in questions
         likes: 0,
+        plays: 0,
         //plays: 0, // Needs update
         //correctAnswers: [], // Needs update --> provided as answerKey
         //scoreboard: [], //Needsupdate
@@ -98,19 +102,17 @@ export const QuizzesProvider = ({ children }) => {
         }
     };
 
-    async function addQuiz({ userId, name, author, description, questions, likes, isPublished }) {
+    async function addQuiz({ userId, name, author, description,  timedOption, time, retakeOption, questions, title, choices, index, content, answerKey, score, likes, plays, isPublished }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
         //{ userId, name, author, description, questions, likes, isPublished }
-        //const body = JSON.stringify(data, ["userId", "name", "author", "description", "questions", "title", "timedOption", "time", "retakeOption", "choices", "index", "content", "answerKey", "score" ,"likes", "isPublished"]);
-
-        const body = JSON.stringify({ userId, name, author, description, questions, likes, isPublished });
+        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, index, content, answerKey, score, likes, plays, isPublished });
+        console.log(body);
         try {
-            const res = await axios.post('/api/quizzes/edit', body, config);
-            console.log("inside addQuiz", res);
+            const res = await axios.post('http://localhost:5000/api/quizzes/edit', body, config);
             dispatch({
                 type: ADD_QUIZ,
                 payload: res.data
@@ -124,13 +126,13 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function updateQuiz({ id, userId, name, author, description, questions, likes, isPublished }) {
+    async function updateQuiz({ id, userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, author, description, questions, likes, isPublished });
+        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished });
         try {
             const res = await axios.put(`http://localhost:5000/api/quizzes/edit/${id}`, body, config);
             dispatch({

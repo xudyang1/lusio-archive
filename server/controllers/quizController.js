@@ -63,9 +63,6 @@ exports.addQuiz = async (req, res, next) => {
             });
             dataQ.push({
                 title: q.title,
-                timedOption: q.timedOption,
-                time: q.time,
-                retakeOption: q.retakeOption,
                 choices: dataA,
                 answerKey: q.answerKey,
                 score: q.score
@@ -77,8 +74,12 @@ exports.addQuiz = async (req, res, next) => {
             name: req.body.name,
             author: req.body.author,
             description: req.body.description,
+            timedOption: req.body.timedOption,
+            time: req.body.time,
+            retakeOption: req.body.retakeOption,
             questions: dataQ,
             likes: req.body.likes,
+            plays: req.body.plays,
             isPublished: req.body.isPublished
         });
         
@@ -86,14 +87,18 @@ exports.addQuiz = async (req, res, next) => {
         //console.log(savedQuiz);
         if (!savedQuiz) throw Error('Something went wrong saving the quiz');
         res.status(200).json({
-            tmpQuiz: {
+            quiz: {
                 id: savedQuiz._id,
                 userId: savedQuiz.userId,
                 name: savedQuiz.name,
                 author: savedQuiz.author,
                 description: savedQuiz.description,
+                timedOption: savedQuiz.timedOption,
+                time: savedQuiz.time,
+                retakeOption: savedQuiz.retakeOption,
                 questions: savedQuiz.questions,
                 likes: savedQuiz.likes,
+                plays: savedQuiz.plays,
                 isPublished: savedQuiz.isPublished
             }
         }); 
@@ -110,8 +115,12 @@ exports.updateQuiz = async (req, res, next) => {
         name: req.body.name,
         author: req.body.author,
         description: req.body.description,
+        timedOption: req.body.timedOption,
+        time: req.body.time,
+        retakeOption: req.body.retakeOption,
         questions: req.body.questions,
         likes: req.body.likes,
+        plays: req.body.plays,
         isPublished: req.body.isPublished
     });
     try {
