@@ -1,10 +1,17 @@
-import React , { useState, useEffect} from 'react';
+import React , { useContext, useState, useEffect} from 'react';
 //import { AppNavbar } from '../AppNavbar';
 import { useParams } from 'react-router';
+import { AuthContext } from "../../context/AuthState";
+import QuizReport from "./QuizReport";
+import M from 'materialize-css';
+import "materialize-css/dist/css/materialize.min.css";
 import sampleQuiz from '../../sampleData/sampleQuiz';
+import sampleUser from '../../sampleData/sampleUser';
+
 
 
 export default function QuizPage(){
+    const {isAuthenticated, user } = useContext(AuthContext);
     const {id} = useParams();
     var quiz = sampleQuiz.quizzes.filter((quiz)=>(
         quiz.quizID == id
@@ -51,6 +58,14 @@ export default function QuizPage(){
         numLikeHandler();
         condLikeHandler();
     }
+
+    useEffect(() => {
+        var elem = document.querySelector('#reportModal')
+        var options = {
+            preventScrolling: false,
+        };
+        M.Modal.init(elem, options);
+    })
     
     return(
         <div className="container z-depth-3" >
@@ -60,7 +75,25 @@ export default function QuizPage(){
                     <span className="flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
                         {name}
                     </span>
-                    <a className="waves-effect waves-light btn" style={{left: "150px"}}><i className="material-icons right">report</i>Report</a>
+                    <a className="waves-effect waves-light btn modal-trigger" style={{left: "100px"}} href="#reportModal"><i className="material-icons right">report</i>Report</a>
+                    <div id="reportModal" className="modal">
+                        {isAuthenticated ? (
+                        <div>
+                            <div className="modal-content">
+                                <h4>Report a Problem</h4>
+                                <QuizReport/>
+                            </div>
+                        </div>) :
+                        (<div>
+                            <div className="modal-content">
+                                <h4>Please login first</h4>
+                            </div>
+                            <div className="modal-footer">
+                                <a className="modal-close waves-effect waves-blue btn-flat">OK</a>
+                            </div>
+                        </div>)
+                        }
+                    </div>
                     <br/> 
                     <span className="flow-text">
                         Platform {platformId}
