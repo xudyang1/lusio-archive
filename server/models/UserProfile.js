@@ -6,8 +6,10 @@ const Schema = mongoose.Schema;
 const UserProfileSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId, ref: 'UserAccount',
+        select: false,
         required: [true, 'The owner of the profile is missing']
     },
+    name: { type: String, required: [true, 'User name is missing'] },
     platformsCreated: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],
     quizzesCreated: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
     // TODO: uncomment this part after adding report system

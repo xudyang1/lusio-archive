@@ -1,6 +1,5 @@
-const UserAccount = require('../models/UserAccount');
 const UserProfile = require('../models/UserProfile');
-const { dropEntries, selectEntries, nonNullJson } = require('../util/jsonTool');
+const { dropEntries, nonNullJson, errorHandler } = require('../utils/jsonTool');
 
 /**
  * TODO: 
@@ -9,34 +8,29 @@ const { dropEntries, selectEntries, nonNullJson } = require('../util/jsonTool');
  * @access  Public
  * @detail  View other user profile: send only guest info;
  *          View own profile: send additional owner info
+ * @format  req.header('x-auth-token'): JWT token || null
+ *          res.data: { 
+ *                      viewType: "GUEST_VIEW" || "OWNER_VIEW", 
+ *                      profile: { profile document except 'owner' attribute }         
+ *                    }
  */
 exports.getProfile = async (req, res, next) => {
     try {
         const selectedProfile = await UserProfile.findById(req.params.profileId);
+
         // console.log("profile doc: ", selectedProfile);
-        if (!selectedProfile) {
-            return res.status(404).json({
-                success: false,
-                msg: 'The profile does not exist.'
-            });
-        }
-        // get user name
-        const user = await UserAccount.findById(selectedProfile.owner).select('name');
+        if (!selectedProfile) { return errorHandler(res, 404, 'The user profile does not exist.'); }
 
         // filter owner
         var output = dropEntries(selectedProfile, 'owner');
-        // add user name info
-        output.name = user.name;
+
         return res.status(200).json({
             viewType: req.viewType,
             profile: output
         });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({
-            success: false,
-            msg: 'Server Error'
-        });
+        return errorHandler(res, 500, 'Server Error');
     }
 };
 
@@ -55,24 +49,23 @@ exports.getProfile = async (req, res, next) => {
  * 
  *              Other fields should not be updated here.
  * 
- * @payload req.body = 
- *      { mode: "EDIT", profile: description | iconURI | bannerURI } 
- *  Or
- *      {
- *        mode: "ADD" | "DELETE", 
- *        profile: platformsCreated |quizzesCreated |subscribedUsers | subscribedPlatforms | fans
- *      }
+ * @format  req.body: { mode: "EDIT", profile: description || iconURI || bannerURI } 
+ *                    Or
+ *                    {
+ *                      mode: "ADD" || "DELETE", 
+ *                      profile: platformsCreated || quizzesCreated || subscribedUsers || subscribedPlatforms || fans
+ *                    }
+ *          res.data: {
+ *                      success: true,
+ *                      mode: "EDIT" || "ADD" || "DELETE",
+ *                      content: { description || iconURI || ... || fans: updated content }
+ *                    }
  */
 exports.updateProfile = async (req, res, next) => {
     try {
         // Note, to verify user id, use req.user.id rather than req.params.profileId
 
-        if (!req.body.profile) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Invalid payload, nothing is updated'
-            });
-        }
+        if (!req.body.profile) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
         // destructure
         const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
@@ -80,52 +73,35 @@ exports.updateProfile = async (req, res, next) => {
 
         var provided = keys = updated = null;
 
-        // get profile id
-        const userProfile = await UserAccount.findById(req.user.id).select('profile');
-        const profileId = userProfile.profile.toString();
         // set options
         const options = { runValidators: true, new: true };
 
         switch (MODE) {
             case "EDIT":
-                provided = { description, iconURI, bannerURI };
-                provided = nonNullJson(provided);
+                provided = nonNullJson({ description, iconURI, bannerURI });
                 keys = Object.keys(provided);
-                updated = await UserProfile.findByIdAndUpdate(profileId, provided, options).select(keys);
+                updated = await UserProfile.findByIdAndUpdate(req.user.profile, provided, options).select(keys);
                 // console.log("updated", updated);
                 break;
             case "ADD":
-                provided = { platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans };
+                provided = nonNullJson({ platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
                 // console.log('$pushAll provided: ', provided)
-                updated = await UserProfile.findByIdAndUpdate(profileId, { $push: provided }, options).select(keys);
+                updated = await UserProfile.findByIdAndUpdate(req.user.profile, { $push: provided }, options).select(keys);
                 break;
             case "DELETE":
-                provided = { platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans };
+                provided = nonNullJson({ platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
-                updated = await UserProfile.findByIdAndUpdate(profileId, { $pullAll: provided }, options).select(keys);
+                updated = await UserProfile.findByIdAndUpdate(req.user.profile, { $pullAll: provided }, options).select(keys);
                 break;
             default:
                 // non matched mode
-                return res.status(400).json({
-                    success: false,
-                    msg: 'You must provide a valid mode'
-                });
+                return errorHandler(res, 400, 'You must provide a valid mode');
         }
         // no valid content provided
-        if (!provided || Object.keys(provided).length === 0) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Invalid content provided, nothing is updated'
-            });
-        }
+        if (!provided || Object.keys(provided).length === 0) { return errorHandler(res, 400, 'Invalid content provided, nothing is updated'); }
         // no query returned
-        else if (!updated) {
-            return res.status(400).json({
-                success: false,
-                msg: 'Unable to update the content'
-            });
-        }
+        else if (!updated) { return errorHandler(res, 500, 'Unable to update the content'); }
         // success
         return res.status(200).json({
             success: true,
@@ -133,10 +109,7 @@ exports.updateProfile = async (req, res, next) => {
             content: updated
         });
     } catch (err) {
-        // console.log(err)
-        return res.status(500).json({
-            success: false,
-            msg: 'Server Error'
-        });
+        console.log(err);
+        return errorHandler(res, 500, 'Server Error');
     }
 };

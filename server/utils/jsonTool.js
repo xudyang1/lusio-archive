@@ -28,4 +28,17 @@ exports.selectEntries = (jsonObj, entries) => {
     jsonObj = JSON.parse(JSON.stringify(jsonObj));
     const filtered = Object.entries(jsonObj).filter(([key, value]) => entries.includes(key));
     return Object.fromEntries(filtered);
-}
+};
+/**
+ * 
+ * @param {EventHandler} res response event handler
+ * @param {Integer} statusCode HTTP status code, default with 400
+ * @param {String} msg error message, default with 'Bad Request, cannot process'
+ * @returns send response indicates the error with error status code and error message
+ */
+exports.errorHandler = (res, statusCode = 400, msg = 'Bad Request, cannot process') => {
+    return res.status(statusCode).json({
+        success: false,
+        msg: msg
+    });
+};
