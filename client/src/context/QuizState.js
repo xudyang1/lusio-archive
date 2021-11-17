@@ -26,7 +26,12 @@ const initialState = {
         timedOption: false,
         time: 0,
         retakeOption: false,
-        questions: [],
+        questions: [{
+            title: "",
+            choices: [""], 
+            answerKey: 1,
+            score: 0
+        }],
         //time: 5, // Needs update --> in questions
         likes: 0,
         plays: 0,

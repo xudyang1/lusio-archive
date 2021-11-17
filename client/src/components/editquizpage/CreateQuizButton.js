@@ -16,38 +16,21 @@ export const CreateQuizButton = () => {
         userId: user.id, 
         name: "", 
         author: user.name, 
-        description: "Description", 
+        description: "", 
         timedOption: false,
         time: 0,
         retakeOption: false,
         questions: [{
-            title: "Question",
-            choices: [
-                {
-                    index: 1,
-                    content: ""
-                },
-                {
-                    index: 2,
-                    content: ""
-                },
-                {
-                    index: 3,
-                    content: ""
-                },
-                {
-                    index: 4,
-                    content: ""
-                },
-                {
-                    index: 5,
-                    content: ""
-                }
-            ], 
+            title: "",
+            choices: [{
+                content: ""
+            }], 
             answerKey: 1,
             score: 0
         }], 
-        likes: 0, plays: 0, isPublished: false}; 
+        likes: 0,
+        plays: 0,
+        isPublished: false}; 
         //showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
         
         console.log("Before adding quiz: ", quiz);

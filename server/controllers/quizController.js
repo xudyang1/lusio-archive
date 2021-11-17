@@ -1,4 +1,3 @@
-const { findById } = require('../models/Quiz');
 const Quiz = require('../models/Quiz');
 //const tmpQuiz = require('../models/tmpQuiz2');
 
@@ -51,13 +50,12 @@ exports.addQuiz = async (req, res, next) => {
     try {
         const dataA = [];
         const dataQ = [];
-        
+
         const questionsToPut = req.body.questions;
         questionsToPut.forEach((q) => {
             const answersToPut = q.choices; 
             answersToPut.forEach((a) => {
                 dataA.push({
-                    index: a.index,
                     content: a.content
                 });
             });

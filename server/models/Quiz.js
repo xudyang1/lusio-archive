@@ -8,8 +8,16 @@ const AnswerSchema = new Schema({
 
 // TODO: defaults to be discussed
 const QuestionSchema = new Schema({
-    title: { type: String, required: [true, 'Question title must be provided']},
-    choices: [AnswerSchema],
+    title: { 
+        type: String, 
+        //required: [true, 'Question title must be provided']
+        default: ""
+    },
+    choices: [{ 
+        content: {
+            type: String, 
+            default: ""}
+    }],
     answerKey: { type: Number, required: [true, 'Answer key must be provided']},
     score: { type: Number, default: 50 }
 });
@@ -19,7 +27,8 @@ const QuestionSchema = new Schema({
 // quizScoreboard to be added 
 const QuizSchema = new Schema({
     userId: {
-        type: Schema.Types.ObjectId,
+        //type: Schema.Types.ObjectId,
+        type: String,
         required: [true]
     },
     name: {
@@ -28,11 +37,13 @@ const QuizSchema = new Schema({
     },
     author: { 
         type: String, 
-        required: [true, 'Please add an author'] 
+        default: ""
+        //required: [true, 'Please add an author'] 
     },
     description: { 
-        type: String, 
-        required: [true, 'Please add a description'] 
+        type: String,
+        default: "" 
+        //required: [true, 'Please add a description'] 
     },
     timedOption: { type: Boolean, default: false },
     time: { type: Number, default: 0 },

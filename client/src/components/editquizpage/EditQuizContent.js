@@ -17,7 +17,12 @@ class EditQuizContent extends Component{
             timedOption: false,
             time: 0,
             retakeOption: false,
-            questions: [], 
+            questions: [{
+                title: "",
+                choices: [""], 
+                answerKey: 1,
+                score: 0
+            }], 
             likes: 0,
             plays: 0,
             isPublished: false,
@@ -108,23 +113,28 @@ class EditQuizContent extends Component{
         this.setState({description: e.target.value});
     }
 
-    /*
-    handleAddAnswer = (qi,ai) => {
-        this.setState({choices: [...this.state.questions[qi].choices, {index: ai+2, content:""}]});
+    
+    handleAddAnswer = (qi, item) => {
+        let list = [...this.state.questions];
+        let newItem = {...list[qi]};
+        newItem.choices.push({content: ""});
+        list[qi] = newItem;
+        this.setState({questions: list});
     }
-    handleAnswerRemove = item => {
+    handleAnswerRemove = (qi, item) => {
         //const list = [...this.state.answers];
         //if(list.length > 1){list.splice(item, 1);}
         //this.setState({answers: list});
-        const list = [...this.state.answers];
-        if(list.length > 1){list.splice(item, 1);}
-        this.setState({answers: list});
-        
+        let list = [...this.state.questions];
+        let oldItem = {...list[qi]};
+        oldItem.choices.pop();
+        list[qi] = oldItem;
+        this.setState({questions: list});
     }
-    */
+    
 
     handleAddQuestion = () => {
-        this.setState({questions: [...this.state.questions, {title: "", choices: [{index: 1, content: ""},{index: 2, content: ""},{index: 3, content: ""},{index: 4, content: ""},{index: 5, content: ""}], answerKey:0, score:0}]});
+        this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
         console.log("Current state",this.state);
     }
     handleQuestionRemove = () => {
@@ -338,31 +348,16 @@ class EditQuizContent extends Component{
                             <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
                                 <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title}/>
                                 <div className="col s6" style={{padding: '20px'}}>
-                                {/* 
                                 {this.state.questions[qi].choices.map((a,ai)=> {
                                     return (
                                         <div className="text-box">
-                                            <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.questions[qi].choices[ai].content}/>
+                                            <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, ai, e.target.value)} defaultValue={q.choices[ai].content}/>
                                         </div>
-                                        
                                     )
                                 })}
-                                */}
-                                
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.questions[qi].choices[0].content}/>
-                                </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 1, e.target.value)} defaultValue={this.state.questions[qi].choices[1].content}/>
-                                </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 2, e.target.value)} defaultValue={this.state.questions[qi].choices[2].content}/>
-                                </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 3, e.target.value)} defaultValue={this.state.questions[qi].choices[3].content}/>
-                                </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 4, e.target.value)} defaultValue={this.state.questions[qi].choices[4].content}/>
+                                <div className="row">
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{margin: "5px"}} onClick={(item) => {this.handleAddAnswer(qi, item)}}><i className="material-icons">add</i></button>
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{margin: "5px"}} onClick={(item) => {this.handleAnswerRemove(qi, item)}}><i className="material-icons">remove</i></button>
                                 </div>
                                 
                                 </div>
