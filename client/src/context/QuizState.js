@@ -7,6 +7,7 @@ import {
     UPDATE_QUIZ,
     ADD_QUIZ,
     DELETE_QUIZ,
+    FINISH_QUIZ,
     GET_ERRORS
 } from '../types/actionTypes';
 import axios from 'axios';
@@ -29,13 +30,13 @@ const initialState = {
         //time: 5, // Needs update --> in questions
         likes: 0,
         plays: 0,
-        //plays: 0, // Needs update
         //correctAnswers: [], // Needs update --> provided as answerKey
         //scoreboard: [], //Needsupdate
         isPublished: false
     },
     error: null,
-    loading: true
+    loading: true,
+    isPlaying: true
 // =======
 //   quizzes: [],
 //   quiz: {
@@ -161,6 +162,19 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
+    function finishQuiz() {
+      try {
+        dispatch({
+          type: FINISH_QUIZ,
+        });
+        console.log("inside FINISH_QUIZ:", state.isPlaying);
+        return state.isPlaying;
+      } catch (err){
+        dispatch({
+          type: GET_ERRORS
+        });
+      }
+    }
     const setQuizzesLoading = () => {
         return {
             type: QUIZZES_LOADING
@@ -174,7 +188,8 @@ export const QuizzesProvider = ({ children }) => {
         getQuiz,
         addQuiz,
         updateQuiz,
-        deleteQuiz
+        deleteQuiz,
+        finishQuiz
     }}>
         {children}
     </QuizzesContext.Provider>);

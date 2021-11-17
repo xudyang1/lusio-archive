@@ -5,6 +5,7 @@ import { GET_QUIZZES,
   DELETE_QUIZ, 
   UPDATE_QUIZ,
   GET_ERRORS, 
+  FINISH_QUIZ,
   CLEAR_ERRORS } from "../types/actionTypes";
 
 export default function QuizReducer (state, action) {
@@ -23,9 +24,9 @@ export default function QuizReducer (state, action) {
     case GET_QUIZ:
       return {
         ...state,
-        loading: false,
 //<<<<<<< LiuxinLi
-        quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
+        quiz: state.quizzes.filter(quiz => quiz._id === action.payload),
+        loading: false
       }
 // =======
 //         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
@@ -63,7 +64,12 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         error: null
-      }
+      };
+    case FINISH_QUIZ:
+      return {
+        ...state,
+        isPlaying: false
+      };
     default:
       return state;
   }
