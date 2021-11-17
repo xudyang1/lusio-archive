@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext, Component } from 'react';
 //import { useParams } from 'react-router';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
+import QuizResult from './QuizResult';
 import '../../css/frontpage.css';
+
 //import "materialize-css/dist/css/materialize.min.css";
 
 class PlayQuizContent extends Component{
     // const { quiz, getQuiz } = useContext(QuizzesContext)
     static contextType = QuizzesContext;
-
+    
     constructor(){
         super();
         this.state = {
@@ -18,7 +20,8 @@ class PlayQuizContent extends Component{
             timedOption: false,
             time: 0,
             retakeOption: false,
-            questions: []
+            questions: [],
+            score: 0
         };
     }
 
@@ -58,15 +61,35 @@ class PlayQuizContent extends Component{
     }
     componentDidMount(){
         const id = this.props.match.params.id;
-        const { getQuizzes } = this.context;
-        this.getItem(id, getQuizzes);  
+        const { getQuizzes, isPlaying } = this.context;
+        this.getItem(id, getQuizzes); 
+        console.log("beforeSubmit", isPlaying); 
     }
-
-    onSubmit = async e => {
-        const { finishQuiz } = this.context;
-        var isPlaying = await finishQuiz();
-        console.log(isPlaying);
-
+    scoreHandler = (userAnswer, quizAnswer) => {
+        var scoreEval = 0;
+        quizAnswer.map((q,qi)=>{
+            if (q.answerKey == userAnswer[qi]) {
+                scoreEval = scoreEval + q.score;
+            }
+        })
+        console.log(scoreEval);
+        this.setState({score: scoreEval});
+    }
+    onSubmit = (e) => {
+        const { finishQuiz, isPlaying } = this.context;
+        
+        const checks = document.getElementsByClassName('filled-in');
+        const answerCompare = []
+        for (let i=0; i < checks.length; i++)  {
+            if (checks[i].checked){
+                answerCompare.push(checks[i].value);
+            }
+        }
+        console.log(answerCompare); 
+        this.scoreHandler(answerCompare, this.state.questions);
+ 
+        finishQuiz(this.state.score);
+        console.log("onSubmit", isPlaying);
         e.preventDefault();
         console.log(this.state);
     }
@@ -79,7 +102,7 @@ class PlayQuizContent extends Component{
                         {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.time}</span>: <span></span>}       
                     </div>
                 </div>
-                <div className="col s6" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
+                <div className="col s12" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
                     <div className="description"> Quiz Description: {this.state.description}</div>
                     {this.state.questions.map((q, qi) => {
                         return (
@@ -88,7 +111,7 @@ class PlayQuizContent extends Component{
                                     return (
                                         <div class="row">
                                             <label>
-                                                <input type="checkbox" className="filled-in" />
+                                                <input type="checkbox" className="filled-in" value={choice.index}/>
                                                 <span>{choice.content}</span>
                                             </label>
                                         </div>
@@ -97,12 +120,13 @@ class PlayQuizContent extends Component{
                             </div>
                         )
                     })}
-                </div>
-                <div className='col s12'>
+                <div className='row' style={{textAlign:"right"}}>
                     <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
-                    
+                    <QuizResult /> 
                 </div>
+                </div>    
             </div>
+            
         )
     }
 }

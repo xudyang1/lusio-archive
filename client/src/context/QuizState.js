@@ -36,7 +36,8 @@ const initialState = {
     },
     error: null,
     loading: true,
-    isPlaying: true
+    isPlaying: true,
+    score: 0
 // =======
 //   quizzes: [],
 //   quiz: {
@@ -162,13 +163,13 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
-    function finishQuiz() {
+    function finishQuiz(score) {
       try {
         dispatch({
           type: FINISH_QUIZ,
+          payload: score
         });
-        console.log("inside FINISH_QUIZ:", state.isPlaying);
-        return state.isPlaying;
+        //console.log("after the act of FINISH_QUIZ:", state.isPlaying);
       } catch (err){
         dispatch({
           type: GET_ERRORS
@@ -184,6 +185,8 @@ export const QuizzesProvider = ({ children }) => {
         quizzes: state.quizzes,
         error: state.error,
         loading: state.loading,
+        isPlaying: state.isPlaying,
+        score: state.score,
         getQuizzes,
         getQuiz,
         addQuiz,
