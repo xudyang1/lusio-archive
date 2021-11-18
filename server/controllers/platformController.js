@@ -28,6 +28,10 @@ exports.getPlatform = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
     return errorHandler(res, 500, 'Server Error');
   }
 };
@@ -76,6 +80,10 @@ exports.addPlatform = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
     return errorHandler(res, 500, 'Server Error');
   }
 };
@@ -161,6 +169,10 @@ exports.updatePlatform = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
     return errorHandler(res, 500, 'Server Error');
   }
 };
@@ -193,13 +205,17 @@ exports.deletePlatform = async (req, res, next) => {
       { $pull: { platformsCreated: deletedPlatform._id } },
       { new: true });
     if (!updatedProfile) { return errorHandler(res, 404, 'Profile does not exist'); }
-    
+
     return res.status(200).json({
       success: true,
       platform: deletedPlatform
     });
   } catch (err) {
     console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
     return errorHandler(res, 500, 'Server Error');
   }
 };

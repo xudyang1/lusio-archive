@@ -18,7 +18,7 @@ export const LoginModal = () => {
     const [state, setState] = useState(initialState);
 
     const { login, loadUser, error, isAuthenticated, clearErrors } = useContext(AuthContext);
-
+    
     // check for login error
     useEffect(() => {
         // console.log("modal.error msg", state.msg);

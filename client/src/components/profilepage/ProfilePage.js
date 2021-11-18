@@ -34,8 +34,8 @@ export default function ProfilePage() {
     const { createPlatform } = useContext(PlatformContext)
 
     useEffect(() => {
-        //getProfile(id);
-        console.log("FROM PROFILEPAGE", profile)
+        getProfile(id);
+        //console.log(user.id, id)
     }, [isAuthenticated])
 
     function createPlat(e){
