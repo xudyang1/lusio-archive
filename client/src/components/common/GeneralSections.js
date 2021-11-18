@@ -5,6 +5,7 @@ import QuizCardWraper from "./QuizCardWraper";
 import QuizCards from "../frontpage/QuizCard";
 import "../../css/frontpage.css"
 import M from 'materialize-css';
+import AdddItemCard from "./AddItemCard";
 
 function getCards(t, index, element) {
     // console.log("called getCards with type: ", t)
@@ -33,6 +34,7 @@ export default function GeneralSections(props) {
 
     var name = props.name ? props.name : "SectionName"
     var type = props.type ? props.type : "quiz"
+    var add = props.add ? props.add : false
 
     const Section = createRef();
 
@@ -60,6 +62,7 @@ export default function GeneralSections(props) {
                                     getCards(type, index, element)
                                 ))
                             }
+                            {add? <AdddItemCard/> : <div></div>}
                         </div>
                         <a className="right" onClick={pageDown}><i className="material-icons">chevron_right</i></a>
                     </div>

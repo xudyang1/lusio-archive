@@ -18,7 +18,6 @@ export default function SettingsPage() {
             profile: {
                 iconURI: iconRef.current.value
             }
-
         })
     }
 

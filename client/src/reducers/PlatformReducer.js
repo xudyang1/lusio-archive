@@ -13,7 +13,7 @@ const initialState = {
         name: null,
         description: null,
         bannerURI: null,
-        backgroundURI,
+        backgroundURI: null,
         owner: null,
         admins: [],
         quizSections: [],
@@ -39,11 +39,10 @@ export const PlatformReducer = (state, action) => {
                 viewType: 'OWNER_VIEW'
             };
         case UPDATE_PLATFORM:
-            oldPlatform = state.platform;
             // TODO: the order matters, check
             return {
                 ...state,
-                platform: { ...oldPlatform, ...action.payload.content },
+                platform: { ...state.platform, ...action.payload.content },
                 mode: action.payload.mode
             };
         case DELETE_PLATFORM:

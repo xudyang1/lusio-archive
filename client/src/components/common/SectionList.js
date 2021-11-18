@@ -3,6 +3,7 @@ import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
 import { useContext } from "react";
 import { QuizzesContext } from "../../context/QuizState";
+import AdddItemCard from "./AddItemCard";
 
 function getCards(t, index, element) {
     console.log("called getCards with type: ", t)
@@ -34,6 +35,9 @@ export default function SectionList(props){
     //     return [quiz.name, quiz.description]
     // });
     const name = props.name ? props.name : ""
+    const callback = props.callback
+    const add = props.add? props.add : false
+
     console.log(props.items)
 
     return(
@@ -50,6 +54,7 @@ export default function SectionList(props){
                                     getCards(props.type, index, element)
                                 ))
                             }
+                            {add? <AdddItemCard callback={callback}/> : <div></div>}
                         </div>
                     </div>
                 </div>
