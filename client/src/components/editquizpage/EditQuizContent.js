@@ -82,23 +82,7 @@ class EditQuizContent extends Component{
         });
         console.log("quiz questions are", this.state.questions);
         console.log("current state is ", this.state);
-        /*this.setState({
-            id: quiz._id,
-            userId: quiz.userId,
-            name: quiz.name,
-            description: quiz.description,
-            timed: quiz.timed, 
-            retake: quiz.retake, 
-            showQuestion: quiz.showQuestion, 
-            showAnswer: quiz.showAnswer,
-            likes: quiz.likes,
-            created: quiz.created,
-            EXP: quiz.EXP,
-            questions: quiz.questions,
-            answers: quiz.answers,
-            isPublished: quiz.isPublished
-        });
-        */
+        
     }
     handleDelete = async e => {
         e.preventDefault();

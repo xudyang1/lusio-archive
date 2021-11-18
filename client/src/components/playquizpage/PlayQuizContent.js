@@ -70,6 +70,8 @@ class PlayQuizContent extends Component{
         quizAnswer.map((q,qi)=>{
             if (q.answerKey == userAnswer[qi]) {
                 scoreEval = scoreEval + q.score;
+                console.log("qi", qi);
+                console.log(scoreEval);
             }
         })
         console.log(scoreEval);
@@ -107,11 +109,11 @@ class PlayQuizContent extends Component{
                     {this.state.questions.map((q, qi) => {
                         return (
                             <div className="question">{q.title}<div className="qpoints" >({q.score}points)</div>
-                                {this.state.questions[qi].choices.map((choice) => {
+                                {this.state.questions[qi].choices.map((choice, ci) => {
                                     return (
                                         <div class="row">
                                             <label>
-                                                <input type="checkbox" className="filled-in" value={choice.index}/>
+                                                <input type="checkbox" className="filled-in" value={ci+1}/>
                                                 <span>{choice.content}</span>
                                             </label>
                                         </div>

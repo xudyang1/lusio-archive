@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-/*
-const AnswerSchema = new Schema({
-    index: {type: Number, default: 1},
-    content: {type: String, default: ""}
-});
-*/
-
 // TODO: defaults to be discussed
 const QuestionSchema = new Schema({
     title: { 
@@ -18,7 +11,8 @@ const QuestionSchema = new Schema({
     choices: [{ 
         content: {
             type: String, 
-            default: ""}
+            default: ""
+        }
     }],
     answerKey: { type: Number, required: [true, 'Answer key must be provided']},
     score: { type: Number, default: 50 }

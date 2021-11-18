@@ -19,6 +19,7 @@ const initialState = {
     quiz: {
         id: null,
         userId: null,
+        //quizImgURI //Needs update
         //platformId: "", //Needs update
         name: "",
         author: "",
@@ -29,13 +30,11 @@ const initialState = {
         questions: [{
             title: "",
             choices: [""], 
-            answerKey: 1,
+            answerKey: 1, //correctAnswers
             score: 0
         }],
-        //time: 5, // Needs update --> in questions
         likes: 0,
         plays: 0,
-        //correctAnswers: [], // Needs update --> provided as answerKey
         //scoreboard: [], //Needsupdate
         isPublished: false
     },
@@ -43,27 +42,6 @@ const initialState = {
     loading: true,
     isPlaying: true,
     score: 0
-// =======
-//   quizzes: [],
-//   quiz: {
-//     id: "",
-//     userId: "",
-//     name: "",
-//     description: "",
-//     timed: false, 
-//     retake: false, 
-//     showQuestion: false, 
-//     showAnswer: false,
-//     likes: 0,
-//     created: "",
-//     EXP: 0,
-//     questions:[],
-//     answers: [[""],[""],[""],[""],[""]],
-//     isPublished: false
-//   },
-//   error: null,
-//   loading: true
-// >>>>>>> main
 };
 
 // Create context
@@ -109,14 +87,14 @@ export const QuizzesProvider = ({ children }) => {
         }
     };
 
-    async function addQuiz({ userId, name, author, description,  timedOption, time, retakeOption, questions, title, choices, index, content, answerKey, score, likes, plays, isPublished }) {
+    async function addQuiz({ userId, name, author, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
         //{ userId, name, author, description, questions, likes, isPublished }
-        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, index, content, answerKey, score, likes, plays, isPublished });
+        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished });
         console.log(body);
         try {
             const res = await axios.post('http://localhost:5000/api/quizzes/edit', body, config);
