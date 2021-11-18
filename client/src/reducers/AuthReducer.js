@@ -30,7 +30,7 @@ const initialState = {
 };
 
 export default function AuthReducer(state, action) {
-    console.log("Reducer: old state", state);
+    // console.log("Reducer: old state", state);
     console.log("Reducer: action.type", action.type);
     console.log("Reducer: action.payload", action.payload);
     switch (action.type) {

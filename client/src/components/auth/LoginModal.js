@@ -5,13 +5,15 @@ import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
 // import "materialize-css/dist/js/materialize.min.js";
 import "../../css/auth.css";
+import Spinner from '../common/Spinner';
 
 export const LoginModal = () => {
     const initialState = {
         modalInstance: null,
         email: null,
         password: null,
-        msg: null
+        msg: null,
+        loading: false
     };
     const [state, setState] = useState(initialState);
 
@@ -21,9 +23,9 @@ export const LoginModal = () => {
     useEffect(() => {
         // console.log("modal.error msg", state.msg);
         if (error && error.id === 'LOGIN_FAIL')
-            setState({ ...state, msg: error.msg });
+            setState({ ...state, msg: error.msg, loading: false });
         else
-            setState({ ...state, msg: null });
+            setState({ ...state, msg: null, loading: false });
     }, [error]);
 
     // init modal & close modal if login success
@@ -44,6 +46,8 @@ export const LoginModal = () => {
         // console.log("outside if, state: ", { modalInstance: state.modalInstance, auth: isAuthenticated });
         if (isAuthenticated && state.modalInstance.isOpen) {
             // console.log("Inside if, state: ", { modalInstance: state.modalInstance, auth: isAuthenticated });
+            // TODO:
+            setState({...state, loading: false})
             state.modalInstance.close();
         }
     }, [isAuthenticated]);
@@ -61,6 +65,7 @@ export const LoginModal = () => {
         const user = { email, password };
         console.log("login attempt, data", user);
         // attemp to login
+        setState({...state, loading:true})
         login(user);
     };
 
@@ -88,9 +93,10 @@ export const LoginModal = () => {
                                 <input id="loginPassword" type="password" className="active validate" name="password" onChange={handleOnChange} />
                                 <label htmlFor="loginPassword">Password</label>
                             </div>
-                            <button className="btn blue accent-2 sendBtn" type="submit" name="action">
-                                Login<span className="material-icons right sendIcon">login</span>
-                            </button>
+                            {state.loading ? <Spinner /> :
+                                <button className="btn blue accent-2 sendBtn" type="submit" name="action">
+                                    Login<span className="material-icons right sendIcon">login</span>
+                                </button>}
                         </form>
                     </div>
                 </div>

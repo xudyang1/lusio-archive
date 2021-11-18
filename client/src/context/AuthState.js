@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import AuthReducer from '../reducers/AuthReducer';
-import { GET_ERRORS, CLEAR_ERRORS, DELETE_ACCOUNT } from '../types/actionTypes';
+import { GET_ERRORS, CLEAR_ERRORS, DELETE_ACCOUNT, UPDATE_SUCCESS } from '../types/actionTypes';
 import {
     USER_LOADED,
     USER_LOADING,
@@ -147,7 +147,32 @@ export const AuthProvider = ({ children }) => {
             // console.log("After login, failed, state: ", state);
         }
     };
-
+    /**
+     * 
+     * @param {Json} payload 
+     *      For changing name | password | (email?)
+     *      Format: { content : { name | password | (email?) : newValue}}
+     */
+    async function updateUser(payload) {
+        try {
+            const body = JSON.stringify(payload);
+            const res = await axios.patch('/api/auth/user/edit', body, tokenConfig(state));
+            console.log("res.data = ", res.data);
+            dispatch({
+                type: UPDATE_SUCCESS,
+                payload: res.data //deleted user info
+            });
+        } catch (err) {
+            dispatch({
+                type: 'UPDATE_FAIL',
+                payload: {
+                    msg: err.response.data.msg,
+                    status: err.response.status,
+                    id: 'UPDATE_FAIL'
+                }
+            });
+        }
+    }
     async function deleteAccount() {
         try {
             const res = await axios.delete('/api/auth/user/delete', tokenConfig(state));

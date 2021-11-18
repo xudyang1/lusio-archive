@@ -7,7 +7,7 @@ const { strictAuth, softAuth } = require('../../middleware/auth');
  * @desc  Get a user's profile for view
  * @route GET api/profiles/profile/:profileId
  * @access  Public
- * @middleware  softAuth: send different data based on different authentication
+ * @middleware  {softAuth}: send different data based on different authentication
  */
 router
   .route('/profile/:profileId')
@@ -17,7 +17,7 @@ router
  * @desc  Update the profile for the owner
  * @route PATCH api/profiles/profile/edit/:profileId
  * @access  Private
- * @middleware  strictAuth: only owner can edit the profile
+ * @middleware  {strictAuth}: only owner can edit the profile
  */
 router
   .route('/profile/edit/:profileId')
