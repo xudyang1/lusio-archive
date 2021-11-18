@@ -80,7 +80,7 @@ export const QuizzesProvider = ({ children }) => {
                 type: GET_QUIZZES,
                 payload: res.data
             });
-            console.log("quizzes are : ", res.data);
+            //console.log("quizzes are : ", res.data);
             return res.data;
         } catch (err) {
             console.error(err);

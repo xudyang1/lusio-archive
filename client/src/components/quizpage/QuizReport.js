@@ -37,6 +37,7 @@ class QuizReport extends Component {
             from_email: "lusioquiz@gmail.com",
             message: this.state.selectedOption
         }
+        // May need to hash 'user_AIO163yEXkq8D7aABTTKl'
         emailjs.send('service_ad57k0p', 'template_iycih3s', templateParams, 'user_AIO163yEXkq8D7aABTTKl').then((res) => {
             console.log('Success', res.status, res.text);
         }, (err) => {
