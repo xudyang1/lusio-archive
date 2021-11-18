@@ -32,7 +32,7 @@ export default function ProfilePage() {
     const { profile, getProfile, viewType } = useContext(ProfileContext)
 
     useEffect(() => {
-        //getProfile(id);
+        getProfile(id);
         //console.log(user.id, id)
     }, [isAuthenticated])
 

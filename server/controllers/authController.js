@@ -87,6 +87,10 @@ exports.register = async (req, res, next) => {
         });
     } catch (err) {
         console.log(err);
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };
@@ -136,6 +140,10 @@ exports.login = async (req, res, next) => {
         });
     } catch (err) {
         console.log(err);
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };
@@ -169,6 +177,10 @@ exports.getUser = async (req, res, next) => {
             }
         });
     } catch (err) {
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };
@@ -241,6 +253,11 @@ exports.updateUser = async (req, res, next) => {
         });
     }
     catch (err) {
+        console.log(err)
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };
@@ -293,6 +310,10 @@ exports.deleteUser = async (req, res, next) => {
             success: true
         });
     } catch (err) {
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };

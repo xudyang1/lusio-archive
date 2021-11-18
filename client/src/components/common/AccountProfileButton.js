@@ -13,8 +13,6 @@ export default function AccountProfileButton() {
     const { id } = useParams()
 
     useEffect(() => {
-        console.log("BEFORE GETPROFILE id:", id, "  profile:", user.profile)
-        console.log("BEFORE GETPROFILE", profile)
         getProfile(user.profile);
         console.log("FROM ACCOUNT BUTTON", profile);
     }, [isAuthenticated]);
