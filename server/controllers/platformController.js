@@ -134,9 +134,9 @@ exports.addPlatform = async (req, res, next) => {
  * 
  * @format  req.header('x-auth-token): JWT token 
  *          req.body: 
- *            { mode: "EDIT", platform: owner || name || description || iconURI || bannerURI } 
+ *            { mode: "EDIT", platform: owner || name || description || iconURI || bannerURI: newValue } 
  *            Or
- *            { mode: "ADD" || "DELETE", platform: admins || quizzes || quizSections }
+ *            { mode: "ADD" || "DELETE", platform: admins || quizzes || quizSections: {_id} }
  *          res.data:
  *            {
  *              success: true,
@@ -180,7 +180,9 @@ exports.updatePlatform = async (req, res, next) => {
       case "DELETE":
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
-        updated = await Platform.findByIdAndUpdate(req.params.platformId, { $pullAll: provided }, options).select(keys);
+        
+        console.log(provided)
+        updated = await Platform.findOneAndUpdate({_id: req.params.platformId}, { $pull: provided }, options).select(keys);
         //console.log(updated)
         break;
       default:

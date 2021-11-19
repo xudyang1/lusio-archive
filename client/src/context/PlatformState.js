@@ -78,7 +78,7 @@ export const PlatformProvider = ({ children }) => {
             });
         }
     };
-    async function getPlatform(id) {
+    async function getPlatform(id, reload = true) {
         try {
             const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
             //console.log("res", res);
@@ -171,6 +171,7 @@ export const PlatformProvider = ({ children }) => {
     };
 
     return (<PlatformContext.Provider value={{
+        getPlatformList,
         getPlatform,
         createPlatform,
         updatePlatform,
