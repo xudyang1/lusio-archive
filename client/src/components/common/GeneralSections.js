@@ -1,4 +1,4 @@
-import React, { Component, createRef, useEffect, useState } from "react";
+import React, { Component, createRef, useEffect, useRef, useState } from "react";
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCardWraper from "./QuizCardWraper";
@@ -24,7 +24,7 @@ function getCards(t, index, element) {
 export default function GeneralSections(props) {
 
 
-    const items = props.items ? props.items :[
+    const items = props.items ? props.items : [
         { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
         { id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platform_id: '2', likes: 1, created: new Date('2010/01/21') },
         { id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platform_id: '2', likes: 10, created: new Date('2021/10/22') },
@@ -36,7 +36,24 @@ export default function GeneralSections(props) {
     var type = props.type ? props.type : "quiz"
     var add = props.add ? props.add : false
 
+    const [editing, setEditing] = useState(false)
+
     const Section = createRef();
+    const sectionName = createRef();
+
+    function onClickEdit() {
+        setEditing(true)
+    }
+
+    function onClickConfirm() {
+        setEditing(false)
+        //console.log(sectionName.current.value)
+        props.updateName(sectionName.current.value)
+    }
+
+    function onClickCancel() {
+        setEditing(false)
+    }
 
     const pageUp = (e) => {
         Section.current.scrollBy(-1000, 0)
@@ -45,21 +62,27 @@ export default function GeneralSections(props) {
     const pageDown = (e) => {
         Section.current.scrollBy(1000, 0)
     }
-    console.log(props)
+    //console.log(props)
 
     return (
         <div>
             <div className="row z-depth-3">
                 <div style={{ margin: "10px" }}>
-                    <div>
-                        <h4>{name}
-                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={()=>props.deleteCallBack(props.index)}><i class="material-icons">delete</i></a> : <div></div>}
-                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light grey"><i class="material-icons">edit</i></a> : <div></div>}
-                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a> : <div></div>}
-                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light green"><i class="material-icons">check</i></a> : <div></div>}
+                    <div className="row">
+                        <h4>
+                            <div>{editing ?
+                                <div class="input-field">
+                                    <input type="text" defaultValue={name} ref={sectionName}/>
+                                </div>
+                                : name}
+                            </div>
+                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => props.deleteCallBack(props.index)}><i class="material-icons">delete</i></a> : <div></div>}
+                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickEdit()}><i class="material-icons">edit</i></a> : <div></div>}
+                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => onClickCancel()}><i class="material-icons">clear</i></a> : <div></div>}
+                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i class="material-icons">check</i></a> : <div></div>}
                         </h4>
-                        {props.profilepage? <div></div> : <a href={"/platform/"+props.id}>more{">"}{">"}</a>}
-                        
+                        {props.homeContent ? <a href={"/platform/" + props.id}>more{">"}{">"}</a> : <div></div>}
+
                     </div>
                     <div className="valign-wrapper">
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>
@@ -69,7 +92,7 @@ export default function GeneralSections(props) {
                                     getCards(type, index, element)
                                 ))
                             }
-                            {add? <AdddItemCard/> : <div></div>}
+                            {add ? <AdddItemCard /> : <div></div>}
                         </div>
                         <a className="right" onClick={pageDown}><i className="material-icons">chevron_right</i></a>
                     </div>

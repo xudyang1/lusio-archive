@@ -57,12 +57,8 @@ export default function PlatformContent(props) {
         updatePlatform(id, payload)
     }
 
-    function onClickEdit(){
-
-    }
-
-    function onClickUpload(){
-
+    function updateName(name){
+        console.log("Update Section Name to", name)
     }
     function onClickClear(){
 
@@ -73,7 +69,7 @@ export default function PlatformContent(props) {
         <div>
             {
                 sections.map((element, index) => (
-                    <GeneralSections key={index} name={element.sectionName} security={security} deleteCallBack={onClickDeleteSection} index={element.sectionIndex}/>
+                    <GeneralSections key={index} name={element.sectionName} security={security} deleteCallBack={onClickDeleteSection} updateName={updateName} index={element.sectionIndex}/>
                 ))
             }
             {
