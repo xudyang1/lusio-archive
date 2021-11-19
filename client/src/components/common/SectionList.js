@@ -1,14 +1,16 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
-import { useContext } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
 import AdddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
 import PlatoformCard from "./PlatformCard";
+import SubSectionList from "./SubSectionList";
 
 function getCards(t, index, element) {
-    console.log("called getCards with type: ", t)
+    console.log("CALLED GET CARDS")
+    console.log("called getCards with type: ", t, element)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={index} name={element.name} desc={element.description} /></div>
@@ -23,8 +25,8 @@ function getCards(t, index, element) {
 
 export default function SectionList(props) {
 
-    const { getQuiz } = useContext(QuizzesContext)
     const { getPlatform, platfrom } = useContext(PlatformContext)
+    const { getQuiz } = useContext(QuizzesContext)
 
     // const items = props.items ? props.items :[
     //     { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
@@ -40,9 +42,46 @@ export default function SectionList(props) {
     const name = props.name ? props.name : ""
     const callback = props.callback
     const add = props.add ? props.add : false
-    const items = props.items
+    //var templist = []
+    //const items = props.items
+    const [itemList, setList] = useState([])
+    const [shouldRender, setShouldRender] = useState(true);
+    // var temp = []
 
-    //console.log(props.items)
+    // function getQuizzes(items) {
+        
+    //     console.log(templist)
+    //     return templist
+    // }
+    
+
+    useEffect(()=>{
+        // var templist = []
+        // props.items.forEach(element => {
+        //     element = getQuiz(element, false)
+        //     element.then(value => {
+        //         templist.push(
+        //             {
+        //                 name: value.data.name,
+        //                 description: value.data.description,
+        //                 author: value.data.author,
+        //                 likes: value.data.likes
+        //             }
+        //         )
+        //     })
+        // });
+        // console.log("tempList:", templist)
+        //return setList(templist)
+        setTimeout(() => {
+            setShouldRender(false);
+          }, 1000);
+        return setList(props.items)
+    }, [props.items])
+    // useEffect(()=>{
+    //     console.log("State", itemList)
+    //     console.log("Props", props.items)
+    // }, [setList])
+    //console.log(items)
 
     return (
         <div>
@@ -53,12 +92,13 @@ export default function SectionList(props) {
                     </div>
                     <div className="valign-wrapper">
                         <div className="LSection">
+                            {/* <SubSectionList items={itemList} type={props.type}/> */}
                             {
-                                items.map((element, index) => (
+                                itemList.map((element, index) => (
                                     getCards(props.type, index, element)
                                 ))
                             }
-                            {add ? <AdddItemCard callback={callback} /> : <div></div>}
+                            {add ? <AdddItemCard /> : <div></div>}
                         </div>
                     </div>
                 </div>

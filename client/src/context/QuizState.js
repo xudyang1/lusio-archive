@@ -68,10 +68,12 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     };
-    async function getQuiz(id) {
+    async function getQuiz(id, updateState=true) {
         try {
+            if(updateState)
             dispatch(setQuizzesLoading());
             const res = await axios.get(`/api/quizzes/edit/${id}`);
+            if(updateState)
             dispatch({
                 type: GET_QUIZ,
                 payload: id
