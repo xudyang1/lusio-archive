@@ -19,6 +19,7 @@ export default function SettingsPage() {
                 iconURI: iconRef.current.value
             }
         })
+        window.location.reload(false);
     }
 
     const onUploadBanner = (e) => {
@@ -29,6 +30,7 @@ export default function SettingsPage() {
                 bannerURI: bannerRef.current.value
             }
         })
+        window.location.reload(false);
         //console.log(profile)
     }
 

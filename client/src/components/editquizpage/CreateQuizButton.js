@@ -7,15 +7,16 @@ import "materialize-css/dist/css/materialize.min.css";
 
 
 export const CreateQuizButton = () => {
-    const {isAuthenticated, user } = useContext(AuthContext);
+    const {isAuthenticated, user, loadUser } = useContext(AuthContext);
     const { addQuiz, getQuizzes } = useContext(QuizzesContext);
     const {updateProfile, profile} = useContext(ProfileContext);
 
     const handleCreate = async e => {
+        //console.log(profile._id)
         e.preventDefault();
 
         const quiz = { 
-        userId: user.id, 
+        userId: profile._id, 
         name: "", 
         author: user.name, 
         description: "", 
@@ -62,7 +63,7 @@ export const CreateQuizButton = () => {
         updateProfile({
             mode: "ADD",
             profile:{
-                owner: user.id,
+                owner: profile._id,
                 quizzesCreated: id
             }
         })
@@ -77,7 +78,7 @@ export const CreateQuizButton = () => {
             preventScrolling: false,
         };
         M.Modal.init(elem, options);
-    })
+    }, [])
 
     return(
         <div>
