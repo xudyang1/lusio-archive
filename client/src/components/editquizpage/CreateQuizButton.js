@@ -59,33 +59,13 @@ export const CreateQuizButton = () => {
 
         //implement for adding quizzes to profile section
         //>>>>>quizzesCreated
-        const quizzes = () => {
-            return getQuizzes()
-            .then(function(result){
-                console.log("result is", result);
-                const userQuizzes = result.data.filter(q => q.userId === user.id);
-                console.log(userQuizzes);
-                const currentQList = [];
-                for (let i=0; i< userQuizzes.length; i++){
-                    currentQList.push(userQuizzes[i]._id)
-                    console.log(userQuizzes[i]._id);
-                }
-                console.log(currentQList);
-                /*
-                updateProfile({
-                    mode: "EDIT",
-                    profile:{
-                        quizzesCreated: currentQList
-                    }
-                })
-                */
-                console.log(profile);
-            })
-        }
-        await quizzes();
+        updateProfile({
+            mode: "ADD",
+            profile:{
+                quizzesCreated: id
+            }
+        })
         //>>>>>>>>>>>>
-
-        
         document.location.href = "/edit/" + id;
         //return id;
     }
