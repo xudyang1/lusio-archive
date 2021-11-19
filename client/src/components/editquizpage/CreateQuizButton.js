@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { QuizzesContext } from "../../context/QuizState";
+import { ProfileContext } from "../../context/ProfileState";
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 
 
 export const CreateQuizButton = () => {
     const {isAuthenticated, user } = useContext(AuthContext);
-    const { addQuiz } = useContext(QuizzesContext);
+    const { addQuiz, getQuizzes } = useContext(QuizzesContext);
+    const {updateProfile, profile} = useContext(ProfileContext);
 
     const handleCreate = async e => {
         e.preventDefault();
@@ -52,7 +54,38 @@ export const CreateQuizButton = () => {
                 return res;
             })
         }
+
         const id = await getID();
+
+        //implement for adding quizzes to profile section
+        //>>>>>quizzesCreated
+        const quizzes = () => {
+            return getQuizzes()
+            .then(function(result){
+                console.log("result is", result);
+                const userQuizzes = result.data.filter(q => q.userId === user.id);
+                console.log(userQuizzes);
+                const currentQList = [];
+                for (let i=0; i< userQuizzes.length; i++){
+                    currentQList.push(userQuizzes[i]._id)
+                    console.log(userQuizzes[i]._id);
+                }
+                console.log(currentQList);
+                /*
+                updateProfile({
+                    mode: "EDIT",
+                    profile:{
+                        quizzesCreated: currentQList
+                    }
+                })
+                */
+                console.log(profile);
+            })
+        }
+        await quizzes();
+        //>>>>>>>>>>>>
+
+        
         document.location.href = "/edit/" + id;
         //return id;
     }
