@@ -29,7 +29,7 @@ export default function SettingsPage() {
                 bannerURI: bannerRef.current.value
             }
         })
-        console.log(profile)
+        //console.log(profile)
     }
 
     const onDelete = (e) => {

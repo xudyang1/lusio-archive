@@ -45,14 +45,21 @@ export default function GeneralSections(props) {
     const pageDown = (e) => {
         Section.current.scrollBy(1000, 0)
     }
+    console.log(props)
 
     return (
         <div>
             <div className="row z-depth-3">
                 <div style={{ margin: "10px" }}>
                     <div>
-                        <h4>{name}</h4>
+                        <h4>{name}
+                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={()=>props.deleteCallBack(props.index)}><i class="material-icons">delete</i></a> : <div></div>}
+                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light grey"><i class="material-icons">edit</i></a> : <div></div>}
+                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a> : <div></div>}
+                        {props.security > 0? <a className="right btn-floating btn-small waves-effect waves-light green"><i class="material-icons">check</i></a> : <div></div>}
+                        </h4>
                         {props.profilepage? <div></div> : <a href={"/platform/"+props.id}>more{">"}{">"}</a>}
+                        
                     </div>
                     <div className="valign-wrapper">
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>

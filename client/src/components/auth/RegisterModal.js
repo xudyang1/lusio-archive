@@ -86,7 +86,7 @@ export const RegisterModal = () => {
         // console.log(body);
     };
     useEffect(()=>{
-        console.log("LOADING,", state.loading)
+        //console.log("LOADING,", state.loading)
     },[state.loading])
 
     return (

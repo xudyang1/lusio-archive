@@ -80,7 +80,7 @@ export const ProfilesProvider = ({ children }) => {
     async function getProfile(id) {
         try {
             const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
-            console.log("res", res);
+            //console.log("res", res);
             dispatch({
                 type: GET_PROFILE,
                 payload: res.data

@@ -25,16 +25,16 @@ export default function PlayQuizPage(props) {
     var questionList = [];
 
     quiz = quiz[0];
-    console.log(quiz);
+    //console.log(quiz);
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(quiz);
+        //console.log(quiz);
     }
     if(quiz){
         name = quiz.quizName;
         description = quiz.quizDesc;
         questionList = quiz.quizQuestions;
-        console.log(questionList);
+        //console.log(questionList);
     }
     return (
         <div className="row">

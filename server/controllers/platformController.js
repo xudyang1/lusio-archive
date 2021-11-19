@@ -19,7 +19,7 @@ exports.getPlatform = async (req, res, next) => {
   try {
     const selectedPlatform = await Platform.findById(req.params.platformId);
 
-    console.log("platform doc: ", selectedPlatform);
+    //console.log("platform doc: ", selectedPlatform);
     if (!selectedPlatform) { return errorHandler(res, 404, 'The platform does not exist.'); }
 
     return res.status(200).json({
@@ -27,7 +27,7 @@ exports.getPlatform = async (req, res, next) => {
       platform: selectedPlatform
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -67,19 +67,19 @@ exports.addPlatform = async (req, res, next) => {
 
     if (!savedPlatform) { return errorHandler(res, 500, 'Unable to create the platform'); }
 
-    console.log("savedPlatform", savedPlatform);
+    //console.log("savedPlatform", savedPlatform);
 
     // append to profile
     const updatedProfile = await UserProfile.findByIdAndUpdate(profileId,
       { $push: { platformsCreated: savedPlatform._id } },
       { new: true });
-    console.log("updated: ", updatedProfile);
+    //console.log("updated: ", updatedProfile);
     return res.status(201).json({
       success: true,
       platform: savedPlatform
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -116,7 +116,7 @@ exports.addPlatform = async (req, res, next) => {
 exports.updatePlatform = async (req, res, next) => {
   try {
     // Note, to verify user id, use req.user.id rather than req.params.profileId
-
+    console.log(req.body)
     if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
     // destructure
@@ -125,7 +125,7 @@ exports.updatePlatform = async (req, res, next) => {
     const MODE = req.body.mode;
 
     var provided = keys = updated = null;
-    console.log("req.viewtyoe", req.viewType);
+    //console.log("req.viewtyoe", req.viewType);
     if (req.viewType !== 'OWNER_VIEW' && req.viewType !== 'ADMIN_VIEW') { return errorHandler(res, 403, 'No authorization'); }
     // set options
     const options = { runValidators: true, new: true };
@@ -138,18 +138,19 @@ exports.updatePlatform = async (req, res, next) => {
 
         keys = Object.keys(provided);
         updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
-        console.log("updated", updated);
+        //console.log("updated", updated);
         break;
       case "ADD":
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
-        console.log('$pushAll provided: ', provided);
+        //console.log('$pushAll provided: ', provided);
         updated = await Platform.findByIdAndUpdate(req.params.platformId, { $push: provided }, options).select(keys);
         break;
       case "DELETE":
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
         updated = await Platform.findByIdAndUpdate(req.params.platformId, { $pullAll: provided }, options).select(keys);
+        console.log(updated)
         break;
       default:
         // non matched mode
@@ -188,9 +189,9 @@ exports.updatePlatform = async (req, res, next) => {
 exports.deletePlatform = async (req, res, next) => {
   try {
     // get viewer's created platforms list
-    console.log("req.user.profile", req.user.profile);
+    //console.log("req.user.profile", req.user.profile);
     const profile = await UserProfile.findById(req.user.profile).select('platformsCreated');
-    console.log("list", profile);
+    //console.log("list", profile);
     var list = profile.platformsCreated.map(id => id.toString());
 
     // not the owner
@@ -211,7 +212,7 @@ exports.deletePlatform = async (req, res, next) => {
       platform: deletedPlatform
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);

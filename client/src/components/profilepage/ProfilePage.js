@@ -6,7 +6,7 @@ import ProfileHeader from './ProfileHeader';
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 
-import { useParams, useRouteMatch } from 'react-router';
+import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { ProfileContext } from '../../context/ProfileState';
 import GeneralSections from '../common/GeneralSections';
 
@@ -26,12 +26,13 @@ const s = {
 }
 
 export default function ProfilePage() {
+    const history = useHistory();
     const { id } = useParams();
     const { url, path } = useRouteMatch();
 
     const { isAuthenticated, loadUser, user } = useContext(AuthContext)
     const { profile, getProfile, viewType } = useContext(ProfileContext)
-    const { createPlatform } = useContext(PlatformContext)
+    const { createPlatform, platform } = useContext(PlatformContext)
 
     useEffect(() => {
         getProfile(id);
@@ -39,14 +40,17 @@ export default function ProfilePage() {
     }, [isAuthenticated])
 
     function createPlat(e){
-        console.log("Creating a new platform")
+        //console.log("Creating a new platform")
         const init = {
-            name : "new platform",
-            description : "description",
-            bannerURI : "https://media.istockphoto.com/photos/green-background-3d-render-picture-id1226478926?b=1&k=20&m=1226478926&s=170667a&w=0&h=JnDdZVzHtMBfq5ZYQBevaTDCvbDRS2ZS5iGeaJKXBqA=",
-            backgroundURI : "https://media.istockphoto.com/photos/green-background-3d-render-picture-id1226478926?b=1&k=20&m=1226478926&s=170667a&w=0&h=JnDdZVzHtMBfq5ZYQBevaTDCvbDRS2ZS5iGeaJKXBqA="
+            platform:{
+                name : "new platform",
+                description : "description",
+                bannerURI : "https://media.istockphoto.com/photos/green-background-3d-render-picture-id1226478926?b=1&k=20&m=1226478926&s=170667a&w=0&h=JnDdZVzHtMBfq5ZYQBevaTDCvbDRS2ZS5iGeaJKXBqA=",
+                backgroundURI : "https://media.istockphoto.com/photos/green-background-3d-render-picture-id1226478926?b=1&k=20&m=1226478926&s=170667a&w=0&h=JnDdZVzHtMBfq5ZYQBevaTDCvbDRS2ZS5iGeaJKXBqA="
+            }
         }
         createPlatform(init)
+        history.push(`/platform/${platform.id}`)
     }
 
     return (

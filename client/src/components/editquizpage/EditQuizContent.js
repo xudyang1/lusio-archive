@@ -39,7 +39,7 @@ class EditQuizContent extends Component{
             const quizL = await quizzes();
             //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            console.log("Quiz", quiz[0]);
+            //console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
@@ -88,7 +88,7 @@ class EditQuizContent extends Component{
     */
     handleAddQuestion = () => {
         this.setState({questions: [...this.state.questions, ""]});
-        console.log("Current state",this.state);
+        //console.log("Current state",this.state);
     }
     handleQuestionRemove = item => {
         const lastIndex = this.state.questions.length - 1;
@@ -109,39 +109,39 @@ class EditQuizContent extends Component{
             this.state.questions[0] = e.target.value;
         }
         */
-        console.log(this.state.questions);
+        //console.log(this.state.questions);
     }
     //+answers would be nested as it corresponds to different questions
     //so answerHandler would be changed 
     answerHandler = (qi,ai,e) => {
         this.state.answers[qi][ai] = e;
-        console.log(this.state.answers);
+        //console.log(this.state.answers);
     }
     timedHandler = () => {
         this.state.timed = !this.state.timed;
         this.setState({timed: this.state.timed});
-        console.log(this.state);
+        //console.log(this.state);
     }
     retakeHandler = () => {
         this.state.retake = !this.state.retake;
         this.setState({retake: this.state.retake});
-        console.log(this.state);
+        //console.log(this.state);
     }
     showQHandler = () => {
         this.state.showQuestion = !this.state.showQuestion;
         this.setState({showQuestion: this.state.showQuestion});
-        console.log(this.state);
+        //console.log(this.state);
     }
     showAHandler = () => {
         this.state.showAnswer = !this.state.showAnswer;
         this.setState({showAnswer: this.state.showAnswer});
-        console.log(this.state);
+        //console.log(this.state);
     }
 
 
     handleSave = async e => {
         e.preventDefault();
-        console.log("current quiz: ", this.state);
+        //console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
@@ -165,7 +165,7 @@ class EditQuizContent extends Component{
     handlePublish = (e) => {
         e.preventDefault();
         this.state.isPublished = true;
-        console.log("current quiz: ", this.state);
+        //console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
@@ -190,7 +190,7 @@ class EditQuizContent extends Component{
     handleUnpublish = (e) => {
         e.preventDefault();
         this.state.isPublished = false;
-        console.log("current quiz: ", this.state);
+        //console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {

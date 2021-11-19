@@ -56,7 +56,7 @@ export default function ProfileHeader(props) {
         const userProfile = { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat };
         //updateProfile(userProfile);
 
-        console.log(textRef.current.value)
+        //console.log(textRef.current.value)
         updateProfile({
             mode: "EDIT",
             profile:{

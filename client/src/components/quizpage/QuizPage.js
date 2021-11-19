@@ -16,7 +16,7 @@ export default function QuizPage(){
     var quizQs = 0;
     var quizScoreboard = [];
     quiz = quiz[0];
-    console.log(quiz);
+    //console.log(quiz);
     if(quiz){
         name = quiz.quizName;
         description = quiz.quizDesc;
@@ -36,16 +36,16 @@ export default function QuizPage(){
     const numLikeHandler = () => {
         if (!liked){
             setNumLikes(current => current + 1);
-            console.log("You liked a quiz!");
+            //console.log("You liked a quiz!");
         }
         else {
             setNumLikes(current => current - 1);
-            console.log("You unliked the quiz.");
+            //console.log("You unliked the quiz.");
         }
     }
     const numPlayHandler = () => {
         setNumPlays(current => current + 1);
-        console.log("You played a quiz");
+        //console.log("You played a quiz");
     }
     const onClick = () =>{
         numLikeHandler();
