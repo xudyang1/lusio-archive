@@ -76,7 +76,7 @@ export const QuizzesProvider = ({ children }) => {
                 type: GET_QUIZ,
                 payload: id
             });
-            //console.log("quiz is : ", res.data);
+            console.log("quiz is : ", res.data);
             return res.data;
         } catch (err) {
             console.error(err);
@@ -88,6 +88,7 @@ export const QuizzesProvider = ({ children }) => {
     };
 
     async function addQuiz({ userId, name, author, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
+        console.log("ADDQUIZ", userId)
         const config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -97,13 +98,14 @@ export const QuizzesProvider = ({ children }) => {
         const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished });
         console.log(body);
         try {
-            const res = await axios.post('http://localhost:5000/api/quizzes/edit', body, config);
+            const res = await axios.post('/api/quizzes/edit', body, config);
             dispatch({
                 type: ADD_QUIZ,
                 payload: res.data
             });
             return res.data.quiz.id;
         } catch (err) {
+            console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
@@ -119,12 +121,12 @@ export const QuizzesProvider = ({ children }) => {
         };
         const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished });
         try {
-            const res = await axios.put(`http://localhost:5000/api/quizzes/edit/${id}`, body, config);
+            const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
             dispatch({
                 type: UPDATE_QUIZ,
                 payload: res.data
             });
-            //console.log("After adding quiz, success, state: ", res.data);
+            console.log("After adding quiz, success, state: ", res.data);
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
