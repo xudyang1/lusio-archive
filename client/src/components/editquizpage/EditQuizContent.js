@@ -28,24 +28,6 @@ class EditQuizContent extends Component{
             isPublished: false,
             openModal: false
         };
-        /*this.state = {
-            id: "",
-            userId: "",
-            name: "",
-            description: "",
-            timed: false, 
-            retake: false, 
-            showQuestion: false, 
-            showAnswer: false,
-            likes: 0,
-            created: "",
-            EXP: 0,
-            questions:[],
-            answers: [[""],[""],[""],[""],[""]],
-            isPublished: false,
-            openModal: false
-        };
-        */
     }
     
     getItem = async (id, getQuizzes) => {
@@ -82,7 +64,6 @@ class EditQuizContent extends Component{
         });
         console.log("quiz questions are", this.state.questions);
         console.log("current state is ", this.state);
-        
     }
     handleDelete = async e => {
         e.preventDefault();
