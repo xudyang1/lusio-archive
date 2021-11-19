@@ -8,6 +8,7 @@ import M from 'materialize-css';
 import AdddItemCard from "./AddItemCard";
 import { ProfileContext } from "../../context/ProfileState";
 import { useForceUpdate } from "../../utils/useForceUpdate";
+import PlatformCard from "./PlatformCard";
 
 function getCards(t, index, element, canEdit) {
     // console.log("called getCards with type: ", t)
@@ -15,9 +16,9 @@ function getCards(t, index, element, canEdit) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit}/></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit} /></div>
         case SUB_PLAT_CARD:
-            break;
+            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case SUB_USER_CARD:
             break;
     }
@@ -73,7 +74,7 @@ export default function GeneralSections(props) {
         setTimeout(() => {
             setShouldRender(false);
           }, 2000);
-        setList(props.items)
+        // setList(props.items)
         forceUpdate();
     }, [props.items])
     //console.log(props)
@@ -102,8 +103,8 @@ export default function GeneralSections(props) {
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>
                         <div className="GSection" ref={Section}>
                             {
-                                itemList?
-                                itemList.map((element, index) => (
+                                props.items?
+                                props.items.map((element, index) => (
                                     getCards(type, index, element, viewType=="OWNER_VIEW")
                                 ))
                                 :<div></div>

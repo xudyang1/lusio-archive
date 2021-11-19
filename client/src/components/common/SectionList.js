@@ -5,7 +5,7 @@ import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
 import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
-import PlatoformCard from "./PlatformCard";
+import PlatformCard from "./PlatformCard";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import { ProfileContext } from "../../context/ProfileState";
 import { useForceUpdate } from "../../utils/useForceUpdate";
@@ -19,7 +19,7 @@ function getCards(t, index, element, canEdit) {
         case QUIZ_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit} /></div>
         case SUB_PLAT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><PlatoformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case SUB_USER_CARD:
             break;
     }
@@ -52,9 +52,9 @@ export default function SectionList(props) {
         setTimeout(() => {
             setShouldRender(false);
         }, 2000);
-        setList(props.items)
+        // setList(props.items)
         forceUpdate();
-    }, [])
+    }, [props.items])
 
     return (
         <div>
@@ -66,9 +66,11 @@ export default function SectionList(props) {
                     <div className="valign-wrapper">
                         <div className="LSection">
                             {
-                                itemList.map((element, index) => (
-                                    getCards(props.type, index, element, viewType == "OWNER_VIEW")
+                                props.items?
+                                props.items.map((element, index) => (
+                                    getCards(props.type, index, element, viewType=="OWNER_VIEW")
                                 ))
+                                :<div></div>
                             }
                             {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
                             {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>}
