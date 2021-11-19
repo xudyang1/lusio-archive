@@ -33,7 +33,6 @@ class QuizPageContent extends Component{
             const quizL = await quizzes();
             //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
@@ -49,7 +48,6 @@ class QuizPageContent extends Component{
             numQ: quiz.questions.length,
             scoreboard: []
         });
-        console.log("QUIZ STATE: " + this.state);
     }
 
     condLikeHandler = () => {
@@ -74,87 +72,96 @@ class QuizPageContent extends Component{
         //numLikeHandler();
         //condLikeHandler();
     }
+    componentDidMount(){
+        const id = this.props.match.params.id;
+        const {getQuizzes} = this.context;
+        this.getItem(id, getQuizzes);
+    }
 
     render(){
         return(
             <div>
-                <div>
-                    <span className="flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
-                        Name {this.state.name}
-                    </span>
-                    <span className="flow-text">
-                            Platform {this.state.platformId}
-                    </span><br/>
-                    <span className="flow-text">
-                        <div style={{fontSize:"15px"}}>Description: <br/></div>
-                        {this.state.description}
-                    </span>
-                </div>
-                <div className="col s5 pull-s7">
+                <div className="col s5 pull-s10">
                     <span className="flow-text">
                         <img src="https://www.moma.org/assets/visit/entrance-image--museum-crop-7516b01003659172f2d9dbc7a6c2e9d9.jpg" style={{width:"350px",height:"200px", paddingTop: "10px"}}></img>
                     </span> 
                 </div>
                 <div className="row">
-                <div className="col s3">
-                    Related Tags : wishlist
-                </div>
-                <div className="col s9">
-                    <div className="row" style={{paddingLeft:"250px"}}>
-                        <span> 
-                            {/*{plays} plays*/}
-                            {/*onClick={onClick} in below statement*/}
-                            <i className="material-icons likeicon">thumb_up</i>
-                            <span> {this.state.likes}</span>
-                        </span>
+                    <div className="col pull-s4">
+                        <p className="row flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
+                            {this.state.name}
+                        </p>
+                        <p className="row flow-text">
+                                Platform {this.state.platformId}
+                        </p>
+                        <p className="row flow-text">
+                            <div style={{fontSize:"15px"}}>Description: <br/></div>
+                            {this.state.description}
+                        </p>
                     </div>
                 </div>
-            </div>      
-            <hr></hr>
-            <div className="row" >
-                <div className="col s4">
-                <table>
-                    <tr>
-                        <th bgcolor="lightgrey"></th>
-                        <th bgcolor="lightgrey">Ranking</th>
-                        <th bgcolor="lightgrey">Score</th>
-                    </tr>{/*
-                    {quizScoreboard.map((user, index)=> {
-                        return(
-                            <tr key={index}>
-                                <td>{user.userID}</td>
-                                <td>User Name</td>
-                                <td>{user.score}</td>
-                            </tr>
-                        )
-                    })}*/}
-                </table>
-                </div>
-                <div className="col s8">
-                    
-                    <div className="container">
-                        <div className="row" style={{textAlign: 'center', fontSize: "20px"}}>
-                            <div className="col s4"># OF QUESTIONS</div>
-                            <div className="col s4">TIMER SET</div>
-                            <div className="col s4">PERSONAL SCORE</div>
-                        </div>
-                        <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
-                            <div className="col s4">{this.state.numQ}</div>
-                            <div className="col s4">{this.state.timer}</div>
-                            <div className="col s4">N/A</div>
-                        </div>
+                <div className="row">
+                    <div className="col">
+                        Related Tags : wishlist
                     </div>
-                    <br/>
-                    <div className="row" style={{maxWidth:"100%", maxHeight:"100%"}}>
-                        {/*<div className= "col s8">
-                            <a href={"/play/"+id} className="waves-effect waves-light btn" style={{left:"230px"}} onClick={numPlayHandler}>Play Quiz</a>
-                        </div>*/}
-                        <div className= 'col s4'>
-                            <a className="waves-effect waves-light btn-small" >View Quiz Statistics</a>
+                    <div className="col">
+                        <div className="row" style={{paddingLeft:"200px"}}>
+                            <span> 
+                                {/*{plays} plays*/}
+                                {/*onClick={onClick} in below statement*/}
+                                <i className="material-icons likeicon">thumb_up</i>
+                                <span> {this.state.likes}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div className="row" style={{marginBottom: "25px"}}>
+                    <hr className="row" style={{width:"150%", position:"absolute", right:"1px"}}></hr>
+                </div>
+                <div className="col pull-s5" >
+                    <div className="col s4">
+                    <table>
+                        <tr>
+                            <th bgcolor="lightgrey"></th>
+                            <th bgcolor="lightgrey">Ranking</th>
+                            <th bgcolor="lightgrey">Score</th>
+                        </tr>{/*
+                        {quizScoreboard.map((user, index)=> {
+                            return(
+                                <tr key={index}>
+                                    <td>{user.userID}</td>
+                                    <td>User Name</td>
+                                    <td>{user.score}</td>
+                                </tr>
+                            )
+                        })}*/}
+                    </table>
+                    </div>
+                    <div className="col s12">
+                        
+                        <div className="row">
+                            <div className="row" style={{textAlign: 'center', fontSize: "20px"}}>
+                                <div className="col s4"># OF QUESTIONS</div>
+                                <div className="col s4">TIMER SET</div>
+                                <div className="col s4">PERSONAL SCORE</div>
+                            </div>
+                            <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
+                                <div className="col s4">{this.state.numQ}</div>
+                                <div className="col s4">{this.state.timer}</div>
+                                <div className="col s4">N/A</div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div className="row" style={{maxWidth:"100%", maxHeight:"100%"}}>
+                            {/*<div className= "col s8">
+                                <a href={"/play/"+id} className="waves-effect waves-light btn" style={{left:"230px"}} onClick={numPlayHandler}>Play Quiz</a>
+                            </div>*/}
+                            <div className= 'col'>
+                                <button className="waves-effect waves-light btn" >View Quiz Statistics</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
