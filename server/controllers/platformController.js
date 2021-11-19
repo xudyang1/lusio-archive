@@ -229,7 +229,7 @@ exports.deletePlatform = async (req, res, next) => {
     if (!list.includes(req.params.platformId)) { return errorHandler(res, 403, 'No authorization'); }
 
     const deletedPlatform = await Platform.findByIdAndRemove(req.params.platformId);
-
+    console.log(deletedPlatform)
     if (!deletedPlatform) { return errorHandler(res, 404, 'Platform does not exist'); }
 
     // pull from the profile

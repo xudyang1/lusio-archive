@@ -78,7 +78,7 @@ export const PlatformProvider = ({ children }) => {
             });
         }
     };
-    async function getPlatform(id) {
+    async function getPlatform(id, reload=true) {
         try {
             const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
             //console.log("res", res);
@@ -149,7 +149,7 @@ export const PlatformProvider = ({ children }) => {
 
     async function removePlatform(platformId) {
         try {
-            const res = await axios.delete(`api/platforms/platform/${platformId}`, tokenConfig(token));
+            const res = await axios.delete(`/api/platforms/platform/${platformId}`, tokenConfig(token));
             // console.log("res", res);
             dispatch({
                 type: DELETE_PLATFORM,
@@ -171,6 +171,7 @@ export const PlatformProvider = ({ children }) => {
     };
 
     return (<PlatformContext.Provider value={{
+        getPlatformList,
         getPlatform,
         createPlatform,
         updatePlatform,
