@@ -22,9 +22,9 @@ export const loadUser = (state) => async (dispatch) => {
             type: USER_LOADED,
             payload: res.data
         });
-        console.log("Called loadUser(): user loaded", state);
+        //console.log("Called loadUser(): user loaded", state);
     } catch (err) {
-        console.log(err);
+        //console.log(err);
         dispatch({
             type: AUTH_ERROR,
             payload: {
@@ -33,7 +33,7 @@ export const loadUser = (state) => async (dispatch) => {
                 id: 'AUTH_ERROR'
             }
         });
-        console.log("Called loadUser(): error", state);
+        //console.log("Called loadUser(): error", state);
     }
 };
 // // Register user

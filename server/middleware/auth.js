@@ -21,7 +21,7 @@ exports.strictAuth = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (e) {
-        console.log(e)
+        //console.log(e)
         res.status(400).json({ msg: 'Token is not valid' });
     }
 };
@@ -78,8 +78,8 @@ exports.softAuth = async (req, res, next) => {
             // get Profile id for current viewer
             const quiz = await Quiz.findById(req.params.quizId).select('owner');
             const ownerId = quiz.owner.toString();
-            console.log("Query: ", quiz);
-            console.log("ownerId: ", ownerId);
+            //console.log("Query: ", quiz);
+            //console.log("ownerId: ", ownerId);
             // matched profileId: viewer is getting own profile
             if (ownerId === req.user.profile) {
                 req.viewType = OWNER_VIEW;

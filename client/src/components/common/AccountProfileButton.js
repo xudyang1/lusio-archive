@@ -2,7 +2,7 @@ import { Component, useContext, useEffect, useState } from "react";
 import React from 'react';
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
-import { useParams } from "react-router";
+import { useParams, useRouteMatch } from "react-router";
 
 
 export default function AccountProfileButton() {
@@ -11,12 +11,11 @@ export default function AccountProfileButton() {
     const { profile, getProfile } = useContext(ProfileContext)
 
     const { id } = useParams()
+    const { url, path } = useRouteMatch()
 
     useEffect(() => {
-        console.log("BEFORE GETPROFILE id:", id, "  profile:", user.profile)
-        console.log("BEFORE GETPROFILE", profile)
         getProfile(user.profile);
-        console.log("FROM ACCOUNT BUTTON", profile);
+        // console.log("FROM ACCOUNT BUTTON", profile);
     }, [isAuthenticated]);
 
     const s = {

@@ -12,6 +12,7 @@ import AppNavbar from './components/common/AppNavbar';
 import { AuthProvider } from './context/AuthState';
 import { ProfilesProvider } from './context/ProfileState';
 import { QuizzesProvider } from './context/QuizState';
+import { PlatformProvider } from './context/PlatformState';
 
 function App() {
     return (
@@ -19,13 +20,15 @@ function App() {
             <ProfilesProvider>
                 <AppNavbar />
                 <QuizzesProvider>
-                    <Route exact path="/" component={HomePage} />
-                    <Route path="/quiz/:id" component={QuizPage} />
-                    <Route path="/edit/:id" component={EditQuizPage} />
-                    <Route path="/play/:id" component={PlayQuizPage} />
-                    <Route path="/search/:key" component={SearchPage} />
-                    <Route path="/profile/:id" component={ProfilePage} />
-                    <Route path="/platform/:id" component={PlatformPage} />
+                    <PlatformProvider>
+                        <Route exact path="/" component={HomePage} />
+                        <Route path="/quiz/:id" component={QuizPage} />
+                        <Route path="/edit/:id" component={EditQuizPage} />
+                        <Route path="/play/:id" component={PlayQuizPage} />
+                        <Route path="/search/:key" component={SearchPage} />
+                        <Route path="/profile/:id" component={ProfilePage} />
+                        <Route path="/platform/:id" component={PlatformPage} />
+                    </PlatformProvider>
                 </QuizzesProvider>
             </ProfilesProvider>
         </AuthProvider>

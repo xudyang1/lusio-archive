@@ -58,20 +58,20 @@ export const AuthProvider = ({ children }) => {
     };
     // check token & load user
     async function loadUser() {
-        console.log("CALLED LoadUser()");
+        //console.log("CALLED LoadUser()");
         try {
             // user loading
             dispatch({ type: USER_LOADING });
 
             const res = await axios.get('/api/auth/user', tokenConfig(state));
-            console.log("res.data = ", res.data);
+            //console.log("res.data = ", res.data);
             dispatch({
                 type: USER_LOADED,
                 payload: res.data
             });
             //console.log("Called loadUser(): user loaded", state);
         } catch (err) {
-            console.log("err", err);
+            //console.log("err", err);
             dispatch({
                 type: AUTH_ERROR,
                 payload: {
@@ -128,12 +128,12 @@ export const AuthProvider = ({ children }) => {
         // console.log("Before login");
         try {
             const res = await axios.post('/api/auth/login', body, config);
-            console.log("Login() LOGIN_SUCCESS", res.data);
+            //console.log("Login() LOGIN_SUCCESS", res.data);
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: res.data
             });
-            console.log("After login, success, state: ", state);
+            //console.log("After login, success, state: ", state);
         }
         catch (err) {
             dispatch({
@@ -157,7 +157,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const body = JSON.stringify(payload);
             const res = await axios.patch('/api/auth/user/edit', body, tokenConfig(state));
-            console.log("res.data = ", res.data);
+            //console.log("res.data = ", res.data);
             dispatch({
                 type: UPDATE_SUCCESS,
                 payload: res.data //deleted user info
@@ -176,7 +176,7 @@ export const AuthProvider = ({ children }) => {
     async function deleteAccount() {
         try {
             const res = await axios.delete('/api/auth/user/delete', tokenConfig(state));
-            console.log("res.data = ", res.data);
+            //console.log("res.data = ", res.data);
             dispatch({
                 type: DELETE_ACCOUNT,
                 payload: res.data //deleted user info

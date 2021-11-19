@@ -29,7 +29,11 @@ exports.getProfile = async (req, res, next) => {
             profile: output
         });
     } catch (err) {
-        console.log(err);
+        //console.log(err);
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };
@@ -109,7 +113,11 @@ exports.updateProfile = async (req, res, next) => {
             content: updated
         });
     } catch (err) {
-        console.log(err);
+        //console.log(err);
+        if(err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
         return errorHandler(res, 500, 'Server Error');
     }
 };

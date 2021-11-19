@@ -12,16 +12,19 @@ class EditQuizContent extends Component{
             id: "",
             userId: "",
             name: "",
+            author: "",
             description: "",
-            timed: false, 
-            retake: false, 
-            showQuestion: false, 
-            showAnswer: false,
+            timedOption: false,
+            time: 0,
+            retakeOption: false,
+            questions: [{
+                title: "",
+                choices: [""], 
+                answerKey: 1,
+                score: 0
+            }], 
             likes: 0,
-            created: "",
-            EXP: 0,
-            questions:[],
-            answers: [[""],[""],[""],[""],[""]],
+            plays: 0,
             isPublished: false,
             openModal: false
         };
@@ -39,26 +42,28 @@ class EditQuizContent extends Component{
             const quizL = await quizzes();
             //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            console.log("Quiz", quiz[0]);
+            //console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
+        console.log("current quiz is ", quiz);
         this.setState({
             id: quiz._id,
             userId: quiz.userId,
             name: quiz.name,
+            author: quiz.author,
             description: quiz.description,
-            timed: quiz.timed, 
-            retake: quiz.retake, 
-            showQuestion: quiz.showQuestion, 
-            showAnswer: quiz.showAnswer,
+            timedOption: quiz.timedOption,
+            time: quiz.time,
+            retakeOption: quiz.retakeOption,
+            questions: quiz.questions, 
             likes: quiz.likes,
-            created: quiz.created,
-            EXP: quiz.EXP,
-            questions: quiz.questions,
-            answers: quiz.answers,
-            isPublished: quiz.isPublished
+            plays: quiz.plays,
+            isPublished: quiz.isPublished,
+            openModal: false
         });
+        console.log("quiz questions are", this.state.questions);
+        console.log("current state is ", this.state);
     }
     handleDelete = async e => {
         e.preventDefault();
@@ -72,34 +77,42 @@ class EditQuizContent extends Component{
     descriptionHandler = (e) => {
         this.setState({description: e.target.value});
     }
-    /*
-    handleAddAnswer = () => {
-        this.setState({answers: [...this.state.answers, ""]});
+
+    
+    handleAddAnswer = (qi, item) => {
+        let list = [...this.state.questions];
+        let newItem = {...list[qi]};
+        newItem.choices.push({content: ""});
+        list[qi] = newItem;
+        this.setState({questions: list});
     }
-    handleAnswerRemove = item => {
+    handleAnswerRemove = (qi, item) => {
         //const list = [...this.state.answers];
         //if(list.length > 1){list.splice(item, 1);}
         //this.setState({answers: list});
-        const list = [...this.state.answers];
-        if(list.length > 1){list.splice(item, 1);}
-        this.setState({answers: list});
-        
+        let list = [...this.state.questions];
+        let oldItem = {...list[qi]};
+        oldItem.choices.pop();
+        list[qi] = oldItem;
+        this.setState({questions: list});
     }
-    */
+    
+
     handleAddQuestion = () => {
-        this.setState({questions: [...this.state.questions, ""]});
+        this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
         console.log("Current state",this.state);
     }
-    handleQuestionRemove = item => {
-        const lastIndex = this.state.questions.length - 1;
+    handleQuestionRemove = () => {
         const list = [...this.state.questions];
-        const alist = [...this.state.answers];
-        if(list.length > 1){list.splice(item, 1); alist.splice(item, 1);}
+        //const alist = [...this.state.answers];
+        if(list.length > 1){ list.splice(list.length-1, 1);}
+        //if(list.length > 1){list.splice(item, 1); alist.splice(item, 1);}
         this.setState({questions: list});
-        this.setState({answers: alist})
+        //this.setState({answers: alist})
     }
     questionHandler = (qi, e) => {
-        this.state.questions[qi] = e;
+        this.state.questions[qi].title = e;
+        console.log(this.state.questions);
         /*
         const l = this.state.questions.length;
         if (l != 1 ){
@@ -109,41 +122,69 @@ class EditQuizContent extends Component{
             this.state.questions[0] = e.target.value;
         }
         */
-        console.log(this.state.questions);
+    }
+    answerHandler = (qi,ai,e) => {
+        this.state.questions[qi].choices[ai].content = e;
+        console.log(this.state.questions[qi].answers);
     }
     //+answers would be nested as it corresponds to different questions
     //so answerHandler would be changed 
-    answerHandler = (qi,ai,e) => {
-        this.state.answers[qi][ai] = e;
-        console.log(this.state.answers);
-    }
+
     timedHandler = () => {
-        this.state.timed = !this.state.timed;
-        this.setState({timed: this.state.timed});
+        this.state.timedOption = !this.state.timedOption;
+        this.setState({timedOption: this.state.timedOption});
         console.log(this.state);
     }
     retakeHandler = () => {
-        this.state.retake = !this.state.retake;
-        this.setState({retake: this.state.retake});
+        this.state.retakeOption = !this.state.retakeOption;
+        this.setState({retakeOption: this.state.retakeOption});
         console.log(this.state);
     }
+    scoreHandler = (qi,e) => {
+        e.preventDefault();
+        this.state.questions[qi].score = Number(e.target.value);
+        console.log(this.state.questions);
+    }
+    answerKeyHandler = (qi,e) => {
+        e.preventDefault();
+        this.state.questions[qi].answerKey = Number(e.target.value);
+        console.log(this.state.questions);
+    }
+    /*
+    //Wishlist
     showQHandler = () => {
         this.state.showQuestion = !this.state.showQuestion;
         this.setState({showQuestion: this.state.showQuestion});
-        console.log(this.state);
+        //console.log(this.state);
     }
     showAHandler = () => {
         this.state.showAnswer = !this.state.showAnswer;
         this.setState({showAnswer: this.state.showAnswer});
-        console.log(this.state);
+        //console.log(this.state);
     }
-
+    */
 
     handleSave = async e => {
         e.preventDefault();
-        console.log("current quiz: ", this.state);
+        //console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
+        const updateFQuiz = {
+            id: this.state.id,
+            userId: this.state.userId,
+            name: this.state.name,
+            author: this.state.author,
+            description: this.state.description,
+            timedOption: this.state.timedOption,
+            time: this.state.time,
+            retakeOption: this.state.retakeOption,
+            questions: this.state.questions, 
+            likes: this.state.likes,
+            plays: this.state.plays,
+            isPublished: this.state.isPublished
+        };
+        updateQuiz(updateFQuiz);
+        /*
         const updateFQuiz = {
             id: this.state.id, 
             userId: this.state.userId,
@@ -160,55 +201,52 @@ class EditQuizContent extends Component{
             answers: this.state.answers,
             isPublished: this.state.isPublished    
         }
-        updateQuiz(updateFQuiz);
+        */
+        
     }
     handlePublish = (e) => {
         e.preventDefault();
         this.state.isPublished = true;
-        console.log("current quiz: ", this.state);
+        //console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
-            id: this.state.id, 
+            id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
+            author: this.state.author,
             description: this.state.description,
-            timed: this.state.timed, 
-            retake: this.state.retake, 
-            showQuestion: this.state.showQuestion, 
-            showAnswer: this.state.showAnswer,
+            timedOption: this.state.timedOption,
+            time: this.state.time,
+            retakeOption: this.state.retakeOption,
+            questions: this.state.questions, 
             likes: this.state.likes,
-            created: this.state.created,
-            EXP: this.state.EXP,
-            questions: this.state.questions,
-            answers: this.state.answers,
-            isPublished: this.state.isPublished    
-        }
+            plays: this.state.plays,
+            isPublished: this.state.isPublished
+        };
         updateQuiz(updateFQuiz);
         
     }
     handleUnpublish = (e) => {
         e.preventDefault();
         this.state.isPublished = false;
-        console.log("current quiz: ", this.state);
+        //console.log("current quiz: ", this.state);
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
-            id: this.state.id, 
+            id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
+            author: this.state.author,
             description: this.state.description,
-            timed: this.state.timed, 
-            retake: this.state.retake, 
-            showQuestion: this.state.showQuestion, 
-            showAnswer: this.state.showAnswer,
+            timedOption: this.state.timedOption,
+            time: this.state.time,
+            retakeOption: this.state.retakeOption,
+            questions: this.state.questions, 
             likes: this.state.likes,
-            created: this.state.created,
-            EXP: this.state.EXP,
-            questions: this.state.questions,
-            answers: this.state.answers,
-            isPublished: this.state.isPublished    
-        }
+            plays: this.state.plays,
+            isPublished: this.state.isPublished
+        };
         updateQuiz(updateFQuiz);
     }
     
@@ -242,16 +280,18 @@ class EditQuizContent extends Component{
                         <form action="#">
                             <p>
                                 <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.timed} onClick={this.timedHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.retake} onClick={this.retakeHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.retakeOption} onClick={this.retakeHandler}/>
                                     <span>Allow retake</span>
                                 </label>
                             </p>
+                            {/*
+                            //Wishlist
                             <p>
                                 <label>
                                     <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showQuestion} onClick={this.showQHandler}/>
@@ -264,38 +304,41 @@ class EditQuizContent extends Component{
                                     <span>Show answer after submission</span>
                                 </label>
                             </p>
+                             */}
                         </form>
                     </div>
+                    
                     {this.state.questions.map((q, qi) => {
                         return(
                             <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
-                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q}/>
+                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title}/>
                                 <div className="col s6" style={{padding: '20px'}}>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 0, e.target.value)} defaultValue={this.state.answers[qi][0]}/>
+                                {this.state.questions[qi].choices.map((a,ai)=> {
+                                    return (
+                                        <div className="text-box">
+                                            <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, ai, e.target.value)} defaultValue={q.choices[ai].content}/>
+                                        </div>
+                                    )
+                                })}
+                                <div className="row">
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{margin: "5px"}} onClick={(item) => {this.handleAddAnswer(qi, item)}}><i className="material-icons">add</i></button>
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{margin: "5px"}} onClick={(item) => {this.handleAnswerRemove(qi, item)}}><i className="material-icons">remove</i></button>
                                 </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 1, e.target.value)} defaultValue={this.state.answers[qi][1]}/>
+                                
                                 </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 2, e.target.value)} defaultValue={this.state.answers[qi][2]}/>
-                                </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 3, e.target.value)} defaultValue={this.state.answers[qi][3]}/>
-                                </div>
-                                <div className="text-box">
-                                    <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, 4, e.target.value)} defaultValue={this.state.answers[qi][4]}/>
-                                </div>
-                                </div>
-                                {/*
+                                
                                 <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
-                                    Set Score:
+                                    Set Score: {this.state.questions[qi].score}
                                 </div>
-                                <input className="col s1"></input>
-                                */}
+                                <input className="col s1" onChange={(e)=> this.scoreHandler(qi,e)}></input>
+                                <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
+                                    Set Answer: {this.state.questions[qi].answerKey}
+                                </div>
+                                <input className="col s1" onChange={(e)=> this.answerKeyHandler(qi,e)}></input>
                             </div>
-                        )
-                    })}
+                        )})
+                    }
+                    
                     <div className="section col s12" style={{padding: "20px"}}>
                             <div className="col s4">
                                 <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Undo</a>

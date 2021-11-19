@@ -10,7 +10,7 @@ exports.nonNullJson = (jsonObj) => {
 /**
  * 
  * @param {JSON} jsonObj 
- * @param {Array<String> | String} drop key or list of keys in string
+ * @param {Array<string> | string} drop key or list of keys in string
  * @returns a new JSON after filtering out {drop} entries of {jsonObj}
  */
 exports.dropEntries = (jsonObj, drop) => {
@@ -21,7 +21,7 @@ exports.dropEntries = (jsonObj, drop) => {
 /**
  * 
  * @param {JSON} jsonObj 
- * @param {Array<String> | String} entries select entries with keys in the array
+ * @param {Array<string> | string} entries select entries with keys in the array
  * @returns a new JSON with entries with keys provided by the array if present
  */
 exports.selectEntries = (jsonObj, entries) => {
@@ -32,8 +32,8 @@ exports.selectEntries = (jsonObj, entries) => {
 /**
  * 
  * @param {EventHandler} res response event handler
- * @param {Integer} statusCode HTTP status code, default with 400
- * @param {String} msg error message, default with 'Bad Request, cannot process'
+ * @param {number} statusCode HTTP status code, default with 400
+ * @param {string | Array<string>} msg error message, default with 'Bad Request, cannot process'
  * @returns send response indicates the error with error status code and error message
  */
 exports.errorHandler = (res, statusCode = 400, msg = 'Bad Request, cannot process') => {
