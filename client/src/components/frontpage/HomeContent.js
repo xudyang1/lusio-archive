@@ -22,12 +22,12 @@ export default function HomeContent() {
             <CreateQuizButton />
             <DailyChallengeSection />
             <div className="container">
-                {
+                {/* {
                     // replace tempPlatform with platforms when finished
                     tempPlatform.map((element, index) => (
                         <GeneralSections key={index} name={element} type={QUIZ_CARD} options={index} id={index} homeContent={true} />
                     ))
-                }
+                } */}
             </div>
         </div>
     )

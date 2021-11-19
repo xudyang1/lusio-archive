@@ -82,16 +82,19 @@ export const PlatformProvider = ({ children }) => {
         try {
             const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
             //console.log("res", res);
-            dispatch({
-                type: GET_PLATFORM,
-                payload: res.data
-            });
+            if (reload)
+                dispatch({
+                    type: GET_PLATFORM,
+                    payload: res.data
+                });
+            return res.data
         } catch (err) {
             console.log(err)
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
+            if (reload)
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: { msg: err.response.data.msg, status: err.response.status }
+                });
         }
     };
     /**
@@ -107,6 +110,7 @@ export const PlatformProvider = ({ children }) => {
                 type: ADD_PLATFORM,
                 payload: res.data
             });
+            return res.data
         } catch (err) {
             //console.log(err)
             dispatch({

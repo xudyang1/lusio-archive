@@ -6,7 +6,7 @@ import M from 'materialize-css';
 
 export default function QuizResult(){
     const { isPlaying , score } = useContext(QuizzesContext);
-    console.log("Is the user playing the quiz?", isPlaying);
+    //console.log("Is the user playing the quiz?", isPlaying);
     useEffect(() => {
         var elem = document.querySelector('#quizResultModal')
         var opt = { preventScrolling: false};

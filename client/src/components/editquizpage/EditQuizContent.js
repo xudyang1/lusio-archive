@@ -46,7 +46,7 @@ class EditQuizContent extends Component{
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        console.log("current quiz is ", quiz);
+        //console.log("current quiz is ", quiz);
         this.setState({
             id: quiz._id,
             userId: quiz.userId,
@@ -62,8 +62,8 @@ class EditQuizContent extends Component{
             isPublished: quiz.isPublished,
             openModal: false
         });
-        console.log("quiz questions are", this.state.questions);
-        console.log("current state is ", this.state);
+        //console.log("quiz questions are", this.state.questions);
+        //console.log("current state is ", this.state);
     }
     handleDelete = async e => {
         e.preventDefault();
@@ -100,7 +100,7 @@ class EditQuizContent extends Component{
 
     handleAddQuestion = () => {
         this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
-        console.log("Current state",this.state);
+        //console.log("Current state",this.state);
     }
     handleQuestionRemove = () => {
         const list = [...this.state.questions];
@@ -112,7 +112,7 @@ class EditQuizContent extends Component{
     }
     questionHandler = (qi, e) => {
         this.state.questions[qi].title = e;
-        console.log(this.state.questions);
+        //console.log(this.state.questions);
         /*
         const l = this.state.questions.length;
         if (l != 1 ){
@@ -125,7 +125,7 @@ class EditQuizContent extends Component{
     }
     answerHandler = (qi,ai,e) => {
         this.state.questions[qi].choices[ai].content = e;
-        console.log(this.state.questions[qi].answers);
+        //console.log(this.state.questions[qi].answers);
     }
     //+answers would be nested as it corresponds to different questions
     //so answerHandler would be changed 
@@ -133,22 +133,22 @@ class EditQuizContent extends Component{
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
         this.setState({timedOption: this.state.timedOption});
-        console.log(this.state);
+        //console.log(this.state);
     }
     retakeHandler = () => {
         this.state.retakeOption = !this.state.retakeOption;
         this.setState({retakeOption: this.state.retakeOption});
-        console.log(this.state);
+        //console.log(this.state);
     }
     scoreHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].score = Number(e.target.value);
-        console.log(this.state.questions);
+        //console.log(this.state.questions);
     }
     answerKeyHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].answerKey = Number(e.target.value);
-        console.log(this.state.questions);
+        //console.log(this.state.questions);
     }
     /*
     //Wishlist
