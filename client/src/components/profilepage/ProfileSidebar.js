@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect, useReducer } from 'react';
+import React, { Component, useContext, useEffect, useReducer, useState } from 'react';
 import M from 'materialize-css';
 import '../../css/profilepage.css'
 import ProfilePage from './ProfilePage';
@@ -11,13 +11,19 @@ export default function ProfileSidebar(props) {
 
     // }
     const { loadUser, isAuthenticated, user } = useContext(AuthContext)
+    const [profileIcon, setProfileIcon] = useState("https://static.thenounproject.com/png/363633-200.png");
 
     // useEffect(() => {
     //     loadUser();
     // }, []);
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems, {});
-
+    const onChangeProfileIcon = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let img = e.target.files[0];
+            setProfileIcon(URL.createObjectURL(img));
+        }
+    }
     return (
         <div>
             <ul id="slide-out" className="sidenav">
@@ -25,7 +31,8 @@ export default function ProfileSidebar(props) {
                     <div className="background">
                         {/* <img src="images/office.jpg"/> */}
                     </div>
-                    <a href="#user"><img className="circle" src={props.profileIconURI? props.profileIconURI : "https://static.thenounproject.com/png/363633-200.png"} width='65%' height='300px' /></a>
+                    <a href="#user"><img className="circle" src={props.profileIconURI ? props.profileIconURI : profileIcon} width='65%' height='300px' /></a>
+                    <input type="file" name="profileIcon" onChange={onChangeProfileIcon}/>
                     <a href="#name"><span className="name">{user.name}</span></a>
                     <a href="#email"><span className="email">{user.email}</span></a>
                 </div></li>

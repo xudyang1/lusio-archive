@@ -1,82 +1,65 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// <<<<<<< Dajung
-// // may modify this sample later
-// =======
-// // a sample quiz schema
-// // TODO: modify this sample later
-// const QuestionShema = new Schema({
-//     questionTitle: String,
-//     question_option_timed: Boolean,
-//     question_option_time: Number,
-//     question_option_retake: Boolean,
-//     choices:[String],
-//     correct: Number,
-//     score: Number
-// });
+// TODO: defaults to be discussed
+const QuestionSchema = new Schema({
+    title: { 
+        type: String, 
+        //required: [true, 'Question title must be provided']
+        default: ""
+    },
+    choices: [{ 
+        content: {
+            type: String, 
+            default: ""
+        }
+    }],
+    answerKey: { type: Number, required: [true, 'Answer key must be provided']},
+    score: { type: Number, default: 50 }
+});
 
-// >>>>>>> main
+// platformId to be added
+// quizImgURI to be added
+// quizScoreboard to be added 
 const QuizSchema = new Schema({
     userId: {
-        type: Schema.Types.ObjectId,
+        //type: Schema.Types.ObjectId,
+        type: String,
         required: [true]
     },
     name: {
         type: String,
         default: ""
     },
-    description: {
-        type: String,
+    author: { 
+        type: String, 
         default: ""
+        //required: [true, 'Please add an author'] 
     },
-    timed: {
-        type: Boolean,
-        default: false
+    description: { 
+        type: String,
+        default: "" 
+        //required: [true, 'Please add a description'] 
     },
-    retake: {
-        type: Boolean,
-        default: false
+    timedOption: { type: Boolean, default: false },
+    time: { type: Number, default: 0 },
+    retakeOption: { type: Boolean, default: false },
+    questions:  {
+        type: [QuestionSchema], 
+        validate: [(val) => val.length <= 50, 'Number of questions are limited to 50']
     },
-    showQuestion: {
-        type: Boolean,
-        default: false
+    likes: { 
+        type: Number, 
+        default: 0 
     },
-    showAnswer: {
-        type: Boolean,
-        default: false
+    plays: { 
+        type: Number, 
+        default: 0 
     },
-// <<<<<<< Dajung
-    likes: {
-        type: Number,
-        required: [true]
-    },
-    created: {
-// =======
-//     likes: Number,
-//    author: String,
-//     quesitons: [QuestionShema],
-//     date: {
-// >>>>>>> main
-        type: Date,
-        default: Date.now
-    },
-    EXP: {
-        type: Number,
-        required: [true]
-    },
-    questions: {
-        type: [String],
-        required: [true]
-    },
-    answers: {
-        type: [[String],[String],[String],[String],[String]],
-        required: [true]
-    },
-    isPublished: {
-        type: Boolean,
-        default: false
-    }
-});
-
-module.exports = Quiz = mongoose.model('Quiz', QuizSchema);
+    isPublished: { 
+        type: Boolean, 
+        required: [true]}
+}, {timestamps: true});
+// Validation for questions array size
+// TODO: size limit to be discussed
+module.exports = Quiz =  mongoose.model('Quiz', QuizSchema);
