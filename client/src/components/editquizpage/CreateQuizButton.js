@@ -62,6 +62,7 @@ export const CreateQuizButton = () => {
         updateProfile({
             mode: "ADD",
             profile:{
+                owner: user.id,
                 quizzesCreated: id
             }
         })
