@@ -2,14 +2,14 @@ import axios from "axios";
 import React from "react";
 import { createContext, useContext, useReducer } from "react";
 import { PlatformReducer } from "../reducers/PlatformReducer";
-import { 
-    ADD_PLATFORM, 
-    CLEAR_ERRORS, 
-    DELETE_PLATFORM, 
-    GET_ERRORS, 
-    GET_PLATFORM, 
-    GET_PLATFORMS, 
-    UPDATE_PLATFORM 
+import {
+    ADD_PLATFORM,
+    CLEAR_ERRORS,
+    DELETE_PLATFORM,
+    GET_ERRORS,
+    GET_PLATFORM,
+    GET_PLATFORMS,
+    UPDATE_PLATFORM
 } from "../types/actionTypes";
 import { AuthContext } from "./AuthState";
 
@@ -60,20 +60,23 @@ export const PlatformProvider = ({ children }) => {
     //   | || (_) | |) | (_) |
     //   |_| \___/|___/ \___/
 
-    async function getPlatform(id) {
+    async function getPlatform(id, reload = true) {
         try {
             const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
             //console.log("res", res);
-            dispatch({
-                type: GET_PLATFORM,
-                payload: res.data
-            });
+            if (reload)
+                dispatch({
+                    type: GET_PLATFORM,
+                    payload: res.data
+                });
+            return res.data
         } catch (err) {
             console.log(err)
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
+            if (reload)
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: { msg: err.response.data.msg, status: err.response.status }
+                });
         }
     };
     /**
@@ -89,6 +92,7 @@ export const PlatformProvider = ({ children }) => {
                 type: ADD_PLATFORM,
                 payload: res.data
             });
+            return res.data
         } catch (err) {
             //console.log(err)
             dispatch({

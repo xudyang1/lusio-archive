@@ -2,7 +2,7 @@
 
 export default function PlatformAbout(props){
     const platformData = props.data
-    console.log(platformData)
+    //console.log(platformData)
     return(
         <div>
             {platformData.name}<br/>

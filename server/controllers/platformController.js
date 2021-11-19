@@ -74,6 +74,7 @@ exports.addPlatform = async (req, res, next) => {
       { $push: { platformsCreated: savedPlatform._id } },
       { new: true });
     //console.log("updated: ", updatedProfile);
+    //console.log(savedPlatform)
     return res.status(201).json({
       success: true,
       platform: savedPlatform
@@ -116,7 +117,7 @@ exports.addPlatform = async (req, res, next) => {
 exports.updatePlatform = async (req, res, next) => {
   try {
     // Note, to verify user id, use req.user.id rather than req.params.profileId
-    console.log(req.body)
+    //console.log(req.body)
     if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
     // destructure
@@ -150,7 +151,7 @@ exports.updatePlatform = async (req, res, next) => {
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
         updated = await Platform.findByIdAndUpdate(req.params.platformId, { $pullAll: provided }, options).select(keys);
-        console.log(updated)
+        //console.log(updated)
         break;
       default:
         // non matched mode
@@ -169,7 +170,7 @@ exports.updatePlatform = async (req, res, next) => {
       content: updated
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);

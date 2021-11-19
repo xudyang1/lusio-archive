@@ -7,6 +7,7 @@ import "../../css/frontpage.css"
 import M from 'materialize-css';
 import AdddItemCard from "./AddItemCard";
 import { ProfileContext } from "../../context/ProfileState";
+import { useForceUpdate } from "../../utils/useForceUpdate";
 
 function getCards(t, index, element, canEdit) {
     // console.log("called getCards with type: ", t)
@@ -41,6 +42,7 @@ export default function GeneralSections(props) {
     const [itemList, setList] = useState([])
     const [shouldRender, setShouldRender] = useState(true);
     const { viewType } = useContext(ProfileContext)
+    const forceUpdate = useForceUpdate()
 
     const Section = createRef();
     const sectionName = createRef();
@@ -70,8 +72,9 @@ export default function GeneralSections(props) {
     useEffect(()=>{
         setTimeout(() => {
             setShouldRender(false);
-          }, 1500);
-        return setList(props.items)
+          }, 2000);
+        setList(props.items)
+        forceUpdate();
     }, [props.items])
     //console.log(props)
 

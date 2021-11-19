@@ -8,10 +8,11 @@ import { PlatformContext } from "../../context/PlatformState";
 import PlatoformCard from "./PlatformCard";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import { ProfileContext } from "../../context/ProfileState";
+import { useForceUpdate } from "../../utils/useForceUpdate";
 
 function getCards(t, index, element, canEdit) {
-    console.log("CALLED GET CARDS")
-    console.log("called getCards with type: ", t, element)
+    //console.log("CALLED GET CARDS")
+    //console.log("called getCards with type: ", t, element)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
@@ -29,6 +30,7 @@ export default function SectionList(props) {
     const { getPlatform, platfrom } = useContext(PlatformContext)
     const { getQuiz } = useContext(QuizzesContext)
     const { viewType } = useContext(ProfileContext)
+    const forceUpdate = useForceUpdate()
 
     // const items = props.items ? props.items :[
     //     { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
@@ -49,8 +51,9 @@ export default function SectionList(props) {
     useEffect(() => {
         setTimeout(() => {
             setShouldRender(false);
-        }, 1000);
-        return setList(props.items)
+        }, 2000);
+        setList(props.items)
+        forceUpdate();
     }, [])
 
     return (
