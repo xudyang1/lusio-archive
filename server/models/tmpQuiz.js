@@ -48,6 +48,7 @@ const QuizSchema = new Schema({
         type: [QuestionSchema],
         validate: [(val) => { return val.length <= 50; }, 'No more than 50 questions allowed']
     },
+    totalQuestions: { type: Number, default: 0},
     totalScore: { type: Number, default: 0 },
     isPublished: { type: Boolean, default: false }
 }, { timestamps: true });

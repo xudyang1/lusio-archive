@@ -57,7 +57,7 @@ exports.getProfile = async (req, res, next) => {
  *                    Or
  *                    {
  *                      mode: "ADD" || "DELETE", 
- *                      profile: platformsCreated || quizzesCreated || subscribedUsers || subscribedPlatforms || fans
+ *                      profile: { platformsCreated || quizzesCreated || subscribedUsers || subscribedPlatforms || fans }
  *                    }
  *          res.data: {
  *                      success: true,
