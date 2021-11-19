@@ -66,6 +66,7 @@ class PlayQuizContent extends Component{
         console.log("beforeSubmit", isPlaying); 
     }
     scoreHandler = (userAnswer, quizAnswer) => {
+        const { finishQuiz } = this.context;
         var scoreEval = 0;
         quizAnswer.map((q,qi)=>{
             if (q.answerKey == userAnswer[qi]) {
@@ -76,9 +77,10 @@ class PlayQuizContent extends Component{
         })
         console.log(scoreEval);
         this.setState({score: scoreEval});
+        this.setState({score: scoreEval}, () => finishQuiz(this.state.score));
     }
     onSubmit = (e) => {
-        const { finishQuiz, isPlaying } = this.context;
+        const { isPlaying } = this.context;
         
         const checks = document.getElementsByClassName('filled-in');
         const answerCompare = []
@@ -90,7 +92,7 @@ class PlayQuizContent extends Component{
         console.log(answerCompare); 
         this.scoreHandler(answerCompare, this.state.questions);
  
-        finishQuiz(this.state.score);
+        //finishQuiz(this.state.score);
         console.log("onSubmit", isPlaying);
         e.preventDefault();
         console.log(this.state);

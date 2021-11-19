@@ -3,21 +3,22 @@ import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
-import AdddItemCard from "./AddItemCard";
+import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
 import PlatoformCard from "./PlatformCard";
-import SubSectionList from "./SubSectionList";
+import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
+import { ProfileContext } from "../../context/ProfileState";
 
-function getCards(t, index, element) {
+function getCards(t, index, element, canEdit) {
     console.log("CALLED GET CARDS")
     console.log("called getCards with type: ", t, element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit} /></div>
         case SUB_PLAT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><PlatoformCard key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><PlatoformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case SUB_USER_CARD:
             break;
     }
@@ -27,6 +28,7 @@ export default function SectionList(props) {
 
     const { getPlatform, platfrom } = useContext(PlatformContext)
     const { getQuiz } = useContext(QuizzesContext)
+    const { viewType } = useContext(ProfileContext)
 
     // const items = props.items ? props.items :[
     //     { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
@@ -41,47 +43,15 @@ export default function SectionList(props) {
     // });
     const name = props.name ? props.name : ""
     const callback = props.callback
-    const add = props.add ? props.add : false
-    //var templist = []
-    //const items = props.items
     const [itemList, setList] = useState([])
     const [shouldRender, setShouldRender] = useState(true);
-    // var temp = []
 
-    // function getQuizzes(items) {
-        
-    //     console.log(templist)
-    //     return templist
-    // }
-    
-
-    useEffect(()=>{
-        // var templist = []
-        // props.items.forEach(element => {
-        //     element = getQuiz(element, false)
-        //     element.then(value => {
-        //         templist.push(
-        //             {
-        //                 name: value.data.name,
-        //                 description: value.data.description,
-        //                 author: value.data.author,
-        //                 likes: value.data.likes
-        //             }
-        //         )
-        //     })
-        // });
-        // console.log("tempList:", templist)
-        //return setList(templist)
+    useEffect(() => {
         setTimeout(() => {
             setShouldRender(false);
-          }, 1000);
+        }, 1000);
         return setList(props.items)
-    }, [props.items])
-    // useEffect(()=>{
-    //     console.log("State", itemList)
-    //     console.log("Props", props.items)
-    // }, [setList])
-    //console.log(items)
+    }, [])
 
     return (
         <div>
@@ -92,13 +62,13 @@ export default function SectionList(props) {
                     </div>
                     <div className="valign-wrapper">
                         <div className="LSection">
-                            {/* <SubSectionList items={itemList} type={props.type}/> */}
                             {
                                 itemList.map((element, index) => (
-                                    getCards(props.type, index, element)
+                                    getCards(props.type, index, element, viewType == "OWNER_VIEW")
                                 ))
                             }
-                            {add ? <AdddItemCard /> : <div></div>}
+                            {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
+                            {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>}
                         </div>
                     </div>
                 </div>
