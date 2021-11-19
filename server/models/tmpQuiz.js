@@ -40,7 +40,9 @@ const QuizSchema = new Schema({
         type: [QuestionSchema],
         validate: [(val) => val.length<=50, 'No more than 50 questions allowed']
     },
-    isPublished: { type: Boolean, required: [true]}
+    totalQuestions: { type: Number, default: 0},
+    totalScore: { type: Number, default: 0 },
+    isPublished: { type: Boolean, default: false }
 }, { timestamps: true });
 // Validation for questions array size
 // QuizSchema.path('questions').validate(function (value) {
@@ -51,4 +53,4 @@ const QuizSchema = new Schema({
 //     }
 // });
 
-module.exports = mongoose.model('Quiz', QuizSchema);
+module.exports = mongoose.model('TmpQuiz', QuizSchema);

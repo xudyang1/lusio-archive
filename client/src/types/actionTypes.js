@@ -9,6 +9,7 @@ export const FINISH_QUIZ = 'FINISH_QUIZ';
 // platform
 export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
 export const GET_PLATFORM = 'GET_PLATFORM';
+export const GET_PLATFORM_LIST = 'GET_PLATFORM_LIST';
 export const ADD_PLATFORM = 'ADD_PLATFORM';
 export const DELETE_PLATFORM = 'DELETE_PLATFORM';
 export const UPDATE_PLATFORM = 'UPDATE_PLATFORM';

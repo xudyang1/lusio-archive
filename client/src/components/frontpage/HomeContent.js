@@ -7,14 +7,17 @@ import '../../css/frontpage.css'
 import GeneralSections from "../common/GeneralSections";
 import { QUIZ_CARD } from "../../types/cardTypes";
 import { GlobalContext } from "../../context/GlobalState";
+import { PlatformContext } from "../../context/PlatformState";
 
 
 export default function HomeContent() {
     var tempPlatform = ["MoMA", "Motion Pictures", "NASA", "NYC Dept of Edu", "ABCD"];
-    const { platforms, dailyChallenge, getPlatforms } = useContext(GlobalContext)
+    //const { platforms, dailyChallenge, getPlatforms } = useContext(GlobalContext)
+    const { getPlatformList, platformList } = useContext(PlatformContext)
 
     useEffect(() => {
-        getPlatforms();
+        getPlatformList();
+        console.log(platformList)
     }, [])
 
     return (
@@ -22,11 +25,14 @@ export default function HomeContent() {
             <CreateQuizButton />
             <DailyChallengeSection />
             <div className="container">
+                
                 {
                     // replace tempPlatform with platforms when finished
-                    tempPlatform.map((element, index) => (
-                        <GeneralSections key={index} name={element} type={QUIZ_CARD} options={index} id={index} homeContent={true} />
+                    platformList?
+                    platformList.map((element, index) => (
+                        <GeneralSections key={index} items={element.quizzes} name={element.name} type={QUIZ_CARD} id={element._id} homeContent={true} />
                     ))
+                    :<div></div>
                 }
             </div>
         </div>

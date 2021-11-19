@@ -1,21 +1,25 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
-import { useContext } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
-import AdddItemCard from "./AddItemCard";
+import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
-import PlatoformCard from "./PlatformCard";
+import PlatformCard from "./PlatformCard";
+import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
+import { ProfileContext } from "../../context/ProfileState";
+import { useForceUpdate } from "../../utils/useForceUpdate";
 
-function getCards(t, index, element) {
-    console.log("called getCards with type: ", t)
+function getCards(t, index, element, canEdit) {
+    //console.log("CALLED GET CARDS")
+    //console.log("called getCards with type: ", t, element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit} /></div>
         case SUB_PLAT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><PlatoformCard key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case SUB_USER_CARD:
             break;
     }
@@ -23,8 +27,10 @@ function getCards(t, index, element) {
 
 export default function SectionList(props) {
 
-    const { getQuiz } = useContext(QuizzesContext)
     const { getPlatform, platfrom } = useContext(PlatformContext)
+    const { getQuiz } = useContext(QuizzesContext)
+    const { viewType } = useContext(ProfileContext)
+    const forceUpdate = useForceUpdate()
 
     // const items = props.items ? props.items :[
     //     { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
@@ -39,10 +45,16 @@ export default function SectionList(props) {
     // });
     const name = props.name ? props.name : ""
     const callback = props.callback
-    const add = props.add ? props.add : false
-    const items = props.items
+    const [itemList, setList] = useState([])
+    const [shouldRender, setShouldRender] = useState(true);
 
-    //console.log(props.items)
+    useEffect(() => {
+        setTimeout(() => {
+            setShouldRender(false);
+        }, 2000);
+        // setList(props.items)
+        forceUpdate();
+    }, [props.items])
 
     return (
         <div>
@@ -54,11 +66,14 @@ export default function SectionList(props) {
                     <div className="valign-wrapper">
                         <div className="LSection">
                             {
-                                items.map((element, index) => (
-                                    getCards(props.type, index, element)
+                                props.items?
+                                props.items.map((element, index) => (
+                                    getCards(props.type, index, element, viewType=="OWNER_VIEW")
                                 ))
+                                :<div></div>
                             }
-                            {add ? <AdddItemCard callback={callback} /> : <div></div>}
+                            {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
+                            {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>}
                         </div>
                     </div>
                 </div>

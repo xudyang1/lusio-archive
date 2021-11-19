@@ -36,7 +36,7 @@ export const CreateQuizButton = () => {
         isPublished: false}; 
         //showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
         
-        console.log("Before adding quiz: ", quiz);
+        //console.log("Before adding quiz: ", quiz);
         /*
         const res = await fetch('/api/quizzes/edit', {
             method: 'POST',

@@ -1,4 +1,4 @@
-import React, { Component, createRef, useEffect, useRef, useState } from "react";
+import React, { Component, createRef, useEffect, useRef, useState, useContext } from "react";
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCardWraper from "./QuizCardWraper";
@@ -6,16 +6,19 @@ import QuizCards from "../frontpage/QuizCard";
 import "../../css/frontpage.css"
 import M from 'materialize-css';
 import AdddItemCard from "./AddItemCard";
+import { ProfileContext } from "../../context/ProfileState";
+import { useForceUpdate } from "../../utils/useForceUpdate";
+import PlatformCard from "./PlatformCard";
 
-function getCards(t, index, element) {
+function getCards(t, index, element, canEdit) {
     // console.log("called getCards with type: ", t)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={index} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit} /></div>
         case SUB_PLAT_CARD:
-            break;
+            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
         case SUB_USER_CARD:
             break;
     }
@@ -37,6 +40,10 @@ export default function GeneralSections(props) {
     var add = props.add ? props.add : false
 
     const [editing, setEditing] = useState(false)
+    const [itemList, setList] = useState([])
+    const [shouldRender, setShouldRender] = useState(true);
+    const { viewType } = useContext(ProfileContext)
+    const forceUpdate = useForceUpdate()
 
     const Section = createRef();
     const sectionName = createRef();
@@ -62,6 +69,14 @@ export default function GeneralSections(props) {
     const pageDown = (e) => {
         Section.current.scrollBy(1000, 0)
     }
+
+    useEffect(()=>{
+        setTimeout(() => {
+            setShouldRender(false);
+          }, 2000);
+        // setList(props.items)
+        forceUpdate();
+    }, [props.items])
     //console.log(props)
 
     return (
@@ -88,9 +103,11 @@ export default function GeneralSections(props) {
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>
                         <div className="GSection" ref={Section}>
                             {
-                                items.map((element, index) => (
-                                    getCards(type, index, element)
+                                props.items?
+                                props.items.map((element, index) => (
+                                    getCards(type, index, element, viewType=="OWNER_VIEW")
                                 ))
+                                :<div></div>
                             }
                             {add ? <AdddItemCard /> : <div></div>}
                         </div>

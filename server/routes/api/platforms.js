@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {getPlatform, addPlatform, deletePlatform, updatePlatform} = require('../../controllers/platformController');
+const {getPlatform, addPlatform, deletePlatform, updatePlatform, getPlatformList} = require('../../controllers/platformController');
 const { softAuth, strictAuth } = require('../../middleware/auth');
+
+router
+  .route('/platformList')
+  .get(softAuth, getPlatformList)
 
 router
   .route('/platform/:platformId')

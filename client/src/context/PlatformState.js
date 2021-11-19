@@ -9,6 +9,7 @@ import {
     GET_ERRORS, 
     GET_PLATFORM, 
     GET_PLATFORMS, 
+    GET_PLATFORM_LIST, 
     UPDATE_PLATFORM 
 } from "../types/actionTypes";
 import { AuthContext } from "./AuthState";
@@ -59,13 +60,14 @@ export const PlatformProvider = ({ children }) => {
     // |_   _/ _ \|   \ / _ \ 
     //   | || (_) | |) | (_) |
     //   |_| \___/|___/ \___/
-
-    async function getPlatform(id) {
+    
+    // token: can be null
+    async function getPlatformList(token) {
         try {
-            const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
+            const res = await axios.get('/api/platforms/platformList', tokenConfig(token));
             //console.log("res", res);
             dispatch({
-                type: GET_PLATFORM,
+                type: GET_PLATFORM_LIST,
                 payload: res.data
             });
         } catch (err) {
@@ -74,6 +76,25 @@ export const PlatformProvider = ({ children }) => {
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
             });
+        }
+    };
+    async function getPlatform(id, reload=true) {
+        try {
+            const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
+            //console.log("res", res);
+            if (reload)
+                dispatch({
+                    type: GET_PLATFORM,
+                    payload: res.data
+                });
+            return res.data
+        } catch (err) {
+            console.log(err)
+            if (reload)
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: { msg: err.response.data.msg, status: err.response.status }
+                });
         }
     };
     /**
@@ -89,6 +110,7 @@ export const PlatformProvider = ({ children }) => {
                 type: ADD_PLATFORM,
                 payload: res.data
             });
+            return res.data
         } catch (err) {
             //console.log(err)
             dispatch({
@@ -127,7 +149,7 @@ export const PlatformProvider = ({ children }) => {
 
     async function removePlatform(platformId) {
         try {
-            const res = await axios.delete(`api/platforms/platform/${platformId}`, tokenConfig(token));
+            const res = await axios.delete(`/api/platforms/platform/${platformId}`, tokenConfig(token));
             // console.log("res", res);
             dispatch({
                 type: DELETE_PLATFORM,
@@ -149,6 +171,7 @@ export const PlatformProvider = ({ children }) => {
     };
 
     return (<PlatformContext.Provider value={{
+        getPlatformList,
         getPlatform,
         createPlatform,
         updatePlatform,

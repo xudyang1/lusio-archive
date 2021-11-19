@@ -1,6 +1,6 @@
 import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
-import { ProfileContext} from "../../context/ProfileState";
+import { ProfileContext } from "../../context/ProfileState";
 
 import M from 'materialize-css';
 import '../../css/profilepage.css';
@@ -18,16 +18,16 @@ export default function ProfileHeader(props) {
     var instances = M.Parallax.init(elems, {});
 
     const { isAuthenticated, user } = useContext(AuthContext);
-    const { updateProfile, deleteAccount } = useContext(ProfileContext);
+    const { updateProfile, deleteAccount, viewType } = useContext(ProfileContext);
 
     const textRef = createRef()
-    {/* user.id to be used */}
+    {/* user.id to be used */ }
     const initialState = {
         userId: isAuthenticated ? user.id : "",
         accountStatus: 0,
         name: isAuthenticated ? user.name : "",
         email: isAuthenticated ? user.email : "",
-        description:"write down your description here",
+        description: "write down your description here",
         profileIcon: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png",
         profileBanner: "https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg",
         level: 0,
@@ -36,36 +36,25 @@ export default function ProfileHeader(props) {
         achievements: [""],
         quizzes: [""],
         subscribedUser: [""],
-        subscribedPlat: [""]  
+        subscribedPlat: [""]
     };
     const [state, setState] = useState(initialState);
-    //const [bannerURI, setBanner] = useState("https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg");
-    //const [description, setDesc] = useState("Your Description");
 
-    //Handlers need to be fixed 
-    //as export default function status would be changed to
-    //extending the component
-    const onChangeBanner = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            let img = e.target.files[0];
-            setState({profileBanner : URL.createObjectURL(img)});
-        }
-    }
     const onChangeDescription = (e) => {
-    //    setDesc(e.target.value);
-        setState({description: e.target.value});
-        
+        //    setDesc(e.target.value);
+        setState({ description: e.target.value });
+
     }
     const onSubmit = (e) => {
         e.preventDefault();
-        const { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat} = state;
+        const { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat } = state;
         const userProfile = { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat };
         //updateProfile(userProfile);
 
         //console.log(textRef.current.value)
         updateProfile({
             mode: "EDIT",
-            profile:{
+            profile: {
                 description: textRef.current.value
             }
         })
@@ -78,27 +67,22 @@ export default function ProfileHeader(props) {
 
     return (
         <div>
-            <h2 className="center">{props.name+"'s Home"}</h2>
+            <h2 className="center">{props.name + "'s Home"}</h2>
             <div className="parallax-container">
                 <div className="parallax">
-                    <img src={props.banner}/>
+                    <img src={props.banner} />
                 </div>
             </div>
-            <input type="file" name="bannerImage" onChange={onChangeBanner} />
-{/* // <<<<<<< LiuxinLi */}
+            <textarea ref={textRef} id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" defaultValue={props.description ? props.description : ""} size="30" />
 
-            <textarea ref={textRef} id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" defaultValue={props.description? props.description : ""} size="30"/>
+            {viewType == "OWNER_VIEW" ?
+                <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
+                    Finish Edit
+                    <i className="material-icons prefix" ></i>
+                </button>
+                : <div></div>
+            }
 
-{/* // =======
-             <textarea id="profileDescription" type="text" row="5" style={{ fontSize: 25, height: 100 }} className="description" name="profileDescrition" value={state.description} size="30" onChange={onChangeDescription} />
-//             <div className="text-box">
-//                 <input name="profileDescription" placeholder="Description" onChange={onChangeDescription} defaultValue={state.description}/>
-//             </div>
-// >>>>>>> main */}
-            <button color="dark" style={{ marginTop: '2rem' }} onClick={onSubmit} >
-                Finish Edit
-                <i className="material-icons prefix" ></i>
-            </button>
         </div>
     )
 }

@@ -7,8 +7,8 @@ import { ADD_PROFILE,
   CLEAR_ERRORS } from "../types/actionTypes";
 
 export const ProfileReducer = (state, action) => {
-  console.log("ProfileReducer, action: ", action.type)
-  console.log("ProfileReducer, payload: ", action.payload)
+  //console.log("ProfileReducer, action: ", action.type)
+  //console.log("ProfileReducer, payload: ", action.payload)
   switch (action.type) {
     case PROFILES_LOADING:
       return {
