@@ -53,11 +53,11 @@ exports.getProfile = async (req, res, next) => {
  * 
  *              Other fields should not be updated here.
  * 
- * @format  req.body: { mode: "EDIT", profile: description || iconURI || bannerURI } 
+ * @format  req.body: { mode: "EDIT", profile: description || iconURI || bannerURI: newVal } 
  *                    Or
  *                    {
  *                      mode: "ADD" || "DELETE", 
- *                      profile: { platformsCreated || quizzesCreated || subscribedUsers || subscribedPlatforms || fans }
+ *                      profile: { platformsCreated || quizzesCreated || subscribedUsers || subscribedPlatforms || fans: {_id: ObjectId} }
  *                    }
  *          res.data: {
  *                      success: true,
@@ -96,7 +96,7 @@ exports.updateProfile = async (req, res, next) => {
             case "DELETE":
                 provided = nonNullJson({ platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
-                updated = await UserProfile.findByIdAndUpdate(req.user.profile, { $pullAll: provided }, options).select(keys);
+                updated = await UserProfile.findOneAndUpdate({_id: req.user.profile}, { $pull: provided }, options).select(keys);
                 break;
             default:
                 // non matched mode
