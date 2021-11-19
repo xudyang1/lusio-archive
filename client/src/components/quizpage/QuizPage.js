@@ -20,9 +20,9 @@ export default function QuizPage(){
     return(
         <div className="container z-depth-3" >
             <div className = "row">
-                <div className="col s7 push-s5">
+                <div className="col s7 push-s4">
                     <br/>
-                    <a className="waves-effect waves-light btn modal-trigger" style={{left: "100px"}} href="#reportModal"><i className="material-icons right">report</i>Report</a>
+                    <a className="waves-effect waves-light btn modal-trigger col push-s8" href="#reportModal"><i className="material-icons right">report</i>Report</a>
                     <div id="reportModal" className="modal">
                         {isAuthenticated ? (
                         <div>
