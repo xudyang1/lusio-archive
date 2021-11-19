@@ -51,9 +51,7 @@
   },
   "homepage": "https://github.com/xudyang1/CSE416_Lusio#readme",
   "dependencies": {
-    
+    "emailjs": "^3.6.0"
   },
-  "devDependencies": {
-    
-  }
+  "devDependencies": {}
 }

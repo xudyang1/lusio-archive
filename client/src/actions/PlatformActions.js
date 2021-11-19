@@ -44,7 +44,7 @@ export const addPlatform = (dispatch, platform) => async () =>{
   }
 }
 
-export const deleteQuiz = (dispatch, id) => async () => {
+export const deletePlatform = (dispatch, id) => async () => {
   try {
     await axios.delete(`/api/platforms/${id}`);
 
