@@ -34,6 +34,8 @@ export default function ProfilePage() {
     const { profile, getProfile, viewType } = useContext(ProfileContext)
     const { createPlatform, platform } = useContext(PlatformContext)
 
+
+
     useEffect(() => {
         getProfile(id);
         //console.log(user.id, id)

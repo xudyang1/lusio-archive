@@ -39,7 +39,12 @@ export default function ProfileHeader(props) {
         subscribedPlat: [""]  
     };
     const [state, setState] = useState(initialState);
+    //const [bannerURI, setBanner] = useState("https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg");
+    //const [description, setDesc] = useState("Your Description");
 
+    //Handlers need to be fixed 
+    //as export default function status would be changed to
+    //extending the component
     const onChangeBanner = (e) => {
         if (e.target.files && e.target.files[0]) {
             let img = e.target.files[0];
@@ -47,8 +52,9 @@ export default function ProfileHeader(props) {
         }
     }
     const onChangeDescription = (e) => {
-        // setState({ ...state, description : e.target.value });
+    //    setDesc(e.target.value);
         setState({description: e.target.value});
+        
     }
     const onSubmit = (e) => {
         e.preventDefault();

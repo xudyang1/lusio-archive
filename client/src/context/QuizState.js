@@ -7,6 +7,7 @@ import {
     UPDATE_QUIZ,
     ADD_QUIZ,
     DELETE_QUIZ,
+    FINISH_QUIZ,
     GET_ERRORS
 } from '../types/actionTypes';
 import axios from 'axios';
@@ -18,47 +19,29 @@ const initialState = {
     quiz: {
         id: null,
         userId: null,
+        //quizImgURI //Needs update
+        //platformId: "", //Needs update
         name: "",
+        author: "",
         description: "",
-        platformId: "", //Needs update
-        timed: false,
-        time: 5, // Needs update
-        retake: false,
-        showQuestion: false,
-        showAnswer: false,
+        timedOption: false,
+        time: 0,
+        retakeOption: false,
+        questions: [{
+            title: "",
+            choices: [""], 
+            answerKey: 1, //correctAnswers
+            score: 0
+        }],
         likes: 0,
-        plays: 0, // Needs update
-        created: "",
-        EXP: 0,
-        questions: [],
-        answers: [],
-        correctAnswers: [], // Needs update
-        scoreboard: [], //Needsupdate
+        plays: 0,
+        //scoreboard: [], //Needsupdate
         isPublished: false
     },
     error: null,
-    loading: true
-// =======
-//   quizzes: [],
-//   quiz: {
-//     id: "",
-//     userId: "",
-//     name: "",
-//     description: "",
-//     timed: false, 
-//     retake: false, 
-//     showQuestion: false, 
-//     showAnswer: false,
-//     likes: 0,
-//     created: "",
-//     EXP: 0,
-//     questions:[],
-//     answers: [[""],[""],[""],[""],[""]],
-//     isPublished: false
-//   },
-//   error: null,
-//   loading: true
-// >>>>>>> main
+    loading: true,
+    isPlaying: true,
+    score: 0
 };
 
 // Create context
@@ -104,16 +87,17 @@ export const QuizzesProvider = ({ children }) => {
         }
     };
 
-    async function addQuiz({ userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished }) {
+    async function addQuiz({ userId, name, author, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished });
+        //{ userId, name, author, description, questions, likes, isPublished }
+        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished });
+        console.log(body);
         try {
-            const res = await axios.post('/api/quizzes/edit', body, config);
-
+            const res = await axios.post('http://localhost:5000/api/quizzes/edit', body, config);
             dispatch({
                 type: ADD_QUIZ,
                 payload: res.data
@@ -127,13 +111,13 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function updateQuiz({ id, userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished }) {
+    async function updateQuiz({ id, userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, description, timed, retake, showQuestion, showAnswer, likes, created, EXP, questions, answers, isPublished });
+        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished });
         try {
             const res = await axios.put(`http://localhost:5000/api/quizzes/edit/${id}`, body, config);
             dispatch({
@@ -151,7 +135,6 @@ export const QuizzesProvider = ({ children }) => {
     async function deleteQuiz(id) {
         try {
             await axios.delete(`/api/quizzes/edit/${id}`);
-
             dispatch({
                 type: DELETE_QUIZ,
                 payload: id
@@ -163,6 +146,19 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
+    function finishQuiz(score) {
+      try {
+        dispatch({
+          type: FINISH_QUIZ,
+          payload: score
+        });
+        //console.log("after the act of FINISH_QUIZ:", state.isPlaying);
+      } catch (err){
+        dispatch({
+          type: GET_ERRORS
+        });
+      }
+    }
     const setQuizzesLoading = () => {
         return {
             type: QUIZZES_LOADING
@@ -172,11 +168,14 @@ export const QuizzesProvider = ({ children }) => {
         quizzes: state.quizzes,
         error: state.error,
         loading: state.loading,
+        isPlaying: state.isPlaying,
+        score: state.score,
         getQuizzes,
         getQuiz,
         addQuiz,
         updateQuiz,
-        deleteQuiz
+        deleteQuiz,
+        finishQuiz
     }}>
         {children}
     </QuizzesContext.Provider>);
