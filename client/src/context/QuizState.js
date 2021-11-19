@@ -76,7 +76,7 @@ export const QuizzesProvider = ({ children }) => {
                 type: GET_QUIZ,
                 payload: id
             });
-            //console.log("quiz is : ", res.data);
+            console.log("quiz is : ", res.data);
             return res.data;
         } catch (err) {
             console.error(err);
@@ -124,7 +124,7 @@ export const QuizzesProvider = ({ children }) => {
                 type: UPDATE_QUIZ,
                 payload: res.data
             });
-            //console.log("After adding quiz, success, state: ", res.data);
+            console.log("After adding quiz, success, state: ", res.data);
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
