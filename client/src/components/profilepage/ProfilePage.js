@@ -60,7 +60,7 @@ export default function ProfilePage() {
             {(viewType === "OWNER_VIEW") ? <ProfileSidebar profileIconURI={profile.iconURI} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
                 <Switch>
-                    <Route exact path={url}><ProfileHome profile={profile} name={user.name} /></Route>
+                    <Route exact path={url}><ProfileHome profile={profile} name={profile.name} /></Route>
                     <Route path={url + "/allquiz"}><SectionList items={profile.quizzesCreated} name={"All Quizzes"} type={QUIZ_CARD} add={true} /></Route>
                     <Route path={url + "/allplatforms"}><SectionList items={profile.platformsCreated} name={"Participated Platforms"} type={SUB_PLAT_CARD} add={true} callback={createPlat}/></Route>
                     <Route path={url + "/achievements"}><SectionList items={profile.achievements} name={"Achievements"} type={ACHIEVEMENT_CARD} /></Route>

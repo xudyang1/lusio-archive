@@ -9,6 +9,7 @@ import {
     GET_ERRORS, 
     GET_PLATFORM, 
     GET_PLATFORMS, 
+    GET_PLATFORM_LIST, 
     UPDATE_PLATFORM 
 } from "../types/actionTypes";
 import { AuthContext } from "./AuthState";
@@ -59,7 +60,24 @@ export const PlatformProvider = ({ children }) => {
     // |_   _/ _ \|   \ / _ \ 
     //   | || (_) | |) | (_) |
     //   |_| \___/|___/ \___/
-
+    
+    // token: can be null
+    async function getPlatformList(token) {
+        try {
+            const res = await axios.get('/api/platforms/platformList', tokenConfig(token));
+            //console.log("res", res);
+            dispatch({
+                type: GET_PLATFORM_LIST,
+                payload: res.data
+            });
+        } catch (err) {
+            console.log(err)
+            dispatch({
+                type: GET_ERRORS,
+                payload: { msg: err.response.data.msg, status: err.response.status }
+            });
+        }
+    };
     async function getPlatform(id) {
         try {
             const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));

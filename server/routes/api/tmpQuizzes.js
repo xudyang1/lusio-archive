@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getQuiz} = require('../../controllers/tmpQuizController');
+const { getQuizWithoutQuestion } = require('../../controllers/tmpQuizController');
 const { strictAuth, softAuth } = require('../../middleware/auth');
 
 router

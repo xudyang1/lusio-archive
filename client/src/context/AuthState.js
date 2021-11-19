@@ -214,6 +214,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         clearErrors,
+        updateUser,
         deleteAccount,
         ...state
     }}>

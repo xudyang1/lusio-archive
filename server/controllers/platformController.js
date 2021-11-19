@@ -5,6 +5,36 @@ const { nonNullJson, errorHandler } = require('../utils/jsonTool');
 
 /**
  * TODO: 
+ * @desc  Get platform list for main page
+ * @route GET api/platforms/platformList
+ * @access  Public
+ * @detail  To minize the data size, only send certain attribtues;
+ *          Content might be different based on the user type 
+ *          and the preference (subscribed platforms selected first)
+ * @format  req.header('x-auth-token'): JWT token || null
+ *          res.data: {
+ *                      platforms: [{ _id, name, owner, numSubscribers, quizzes, quizSections }]
+ *                    }
+ */
+exports.getPlatformList = async (req, res, next) => {
+  try {
+    const selectedPlatform = await Platform.find({}, null, { $limit: 10 });
+    
+    return res.status(200).json({
+      platforms: selectedPlatform
+    });
+  } catch (err) {
+    //console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
+    return errorHandler(res, 500, 'Server Error');
+  }
+};
+
+/**
+ * TODO: 
  * @desc  Get a platform for view
  * @route GET api/platforms/platform/:platformId
  * @access  Public
@@ -116,7 +146,7 @@ exports.addPlatform = async (req, res, next) => {
 exports.updatePlatform = async (req, res, next) => {
   try {
     // Note, to verify user id, use req.user.id rather than req.params.profileId
-    console.log(req.body)
+    console.log(req.body);
     if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
     // destructure
@@ -150,7 +180,7 @@ exports.updatePlatform = async (req, res, next) => {
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
         updated = await Platform.findByIdAndUpdate(req.params.platformId, { $pullAll: provided }, options).select(keys);
-        console.log(updated)
+        console.log(updated);
         break;
       default:
         // non matched mode

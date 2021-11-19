@@ -53,4 +53,4 @@ const QuizSchema = new Schema({
 //     }
 // });
 
-module.exports = mongoose.model('Quiz', QuizSchema);
+module.exports = mongoose.model('TmpQuiz', QuizSchema);
