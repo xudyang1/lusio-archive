@@ -50,9 +50,6 @@
     "url": "https://github.com/xudyang1/CSE416_Lusio/issues"
   },
   "homepage": "https://github.com/xudyang1/CSE416_Lusio#readme",
-  "dependencies": {
-    "emailjs": "^3.6.0",
-    "emailjs-com": "^3.2.0"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
