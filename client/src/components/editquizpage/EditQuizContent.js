@@ -133,7 +133,29 @@ class EditQuizContent extends Component{
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
         this.setState({timedOption: this.state.timedOption});
+        
         //console.log(this.state);
+    }
+    timeHandler = (e) => {
+        if (this.state.timedOption){
+            this.setState({time: e.target.value});
+            console.log(e.target.value);
+        }
+        else{
+            e.preventDefault();
+            alert("Select Timed Option first");
+            this.setState({time: 0});
+        }
+        
+        console.log(this.state.time);
+        /*
+        const answerCompare = []
+        for (let i=0; i < checks.length; i++)  {
+            if (checks[i].checked){
+                answerCompare.push(checks[i].value);
+            }
+        }
+        */
     }
     retakeHandler = () => {
         this.state.retakeOption = !this.state.retakeOption;
@@ -280,8 +302,9 @@ class EditQuizContent extends Component{
                         <form action="#">
                             <p>
                                 <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
+                                    <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
                                 </label>
                             </p>
                             <p>

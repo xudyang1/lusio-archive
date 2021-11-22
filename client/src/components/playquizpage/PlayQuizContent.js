@@ -21,8 +21,13 @@ class PlayQuizContent extends Component{
             time: 0,
             retakeOption: false,
             questions: [],
-            score: 0
+            score: 0,
+            quizTime: {},
+            initialTime: 0
         };
+        this.timer = 0;
+        this.startTimer = this.startTimer.bind(this);
+        this.countDown = this.countDown.bind(this);
     }
 
     //const { id } = useParams();
@@ -30,6 +35,23 @@ class PlayQuizContent extends Component{
     //     getQuiz(id)
     //     //console.log(quiz)
     // }, []);
+
+    convertTime(secs){
+        let hours = Math.floor(secs / 3600);
+        
+        let forMinutes = (secs % 3600);
+        let minutes = Math.floor(forMinutes / 60);
+
+        let seconds = Math.ceil(forMinutes % 60);
+
+        let timeSet = {
+            "h": hours,
+            "m": minutes,
+            "s": seconds
+        };
+        return timeSet;
+    }
+
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
             const quizzes = () => {
@@ -55,16 +77,50 @@ class PlayQuizContent extends Component{
             time: quiz.time,
             retakeOption: quiz.retakeOption,
             questions: quiz.questions, 
-            openModal: false
+            openModal: false,
+            quizTime: this.convertTime(quiz.time),
+            initialTime: quiz.time
         });
+        this.startTimer();
         //console.log("quiz questions are", this.state.questions); 
     }
+
     componentDidMount(){
         const id = this.props.match.params.id;
         const { getQuizzes, isPlaying } = this.context;
         this.getItem(id, getQuizzes); 
+    
+        // After getting Quiz retrieve time attribute
+        // convert it into h:m:s
+        
+        console.log(this.state.quizTime);
+        
+
+        //this.startTimer();
         //console.log("beforeSubmit", isPlaying); 
     }
+
+    //binded(this) for use of props
+    startTimer() {
+        if (this.timer == 0 && this.state.time > 0){
+            //call CounterDown func every 1 second
+            this.timer = setInterval(this.countDown, 1000);
+        }
+    }
+    countDown() {
+        //reduce second by 1 by every 1 second 
+        let seconds = this.state.time - 1;
+        this.setState({
+            quizTime: this.convertTime(seconds),
+            time: seconds
+        });
+
+        //if no more time left, stop timer
+        if (seconds == 0) {
+            clearInterval(this.timer);
+        }
+    }
+
     
     scoreHandler = (userAnswer, quizAnswer) => {
         const { finishQuiz } = this.context;
@@ -72,16 +128,16 @@ class PlayQuizContent extends Component{
         quizAnswer.map((q,qi)=>{
             if (q.answerKey == userAnswer[qi]) {
                 scoreEval = scoreEval + q.score;
-                //console.log("qi", qi);
-                //console.log(scoreEval);
             }
         })
         
-        this.setState({score: scoreEval}, () => finishQuiz(this.state.score));
+        this.setState({score: scoreEval}, () => finishQuiz(this.state.score, (this.state.initialTime - this.state.time)));
     }
     onSubmit = (e) => {
         const { isPlaying } = this.context;
-        
+        clearInterval(this.timer);
+        console.log(this.state.initialTime - this.state.time);
+
         const checks = document.getElementsByClassName('filled-in');
         const answerCompare = []
         for (let i=0; i < checks.length; i++)  {
@@ -89,6 +145,7 @@ class PlayQuizContent extends Component{
                 answerCompare.push(checks[i].value);
             }
         }
+        
         //console.log(answerCompare); 
         this.scoreHandler(answerCompare, this.state.questions);
  
@@ -103,7 +160,7 @@ class PlayQuizContent extends Component{
                 <div className="container" style={{ backgroundColor: 'ivory', height: "60px" }}>
                     <div>
                         <h className="quiz">{this.state.name}</h>
-                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.time}</span>: <span></span>}       
+                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.quizTime.h}<b>h</b> {this.state.quizTime.m}<b>m</b> {this.state.quizTime.s}<b>s</b></span> : <span></span>}       
                     </div>
                 </div>
                 <div className="col s12" style={{ paddingLeft: '100px', paddingTop: '30px' }}>

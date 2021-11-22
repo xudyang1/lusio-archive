@@ -5,7 +5,7 @@ import { QuizzesContext } from '../../context/QuizState';
 import M from 'materialize-css';
 
 export default function QuizResult(){
-    const { isPlaying , score } = useContext(QuizzesContext);
+    const { isPlaying , score , timeSpent} = useContext(QuizzesContext);
     //console.log("Is the user playing the quiz?", isPlaying);
     useEffect(() => {
         var elem = document.querySelector('#quizResultModal')
@@ -23,6 +23,7 @@ export default function QuizResult(){
                     <div className="modal-content">
                         <h6>You finished taking the quiz</h6>
                         <h3>Your Score {score}</h3>
+                        <h5>Time Spent: {timeSpent}</h5>
                     </div>
                     <div className="modal-footer">
                         <a className="modal-close waves-effect waves-green btn-flat">Return</a>

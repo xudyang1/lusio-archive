@@ -69,7 +69,8 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         isPlaying: false,
-        score: action.payload
+        score: action.payload.score,
+        timeSpent: action.payload.timeSpent
       };
     default:
       return state;
