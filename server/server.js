@@ -14,9 +14,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-if(process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
-  }
+}
 
 
 // TODO: modify this sample later
@@ -26,11 +26,15 @@ const authRouter = require('./routes/api/auth');
 const profileRouter = require('./routes/api/profiles');
 const platformRouter = require('./routes/api/platforms');
 const quizRouter = require('./routes/api/quizzes');
+// TODO: temporary
+const tmpQuizRouter = require('./routes/api/tmpQuizzes');
 // use routes
 app.use('/api/auth', authRouter);
 app.use('/api/profiles', profileRouter);
 app.use('/api/platforms', platformRouter);
 app.use('/api/quizzes', quizRouter);
+// TODO: temporary 
+app.use('/api/tmpQuizzes', tmpQuizRouter);
 // end of test
 
 

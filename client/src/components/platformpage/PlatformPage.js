@@ -80,7 +80,7 @@ export default function PlatformPage(props) {
                 <PlatformHeader name={platform.name} banner={img}/>
                 <Switch>
                     <Route exact path={url}><PlatformContent sections={platform.quizSections} auth={viewType} id={id}/></Route>
-                    <Route path={url + "/About"}><PlatformAbout data={platform}/></Route>
+                    <Route path={url + "/About"}><PlatformAbout data={platform} id={id}/></Route>
                 </Switch>
             </div>
         </div>

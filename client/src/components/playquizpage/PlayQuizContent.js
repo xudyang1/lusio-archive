@@ -42,11 +42,11 @@ class PlayQuizContent extends Component{
             const quizL = await quizzes();
             //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            console.log("Quiz", quiz[0]);
+            //console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        console.log("current quiz is ", quiz);
+        //console.log("current quiz is ", quiz);
         this.setState({
             id: quiz._id,
             name: quiz.name,
@@ -57,13 +57,13 @@ class PlayQuizContent extends Component{
             questions: quiz.questions, 
             openModal: false
         });
-        console.log("quiz questions are", this.state.questions); 
+        //console.log("quiz questions are", this.state.questions); 
     }
     componentDidMount(){
         const id = this.props.match.params.id;
         const { getQuizzes, isPlaying } = this.context;
         this.getItem(id, getQuizzes); 
-        console.log("beforeSubmit", isPlaying); 
+        //console.log("beforeSubmit", isPlaying); 
     }
     
     scoreHandler = (userAnswer, quizAnswer) => {
@@ -72,11 +72,11 @@ class PlayQuizContent extends Component{
         quizAnswer.map((q,qi)=>{
             if (q.answerKey == userAnswer[qi]) {
                 scoreEval = scoreEval + q.score;
-                console.log("qi", qi);
-                console.log(scoreEval);
+                //console.log("qi", qi);
+                //console.log(scoreEval);
             }
         })
-        console.log(scoreEval);
+        
         this.setState({score: scoreEval}, () => finishQuiz(this.state.score));
     }
     onSubmit = (e) => {
@@ -89,13 +89,13 @@ class PlayQuizContent extends Component{
                 answerCompare.push(checks[i].value);
             }
         }
-        console.log(answerCompare); 
+        //console.log(answerCompare); 
         this.scoreHandler(answerCompare, this.state.questions);
  
         //finishQuiz(this.state.score);
-        console.log("onSubmit", isPlaying);
+        //console.log("onSubmit", isPlaying);
         e.preventDefault();
-        console.log(this.state);
+        //console.log(this.state);
     }
     render() {
         return (

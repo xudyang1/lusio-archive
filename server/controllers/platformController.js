@@ -5,6 +5,36 @@ const { nonNullJson, errorHandler } = require('../utils/jsonTool');
 
 /**
  * TODO: 
+ * @desc  Get platform list for main page
+ * @route GET api/platforms/platformList
+ * @access  Public
+ * @detail  To minize the data size, only send certain attribtues;
+ *          Content might be different based on the user type 
+ *          and the preference (subscribed platforms selected first)
+ * @format  req.header('x-auth-token'): JWT token || null
+ *          res.data: {
+ *                      platforms: [{ _id, name, owner, numSubscribers, quizzes, quizSections }]
+ *                    }
+ */
+exports.getPlatformList = async (req, res, next) => {
+  try {
+    const selectedPlatform = await Platform.find({}, null, { $limit: 10 });
+    
+    return res.status(200).json({
+      platforms: selectedPlatform
+    });
+  } catch (err) {
+    //console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
+    return errorHandler(res, 500, 'Server Error');
+  }
+};
+
+/**
+ * TODO: 
  * @desc  Get a platform for view
  * @route GET api/platforms/platform/:platformId
  * @access  Public
@@ -74,6 +104,7 @@ exports.addPlatform = async (req, res, next) => {
       { $push: { platformsCreated: savedPlatform._id } },
       { new: true });
     //console.log("updated: ", updatedProfile);
+    //console.log(savedPlatform)
     return res.status(201).json({
       success: true,
       platform: savedPlatform
@@ -103,9 +134,9 @@ exports.addPlatform = async (req, res, next) => {
  * 
  * @format  req.header('x-auth-token): JWT token 
  *          req.body: 
- *            { mode: "EDIT", platform: owner || name || description || iconURI || bannerURI } 
+ *            { mode: "EDIT", platform: owner || name || description || iconURI || bannerURI: newValue } 
  *            Or
- *            { mode: "ADD" || "DELETE", platform: admins || quizzes || quizSections }
+ *            { mode: "ADD" || "DELETE", platform: admins || quizzes || quizSections: {_id} }
  *          res.data:
  *            {
  *              success: true,
@@ -116,7 +147,7 @@ exports.addPlatform = async (req, res, next) => {
 exports.updatePlatform = async (req, res, next) => {
   try {
     // Note, to verify user id, use req.user.id rather than req.params.profileId
-    console.log(req.body)
+    //console.log(req.body)
     if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
     // destructure
@@ -149,8 +180,10 @@ exports.updatePlatform = async (req, res, next) => {
       case "DELETE":
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
-        updated = await Platform.findByIdAndUpdate(req.params.platformId, { $pullAll: provided }, options).select(keys);
-        console.log(updated)
+        
+        console.log(provided)
+        updated = await Platform.findOneAndUpdate({_id: req.params.platformId}, { $pull: provided }, options).select(keys);
+        //console.log(updated)
         break;
       default:
         // non matched mode
@@ -169,7 +202,7 @@ exports.updatePlatform = async (req, res, next) => {
       content: updated
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -198,7 +231,7 @@ exports.deletePlatform = async (req, res, next) => {
     if (!list.includes(req.params.platformId)) { return errorHandler(res, 403, 'No authorization'); }
 
     const deletedPlatform = await Platform.findByIdAndRemove(req.params.platformId);
-
+    console.log(deletedPlatform)
     if (!deletedPlatform) { return errorHandler(res, 404, 'Platform does not exist'); }
 
     // pull from the profile

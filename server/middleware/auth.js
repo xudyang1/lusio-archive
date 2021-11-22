@@ -51,6 +51,10 @@ exports.softAuth = async (req, res, next) => {
         const decoded = jwt.verify(token, JWT_SECRET);
         // add user from payload (logged user)
         req.user = decoded;
+
+        // default view type
+        req.viewType = GUEST_VIEW
+
         // profile
         if (req.params.profileId) {
             // matched profileId: viewer is getting own profile
@@ -89,12 +93,12 @@ exports.softAuth = async (req, res, next) => {
         else {
             req.viewType = GUEST_VIEW;
         }
-        // console.log("before next, viewTYpe:", req.viewType);
         // run next handler
         next();
     } catch (e) {
         // either no token or token invalid
         req.user = null;
+        req.viewType = GUEST_VIEW
         // simply run next for guest user
         next();
     }

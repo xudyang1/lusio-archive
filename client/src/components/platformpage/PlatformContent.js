@@ -38,7 +38,7 @@ export default function PlatformContent(props) {
                 }
             }
         }
-        console.log(id)
+        //console.log(id)
         updatePlatform(id, payload)
     }
 

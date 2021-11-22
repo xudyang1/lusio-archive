@@ -1,10 +1,11 @@
+import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 
 
-export default function AdddItemCard(props) {
+export default function AddItemCard(props) {
     return (
         <div>
-            <div className="card blue-grey darken-1">
-                <a class="btn-floating btn-large waves-effect waves-light red" onClick={props.callback}><i class="material-icons">add</i></a>
+            <div>
+                <a className="btn-floating btn-large waves-effect waves-light red" onClick={props.callback}><i className="material-icons">add</i></a>
             </div>
         </div>
     )

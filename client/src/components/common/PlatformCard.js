@@ -7,6 +7,9 @@ export default function PlatoformCard(props) {
             <div >
                 {props.description}
             </div>
+            <div className="valign-wrapper card-action">
+                <a href={"/platform/" + props.id} style={{ margin: "auto" }}>Go</a>
+            </div>
         </div>
     )
 }

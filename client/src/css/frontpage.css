@@ -62,7 +62,11 @@
 
 .cardText{
     white-space: break-spaces;
-    height: 300px;
+    height: 250px;
+}
+
+.card-title{
+    height: 30px;
 }
 
 .LSection{
