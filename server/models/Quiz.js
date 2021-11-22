@@ -36,6 +36,10 @@ const QuizSchema = new Schema({
         default: ""
         //required: [true, 'Please add an author'] 
     },
+    quizImgURI: {
+        type: String,
+        default: ""
+    },
     description: { 
         type: String,
         default: "" 

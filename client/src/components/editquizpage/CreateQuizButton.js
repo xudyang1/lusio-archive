@@ -19,6 +19,7 @@ export const CreateQuizButton = () => {
         userId: profile._id, 
         name: "", 
         author: user.name, 
+        quizImgURI: "",
         description: "", 
         timedOption: false,
         time: 0,

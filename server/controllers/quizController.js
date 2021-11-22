@@ -32,7 +32,7 @@ exports.getQuiz = async (req, res, next) => {
             });
         return res.status(404).json({
             success: false,
-            msg: 'The profile does not exist.'
+            msg: 'The Quiz does not exist.'
         });
     } catch (err) {
         return res.status(500).json({
@@ -71,6 +71,7 @@ exports.addQuiz = async (req, res, next) => {
             userId: req.body.userId,
             name: req.body.name,
             author: req.body.author,
+            quizImgURI: req.body.quizImgURI,
             description: req.body.description,
             timedOption: req.body.timedOption,
             time: req.body.time,
@@ -90,6 +91,7 @@ exports.addQuiz = async (req, res, next) => {
                 userId: savedQuiz.userId,
                 name: savedQuiz.name,
                 author: savedQuiz.author,
+                quizImgURI: savedQuiz.quizImgURI,
                 description: savedQuiz.description,
                 timedOption: savedQuiz.timedOption,
                 time: savedQuiz.time,
@@ -112,6 +114,7 @@ exports.updateQuiz = async (req, res, next) => {
         userId: req.body.userId,
         name: req.body.name,
         author: req.body.author,
+        quizImgURI: req.body.quizImgURI,
         description: req.body.description,
         timedOption: req.body.timedOption,
         time: req.body.time,
@@ -140,43 +143,6 @@ exports.updateQuiz = async (req, res, next) => {
     }
 }
 
-/*
-exports.updateQuiz = async (req, res, next) => {
-    const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
-        id: req.body.id,
-        userId: req.body.userId,
-        name: req.body.name,
-        description: req.body.description,
-        timed: req.body.timed,
-        retake: req.body.retake,
-        showQuestion: req.body.showQuestion,
-        showAnswer: req.body.showAnswer,
-        likes: req.body.likes,
-        created: req.body.created,
-        EXP: req.body.EXP,
-        questions: req.body.questions,
-        answers: req.body.answers,
-        isPublished: req.body.isPublished
-    });
-    try {
-        res.status(200).json({
-            success: true,
-            msg: "Quiz updated"
-        });
-        if (!quiz) {
-            return res.status(404).json({
-                success: false,
-                msg: 'No quiz found'
-            });
-        }
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            msg: 'Server Error'
-        });
-    }
-}
-*/
 
 // TODO: modify this sample later 
 // @desc    Delete quiz

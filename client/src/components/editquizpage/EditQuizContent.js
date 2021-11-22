@@ -13,6 +13,7 @@ class EditQuizContent extends Component{
             userId: "",
             name: "",
             author: "",
+            quizImgURI: null,
             description: "",
             timedOption: false,
             time: 0,
@@ -52,6 +53,7 @@ class EditQuizContent extends Component{
             userId: quiz.userId,
             name: quiz.name,
             author: quiz.author,
+            quizImgURI: quiz.quizImgURI,
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
@@ -172,6 +174,10 @@ class EditQuizContent extends Component{
         this.state.questions[qi].answerKey = Number(e.target.value);
         //console.log(this.state.questions);
     }
+    quizImgHandler = (e) => {
+        this.setState({quizImgURI: URL.createObjectURL(e.target.files[0])});
+        console.log(typeof this.state.quizImgURI);
+    }
     /*
     //Wishlist
     showQHandler = () => {
@@ -196,6 +202,7 @@ class EditQuizContent extends Component{
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
+            quizImgURI: this.state.quizImgURI,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
@@ -206,24 +213,6 @@ class EditQuizContent extends Component{
             isPublished: this.state.isPublished
         };
         updateQuiz(updateFQuiz);
-        /*
-        const updateFQuiz = {
-            id: this.state.id, 
-            userId: this.state.userId,
-            name: this.state.name,
-            description: this.state.description,
-            timed: this.state.timed, 
-            retake: this.state.retake, 
-            showQuestion: this.state.showQuestion, 
-            showAnswer: this.state.showAnswer,
-            likes: this.state.likes,
-            created: this.state.created,
-            EXP: this.state.EXP,
-            questions: this.state.questions,
-            answers: this.state.answers,
-            isPublished: this.state.isPublished    
-        }
-        */
         
     }
     handlePublish = (e) => {
@@ -237,6 +226,7 @@ class EditQuizContent extends Component{
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
+            quizImgURI: this.state.quizImgURI,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
@@ -260,6 +250,7 @@ class EditQuizContent extends Component{
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
+            quizImgURI: this.state.quizImgURI,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
@@ -286,11 +277,12 @@ class EditQuizContent extends Component{
         this.getItem(id, getQuizzes);  
     }
     
+    
 
     render(){
             return(
                 <div className="row section" style={{padding: '35px'}}>                
-                    <div className="col s6">
+                    <div className="col s5">
                         <div className="section input-field">Quiz Name
                             <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler}/>
                         </div>
@@ -298,7 +290,11 @@ class EditQuizContent extends Component{
                         <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
                         </div>
                     </div>
-                    <div className="col s6" style={{paddingLeft: '100px', paddingTop: '30px'}}>
+                    <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
+                        <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/>
+                        <input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>
+                    </div>
+                    <div className="col s3" style={{paddingLeft: '100px', paddingTop: '30px'}}>
                         <form action="#">
                             <p>
                                 <label>

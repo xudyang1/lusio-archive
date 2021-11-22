@@ -10,6 +10,7 @@ class QuizPageContent extends Component{
         this.state = {
             id: "",
             name: "",
+            quizImgURI: "",
             description: "",
             author: "",
             platformId: 0,
@@ -40,6 +41,7 @@ class QuizPageContent extends Component{
         this.setState({
             id: quiz._id,
             name: quiz.name,
+            quizImgURI: quiz.quizImgURI,
             description: quiz.description,
             author: quiz.author,
             platformId: 0,
@@ -100,7 +102,7 @@ class QuizPageContent extends Component{
             <div>
                 <div className="col s5 pull-s10">
                     <span className="flow-text">
-                        <img src="https://www.moma.org/assets/visit/entrance-image--museum-crop-7516b01003659172f2d9dbc7a6c2e9d9.jpg" style={{width:"350px",height:"200px", paddingTop: "10px"}}></img>
+                        <img src={this.state.quizImgURI} style={{width:"350px",height:"200px", paddingTop: "10px"}}></img>
                     </span> 
                 </div>
                 <div className="row">
