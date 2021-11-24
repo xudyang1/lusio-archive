@@ -17,7 +17,7 @@ export default function HomeContent() {
 
     useEffect(() => {
         getPlatformList();
-        console.log(platformList)
+        //console.log(platformList)
     }, [])
 
     return (

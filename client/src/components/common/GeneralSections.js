@@ -9,6 +9,8 @@ import AdddItemCard from "./AddItemCard";
 import { ProfileContext } from "../../context/ProfileState";
 import { useForceUpdate } from "../../utils/useForceUpdate";
 import PlatformCard from "./PlatformCard";
+import { PlatformContext } from "../../context/PlatformState";
+import { QuizzesContext } from "../../context/QuizState";
 
 function getCards(t, index, element, canEdit) {
     // console.log("called getCards with type: ", t)
@@ -43,6 +45,8 @@ export default function GeneralSections(props) {
     const [itemList, setList] = useState([])
     const [shouldRender, setShouldRender] = useState(true);
     const { viewType } = useContext(ProfileContext)
+    const { updatePlatform } = useContext(PlatformContext)
+    const { getQuiz } = useContext(QuizzesContext)
     const forceUpdate = useForceUpdate()
 
     const Section = createRef();
@@ -62,6 +66,18 @@ export default function GeneralSections(props) {
         setEditing(false)
     }
 
+    function onClickDeleteSection(id, element) {
+        console.log(id, element._id)
+        console.log("Deleting Section")
+        const payload = {
+            mode: "DELETE",
+            platform: {
+                quizSections: { _id : element._id }
+            }
+        }
+        updatePlatform(id, payload)
+    }
+
     const pageUp = (e) => {
         Section.current.scrollBy(-1000, 0)
     }
@@ -71,12 +87,12 @@ export default function GeneralSections(props) {
     }
 
     useEffect(()=>{
-        setTimeout(() => {
-            setShouldRender(false);
-          }, 2000);
-        // setList(props.items)
-        forceUpdate();
-    }, [props.items])
+        // setTimeout(() => {
+        //     setShouldRender(false);
+        //   }, 2000);
+        //setList(props.items)
+        //forceUpdate();
+    })
     //console.log(props)
 
     return (
@@ -87,11 +103,11 @@ export default function GeneralSections(props) {
                         <h4>
                             <div>{editing ?
                                 <div class="input-field">
-                                    <input type="text" defaultValue={name} ref={sectionName}/>
+                                    <input type="text" defaultValue={name} ref={sectionName} />
                                 </div>
                                 : name}
                             </div>
-                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => props.deleteCallBack(props.index)}><i class="material-icons">delete</i></a> : <div></div>}
+                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection(props.id, props.element)}><i class="material-icons">delete</i></a> : <div></div>}
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickEdit()}><i class="material-icons">edit</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => onClickCancel()}><i class="material-icons">clear</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i class="material-icons">check</i></a> : <div></div>}
@@ -103,11 +119,11 @@ export default function GeneralSections(props) {
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>
                         <div className="GSection" ref={Section}>
                             {
-                                props.items?
-                                props.items.map((element, index) => (
-                                    getCards(type, index, element, viewType=="OWNER_VIEW")
-                                ))
-                                :<div></div>
+                                props.items ?
+                                    itemList.map((element, index) => (
+                                        getCards(type, index, element, viewType == "OWNER_VIEW")
+                                    ))
+                                    : <div></div>
                             }
                             {add ? <AdddItemCard /> : <div></div>}
                         </div>

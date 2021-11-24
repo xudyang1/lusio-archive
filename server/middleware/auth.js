@@ -66,7 +66,7 @@ exports.softAuth = async (req, res, next) => {
         else if (req.params.platformId) {
             // get Profile id for current viewer
             const platform = await Platform.findById(req.params.platformId).select(['owner', 'admins']);
-
+            console.log(platform)
             const ownerId = platform.owner.toString();
             const adminsId = platform.admins.map(id => id.toString());
 
@@ -96,6 +96,7 @@ exports.softAuth = async (req, res, next) => {
         // run next handler
         next();
     } catch (e) {
+        console.log(e)
         // either no token or token invalid
         req.user = null;
         req.viewType = GUEST_VIEW

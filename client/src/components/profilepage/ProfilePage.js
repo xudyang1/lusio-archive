@@ -62,22 +62,22 @@ export default function ProfilePage() {
 
     function getPlatformInformation(items){
         var templist = []
-        items.forEach(element => {
-            element = getPlatform(element, false)
-            //console.log(element)
-            element.then(value => {
-                templist.push(
-                    {
-                        name: value.platform.name,
-                        id: value.platform._id,
-                        description: value.platform.description,
-                        owner: value.platform.owner,
-                        likes: value.platform.likes,
-                        dateCreated: value.platform.createdAt
-                    }
-                )
-            })
-        });
+        // items.forEach(element => {
+        //     element = getPlatform(element, false)
+        //     //console.log(element)
+        //     element.then(value => {
+        //         templist.push(
+        //             {
+        //                 name: value.platform.name,
+        //                 id: value.platform._id,
+        //                 description: value.platform.description,
+        //                 owner: value.platform.owner,
+        //                 likes: value.platform.likes,
+        //                 dateCreated: value.platform.createdAt
+        //             }
+        //         )
+        //     })
+        // });
         templist.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
         //console.log(templist)
         return templist

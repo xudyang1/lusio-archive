@@ -62,9 +62,10 @@ export const PlatformProvider = ({ children }) => {
     //   |_| \___/|___/ \___/
     
     // token: can be null
-    async function getPlatformList(token) {
+    async function getPlatformList() {
         try {
             const res = await axios.get('/api/platforms/platformList', tokenConfig(token));
+            //console.log(token)
             //console.log("res", res);
             dispatch({
                 type: GET_PLATFORM_LIST,

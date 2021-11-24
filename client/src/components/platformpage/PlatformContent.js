@@ -42,21 +42,6 @@ export default function PlatformContent(props) {
         updatePlatform(id, payload)
     }
 
-    function onClickDeleteSection(index) {
-        console.log(index)
-        console.log("Deleting Section")
-        const payload = {
-            mode: "DELETE",
-            platform: {
-                quizSections:
-                [{
-                    sectionIndex: index
-                }]
-            }
-        }
-        updatePlatform(id, payload)
-    }
-
     function updateName(name){
         console.log("Update Section Name to", name)
     }
@@ -69,7 +54,7 @@ export default function PlatformContent(props) {
         <div>
             {
                 sections.map((element, index) => (
-                    <GeneralSections key={index} name={element.sectionName} security={security} deleteCallBack={onClickDeleteSection} updateName={updateName} index={element.sectionIndex}/>
+                    <GeneralSections key={index} name={element.sectionName} security={security} updateName={updateName} index={element.sectionIndex} id={id} element={element}/>
                 ))
             }
             {

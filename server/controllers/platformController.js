@@ -156,6 +156,7 @@ exports.updatePlatform = async (req, res, next) => {
     const MODE = req.body.mode;
 
     var provided = keys = updated = null;
+    //console.log(req)
     //console.log("req.viewtyoe", req.viewType);
     if (req.viewType !== 'OWNER_VIEW' && req.viewType !== 'ADMIN_VIEW') { return errorHandler(res, 403, 'No authorization'); }
     // set options
