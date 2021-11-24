@@ -25,7 +25,8 @@ const JWT_SECRET = process.env.JWT_SECRET;
  *                      user: { 
  *                              name: String, 
  *                              email: String, 
- *                              profile: ObjectId (the profileId of the new user)
+ *                              profile: ObjectId (the profileId of the new user),
+ *                              iconURI: String
  *                            } 
  *                    }
  */
@@ -82,7 +83,8 @@ exports.register = async (req, res, next) => {
                 // id: updatedUser.id,    NOTE: id should not be sent
                 name: updatedUser.name,
                 email: updatedUser.email,
-                profile: updatedUser.profile
+                profile: updatedUser.profile,
+                iconURI: savedProfile.iconURI
             }
         });
     } catch (err) {
@@ -106,6 +108,7 @@ exports.register = async (req, res, next) => {
  *                              name: String, 
  *                              email: String, 
  *                              profile: ObjectId (the profileId of the user)
+ *                              iconURI: String
  *                            } 
  *                    }
  */
@@ -128,6 +131,8 @@ exports.login = async (req, res, next) => {
         const token = jwt.sign({ id: user._id, profile: user.profile }, JWT_SECRET, { expiresIn: 3600 });
 
         if (!token) { return errorHandler(res, 500, 'Could not sign the token'); }
+    
+        const userProfile = await UserProfile.findById(user.profile).select('iconURI');
 
         res.status(200).json({
             token,
@@ -135,11 +140,12 @@ exports.login = async (req, res, next) => {
                 // id: user._id, not sent
                 name: user.name,
                 email: user.email,
-                profile: user.profile
+                profile: user.profile,
+                iconURI: userProfile.iconURI
             }
         });
     } catch (err) {
-        //console.log(err);
+        console.log(err);
         if(err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
@@ -168,12 +174,16 @@ exports.getUser = async (req, res, next) => {
         const user = await UserAccount.findById(req.user.id);
         if (!user) { return errorHandler(res, 400, 'User does not exist'); }
         // console.log("see if password is loaded: ", user);
+
+        const profile = await UserProfile.findById(user.profile).select('iconURI');
+
         res.json({
             user: {
                 // id: user._id, not sent
                 name: user.name,
                 email: user.email,
-                profile: user.profile
+                profile: user.profile,
+                iconURI: profile.iconURI
             }
         });
     } catch (err) {
