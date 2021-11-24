@@ -48,13 +48,13 @@ export default function SectionList(props) {
     const [itemList, setList] = useState([])
     const [shouldRender, setShouldRender] = useState(true);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setShouldRender(false);
-        }, 2000);
-        // setList(props.items)
-        forceUpdate();
-    }, [props.items])
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setShouldRender(false);
+    //     }, 2000);
+    //     // setList(props.items)
+    //     forceUpdate();
+    // }, [])
 
     return (
         <div>
@@ -66,11 +66,11 @@ export default function SectionList(props) {
                     <div className="valign-wrapper">
                         <div className="LSection">
                             {
-                                props.items?
-                                props.items.map((element, index) => (
-                                    getCards(props.type, index, element, viewType=="OWNER_VIEW")
-                                ))
-                                :<div></div>
+                                props.items ?
+                                    props.items.map((element, index) => (
+                                        getCards(props.type, index, element, viewType == "OWNER_VIEW")
+                                    ))
+                                    : <div></div>
                             }
                             {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
                             {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>}

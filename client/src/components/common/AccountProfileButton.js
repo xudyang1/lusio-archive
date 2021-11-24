@@ -1,4 +1,5 @@
 import { Component, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import React from 'react';
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
@@ -27,9 +28,9 @@ export default function AccountProfileButton() {
 
     return (
         <div className="valign-wrapper">
-            <a href={"/profile/" + user.profile} style={s}>
+            <Link to={"/profile/" + user.profile} style={s}>
                 <img className="circle" src={profile.iconURI ? profile.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
-            </a>
+            </Link>
             {user.name}
         </div>
     )

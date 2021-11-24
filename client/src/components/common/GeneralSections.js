@@ -72,7 +72,7 @@ export default function GeneralSections(props) {
         const payload = {
             mode: "DELETE",
             platform: {
-                quizSections: { _id : element._id }
+                quizSections: { _id: element._id }
             }
         }
         updatePlatform(id, payload)
@@ -86,13 +86,13 @@ export default function GeneralSections(props) {
         Section.current.scrollBy(1000, 0)
     }
 
-    useEffect(()=>{
-        // setTimeout(() => {
-        //     setShouldRender(false);
-        //   }, 2000);
-        //setList(props.items)
-        //forceUpdate();
-    })
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setShouldRender(false);
+    //     }, 2000);
+    //     //setList(props.items)
+    //     forceUpdate();
+    // }, [props.items])
     //console.log(props)
 
     return (
@@ -119,11 +119,11 @@ export default function GeneralSections(props) {
                         <a className="left" onClick={pageUp}><i className="material-icons">chevron_left</i></a>
                         <div className="GSection" ref={Section}>
                             {
-                                props.items ?
-                                    itemList.map((element, index) => (
-                                        getCards(type, index, element, viewType == "OWNER_VIEW")
-                                    ))
-                                    : <div></div>
+                                // props.items ?
+                                //     props.items.map((element, index) => (
+                                //         getCards(type, index, element, viewType == "OWNER_VIEW")
+                                //     ))
+                                //     : <div></div>
                             }
                             {add ? <AdddItemCard /> : <div></div>}
                         </div>

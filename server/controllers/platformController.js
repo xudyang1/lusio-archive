@@ -182,7 +182,7 @@ exports.updatePlatform = async (req, res, next) => {
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
         
-        console.log(provided)
+        //console.log(provided)
         updated = await Platform.findOneAndUpdate({_id: req.params.platformId}, { $pull: provided }, options).select(keys);
         //console.log(updated)
         break;
@@ -232,7 +232,7 @@ exports.deletePlatform = async (req, res, next) => {
     if (!list.includes(req.params.platformId)) { return errorHandler(res, 403, 'No authorization'); }
 
     const deletedPlatform = await Platform.findByIdAndRemove(req.params.platformId);
-    console.log(deletedPlatform)
+    //console.log(deletedPlatform)
     if (!deletedPlatform) { return errorHandler(res, 404, 'Platform does not exist'); }
 
     // pull from the profile
