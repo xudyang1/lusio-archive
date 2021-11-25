@@ -56,10 +56,22 @@ export default function GeneralSections(props) {
         setEditing(true)
     }
 
-    function onClickConfirm() {
+    function onClickConfirm(id, element) {
         setEditing(false)
-        //console.log(sectionName.current.value)
-        props.updateName(sectionName.current.value)
+        console.log(sectionName.current.value)
+        console.log("platform", id, "section", element._id)
+        console.log("Updating Section Name")
+        // const payload = {
+        //     mode: "UPDATE_SECTION",
+        //     platform: {
+        //         quizSections: {
+        //             _id: element._id
+        //         },
+        //         sectionName: sectionName.current.value
+        //     }
+        // }
+        // updatePlatform(id, payload)
+        //props.updateName(sectionName.current.value)
     }
 
     function onClickCancel() {
@@ -67,7 +79,7 @@ export default function GeneralSections(props) {
     }
 
     function onClickDeleteSection(id, element) {
-        console.log(id, element._id)
+        console.log("platform", id, "section", element._id)
         console.log("Deleting Section")
         const payload = {
             mode: "DELETE",
@@ -110,7 +122,7 @@ export default function GeneralSections(props) {
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection(props.id, props.element)}><i class="material-icons">delete</i></a> : <div></div>}
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickEdit()}><i class="material-icons">edit</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => onClickCancel()}><i class="material-icons">clear</i></a> : <div></div>}
-                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i class="material-icons">check</i></a> : <div></div>}
+                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm(props.id, props.element)}><i class="material-icons">check</i></a> : <div></div>}
                         </h4>
                         {props.homeContent ? <a href={"/platform/" + props.id}>more{">"}{">"}</a> : <div></div>}
 

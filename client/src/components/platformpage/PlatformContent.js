@@ -42,19 +42,11 @@ export default function PlatformContent(props) {
         updatePlatform(id, payload)
     }
 
-    function updateName(name){
-        console.log("Update Section Name to", name)
-    }
-    function onClickClear(){
-
-    }
-
-
     return (
         <div>
             {
                 sections.map((element, index) => (
-                    <GeneralSections key={index} name={element.sectionName} security={security} updateName={updateName} index={element.sectionIndex} id={id} element={element}/>
+                    <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} id={id} element={element}/>
                 ))
             }
             {

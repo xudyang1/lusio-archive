@@ -66,11 +66,11 @@ export default function SectionList(props) {
                     <div className="valign-wrapper">
                         <div className="LSection">
                             {
-                                props.items ?
-                                    props.items.map((element, index) => (
-                                        getCards(props.type, index, element, viewType == "OWNER_VIEW")
-                                    ))
-                                    : <div></div>
+                                // props.items ?
+                                //     props.items.map((element, index) => (
+                                //         getCards(props.type, index, element, viewType == "OWNER_VIEW")
+                                //     ))
+                                //     : <div></div>
                             }
                             {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
                             {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>}

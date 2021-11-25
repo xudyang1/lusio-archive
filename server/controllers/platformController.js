@@ -203,7 +203,7 @@ exports.updatePlatform = async (req, res, next) => {
       content: updated
     });
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
