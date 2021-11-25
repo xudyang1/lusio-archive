@@ -18,9 +18,10 @@ const initialState = {
     isLoading: false,
     user: {
         id: 0,
-        email: "null",
-        name: "null",
-        profile: null
+        email: null,
+        name: null,
+        profile: null,
+        iconURI: null
     },
     error: {
         msg: null,
@@ -30,9 +31,8 @@ const initialState = {
 };
 
 export default function AuthReducer(state, action) {
-    // console.log("Reducer: old state", state);
-    //console.log("Reducer: action.type", action.type);
-    //console.log("Reducer: action.payload", action.payload);
+    console.log("Reducer: action.type", action.type);
+    console.log("Reducer: action.payload", action.payload);
     switch (action.type) {
         case USER_LOADING:
             // console.log('Inside USER_LOADING')
