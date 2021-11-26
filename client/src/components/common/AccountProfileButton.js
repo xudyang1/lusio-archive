@@ -28,7 +28,7 @@ export default function AccountProfileButton() {
     return (
         <div className="valign-wrapper">
             <a href={"/profile/" + user.profile} style={s}>
-                <img className="circle" src={profile.iconURI ? profile.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
+                <img className="circle" src={user.iconURI ? user.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
             </a>
             {user.name}
         </div>
