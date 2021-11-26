@@ -115,22 +115,11 @@ class EditQuizContent extends Component{
     questionHandler = (qi, e) => {
         this.state.questions[qi].title = e;
         //console.log(this.state.questions);
-        /*
-        const l = this.state.questions.length;
-        if (l != 1 ){
-            this.state.questions[l-1] = e.target.value;
-        }
-        else{
-            this.state.questions[0] = e.target.value;
-        }
-        */
     }
     answerHandler = (qi,ai,e) => {
         this.state.questions[qi].choices[ai].content = e;
         //console.log(this.state.questions[qi].answers);
-    }
-    //+answers would be nested as it corresponds to different questions
-    //so answerHandler would be changed 
+    } 
 
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
@@ -150,14 +139,6 @@ class EditQuizContent extends Component{
         }
         
         console.log(this.state.time);
-        /*
-        const answerCompare = []
-        for (let i=0; i < checks.length; i++)  {
-            if (checks[i].checked){
-                answerCompare.push(checks[i].value);
-            }
-        }
-        */
     }
     retakeHandler = () => {
         this.state.retakeOption = !this.state.retakeOption;
@@ -276,7 +257,6 @@ class EditQuizContent extends Component{
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);  
     }
-    
     
 
     render(){

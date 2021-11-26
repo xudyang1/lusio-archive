@@ -16,34 +16,38 @@ import axios from 'axios';
 const initialState = {
 // <<<<<<< LiuxinLi
     quizzes: [],
+    /*
     quiz: {
         id: null,
         userId: null,
         //quizImgURI //Needs update
         //platformId: "", //Needs update
-        name: "",
-        author: "",
-        quizImgURI: "",
-        description: "",
+        name: null,
+        author: null,
+        quizImgURI: null,
+        description: null,
         timedOption: false,
         time: 0,
         retakeOption: false,
         questions: [{
-            title: "",
+            title: null,
             choices: [""], 
             answerKey: 1, //correctAnswers
             score: 0
         }],
         likes: 0,
         plays: 0,
-        //scoreboard: [], //Needsupdate
-        isPublished: false
+        isPublished: false,
+        scoreBoard: []
     },
+    */
+    quiz: {},
     error: null,
     loading: true,
     isPlaying: true,
     score: 0,
-    timeSpent: 0
+    timeSpent: 0,
+    //scoreB: []
 };
 
 // Create context
@@ -91,7 +95,7 @@ export const QuizzesProvider = ({ children }) => {
         }
     };
 
-    async function addQuiz({ userId, name, author, quizImgURI, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
+    async function addQuiz({ userId, name, author, quizImgURI, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore }) {
         //console.log("ADDQUIZ", userId)
         const config = {
             headers: {
@@ -99,13 +103,14 @@ export const QuizzesProvider = ({ children }) => {
             }
         };
         //{ userId, name, author, description, questions, likes, isPublished }
-        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished });
+        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore });
         //console.log(body);
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
             dispatch({
                 type: ADD_QUIZ,
-                payload: res.data
+                payload: res.data.quiz
+                //{quiz: res.data.quiz, scoreBoard: res.data.quiz.scoreBoard}
             });
             return res.data.quiz.id;
         } catch (err) {
@@ -117,18 +122,25 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished }) {
+    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished, scoreBoard }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished });
+        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished, scoreBoard });
         try {
             const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
+            /*
+            console.log("res.data.quiz.scoreBoard",res.data.quiz.scoreBoard);
+            const scoreB = [];
+            res.data.quiz.scoreBoard.map((u)=>scoreB.push({userName: u.userName, userScore: u.userScore}));
+            console.log("scoreB", scoreB);
+            */
             dispatch({
                 type: UPDATE_QUIZ,
-                payload: res.data
+                payload: res.data.quiz
+                //{quiz: res.data.quiz, scoreBoard: scoreB}
             });
             //console.log("After adding quiz, success, state: ", res.data);
         } catch (err) {
@@ -172,11 +184,13 @@ export const QuizzesProvider = ({ children }) => {
     };
     return (<QuizzesContext.Provider value={{
         quizzes: state.quizzes,
+        quiz: state.quiz,
         error: state.error,
         loading: state.loading,
         isPlaying: state.isPlaying,
         score: state.score,
         timeSpent: state.timeSpent,
+        //scoreB: state.scoreB,
         getQuizzes,
         getQuiz,
         addQuiz,

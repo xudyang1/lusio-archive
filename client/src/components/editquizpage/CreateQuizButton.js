@@ -16,25 +16,27 @@ export const CreateQuizButton = () => {
         e.preventDefault();
 
         const quiz = { 
-        userId: profile._id, 
-        name: "", 
-        author: user.name, 
-        quizImgURI: "",
-        description: "", 
-        timedOption: false,
-        time: 0,
-        retakeOption: false,
-        questions: [{
-            title: "",
-            choices: [{
-                content: ""
+            userId: profile._id, 
+            name: "", 
+            author: user.name, 
+            quizImgURI: "",
+            description: "", 
+            timedOption: false,
+            time: 0,
+            retakeOption: false,
+            questions: [{
+                title: "",
+                choices: [{
+                    content: ""
+                }], 
+                answerKey: 1,
+                score: 0
             }], 
-            answerKey: 1,
-            score: 0
-        }], 
-        likes: 0,
-        plays: 0,
-        isPublished: false}; 
+            likes: 0,
+            plays: 0,
+            isPublished: false,
+            scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}]
+        }; 
         //showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
         
         //console.log("Before adding quiz: ", quiz);

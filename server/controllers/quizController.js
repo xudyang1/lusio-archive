@@ -66,6 +66,15 @@ exports.addQuiz = async (req, res, next) => {
                 score: q.score
             });      
         });
+
+        const scoreB = [];
+        const quizScoreboard = req.body.scoreBoard;
+        quizScoreboard.forEach((u)=> {
+            scoreB.push({
+                userName: u.userName,
+                userScore: u.userScore
+            });
+        });
         
         const newQuiz = new Quiz({
             userId: req.body.userId,
@@ -79,7 +88,8 @@ exports.addQuiz = async (req, res, next) => {
             questions: dataQ,
             likes: req.body.likes,
             plays: req.body.plays,
-            isPublished: req.body.isPublished
+            isPublished: req.body.isPublished,
+            scoreBoard: scoreB
         });
         
         const savedQuiz = await newQuiz.save();
@@ -99,7 +109,8 @@ exports.addQuiz = async (req, res, next) => {
                 questions: savedQuiz.questions,
                 likes: savedQuiz.likes,
                 plays: savedQuiz.plays,
-                isPublished: savedQuiz.isPublished
+                isPublished: savedQuiz.isPublished,
+                scoreBoard: savedQuiz.scoreBoard
             }
         }); 
         
@@ -122,10 +133,12 @@ exports.updateQuiz = async (req, res, next) => {
         questions: req.body.questions,
         likes: req.body.likes,
         plays: req.body.plays,
-        isPublished: req.body.isPublished
+        isPublished: req.body.isPublished,
+        scoreBoard: req.body.scoreBoard
     });
     try {
         res.status(200).json({
+            quiz: quiz,
             success: true,
             msg: "Quiz updated"
         });

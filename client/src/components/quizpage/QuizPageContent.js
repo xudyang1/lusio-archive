@@ -19,7 +19,7 @@ class QuizPageContent extends Component{
             plays: 0,
             timer: 0,
             numQ: 0,
-            scoreboard: []
+            scoreBoard: []
         };
     }
 
@@ -50,7 +50,7 @@ class QuizPageContent extends Component{
             plays: quiz.plays,
             timer: quiz.time,
             numQ: quiz.questions.length,
-            scoreboard: []
+            scoreBoard: quiz.scoreBoard
         });
     }
 
@@ -100,13 +100,8 @@ class QuizPageContent extends Component{
     render(){
         return(
             <div>
-                <div className="col s5 pull-s10">
-                    <span className="flow-text">
-                        <img src={this.state.quizImgURI} style={{width:"350px",height:"200px", paddingTop: "10px"}}></img>
-                    </span> 
-                </div>
                 <div className="row">
-                    <div className="col pull-s4">
+                    <div className="col s6">
                         <p className="row flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
                             {this.state.name}
                         </p>
@@ -117,13 +112,18 @@ class QuizPageContent extends Component{
                             <div style={{fontSize:"15px"}}>Description: <br/></div>
                             {this.state.description}
                         </p>
+                    </div>   
+                    <div className="col s6 pull-s6" style={{bottom:"100px"}}>
+                        <span className="flow-text">
+                            <img src={this.state.quizImgURI} style={{width: "350px", height: "250px"}}></img>
+                        </span> 
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col">
+                    <div className="col s5 pull-s6">
                         Related Tags : wishlist
                     </div>
-                    <div className="col">
+                    <div className="col s7">
                         <div className="row" style={{paddingLeft:"200px"}}>
                             <span> 
                                 {this.state.plays} plays
@@ -136,28 +136,26 @@ class QuizPageContent extends Component{
                 <div className="row" style={{marginBottom: "25px"}}>
                     <hr className="row" style={{width:"150%", position:"absolute", right:"1px"}}></hr>
                 </div>
-                <div className="col pull-s5" >
-                    <div className="col s4">
-                        {/*
-                    <table>
-                        <tr>
-                            <th bgcolor="lightgrey"></th>
-                            <th bgcolor="lightgrey">Ranking</th>
-                            <th bgcolor="lightgrey">Score</th>
-                        </tr>
-                        {quizScoreboard.map((user, index)=> {
-                            return(
-                                <tr key={index}>
-                                    <td>{user.userID}</td>
-                                    <td>User Name</td>
-                                    <td>{user.score}</td>
-                                </tr>
-                            )
-                        })}
-                    </table>*/}
+                <div class="row">
+                    <div className="col s5 pull-s6" >
+                        <table>
+                            <tr>
+                                <th bgcolor="lightgrey"></th>
+                                <th bgcolor="lightgrey">Rank</th>
+                                <th bgcolor="lightgrey">Score</th>
+                            </tr>
+                            {this.state.scoreBoard.map((user, index)=> {
+                                return(
+                                    <tr key={index}>
+                                        <td>{index+1}</td>
+                                        <td>{user.userName}</td>
+                                        <td>{user.userScore}</td>
+                                    </tr>
+                                )
+                            })}
+                        </table>
                     </div>
-                    <div className="col s12">
-                        
+                    <div className="col s7 pull-s2">
                         <div className="row">
                             <div className="row" style={{textAlign: 'center', fontSize: "20px"}}>
                                 <div className="col s4"># OF QUESTIONS</div>
@@ -171,16 +169,13 @@ class QuizPageContent extends Component{
                             </div>
                         </div>
                         <br/>
-                        <div className="row" style={{maxWidth:"100%", maxHeight:"100%"}}>
-                            <div className= "col s8">
-                                <button className="waves-effect waves-light btn" style={{left:"230px"}} onClick={this.numPlayHandler}>Play Quiz</button>
-                            </div>
-                            <div className= 'col'>
-                                <button className="waves-effect waves-light btn" >View Quiz Statistics</button>
-                            </div>
+                        <div className="row" >
+                            <button className="waves-effect waves-light btn"  onClick={this.numPlayHandler}>Play Quiz</button>
+                            <button className="waves-effect waves-light btn" style={{left: "50px"}}>View Quiz Statistics</button>
                         </div>
                     </div>
                 </div>
+               
             </div>
         )
     }

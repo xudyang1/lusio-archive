@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const UserSchema = new Schema({
+    userName: {
+        type: String,
+        default: ""
+    },
+    userScore: {
+        type: Number,
+        default: 0
+    }
+}, { _id : false })
+
 // TODO: defaults to be discussed
 const QuestionSchema = new Schema({
     title: { 
@@ -19,7 +30,6 @@ const QuestionSchema = new Schema({
 });
 
 // platformId to be added
-// quizImgURI to be added
 // quizScoreboard to be added 
 const QuizSchema = new Schema({
     userId: {
@@ -62,7 +72,11 @@ const QuizSchema = new Schema({
     },
     isPublished: { 
         type: Boolean, 
-        required: [true]}
+        required: [true]
+    },
+    scoreBoard: {
+        type: [UserSchema]
+    }
 }, {timestamps: true});
 // Validation for questions array size
 // TODO: size limit to be discussed
