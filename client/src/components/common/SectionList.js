@@ -11,8 +11,6 @@ import { ProfileContext } from "../../context/ProfileState";
 import { useForceUpdate } from "../../utils/useForceUpdate";
 
 function getCards(t, index, element, canEdit) {
-    //console.log("CALLED GET CARDS")
-    //console.log("called getCards with type: ", t, element)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>

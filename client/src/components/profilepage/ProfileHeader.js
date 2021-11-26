@@ -5,12 +5,6 @@ import { ProfileContext } from "../../context/ProfileState";
 import M from 'materialize-css';
 import '../../css/profilepage.css';
 import axios from "axios";
-//TODO
-// _____ ___  ___   ___  
-// |_   _/ _ \|   \ / _ \ 
-//   | || (_) | |) | (_) |
-//   |_| \___/|___/ \___/
-
 
 export default function ProfileHeader(props) {
 
@@ -21,7 +15,6 @@ export default function ProfileHeader(props) {
     const { updateProfile, deleteAccount, viewType } = useContext(ProfileContext);
 
     const textRef = createRef()
-    {/* user.id to be used */ }
     const initialState = {
         userId: isAuthenticated ? user.id : "",
         accountStatus: 0,
@@ -40,18 +33,11 @@ export default function ProfileHeader(props) {
     };
     const [state, setState] = useState(initialState);
 
-    const onChangeDescription = (e) => {
-        //    setDesc(e.target.value);
-        setState({ description: e.target.value });
-
-    }
     const onSubmit = (e) => {
         e.preventDefault();
         const { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat } = state;
         const userProfile = { userId, accountStatus, name, email, description, profileIcon, profileBanner, level, currentExp, maxExp, achievements, quizzes, subscribedUser, subscribedPlat };
-        //updateProfile(userProfile);
 
-        //console.log(textRef.current.value)
         updateProfile({
             mode: "EDIT",
             profile: {
@@ -59,10 +45,6 @@ export default function ProfileHeader(props) {
             }
         })
 
-    }
-    const onDelete = (e) => {
-        e.preventDefault();
-        //deleteAccount(userProfile);
     }
 
     return (

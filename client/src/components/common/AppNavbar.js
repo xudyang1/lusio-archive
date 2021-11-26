@@ -19,10 +19,6 @@ const AppNavbar = () => {
         loadUser();
     }, []);
 
-    // const clickMe = (e) => {
-    //     console.log(user)
-    // }
-
     return (
         <div className="">
             <nav>
@@ -33,7 +29,6 @@ const AppNavbar = () => {
                         {isAuthenticated ? (<span><li><AccountProfileButton /></li><li><Logout /></li></span>) :
                             (<span><li><LoginModal /></li><li><RegisterModal /></li></span>)}
                         <li><a href="https://github.com/xudyang1/CSE416_Lusio" style={{ fontSize: "1.5em" }}>Github</a></li>
-                        {/* <li><button style={{ fontSize: "1.5em" }} onClick={clickMe}>GetUser</button></li> */}
                     </ul>
                     <SearchBar />
                 </div>

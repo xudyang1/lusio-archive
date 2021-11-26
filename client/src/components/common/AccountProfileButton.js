@@ -14,11 +14,6 @@ export default function AccountProfileButton() {
     const { id } = useParams()
     const { url, path } = useRouteMatch()
 
-    useEffect(() => {
-        getProfile(user.profile);
-        // console.log("FROM ACCOUNT BUTTON", profile);
-    }, [isAuthenticated]);
-
     const s = {
         height: "50px",
         paddingLeft: "0px",

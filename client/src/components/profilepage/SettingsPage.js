@@ -14,7 +14,6 @@ export default function SettingsPage() {
     const passwordRef = createRef();
 
     const onUploadIcon = (e) => {
-        //console.log(iconRef.current.value)
         updateProfile({
             mode: "EDIT",
             profile: {
@@ -25,7 +24,6 @@ export default function SettingsPage() {
     };
 
     const onUploadBanner = (e) => {
-        //console.log(bannerRef.current.value)
         updateProfile({
             mode: "EDIT",
             profile: {
@@ -33,7 +31,6 @@ export default function SettingsPage() {
             }
         });
         window.location.reload(false);
-        //console.log(profile)
     };
     const onChangeName = (e) => {
         updateUser({ content: { name: nameRef.current.value } });

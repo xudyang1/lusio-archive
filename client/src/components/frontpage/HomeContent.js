@@ -17,7 +17,6 @@ export default function HomeContent() {
 
     useEffect(() => {
         getPlatformList();
-        //console.log(platformList)
     }, [])
 
     return (
@@ -25,14 +24,14 @@ export default function HomeContent() {
             <CreateQuizButton />
             <DailyChallengeSection />
             <div className="container">
-                
+
                 {
                     // replace tempPlatform with platforms when finished
-                    platformList?
-                    platformList.map((element, index) => (
-                        <GeneralSections key={index} items={element.quizzes} name={element.name} type={QUIZ_CARD} id={element._id} homeContent={true} />
-                    ))
-                    :<div></div>
+                    platformList ?
+                        platformList.map((element, index) => (
+                            <GeneralSections key={index} items={element.quizzes} name={element.name} type={QUIZ_CARD} id={element._id} homeContent={true} />
+                        ))
+                        : <div></div>
                 }
             </div>
         </div>

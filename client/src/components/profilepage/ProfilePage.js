@@ -39,90 +39,21 @@ export default function ProfilePage() {
 
     async function getQuizzes(items) {
         var templist = []
-        // items.forEach(element => {
-        //     element = getQuiz(element, false)
-        //     //console.log(element)
-        //     element.then(value => {
-        //         templist.push(
-        //             {
-        //                 name: value.data.name,
-        //                 id: value.data._id,
-        //                 description: value.data.description,
-        //                 author: value.data.author,
-        //                 likes: value.data.likes,
-        //                 dateCreated: value.data.createdAt
-        //             }
-        //         )
-        //     })
-        // });
-        // templist.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
-        // console.log("SENDING QUIZZES TO PROP", templist)
-        // return templist
-        console.log("QuizzesIDS:", items)
-        for (let i = 0; i < items.length; i++) {
-            const p = await getQuiz(items[i], false)
-            console.log("QUIZ PROMISE", p)
-            templist.push(
-                {
-                    name: p.data.name,
-                    id: p.data._id,
-                    description: p.data.description,
-                    author: p.data.author,
-                    likes: p.data.likes,
-                    dateCreated: p.data.createdAt
-                }
-            )
-        }
-        templist.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
-        console.log(templist)
+
         return templist
     }
 
     async function getPlatformInformation(items) {
         var templist = []
-        // items.forEach(element => {
-        //     const p = await getPlatform(element, false)
-        //     //console.log(element)
-        //     element.then(value => {
-        //         templist.push(
-        //             {
-        //                 name: value.platform.name,
-        //                 id: value.platform._id,
-        //                 description: value.platform.description,
-        //                 owner: value.platform.owner,
-        //                 likes: value.platform.likes,
-        //                 dateCreated: value.platform.createdAt
-        //             }
-        //         )
-        //     })
-        // });
-        console.log("PlatformIDS:", items)
-        for (let i = 0; i < items.length; i++) {
-            const p = await getPlatform(items[i], false)
-            console.log("PLAT PROMISE", p)
-            templist.push(
-                {
-                    name: p.platform.name,
-                    id: p.platform._id,
-                    description: p.platform.description,
-                    owner: p.platform.owner,
-                    likes: p.platform.likes,
-                    dateCreated: p.platform.createdAt
-                }
-            )
-        }
-        templist.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
-        console.log(templist)
+
         return templist
     }
 
     useEffect(() => {
         getProfile(id);
-        //console.log(user.id, id)
-    }, [])
+    }, [isAuthenticated, loadUser])
 
     async function createPlat(e) {
-        //console.log("Creating a new platform")
         const init = {
             platform: {
                 name: "new platform",

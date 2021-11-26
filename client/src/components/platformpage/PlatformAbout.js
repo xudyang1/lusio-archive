@@ -7,8 +7,7 @@ export default function PlatformAbout(props) {
     const platformData = props.data
     const { removePlatform } = useContext(PlatformContext)
     const history = useHistory()
-    //console.log(platformData)
-    function onClickDeletePlatform(){
+    function onClickDeletePlatform() {
         removePlatform(props.id)
         history.push('/')
         window.location.reload(false);

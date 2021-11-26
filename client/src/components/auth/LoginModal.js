@@ -18,10 +18,9 @@ export const LoginModal = () => {
     const [state, setState] = useState(initialState);
 
     const { login, loadUser, error, isAuthenticated, clearErrors } = useContext(AuthContext);
-    
+
     // check for login error
     useEffect(() => {
-        // console.log("modal.error msg", state.msg);
         if (error && error.id === 'LOGIN_FAIL')
             setState({ ...state, msg: error.msg, loading: false });
         else
@@ -31,7 +30,6 @@ export const LoginModal = () => {
     // init modal & close modal if login success
     useEffect(() => {
         if (!isAuthenticated) {
-            // console.log("Loading Modal Init....................");
             var elem = document.querySelector('#loginModal');
             // clear errors before open and after close
             var options = {
@@ -43,11 +41,8 @@ export const LoginModal = () => {
             // set modal instance
             state.modalInstance = M.Modal.getInstance(elem);
         };
-        // console.log("outside if, state: ", { modalInstance: state.modalInstance, auth: isAuthenticated });
         if (isAuthenticated && state.modalInstance.isOpen) {
-            // console.log("Inside if, state: ", { modalInstance: state.modalInstance, auth: isAuthenticated });
-            // TODO:
-            setState({...state, loading: false})
+            setState({ ...state, loading: false })
             state.modalInstance.close();
         }
     }, [isAuthenticated]);
@@ -65,7 +60,7 @@ export const LoginModal = () => {
         const user = { email, password };
         console.log("login attempt, data", user);
         // attemp to login
-        setState({...state, loading:true})
+        setState({ ...state, loading: true })
         login(user);
     };
 

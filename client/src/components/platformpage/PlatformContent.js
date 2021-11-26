@@ -10,7 +10,6 @@ export default function PlatformContent(props) {
 
     const { updatePlatform, platform } = useContext(PlatformContext)
 
-    console.log(sections)
     var security = 0
     switch (auth) {
         case "OWNER_VIEW":
@@ -23,11 +22,8 @@ export default function PlatformContent(props) {
             security = 0
             break;
     }
-    //console.log(auth)
-    //console.log(security)
 
     function onClickAddSection() {
-        console.log("Adding Section")
         const payload = {
             mode: "ADD",
             platform: {
@@ -38,7 +34,6 @@ export default function PlatformContent(props) {
                 }
             }
         }
-        //console.log(id)
         updatePlatform(id, payload)
     }
 
@@ -46,7 +41,7 @@ export default function PlatformContent(props) {
         <div>
             {
                 sections.map((element, index) => (
-                    <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} id={id} element={element}/>
+                    <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} id={id} element={element} />
                 ))
             }
             {

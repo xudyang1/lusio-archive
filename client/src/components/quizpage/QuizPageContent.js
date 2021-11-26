@@ -27,12 +27,10 @@ class QuizPageContent extends Component{
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
-                    //console.log("result is", result);
                     return result;
                 })
             }
             const quizL = await quizzes();
-            //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
             return quiz[0];
         }
@@ -65,11 +63,9 @@ class QuizPageContent extends Component{
     handleLikeState = () => {
         if (!this.state.liked){
             this.setState({likes: this.state.likes+1, liked: true});
-            //console.log("You liked the quiz");
         }
         else {
             this.setState({likes: this.state.likes-1, liked: false});
-            //console.log("You unliked the quiz");
         }
     }
     
@@ -81,12 +77,10 @@ class QuizPageContent extends Component{
             plays: this.state.plays
         };
         await this.context.updateQuiz(updateFQuiz);
-        //console.log("You played a quiz");
         document.location.href = "/play/" + this.state.id;
     }
     handlePlayState = () => {
         this.setState({plays: this.state.plays+1});
-        //console.log("You played the quiz");
     }
 
     componentDidMount(){

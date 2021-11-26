@@ -7,11 +7,11 @@ import '../../css/frontpage.css';
 
 //import "materialize-css/dist/css/materialize.min.css";
 
-class PlayQuizContent extends Component{
+class PlayQuizContent extends Component {
     // const { quiz, getQuiz } = useContext(QuizzesContext)
     static contextType = QuizzesContext;
-    
-    constructor(){
+
+    constructor() {
         super();
         this.state = {
             id: "",
@@ -25,28 +25,19 @@ class PlayQuizContent extends Component{
         };
     }
 
-    //const { id } = useParams();
-    // useEffect(() => {
-    //     getQuiz(id)
-    //     //console.log(quiz)
-    // }, []);
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
             const quizzes = () => {
                 return getQuizzes()
-                .then(function(result){
-                    //console.log("result is", result);
-                    return result;
-                })
+                    .then(function (result) {
+                        return result;
+                    })
             }
             const quizL = await quizzes();
-            //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            //console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        //console.log("current quiz is ", quiz);
         this.setState({
             id: quiz._id,
             name: quiz.name,
@@ -54,48 +45,39 @@ class PlayQuizContent extends Component{
             timedOption: quiz.timedOption,
             time: quiz.time,
             retakeOption: quiz.retakeOption,
-            questions: quiz.questions, 
+            questions: quiz.questions,
             openModal: false
         });
-        //console.log("quiz questions are", this.state.questions); 
     }
-    componentDidMount(){
+    componentDidMount() {
         const id = this.props.match.params.id;
         const { getQuizzes, isPlaying } = this.context;
-        this.getItem(id, getQuizzes); 
-        //console.log("beforeSubmit", isPlaying); 
+        this.getItem(id, getQuizzes);
     }
     scoreHandler = (userAnswer, quizAnswer) => {
         const { finishQuiz } = this.context;
         var scoreEval = 0;
-        quizAnswer.map((q,qi)=>{
+        quizAnswer.map((q, qi) => {
             if (q.answerKey == userAnswer[qi]) {
                 scoreEval = scoreEval + q.score;
-                //console.log("qi", qi);
-                //console.log(scoreEval);
             }
         })
-        //console.log(scoreEval);
-        this.setState({score: scoreEval});
-        this.setState({score: scoreEval}, () => finishQuiz(this.state.score));
+        this.setState({ score: scoreEval });
+        this.setState({ score: scoreEval }, () => finishQuiz(this.state.score));
     }
     onSubmit = (e) => {
         const { isPlaying } = this.context;
-        
+
         const checks = document.getElementsByClassName('filled-in');
         const answerCompare = []
-        for (let i=0; i < checks.length; i++)  {
-            if (checks[i].checked){
+        for (let i = 0; i < checks.length; i++) {
+            if (checks[i].checked) {
                 answerCompare.push(checks[i].value);
             }
         }
-        //console.log(answerCompare); 
         this.scoreHandler(answerCompare, this.state.questions);
- 
-        //finishQuiz(this.state.score);
-        //console.log("onSubmit", isPlaying);
+
         e.preventDefault();
-        //console.log(this.state);
     }
     render() {
         return (
@@ -103,7 +85,7 @@ class PlayQuizContent extends Component{
                 <div className="container" style={{ backgroundColor: 'ivory', height: "60px" }}>
                     <div>
                         <h className="quiz">{this.state.name}</h>
-                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.time}</span>: <span></span>}       
+                        {this.state.timedOption ? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.time}</span> : <span></span>}
                     </div>
                 </div>
                 <div className="col s12" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
@@ -115,7 +97,7 @@ class PlayQuizContent extends Component{
                                     return (
                                         <div class="row">
                                             <label>
-                                                <input type="checkbox" className="filled-in" value={ci+1}/>
+                                                <input type="checkbox" className="filled-in" value={ci + 1} />
                                                 <span>{choice.content}</span>
                                             </label>
                                         </div>
@@ -124,13 +106,13 @@ class PlayQuizContent extends Component{
                             </div>
                         )
                     })}
-                <div className='row' style={{textAlign:"right"}}>
-                    <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
-                    <QuizResult /> 
+                    <div className='row' style={{ textAlign: "right" }}>
+                        <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
+                        <QuizResult />
+                    </div>
                 </div>
-                </div>    
             </div>
-            
+
         )
     }
 }

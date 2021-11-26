@@ -31,17 +31,13 @@ const initialState = {
 };
 
 export default function AuthReducer(state, action) {
-    console.log("Reducer: action.type", action.type);
-    console.log("Reducer: action.payload", action.payload);
     switch (action.type) {
         case USER_LOADING:
-            // console.log('Inside USER_LOADING')
             return {
                 ...state,
                 isLoading: true
             };
         case USER_LOADED:
-            // console.log("Inside USER_LOADED", action.payload);
             return {
                 ...state,
                 isAuthenticated: true,
@@ -51,7 +47,6 @@ export default function AuthReducer(state, action) {
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             localStorage.setItem('token', action.payload.token);
-            // console.log('Inside LOGIN_SUCCESS');
             return {
                 ...state,
                 isAuthenticated: true,
@@ -69,7 +64,6 @@ export default function AuthReducer(state, action) {
         case REGISTER_FAIL:
         case DELETE_FAIL:
             localStorage.removeItem('token');
-            // console.log('Inside ERROR')
             return {
                 ...state,
                 token: null,
@@ -82,7 +76,6 @@ export default function AuthReducer(state, action) {
             localStorage.removeItem('token');
             return initialState;
         case CLEAR_ERRORS:
-            // console.log('Inside CLEAR_ERROR')
             return {
                 ...state,
                 error: {
