@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext, Component } from 'react';
-//import { useParams } from 'react-router';
+import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
 import QuizResult from './QuizResult';
 import '../../css/frontpage.css';
 
-//import "materialize-css/dist/css/materialize.min.css";
 
 class PlayQuizContent extends Component {
-    // const { quiz, getQuiz } = useContext(QuizzesContext)
     static contextType = QuizzesContext;
 
     constructor() {

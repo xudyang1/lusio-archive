@@ -1,10 +1,9 @@
-import { createRef, useContext, useEffect, useState } from "react";
+import { createRef, useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
 
 import M from 'materialize-css';
 import '../../css/profilepage.css';
-import axios from "axios";
 
 export default function ProfileHeader(props) {
 

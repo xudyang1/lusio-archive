@@ -1,10 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-//import AppNavbar from '../common/AppNavbar';
 import PlatformHeader from './PlatformHeader';
-import GeneralSections from '../common/GeneralSections';
-import { Link, Route, useParams, useRouteMatch, Switch } from 'react-router-dom';
-import samplePlatform from '../../sampleData/samplePlatform.json';
-import sampleQuiz from '../../sampleData/sampleQuiz.json'
+import { Route, useParams, useRouteMatch, Switch } from 'react-router-dom';
 import PlatformContent from './PlatformContent';
 import PlatformAbout from './PlatformAbout';
 import { PlatformContext } from '../../context/PlatformState';

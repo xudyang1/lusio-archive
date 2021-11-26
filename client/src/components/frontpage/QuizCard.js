@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import 'materialize-css';
 import '../../css/frontpage.css'
 
@@ -6,9 +6,9 @@ export default function QuizCard(props) {
     return (
         <div>
             {
-                props.quizDeleteCallback?
-                <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={()=>props.quizDeleteCallback()}><i class="material-icons">delete</i></a>
-                :<div></div>
+                props.quizDeleteCallback ?
+                    <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => props.quizDeleteCallback()}><i class="material-icons">delete</i></a>
+                    : <div></div>
             }
             <div className="card blue-grey darken-1">
                 <div className="card-content white-text">

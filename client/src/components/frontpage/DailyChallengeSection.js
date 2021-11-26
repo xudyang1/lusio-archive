@@ -5,12 +5,8 @@ import '../../css/frontpage.css'
 import M from 'materialize-css';
 
 export default function DailyChallengeSection() {
-
-
-    useEffect(() => {
-        var elems = document.querySelectorAll('.sidenav');
-        var instances = M.Sidenav.init(elems, { edge: "right" });
-    }, []);
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, { edge: "right" });
 
     var s = {
         position: 'fixed',
@@ -23,15 +19,6 @@ export default function DailyChallengeSection() {
     }
 
     return (
-        // <div className="dailyChallenge">
-        //     <div className="col s12">
-        //         <div className="row z-depth-3">
-        //             <h4>Daily Challenge</h4>
-        //             <QuizCards key={1} id={1} name={"Awesome Daily Challenge"} desc={"featured quiz of the day, take a challenge now, I dare you"} />
-        //             <h4>Scoreboard</h4>
-        //         </div>
-        //     </div>
-        // </div>
         <div className="center">
             <ul id="slide-out" className="sidenav">
                 <div className="row z-depth-3">

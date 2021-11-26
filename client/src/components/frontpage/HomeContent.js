@@ -1,4 +1,4 @@
-import React, { Component, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 //import PlatformSections from "./PlatformSections";
 import DailyChallengeSection from "./DailyChallengeSection";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
@@ -6,7 +6,6 @@ import 'materialize-css';
 import '../../css/frontpage.css'
 import GeneralSections from "../common/GeneralSections";
 import { QUIZ_CARD } from "../../types/cardTypes";
-import { GlobalContext } from "../../context/GlobalState";
 import { PlatformContext } from "../../context/PlatformState";
 
 

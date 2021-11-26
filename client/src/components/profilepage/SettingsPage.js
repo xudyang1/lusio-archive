@@ -1,5 +1,5 @@
-import { createRef, useContext, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { createRef, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
 

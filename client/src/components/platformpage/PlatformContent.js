@@ -1,5 +1,4 @@
-
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import { PlatformContext } from "../../context/PlatformState"
 import GeneralSections from "../common/GeneralSections"
 

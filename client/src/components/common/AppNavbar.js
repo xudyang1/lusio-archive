@@ -1,15 +1,12 @@
-import React, { Component, useContext, useEffect } from 'react';
-import Modal from "react-responsive-modal";
+import React, { useContext, useEffect } from 'react';
 import 'materialize-css';
 import '../../css/frontpage.css';
-// import M from 'materialize-css';
 import SearchBar from '../SearchBar';
 import { LoginModal } from '../auth/LoginModal';
 import { AuthContext } from '../../context/AuthState';
 import { RegisterModal } from '../auth/RegisterModal';
 import { Logout } from '../auth/Logout';
 import AccountProfileButton from './AccountProfileButton';
-import { ProfileContext } from '../../context/ProfileState';
 
 const AppNavbar = () => {
 

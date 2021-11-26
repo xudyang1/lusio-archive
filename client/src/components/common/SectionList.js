@@ -1,7 +1,7 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
 import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";

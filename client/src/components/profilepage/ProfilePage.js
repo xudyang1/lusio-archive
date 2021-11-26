@@ -1,17 +1,12 @@
-import React, { Component } from 'react';
-import { Link, Route, Switch } from "react-router-dom";
+import React from 'react';
+import { Route, Switch } from "react-router-dom";
 import ProfileSidebar from './ProfileSidebar';
-import ProfileHeader from './ProfileHeader';
 
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { ProfileContext } from '../../context/ProfileState';
-import GeneralSections from '../common/GeneralSections';
-
-
-import M from 'materialize-css';
 import SectionList from '../common/SectionList';
 import ProfileHome from './ProfileHome';
 import SettingsPage from './SettingsPage';

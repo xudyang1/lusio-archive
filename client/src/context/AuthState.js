@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import AuthReducer from '../reducers/AuthReducer';
-import { GET_ERRORS, CLEAR_ERRORS, DELETE_ACCOUNT, UPDATE_SUCCESS } from '../types/actionTypes';
+import { CLEAR_ERRORS, DELETE_ACCOUNT, UPDATE_SUCCESS } from '../types/actionTypes';
 import {
     USER_LOADED,
     USER_LOADING,

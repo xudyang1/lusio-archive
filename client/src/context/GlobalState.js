@@ -1,6 +1,5 @@
 import React, { createContext, useReducer } from 'react';
 import { GlobalReducer } from '../reducers/GlobalReducer';
-// import { GET_ERRORS, CLEAR_ERRORS } from '../types/actionTypes';
 
 // Initial state
 const initialState = {

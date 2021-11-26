@@ -1,4 +1,4 @@
-import React, { Component, createRef, useContext, useState } from 'react';
+import React, { createRef, useContext, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { PlatformContext } from '../../context/PlatformState';
 
@@ -25,10 +25,6 @@ export default function PlatformHeader(props) {
             break;
     }
 
-    // function onClickEdit() {
-    //     setEditing(true)
-    // }
-
     function onClickConfirm() {
         setEditing(false)
         updatePlatform(id, {
@@ -49,10 +45,6 @@ export default function PlatformHeader(props) {
             }
         })
     }
-
-    // function onClickCancel() {
-    //     setEditing(false)
-    // }
 
     function onClickAbout() {
         history.push(`/platform/${id}/About`)

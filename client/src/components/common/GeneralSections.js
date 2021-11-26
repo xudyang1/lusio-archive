@@ -1,16 +1,12 @@
-import React, { Component, createRef, useEffect, useRef, useState, useContext } from "react";
+import React, { createRef, useEffect, useState, useContext } from "react";
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
-import QuizCardWraper from "./QuizCardWraper";
 import QuizCards from "../frontpage/QuizCard";
 import "../../css/frontpage.css"
-import M from 'materialize-css';
 import AdddItemCard from "./AddItemCard";
 import { ProfileContext } from "../../context/ProfileState";
-import { useForceUpdate } from "../../utils/useForceUpdate";
 import PlatformCard from "./PlatformCard";
 import { PlatformContext } from "../../context/PlatformState";
-import { QuizzesContext } from "../../context/QuizState";
 
 
 /**

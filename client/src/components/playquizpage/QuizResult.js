@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import "materialize-css/dist/css/materialize.min.css";
-import PlayQuizContent from './PlayQuizContent';
 import { QuizzesContext } from '../../context/QuizState';
 import M from 'materialize-css';
 

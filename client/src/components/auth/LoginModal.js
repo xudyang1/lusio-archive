@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-// import { Button, Modal, ModalHeader, ModalBody, Input, Label, Form, FormGroup, NavLink, Alert } from 'reactstrap';
 import { AuthContext } from '../../context/AuthState';
 import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
-// import "materialize-css/dist/js/materialize.min.js";
 import "../../css/auth.css";
 import Spinner from '../common/Spinner';
 
