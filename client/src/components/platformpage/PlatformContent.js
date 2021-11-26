@@ -44,7 +44,7 @@ export default function PlatformContent(props) {
                 ))
             }
             {
-                security > 0 ? <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons" onClick={onClickAddSection}>add</i></a> : <div></div>
+                security > 0 ? <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={onClickAddSection}>add</i></a> : <div></div>
             }
         </div>
     )

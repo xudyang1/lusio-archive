@@ -92,7 +92,7 @@ class PlayQuizContent extends Component {
                             <div className="question">{q.title}<div className="qpoints" >({q.score}points)</div>
                                 {this.state.questions[qi].choices.map((choice, ci) => {
                                     return (
-                                        <div class="row">
+                                        <div className="row">
                                             <label>
                                                 <input type="checkbox" className="filled-in" value={ci + 1} />
                                                 <span>{choice.content}</span>

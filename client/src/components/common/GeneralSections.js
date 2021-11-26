@@ -7,6 +7,7 @@ import AdddItemCard from "./AddItemCard";
 import { ProfileContext } from "../../context/ProfileState";
 import PlatformCard from "./PlatformCard";
 import { PlatformContext } from "../../context/PlatformState";
+import AdjustableQuizCard from "./AdjustableQuizCard";
 
 
 /**
@@ -49,6 +50,7 @@ export default function GeneralSections(props) {
 
     const [editing, setEditing] = useState(false)
     const [sectionData, setSectionData] = useState({})
+    const [quizzesInSection, setQuizzesInSection] = useState([])
 
     const { viewType } = useContext(ProfileContext)
     const { updatePlatform } = useContext(PlatformContext)
@@ -81,13 +83,33 @@ export default function GeneralSections(props) {
     /**
      * @todo Remove Quiz From Section
      * 
-     * @param {id} quizID Id of the quiz to be deleted
+     * @param {Number} index the index of the quiz in the sectionQuizzes
      */
-    function removeQuizFromSection(quizID) {
+    function removeQuizFromSection(index) {
+        console.log("QUIZ WITH INDEX ", index, " NEEDS TO BE REMOVED")
+        console.log(quizzesInSection[index].name)
+        console.log(quizzesInSection[index].description)
+        console.log(quizzesInSection[index].author)
     }
 
-    useEffect(()=>{
+    function itemSwapUp(quizIndex){
+        console.log("MOVEING QUIZ UP FROM ", quizIndex, " to ", quizIndex-1)
+        let temp = quizzesInSection[quizIndex]
+        quizzesInSection[quizIndex] = quizzesInSection[quizIndex-1]
+        quizzesInSection[quizIndex-1] = temp
+    }
+
+    function itemSwapDown(quizIndex){
+        console.log("MOVEING QUIZ DOWN FROM ", quizIndex, " to ", quizIndex+1)
+        let temp = quizzesInSection[quizIndex]
+        quizzesInSection[quizIndex] = quizzesInSection[quizIndex+1]
+        quizzesInSection[quizIndex+1] = temp
+    }
+
+    useEffect(() => {
         setSectionData(props.element)
+        //setQuizzesInSection(props.element.sectionQuizzes)
+        setQuizzesInSection(items)
     }, [sectionData])
 
     return (
@@ -97,31 +119,39 @@ export default function GeneralSections(props) {
                     <div className="row">
                         <h4>
                             <div>{editing ?
-                                <div class="input-field">
+                                <div className="input-field">
                                     <input type="text" defaultValue={name} ref={sectionName} />
                                 </div>
                                 : name}
                             </div>
-                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection()}><i class="material-icons">delete</i></a> : <div></div>}
-                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => { setEditing(true) }}><i class="material-icons">edit</i></a> : <div></div>}
-                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => { setEditing(false) }}><i class="material-icons">clear</i></a> : <div></div>}
-                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i class="material-icons">check</i></a> : <div></div>}
+                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection()}><i className="material-icons">delete</i></a> : <div></div>}
+                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => { setEditing(true) }}><i className="material-icons">edit</i></a> : <div></div>}
+                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => { setEditing(false) }}><i className="material-icons">clear</i></a> : <div></div>}
+                            {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i className="material-icons">check</i></a> : <div></div>}
                         </h4>
                         {props.homeContent ? <a href={"/platform/" + props.id}>more{">"}{">"}</a> : <div></div>}
 
                     </div>
-                    <div className="valign-wrapper">
-                        <a className="left" onClick={()=>{Section.current.scrollBy(-1000, 0)}}><i className="material-icons">chevron_left</i></a>
-                        <div className="GSection" ref={Section}>
-                            {
-                                items.map((element, index) => (
-                                    getCards(type, index, element, viewType == "OWNER_VIEW")
-                                ))
-                            }
-                            {add ? <AdddItemCard /> : <div></div>}
+                    {editing ? <div>
+                        {
+                            quizzesInSection.map((element, index) => (
+                                <AdjustableQuizCard key={index} position={index} quizData={element} end={items.length-1} moveUp={itemSwapUp} moveDown={itemSwapDown} delete={removeQuizFromSection}/>
+                            ))
+                        }
+                    </div> :
+                        <div className="valign-wrapper">
+                            <a className="left" onClick={() => { Section.current.scrollBy(-1000, 0) }}><i className="material-icons">chevron_left</i></a>
+                            <div className="GSection" ref={Section}>
+                                {
+                                    quizzesInSection.map((element, index) => (
+                                        getCards(type, index, element, viewType == "OWNER_VIEW")
+                                    ))
+                                }
+                                {add ? <AdddItemCard /> : <div></div>}
+                            </div>
+                            <a className="right" onClick={() => { Section.current.scrollBy(1000, 0) }}><i className="material-icons">chevron_right</i></a>
                         </div>
-                        <a className="right" onClick={()=>{Section.current.scrollBy(1000, 0)}}><i className="material-icons">chevron_right</i></a>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@ export default function QuizCard(props) {
         <div>
             {
                 props.quizDeleteCallback ?
-                    <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => props.quizDeleteCallback()}><i class="material-icons">delete</i></a>
+                    <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => props.quizDeleteCallback()}><i className="material-icons">delete</i></a>
                     : <div></div>
             }
             <div className="card blue-grey darken-1">

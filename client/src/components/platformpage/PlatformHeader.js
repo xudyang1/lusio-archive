@@ -60,7 +60,7 @@ export default function PlatformHeader(props) {
                 <div className="col s8">
                     {
                         editing ?
-                            <div class="input-field">
+                            <div className="input-field">
                                 <input type="text" defaultValue={props.name} ref={platformName} />
                             </div>
                             : <h2 onClick={onClickHeader}>{props.name}</h2>
@@ -82,7 +82,7 @@ export default function PlatformHeader(props) {
                 <div className="row">
                     <h4>
                         {editImg ?
-                            <div class="input-field">
+                            <div className="input-field">
                                 <input type="text" defaultValue={props.banner} ref={bannerURL} />
                             </div>
                             : <div></div>}
