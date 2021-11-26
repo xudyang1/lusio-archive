@@ -1,6 +1,6 @@
 import './css/App.css';
-import React, { useContext, useEffect } from 'react';
-import { Link, Route, Switch } from "react-router-dom";
+import React from 'react';
+import { Route } from "react-router-dom";
 import HomePage from './components/frontpage/HomePage';
 import SearchPage from './components/searchpage/SearchPage';
 import ProfilePage from './components/profilepage/ProfilePage';
