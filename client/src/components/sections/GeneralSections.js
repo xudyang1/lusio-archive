@@ -9,6 +9,7 @@ import PlatformCard from "./PlatformCard";
 import { PlatformContext } from "../../context/PlatformState";
 import AdjustableQuizCard from "./AdjustableQuizCard";
 import AddQuizToSectionButton from "./AddQuizToSectionButton";
+import ConfirmModal from "../common/ConfirmModal";
 
 
 /**
@@ -59,7 +60,7 @@ export default function GeneralSections(props) {
     const Section = createRef();
     const sectionName = createRef();
     const platformID = props.id
-    const sectionID = props.element._id
+    //const sectionID = props.element._id
 
 
     /**
@@ -76,7 +77,7 @@ export default function GeneralSections(props) {
         const payload = {
             mode: "DELETE",
             platform: {
-                quizSections: { _id: sectionID }
+                quizSections: { _id: props.element._id }
             }
         }
         updatePlatform(platformID, payload)
@@ -135,7 +136,7 @@ export default function GeneralSections(props) {
                                 </div>
                                 : name}
                             </div>
-                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection()}><i className="material-icons">delete</i></a> : <div></div>}
+                            {props.security > 0 ? <ConfirmModal id={props.element._id} msgTitle={"Confirm Delete Section"} msgBody={"This Action is Irreversible, Are you sure you want to delete?"} callback={onClickDeleteSection}/> : <div></div>}
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => { setEditing(true) }}><i className="material-icons">edit</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => { setEditing(false) }}><i className="material-icons">clear</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i className="material-icons">check</i></a> : <div></div>}

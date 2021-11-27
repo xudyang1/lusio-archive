@@ -20,7 +20,8 @@ export default function PlatformPage(props) {
         var elems = document.querySelectorAll('.parallax');
         var instances = M.Parallax.init(elems, {});
         getPlatform(id)
-        getProfile(user.profile)
+        if(user)
+            getProfile(user.profile)
     }, [isAuthenticated])
 
     return (
