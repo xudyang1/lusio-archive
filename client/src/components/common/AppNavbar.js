@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import 'materialize-css';
 import '../../css/frontpage.css';
-import SearchBar from '../SearchBar';
+import SearchBar from './SearchBar'
 import { LoginModal } from '../auth/LoginModal';
 import { AuthContext } from '../../context/AuthState';
 import { RegisterModal } from '../auth/RegisterModal';

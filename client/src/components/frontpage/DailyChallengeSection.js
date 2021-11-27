@@ -5,9 +5,6 @@ import '../../css/frontpage.css'
 import M from 'materialize-css';
 
 export default function DailyChallengeSection() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, { edge: "right" });
-
     var s = {
         position: 'fixed',
         top: "50%",
@@ -17,6 +14,11 @@ export default function DailyChallengeSection() {
         lineHeight: "18px",
         fontSize: "14px"
     }
+
+    useEffect(() => {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, { edge: "right" });
+    })
 
     return (
         <div className="center">

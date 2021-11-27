@@ -82,6 +82,7 @@ export const ProfilesProvider = ({ children }) => {
                 type: GET_PROFILE,
                 payload: res.data
             });
+            return res
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,

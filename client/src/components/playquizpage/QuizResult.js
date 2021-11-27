@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import "materialize-css/dist/css/materialize.min.css";
 import { QuizzesContext } from '../../context/QuizState';
 import M from 'materialize-css';
 
 export default function QuizResult() {
-    var elem = document.querySelector('#quizResultModal')
-    var opt = { preventScrolling: false };
-    M.Modal.init(elem, opt);
+    useEffect(()=>{
+        var elem = document.querySelector('#quizResultModal')
+        var opt = { preventScrolling: false };
+        M.Modal.init(elem, opt);
+    })
 
     const { isPlaying, score } = useContext(QuizzesContext);
 

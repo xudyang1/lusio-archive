@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
 import '../../css/profilepage.css'
@@ -10,8 +10,10 @@ export default function ProfileSidebar(props) {
     const { loadUser, isAuthenticated, user } = useContext(AuthContext)
     const { profile } = useContext(ProfileContext)
 
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, {});
+    useEffect(() => {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems, {});
+    })
 
     return (
         <div>

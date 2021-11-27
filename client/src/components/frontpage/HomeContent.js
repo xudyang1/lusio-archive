@@ -4,7 +4,7 @@ import DailyChallengeSection from "./DailyChallengeSection";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import 'materialize-css';
 import '../../css/frontpage.css'
-import GeneralSections from "../common/GeneralSections";
+import GeneralSections from "../sections/GeneralSections";
 import { QUIZ_CARD } from "../../types/cardTypes";
 import { PlatformContext } from "../../context/PlatformState";
 

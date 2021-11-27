@@ -7,12 +7,6 @@ import "materialize-css/dist/css/materialize.min.css";
 
 
 export const CreateQuizButton = () => {
-    var elem = document.querySelector('#quizModal')
-    var options = {
-        preventScrolling: false,
-    };
-    M.Modal.init(elem, options);
-
     const { isAuthenticated, user, loadUser } = useContext(AuthContext);
     const { addQuiz, getQuizzes } = useContext(QuizzesContext);
     const { updateProfile, profile } = useContext(ProfileContext);
@@ -62,7 +56,11 @@ export const CreateQuizButton = () => {
     }
 
     useEffect(() => {
-
+        var elem = document.querySelector('#quizModal')
+        var options = {
+            preventScrolling: false,
+        };
+        M.Modal.init(elem, options);
     }, [])
 
     return (

@@ -1,4 +1,4 @@
-import { createRef, useContext, useState } from "react";
+import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
 
@@ -6,9 +6,6 @@ import M from 'materialize-css';
 import '../../css/profilepage.css';
 
 export default function ProfileHeader(props) {
-
-    var elems = document.querySelectorAll('.parallax');
-    var instances = M.Parallax.init(elems, {});
 
     const { isAuthenticated, user } = useContext(AuthContext);
     const { updateProfile, deleteAccount, viewType } = useContext(ProfileContext);
@@ -45,6 +42,11 @@ export default function ProfileHeader(props) {
         })
 
     }
+
+    useEffect(() => {
+        var elems = document.querySelectorAll('.parallax');
+        var instances = M.Parallax.init(elems, {});
+    })
 
     return (
         <div>

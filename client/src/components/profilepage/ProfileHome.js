@@ -1,4 +1,4 @@
-import GeneralSections from "../common/GeneralSections";
+import GeneralSections from "../sections/GeneralSections";
 import ProfileHeader from "./ProfileHeader";
 import { ACHIEVEMENT_CARD, QUIZ_CARD } from '../../types/cardTypes';
 import { useContext } from "react";

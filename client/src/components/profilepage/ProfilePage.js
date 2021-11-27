@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthState";
 
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { ProfileContext } from '../../context/ProfileState';
-import SectionList from '../common/SectionList';
+import SectionList from '../sections/SectionList'
 import ProfileHome from './ProfileHome';
 import SettingsPage from './SettingsPage';
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from '../../types/cardTypes';

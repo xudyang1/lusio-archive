@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { PlatformContext } from "../../context/PlatformState"
-import GeneralSections from "../common/GeneralSections"
+import GeneralSections from "../sections/GeneralSections"
 
 export default function PlatformContent(props) {
     const sections = props.sections

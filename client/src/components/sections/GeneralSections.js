@@ -8,6 +8,7 @@ import { ProfileContext } from "../../context/ProfileState";
 import PlatformCard from "./PlatformCard";
 import { PlatformContext } from "../../context/PlatformState";
 import AdjustableQuizCard from "./AdjustableQuizCard";
+import AddQuizToSectionButton from "./AddQuizToSectionButton";
 
 
 /**
@@ -58,6 +59,7 @@ export default function GeneralSections(props) {
     const Section = createRef();
     const sectionName = createRef();
     const platformID = props.id
+    const sectionID = props.element._id
 
 
     /**
@@ -74,7 +76,7 @@ export default function GeneralSections(props) {
         const payload = {
             mode: "DELETE",
             platform: {
-                quizSections: { _id: sectionData.id }
+                quizSections: { _id: sectionID }
             }
         }
         updatePlatform(platformID, payload)
@@ -90,20 +92,29 @@ export default function GeneralSections(props) {
         console.log(quizzesInSection[index].name)
         console.log(quizzesInSection[index].description)
         console.log(quizzesInSection[index].author)
+        let temp = quizzesInSection
+        temp.splice(index, 1)
+        setQuizzesInSection([...temp])
+        console.log(temp)
+        console.log(quizzesInSection)
     }
 
-    function itemSwapUp(quizIndex){
-        console.log("MOVEING QUIZ UP FROM ", quizIndex, " to ", quizIndex-1)
+    function itemSwapUp(quizIndex) {
+        console.log("MOVEING QUIZ UP FROM ", quizIndex, " to ", quizIndex - 1)
         let temp = quizzesInSection[quizIndex]
-        quizzesInSection[quizIndex] = quizzesInSection[quizIndex-1]
-        quizzesInSection[quizIndex-1] = temp
+        let tempArr = quizzesInSection
+        tempArr[quizIndex] = tempArr[quizIndex - 1]
+        tempArr[quizIndex - 1] = temp
+        setQuizzesInSection([...tempArr])
     }
 
-    function itemSwapDown(quizIndex){
-        console.log("MOVEING QUIZ DOWN FROM ", quizIndex, " to ", quizIndex+1)
+    function itemSwapDown(quizIndex) {
+        console.log("MOVEING QUIZ DOWN FROM ", quizIndex, " to ", quizIndex + 1)
         let temp = quizzesInSection[quizIndex]
-        quizzesInSection[quizIndex] = quizzesInSection[quizIndex+1]
-        quizzesInSection[quizIndex+1] = temp
+        let tempArr = quizzesInSection
+        tempArr[quizIndex] = tempArr[quizIndex + 1]
+        tempArr[quizIndex + 1] = temp
+        setQuizzesInSection([...tempArr])
     }
 
     useEffect(() => {
@@ -135,9 +146,11 @@ export default function GeneralSections(props) {
                     {editing ? <div>
                         {
                             quizzesInSection.map((element, index) => (
-                                <AdjustableQuizCard key={index} position={index} quizData={element} end={items.length-1} moveUp={itemSwapUp} moveDown={itemSwapDown} delete={removeQuizFromSection}/>
+                                <AdjustableQuizCard key={index} position={index} quizData={element} end={items.length - 1} moveUp={itemSwapUp} moveDown={itemSwapDown} delete={removeQuizFromSection} />
                             ))
+
                         }
+                        <AddQuizToSectionButton/>
                     </div> :
                         <div className="valign-wrapper">
                             <a className="left" onClick={() => { Section.current.scrollBy(-1000, 0) }}><i className="material-icons">chevron_left</i></a>
