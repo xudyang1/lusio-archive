@@ -21,17 +21,16 @@ export const LoginModal = () => {
     // error flow
     const [error, errorDispatch] = useReducer(ErrorReducer, errorInitialState);
     // auth flow
-    const { useAuthStore, isAuthenticated } = useContext(AuthContext);
-    const authDispatch = useAuthStore.dispatch
-    
+    const { authDispatch, isAuthenticated } = useContext(AuthContext);
+
     // modal init
     const loginModalRef = useRef(null);
     useEffect(() => {
         // clear errors before open and after close
         const options = {
             preventScrolling: false,
-            onOpenStart: errorDispatch(clearErrors()),
-            onCloseEnd: errorDispatch(clearErrors())
+            onOpenStart: () => errorDispatch(clearErrors()),
+            onCloseEnd: () => errorDispatch(clearErrors())
         };
         M.Modal.init(loginModalRef.current, options);
         // set modal instance

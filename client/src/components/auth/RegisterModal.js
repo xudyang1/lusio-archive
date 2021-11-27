@@ -22,8 +22,7 @@ export const RegisterModal = () => {
     // error flow
     const [error, errorDispatch] = useReducer(ErrorReducer, errorInitialState);
     // auth flow
-    const { useAuthStore, isAuthenticated } = useContext(AuthContext);
-    const authDispatch = useAuthStore.dispatch;
+    const { authDispatch, isAuthenticated } = useContext(AuthContext);
 
     // modal init
     const registerModalRef = useRef(null);
@@ -31,8 +30,8 @@ export const RegisterModal = () => {
         // clear errors before open and after close
         const options = {
             preventScrolling: false,
-            onOpenStart: errorDispatch(clearErrors()),
-            onCloseEnd: errorDispatch(clearErrors())
+            onOpenStart: () => errorDispatch(clearErrors()),
+            onCloseEnd: () => errorDispatch(clearErrors())
         };
         M.Modal.init(registerModalRef.current, options);
         // set modal instance
@@ -51,14 +50,12 @@ export const RegisterModal = () => {
         const user = { name: state.name, email: state.email, password: state.password };
         // attempt to register
         setState({ ...state, loading: true });
-        console.log("register, user:", user)
         register(user)(authDispatch, errorDispatch);
     };
 
     // check for register error
     useEffect(() => {
         setState({ ...state, loading: false });
-        console.log(state)
     }, [error]);
 
     // close modal if register success

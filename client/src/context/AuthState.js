@@ -104,11 +104,10 @@ export const AuthProvider = ({ children }) => {
 
     return (<AuthContext.Provider value={{
         loadUser: loadUserCaller,
-        logout,
         updateUser,
         deleteAccount,
         ...state,
-        useAuthStore: {state, dispatch}
+        authDispatch: dispatch
     }}>
         {children}
     </AuthContext.Provider>);
