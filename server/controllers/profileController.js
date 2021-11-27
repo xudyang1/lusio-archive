@@ -21,12 +21,9 @@ exports.getProfile = async (req, res, next) => {
         // console.log("profile doc: ", selectedProfile);
         if (!selectedProfile) { return errorHandler(res, 404, 'The user profile does not exist.'); }
 
-        // filter owner
-        var output = dropEntries(selectedProfile, 'owner');
-
         return res.status(200).json({
             viewType: req.viewType,
-            profile: output
+            profile: selectedProfile
         });
     } catch (err) {
         //console.log(err);
