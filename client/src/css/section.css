@@ -4,3 +4,7 @@
     grid-gap: 10px;
     padding: 10px;
 }
+
+#confirmModal{
+    height: 250px;
+}

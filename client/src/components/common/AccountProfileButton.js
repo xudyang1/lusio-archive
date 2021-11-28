@@ -1,18 +1,20 @@
-import { Component, useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import React from 'react';
-import { AuthContext } from "../../context/AuthState";
-import { ProfileContext } from "../../context/ProfileState";
-import { useParams, useRouteMatch } from "react-router";
 
+/***
+ * @param props Takes props.user
+ */
+export default function AccountProfileButton(props) {
 
-export default function AccountProfileButton() {
+    // const { user, isAuthenticated } = useContext(AuthContext);
+    // const { profile, getProfile } = useContext(ProfileContext)
 
-    const { user, isAuthenticated } = useContext(AuthContext);
-    const { profile, getProfile } = useContext(ProfileContext)
-
-    const { id } = useParams()
-    const { url, path } = useRouteMatch()
+    // const { id } = useParams()
+    // const { url, path } = useRouteMatch()
+    const user = props.user? props.user: {
+        iconURI: null,
+        profile: undefined,
+        name: "UNDEF"
+    }
 
     const s = {
         height: "50px",

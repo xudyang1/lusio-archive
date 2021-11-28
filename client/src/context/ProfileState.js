@@ -75,19 +75,21 @@ export const ProfilesProvider = ({ children }) => {
         }
     };
 
-    async function getProfile(id) {
+    async function getProfile(id, reload = true) {
         try {
             const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
-            dispatch({
-                type: GET_PROFILE,
-                payload: res.data
-            });
+            if (reload)
+                dispatch({
+                    type: GET_PROFILE,
+                    payload: res.data
+                });
             return res
         } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
+            if (reload)
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: { msg: err.response.data.msg, status: err.response.status }
+                });
         }
     };
 

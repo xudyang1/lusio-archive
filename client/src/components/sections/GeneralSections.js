@@ -10,6 +10,7 @@ import { PlatformContext } from "../../context/PlatformState";
 import AdjustableQuizCard from "./AdjustableQuizCard";
 import AddQuizToSectionButton from "./AddQuizToSectionButton";
 import ConfirmModal from "../common/ConfirmModal";
+import { QuizzesContext } from "../../context/QuizState";
 
 
 /**
@@ -22,13 +23,14 @@ import ConfirmModal from "../common/ConfirmModal";
  * @returns 
  */
 function getCards(t, index, element, canEdit) {
+    console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} id={element.id} name={element.name} desc={element.description} canEdit={canEdit} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={canEdit} /></div>
         case SUB_PLAT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
         case SUB_USER_CARD:
             break;
     }
@@ -44,18 +46,18 @@ export default function GeneralSections(props) {
         { id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platform_id: '2', likes: 1, created: new Date('2010/01/21') },
         { id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platform_id: '2', likes: 10, created: new Date('2021/10/22') },
         { id: '4', name: 'Qtop', description: 'Description for Q4', author: 'desktop', platform_id: '3', likes: 0, created: new Date('2021/01/22') },
-        { id: '5', name: 'Q25', description: 'Description for Q25', author: 'shinetop', platform_id: '3', likes: 200, created: new Date('2021/01/22') }
+        { id: '5', name: 'Q25', description: 'Description for Q25 really really really really really really really really really really reallyreally long description', author: 'shinetop', platform_id: '3', likes: 200, created: new Date('2021/01/22') }
     ]
     var name = props.name ? props.name : "SectionName"
     var type = props.type ? props.type : QUIZ_CARD
     var add = props.add ? props.add : false
 
     const [editing, setEditing] = useState(false)
-    const [sectionData, setSectionData] = useState({})
     const [quizzesInSection, setQuizzesInSection] = useState([])
 
     const { viewType } = useContext(ProfileContext)
     const { updatePlatform } = useContext(PlatformContext)
+    const { getQuizzes, getQuiz } = useContext(QuizzesContext)
 
     const Section = createRef();
     const sectionName = createRef();
@@ -64,7 +66,7 @@ export default function GeneralSections(props) {
 
 
     /**
-     * @todo Edit Section Name
+     * @todo Edit Section Name, update SectionQuizzes
      */
     function onClickConfirm() {
         setEditing(false)
@@ -74,6 +76,7 @@ export default function GeneralSections(props) {
      * OnClick function - Delete Section on Platform
      */
     function onClickDeleteSection() {
+        console.log("DELETE SECTION CALLED")
         const payload = {
             mode: "DELETE",
             platform: {
@@ -100,6 +103,15 @@ export default function GeneralSections(props) {
         console.log(quizzesInSection)
     }
 
+    function addQuizToSection(quizID) {
+        let temp = quizzesInSection
+        getQuiz(quizID, false).then(function (result) {
+            temp.push(result.data)
+            setQuizzesInSection([...temp])
+        })
+        //console.log(quizzesInSection)
+    }
+
     function itemSwapUp(quizIndex) {
         console.log("MOVEING QUIZ UP FROM ", quizIndex, " to ", quizIndex - 1)
         let temp = quizzesInSection[quizIndex]
@@ -118,11 +130,44 @@ export default function GeneralSections(props) {
         setQuizzesInSection([...tempArr])
     }
 
+    function itemMoveTop(quizIndex) {
+        console.log("MOVEING QUIZ TO TOP")
+        let temp = quizzesInSection[quizIndex]
+        let tempArr = quizzesInSection
+        tempArr.splice(quizIndex, 1)
+        tempArr.unshift(temp)
+        setQuizzesInSection([...tempArr])
+    }
+
+    function itemMoveBot(quizIndex) {
+        console.log("MOVEING QUIZ TO BOT")
+        let temp = quizzesInSection[quizIndex]
+        let tempArr = quizzesInSection
+        tempArr.splice(quizIndex, 1)
+        tempArr.push(temp)
+        setQuizzesInSection([...tempArr])
+    }
+
+    const getQuizList = async (listOfId) => {
+        const quizzes = () => {
+            return getQuizzes()
+                .then(function (result) {
+                    return result;
+                })
+        }
+        const quizL = await quizzes();
+        const quiz = quizL.data.filter(q => listOfId.includes(q._id));
+        return quiz;
+    }
+
     useEffect(() => {
-        setSectionData(props.element)
-        //setQuizzesInSection(props.element.sectionQuizzes)
-        setQuizzesInSection(items)
-    }, [sectionData])
+        if (props.element) {
+            let quizzes = getQuizList(props.element.sectionQuizzes).then(function (result) {
+                setQuizzesInSection(result)
+            })
+        }
+        //setQuizzesInSection(items)
+    }, [])
 
     return (
         <div>
@@ -136,7 +181,7 @@ export default function GeneralSections(props) {
                                 </div>
                                 : name}
                             </div>
-                            {props.security > 0 ? <ConfirmModal id={props.element._id} msgTitle={"Confirm Delete Section"} msgBody={"This Action is Irreversible, Are you sure you want to delete?"} callback={onClickDeleteSection}/> : <div></div>}
+                            {props.security > 0 ? <ConfirmModal id={props.element._id} msgTitle={"Confirm Delete Section"} msgBody={"This Action is Irreversible, Are you sure you want to delete?"} callback={onClickDeleteSection} /> : <div></div>}
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => { setEditing(true) }}><i className="material-icons">edit</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => { setEditing(false) }}><i className="material-icons">clear</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i className="material-icons">check</i></a> : <div></div>}
@@ -144,17 +189,19 @@ export default function GeneralSections(props) {
                         {props.homeContent ? <a href={"/platform/" + props.id}>more{">"}{">"}</a> : <div></div>}
 
                     </div>
+                    <script>
+                        {console.log("quizzesInSection", quizzesInSection)}
+                    </script>
                     {editing ? <div>
                         {
                             quizzesInSection.map((element, index) => (
-                                <AdjustableQuizCard key={index} position={index} quizData={element} end={items.length - 1} moveUp={itemSwapUp} moveDown={itemSwapDown} delete={removeQuizFromSection} />
+                                <AdjustableQuizCard key={index} position={index} quizData={element} end={quizzesInSection.length - 1} moveUp={itemSwapUp} moveDown={itemSwapDown} delete={removeQuizFromSection} moveTop={itemMoveTop} moveBot={itemMoveBot} />
                             ))
-
                         }
-                        <AddQuizToSectionButton/>
+                        <AddQuizToSectionButton key={props.element._id} callback={addQuizToSection} />
                     </div> :
                         <div className="valign-wrapper">
-                            <a className="left" onClick={() => { Section.current.scrollBy(-1000, 0) }}><i className="material-icons">chevron_left</i></a>
+                            {quizzesInSection.length > 3 ? <a className="left" onClick={() => { Section.current.scrollBy(-1000, 0) }}><i className="material-icons">chevron_left</i></a> : <div></div>}
                             <div className="GSection" ref={Section}>
                                 {
                                     quizzesInSection.map((element, index) => (
@@ -163,7 +210,7 @@ export default function GeneralSections(props) {
                                 }
                                 {add ? <AdddItemCard /> : <div></div>}
                             </div>
-                            <a className="right" onClick={() => { Section.current.scrollBy(1000, 0) }}><i className="material-icons">chevron_right</i></a>
+                            {quizzesInSection.length > 3 ? <a className="right" onClick={() => { Section.current.scrollBy(1000, 0) }}><i className="material-icons">chevron_right</i></a> : <div></div>}
                         </div>
                     }
                 </div>

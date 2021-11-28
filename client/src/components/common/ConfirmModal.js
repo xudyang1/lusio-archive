@@ -10,7 +10,7 @@ export default function ConfirmModal(props) {
     const msgTitle = props.msgTitle ? props.msgTitle : "Title"
     const msgBody = props.msgBody ? props.msgBody : "message"
     const callback = props.callback
-    const id = props.id ? props.id : "modalID"
+    const id = props.id ? props.id : "confirmModal"
 
 
     useEffect(() => {
@@ -23,8 +23,8 @@ export default function ConfirmModal(props) {
 
     return (
         <div>
-            <a className="right btn-floating btn-small waves-effect waves-light grey modal-trigger" href={"#" + id} style={{ fontSize: "0em" }}><i className="material-icons">delete</i></a>
-            <div id={id} className="modal" >
+            <a className="right btn-floating btn-small waves-effect waves-light grey modal-trigger" href={"#confirmModal"} style={{ fontSize: "0em" }}><i className="material-icons">delete</i></a>
+            <div id="confirmModal" className="modal">
                 <div className="modal-content" style={{ height: "55%" }}>
                     <h4>{msgTitle}</h4>
                     <p>{msgBody}</p>

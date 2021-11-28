@@ -3,7 +3,8 @@ import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
 
-export default function AddQuizToSectionButton() {
+export default function AddQuizToSectionButton(props) {
+    const callback = props.callback
     const { user } = useContext(AuthContext)
     const { profile, getProfile } = useContext(ProfileContext)
     const [listID, setListID] = useState([])
@@ -13,20 +14,20 @@ export default function AddQuizToSectionButton() {
 
     var elems2 = document.querySelectorAll('select');
 
-    function loadOptions() {
-        while (selector.current.options.length) {
-            selector.current.options.remove(selector.current.options.length - 1)
-        }
-        listID.map((element, index) => {
-            selector.current.options.add(new Option(element, element))
-        })
-        var instances2 = M.FormSelect.init(elems2, {});
-    }
+    // function loadOptions() {
+    //     while (selector.current.options.length) {
+    //         selector.current.options.remove(selector.current.options.length - 1)
+    //     }
+    //     listID.map((element, index) => {
+    //         selector.current.options.add(new Option(element, element))
+    //     })
+    //     var instances2 = M.FormSelect.init(elems2, {});
+    // }
 
     function createOptions() {
         let opts = []
-        listID.forEach((element) => {
-            opts.push(<option defaultValue={element}>{element}</option>)
+        listID.forEach((element, index) => {
+            opts.push(<option value={element} key={index}>{element}</option>)
         })
         return opts
     }
@@ -45,8 +46,8 @@ export default function AddQuizToSectionButton() {
     }, [])
 
     useEffect(() => {
-        var instances2 = M.FormSelect.init(elems2, {});
-    })
+        M.FormSelect.init(elems2, {});
+    }, [listID])
 
     return (
         <div>
@@ -70,8 +71,9 @@ export default function AddQuizToSectionButton() {
                             </select>
                         </div>
                         <div className="col s1">
-                            <input type="button" defaultValue="Submit" onClick={() => {
-                                console.log(selector.current.value)
+                            <input className="modal-close" style={{width: "100px"}} type="button" defaultValue="Submit" onClick={() => {
+                                callback(selector.current.value)
+                                //console.log(selector.current.value)
                             }} />
                         </div>
                     </div>
