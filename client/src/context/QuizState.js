@@ -7,6 +7,7 @@ import {
     UPDATE_QUIZ,
     ADD_QUIZ,
     DELETE_QUIZ,
+    PLAY_QUIZ,
     FINISH_QUIZ,
     GET_ERRORS
 } from '../types/actionTypes';
@@ -45,6 +46,7 @@ const initialState = {
     error: null,
     loading: true,
     isPlaying: true,
+    played: false,
     score: 0,
     timeSpent: 0,
     //scoreB: []
@@ -164,6 +166,19 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
+    function playQuiz() {
+        console.log("inPlayQuiz");
+        try {
+            dispatch({
+                type: PLAY_QUIZ,
+                //no data to be transferred
+            });
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS
+            });
+        }
+    }
     function finishQuiz(score, timeSpent) {
       try {
         dispatch({
@@ -188,14 +203,15 @@ export const QuizzesProvider = ({ children }) => {
         error: state.error,
         loading: state.loading,
         isPlaying: state.isPlaying,
+        played: state.played,
         score: state.score,
         timeSpent: state.timeSpent,
-        //scoreB: state.scoreB,
         getQuizzes,
         getQuiz,
         addQuiz,
         updateQuiz,
         deleteQuiz,
+        playQuiz,
         finishQuiz
     }}>
         {children}

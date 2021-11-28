@@ -1,20 +1,49 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import "materialize-css/dist/css/materialize.min.css";
 import PlayQuizContent from './PlayQuizContent';
 import { QuizzesContext } from '../../context/QuizState';
 import { AuthContext } from '../../context/AuthState';
 
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 import M from 'materialize-css';
 
 export default function QuizResult(){
-    const { isPlaying , score , timeSpent, updateQuiz, getQuiz} = useContext(QuizzesContext);
+    const { isPlaying , score , timeSpent, updateQuiz, getQuiz, played} = useContext(QuizzesContext);
     const { isAuthenticated, user } = useContext(AuthContext);
+    const [isVisible, setVisibility] = useState("hidden");
     const { id } = useParams();
+    const history = useHistory();
+
+    const routeToQuiz = (e) => {
+        //console.log("played?", played);
+        //console.log(history);
+        //history.push("/quiz/"+id, {played: played});
+        document.location.href = "/quiz/" + id;
+        
+    }
+    const routeToPlay = (e) => {
+        document.location.href = "/play/" + id;
+    }
+
+    const forRetake = async e => {
+        //may change after making changes to reducer
+        const quizContent = await getQuiz(id, false);
+        const quiz = quizContent.data;
+        const canRetake = quiz.retakeOption;
+        
+        //console.log("can retake?", canRetake);
+        if(canRetake){
+            setVisibility("visible"); 
+        }
+        if(!canRetake){
+            setVisibility("hidden");
+        }
+    }
 
     //retrieving data of quiz board
     //to update leaderboard
     const forRankCheck = async e => {
+        //may change after making changes to reducer
         const quizContent = await getQuiz(id, false);
         const quiz = quizContent.data;
         const initialSB = quiz.scoreBoard;
@@ -22,6 +51,7 @@ export default function QuizResult(){
         
         if(isAuthenticated){
             rankCheck(user.name, score, initialSB);
+            alert("Only up to 3rd place will be displayed.")
         }
         if(!isAuthenticated){
             alert("You need to login first");
@@ -50,13 +80,15 @@ export default function QuizResult(){
             scoreBoard: updatedSB
         };
         updateQuiz(updateFQuiz);
+        routeToQuiz();
     }
 
     useEffect(() => {
+        forRetake();
         var elem = document.querySelector('#quizResultModal')
         var opt = { preventScrolling: false};
         M.Modal.init(elem, opt);
-    })
+    },[])
     return(
         <div>
             <a className="waves-effect waves-light btn modal-trigger" href="#quizResultModal">
@@ -70,11 +102,12 @@ export default function QuizResult(){
                         <h3>Your Score {score}</h3>
                         <h5>Time Spent: {timeSpent}</h5>
                         <a className="waves-effect waves-light btn" onClick={forRankCheck}>
-                            Check Scoreboard
+                            Update Score on Scoreboard
                         </a>
                     </div>
                     <div className="modal-footer">
-                        <a className="modal-close waves-effect waves-green btn-flat">Return</a>
+                        <a className="waves-effect waves-green btn-flat" style={{visibility: isVisible}} onClick={routeToPlay}>Retake</a>  
+                        <a className="modal-close waves-effect waves-green btn-flat" onClick={routeToQuiz}>Return</a>
                     </div>
                 </div>)
                 :

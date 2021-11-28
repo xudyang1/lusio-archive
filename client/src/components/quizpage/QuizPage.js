@@ -1,5 +1,6 @@
 import React , { useContext, useState, useEffect} from 'react';
 import { useParams } from 'react-router';
+import { useLocation } from 'react-router';
 import { AuthContext } from "../../context/AuthState";
 import QuizPageContent from "./QuizPageContent";
 import QuizReport from "./QuizReport";
@@ -9,13 +10,15 @@ import "materialize-css/dist/css/materialize.min.css";
 export default function QuizPage(){
     const {isAuthenticated} = useContext(AuthContext);
     const {id } = useParams();
-
+    //const location = useLocation();
+    
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
         var options = {
             preventScrolling: false,
         };
         M.Modal.init(elem, options);
+        
     })
     return(
         <div className="container z-depth-3" >
@@ -42,7 +45,8 @@ export default function QuizPage(){
                         }
                     </div>
                     <br/> 
-                    <QuizPageContent/> 
+                    <QuizPageContent/>
+                    {/*{location.state ? <QuizPageContent played={this.props.played}/> :<QuizPageContent played="false"/>}*/}
                 </div>
             </div>
         </div>

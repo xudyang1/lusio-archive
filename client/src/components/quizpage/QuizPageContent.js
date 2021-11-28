@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
+import PlayQuizPage from '../playquizpage/PlayQuizPage';
+
 
 class QuizPageContent extends Component{    
     static contextType = QuizzesContext;
@@ -19,8 +21,11 @@ class QuizPageContent extends Component{
             plays: 0,
             timer: 0,
             numQ: 0,
-            scoreBoard: []
+            scoreBoard: [],
+            retakeOption: false,
+            isDisabled: false
         };
+                
     }
 
     getItem = async (id, getQuizzes) => {
@@ -50,9 +55,22 @@ class QuizPageContent extends Component{
             plays: quiz.plays,
             timer: quiz.time,
             numQ: quiz.questions.length,
-            scoreBoard: quiz.scoreBoard
+            scoreBoard: quiz.scoreBoard,
+            //played: this.props.played,
+            retakeOption: quiz.retakeOption
         });
+        
     }
+
+    /*
+    checkRetake = () => {
+        console.log(this.state.retakeOption);
+        console.log(this.state.played);
+        if (!this.state.retakeOption && this.state.played) {
+            this.setState({isDisabled: true});
+        }
+    }
+    */
 
     numLikeHandler = async e => {
         e.preventDefault();
@@ -78,6 +96,7 @@ class QuizPageContent extends Component{
     numPlayHandler = async e => {
         e.preventDefault();
         await this.handlePlayState();
+
         const updateFQuiz = await {
             id: this.state.id,
             plays: this.state.plays
@@ -93,8 +112,11 @@ class QuizPageContent extends Component{
 
     componentDidMount(){
         const id = this.props.match.params.id;
-        const {getQuizzes} = this.context;
+        const {getQuizzes, playQuiz} = this.context;
         this.getItem(id, getQuizzes);
+
+        
+        //this.checkRetake();
     }
 
     render(){
@@ -170,7 +192,7 @@ class QuizPageContent extends Component{
                         </div>
                         <br/>
                         <div className="row" >
-                            <button className="waves-effect waves-light btn"  onClick={this.numPlayHandler}>Play Quiz</button>
+                            <button className="waves-effect waves-light btn"  onClick={this.numPlayHandler} disabled={this.state.isDisabled}>Play Quiz</button>
                             <button className="waves-effect waves-light btn" style={{left: "50px"}}>View Quiz Statistics</button>
                         </div>
                     </div>

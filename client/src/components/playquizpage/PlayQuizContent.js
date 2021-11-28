@@ -84,14 +84,17 @@ class PlayQuizContent extends Component{
             initialTime: quiz.time
         });
         this.startTimer();
+
+        
     }
     
     componentDidMount(){
         const id = this.props.match.params.id;
-        const { getQuizzes, isPlaying } = this.context;
+        const { getQuizzes, playQuiz } = this.context;
         this.getItem(id, getQuizzes); 
-    
-        console.log(this.state.quizTime);
+        
+        playQuiz();
+        //console.log(this.state.quizTime);
     }
 
     //binded(this) for use of props

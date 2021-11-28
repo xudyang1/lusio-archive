@@ -5,6 +5,7 @@ export const ADD_QUIZ = 'ADD_QUIZ';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
 export const UPDATE_QUIZ = 'UPDATE_QUIZ';
 export const GET_QUIZ = 'GET_QUIZ';
+export const PLAY_QUIZ = 'PLAY_QUIZ';
 export const FINISH_QUIZ = 'FINISH_QUIZ';
 // platform
 export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';

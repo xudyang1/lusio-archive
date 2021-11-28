@@ -5,6 +5,7 @@ import { GET_QUIZZES,
   DELETE_QUIZ, 
   UPDATE_QUIZ,
   GET_ERRORS, 
+  PLAY_QUIZ,
   FINISH_QUIZ,
   CLEAR_ERRORS } from "../types/actionTypes";
 
@@ -64,6 +65,11 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         error: null
+      };
+    case PLAY_QUIZ:
+      return {
+        ...state,
+        played: true
       };
     case FINISH_QUIZ:
       return {
