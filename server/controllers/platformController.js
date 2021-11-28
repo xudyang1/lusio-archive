@@ -125,7 +125,7 @@ exports.addPlatform = async (req, res, next) => {
  * @route PATCH api/platforms/platform/edit/:platformId
  * @access  Private
  * @detail  Client side can only send limited updated content:
- *              edit existing: {owner, name, description, bannerURI, backgroundURI}
+ *              edit existing: {owner, name, description, bannerURI, backgroundURI, quizSections}
  *              add or delete: {admins, 
  *                              quizzes, 
  *                              quizSections}
@@ -134,9 +134,12 @@ exports.addPlatform = async (req, res, next) => {
  * 
  * @format  req.header('x-auth-token): JWT token 
  *          req.body: 
- *            { mode: "EDIT", platform: owner || name || description || iconURI || bannerURI: newValue } 
+ *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
+ *                                    or quizSections: { _id, sectionName, sectionIndex } } }
  *            Or
- *            { mode: "ADD" || "DELETE", platform: admins || quizzes || quizSections: {_id} }
+ *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
+ *            Or
+ *            { mode: "DELETE", platform: { admins || quizzes || quizSections: {_id} } }
  *          res.data:
  *            {
  *              success: true,
@@ -163,12 +166,22 @@ exports.updatePlatform = async (req, res, next) => {
 
     switch (MODE) {
       case "EDIT":
-        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI });
+        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI, quizSections });
         // transfer ownership require the owner the platform
         if (provided.owner && req.viewType !== 'OWNER_VIEW') { return errorHandler(res, 403, 'No authortization'); }
 
         keys = Object.keys(provided);
-        updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
+        // deal with array element
+        if (provided.quizSections){
+          updated = await Platform.findOneAndUpdate(
+            {_id: req.params.platformId, quizSections: {$elemMatch: {_id: provided.quizSections._id}}},
+            {$set: { "quizSections.$.sectionName": provided.quizSections.sectionName, 
+              "quizSections.$.sectionIndex": provided.quizSections.sectionName} },
+              {new: true})
+        }
+        else{
+          updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
+        }
         //console.log("updated", updated);
         break;
       case "ADD":
