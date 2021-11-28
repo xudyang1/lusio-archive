@@ -19,7 +19,7 @@ export const CreateQuizButton = () => {
             userId: profile._id, 
             name: "", 
             author: user.name, 
-            quizImgURI: "",
+            quizImgURI: "https://c4.wallpaperflare.com/wallpaper/967/372/978/gray-simple-background-gradient-wallpaper-preview.jpg",
             description: "", 
             timedOption: false,
             time: 0,

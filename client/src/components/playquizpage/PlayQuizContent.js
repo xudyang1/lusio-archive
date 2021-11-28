@@ -22,7 +22,8 @@ class PlayQuizContent extends Component{
             questions: [],
             score: 0,
             quizTime: {},
-            initialTime: 0
+            initialTime: 0,
+            isDisabled: false
         };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
@@ -126,6 +127,17 @@ class PlayQuizContent extends Component{
         this.setState({score: scoreEval}, () => finishQuiz(this.state.score, (this.state.initialTime - this.state.time)));
     }
 
+    // allow to check only one answer
+    allowOne = (currentCheck, questionRange) => {
+        var checks = document.getElementsByClassName('filled-in');
+        console.log(checks);
+
+        for (let i = questionRange[0]; i < questionRange[1]; i++)  {
+            if (checks[i] !== currentCheck.target){
+                checks[i].checked = false;
+            }
+        }
+    }
 
     onSubmit = (e) => {
         const { isPlaying } = this.context;
@@ -142,10 +154,14 @@ class PlayQuizContent extends Component{
         
         this.scoreHandler(answerCompare, this.state.questions);
         //console.log("onSubmit", isPlaying);
+
+        this.setState({isDisabled: true});
         e.preventDefault();
 
     }
     render() {
+        var questionBase = 0;
+        var questionRange = [0];
         return (
             <div className="row">
                 <div className="container" style={{ backgroundColor: 'ivory', height: "60px" }}>
@@ -159,11 +175,15 @@ class PlayQuizContent extends Component{
                     {this.state.questions.map((q, qi) => {
                         return (
                             <div className="question">{q.title}<div className="qpoints" >({q.score}points)</div>
+                            <div style={{visibility: "hidden"}}>
+                                {questionBase = questionBase + q.choices.length}
+                                {questionRange.push(questionBase)}
+                            </div>
                                 {this.state.questions[qi].choices.map((choice, ci) => {
                                     return (
                                         <div class="row">
                                             <label>
-                                                <input type="checkbox" className="filled-in" value={ci+1}/>
+                                                <input type="checkbox" className="filled-in" value={ci+1} onClick={(e)=>this.allowOne(e, questionRange.slice(qi, qi+2))} disabled={this.state.isDisabled}/>
                                                 <span>{choice.content}</span>
                                             </label>
                                         </div>
