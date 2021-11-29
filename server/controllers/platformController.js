@@ -19,12 +19,11 @@ const { nonNullJson, errorHandler } = require('../utils/jsonTool');
 exports.getPlatformList = async (req, res, next) => {
   try {
     const selectedPlatform = await Platform.find({}, null, { $limit: 10 });
-    
+
     return res.status(200).json({
       platforms: selectedPlatform
     });
   } catch (err) {
-    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -49,7 +48,6 @@ exports.getPlatform = async (req, res, next) => {
   try {
     const selectedPlatform = await Platform.findById(req.params.platformId);
 
-    //console.log("platform doc: ", selectedPlatform);
     if (!selectedPlatform) { return errorHandler(res, 404, 'The platform does not exist.'); }
 
     return res.status(200).json({
@@ -57,7 +55,6 @@ exports.getPlatform = async (req, res, next) => {
       platform: selectedPlatform
     });
   } catch (err) {
-    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -97,20 +94,16 @@ exports.addPlatform = async (req, res, next) => {
 
     if (!savedPlatform) { return errorHandler(res, 500, 'Unable to create the platform'); }
 
-    //console.log("savedPlatform", savedPlatform);
 
     // append to profile
     const updatedProfile = await UserProfile.findByIdAndUpdate(profileId,
       { $push: { platformsCreated: savedPlatform._id } },
       { new: true });
-    //console.log("updated: ", updatedProfile);
-    //console.log(savedPlatform)
     return res.status(201).json({
       success: true,
       platform: savedPlatform
     });
   } catch (err) {
-    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -172,14 +165,18 @@ exports.updatePlatform = async (req, res, next) => {
 
         keys = Object.keys(provided);
         // deal with array element
-        if (provided.quizSections){
+        if (provided.quizSections) {
           updated = await Platform.findOneAndUpdate(
-            {_id: req.params.platformId, quizSections: {$elemMatch: {_id: provided.quizSections._id}}},
-            {$set: { "quizSections.$.sectionName": provided.quizSections.sectionName, 
-              "quizSections.$.sectionIndex": provided.quizSections.sectionName} },
-              {new: true})
+            { _id: req.params.platformId, quizSections: { $elemMatch: { _id: provided.quizSections._id } } },
+            {
+              $set: {
+                "quizSections.$.sectionName": provided.quizSections.sectionName,
+                "quizSections.$.sectionIndex": provided.quizSections.sectionIndex
+              }
+            },
+            { new: true });
         }
-        else{
+        else {
           updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
         }
         //console.log("updated", updated);
@@ -193,9 +190,9 @@ exports.updatePlatform = async (req, res, next) => {
       case "DELETE":
         provided = nonNullJson({ admins, quizzes, quizSections });
         keys = Object.keys(provided);
-        
-        console.log(provided)
-        updated = await Platform.findOneAndUpdate({_id: req.params.platformId}, { $pull: provided }, options).select(keys);
+
+        console.log(provided);
+        updated = await Platform.findOneAndUpdate({ _id: req.params.platformId }, { $pull: provided }, options).select(keys);
         //console.log(updated)
         break;
       default:
@@ -215,7 +212,7 @@ exports.updatePlatform = async (req, res, next) => {
       content: updated
     });
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -235,16 +232,13 @@ exports.updatePlatform = async (req, res, next) => {
 exports.deletePlatform = async (req, res, next) => {
   try {
     // get viewer's created platforms list
-    //console.log("req.user.profile", req.user.profile);
     const profile = await UserProfile.findById(req.user.profile).select('platformsCreated');
-    //console.log("list", profile);
     var list = profile.platformsCreated.map(id => id.toString());
 
     // not the owner
     if (!list.includes(req.params.platformId)) { return errorHandler(res, 403, 'No authorization'); }
 
     const deletedPlatform = await Platform.findByIdAndRemove(req.params.platformId);
-    console.log(deletedPlatform)
     if (!deletedPlatform) { return errorHandler(res, 404, 'Platform does not exist'); }
 
     // pull from the profile
@@ -258,7 +252,6 @@ exports.deletePlatform = async (req, res, next) => {
       platform: deletedPlatform
     });
   } catch (err) {
-    //console.log(err);
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);
@@ -266,33 +259,3 @@ exports.deletePlatform = async (req, res, next) => {
     return errorHandler(res, 500, 'Server Error');
   }
 };
-
-// This should be in quizController.js
-// /**
-//  * TODO:
-//  * @desc  Get platform quizlist card info for view at home page
-//  * @route GET api/platform/platformQuizLists
-//  * @access  Public
-//  * @detail  For guest user: load most popular platforms;
-//  *          For logged user: load subscribed platforms first, then most popular
-//  */
-//  exports.getPlatformQuizLists = async (req, res, next) => {
-//   try {
-//     // logged user
-//     if(req.user.id){
-//       const subscribed = await UserProfile.find()
-//     }
-//     const platform = await Platform.find();
-
-//     return res.status(200).json({
-//       success: true,
-//       count: platforms.length,
-//       data: platforms
-//     });
-//   } catch (err) {
-//     return res.status(500).json({
-//       success: false,
-//       msg: 'Server Error'
-//     });
-//   }
-// }

@@ -18,7 +18,6 @@ exports.getProfile = async (req, res, next) => {
     try {
         const selectedProfile = await UserProfile.findById(req.params.profileId);
 
-        // console.log("profile doc: ", selectedProfile);
         if (!selectedProfile) { return errorHandler(res, 404, 'The user profile does not exist.'); }
 
         return res.status(200).json({
@@ -26,8 +25,7 @@ exports.getProfile = async (req, res, next) => {
             profile: selectedProfile
         });
     } catch (err) {
-        //console.log(err);
-        if(err.name === 'ValidationError') {
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }
@@ -82,18 +80,16 @@ exports.updateProfile = async (req, res, next) => {
                 provided = nonNullJson({ description, iconURI, bannerURI });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, provided, options).select(keys);
-                // console.log("updated", updated);
                 break;
             case "ADD":
                 provided = nonNullJson({ platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
-                // console.log('$pushAll provided: ', provided)
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, { $push: provided }, options).select(keys);
                 break;
             case "DELETE":
                 provided = nonNullJson({ platformsCreated, quizzesCreated, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
-                updated = await UserProfile.findOneAndUpdate({_id: req.user.profile}, { $pull: provided }, options).select(keys);
+                updated = await UserProfile.findOneAndUpdate({ _id: req.user.profile }, { $pull: provided }, options).select(keys);
                 break;
             default:
                 // non matched mode
@@ -110,8 +106,7 @@ exports.updateProfile = async (req, res, next) => {
             content: updated
         });
     } catch (err) {
-        //console.log(err);
-        if(err.name === 'ValidationError') {
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }

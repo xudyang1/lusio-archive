@@ -1,23 +1,21 @@
-import { useContext, useEffect } from "react";
 import React from 'react';
-import { AuthContext } from "../../context/AuthState";
-import { ProfileContext } from "../../context/ProfileState";
-import { useParams, useRouteMatch } from "react-router";
 import { NavLink } from "react-router-dom";
 
+/***
+ * @param props Takes props.user
+ */
+export default function AccountProfileButton(props) {
 
-export default function AccountProfileButton() {
+    // const { user, isAuthenticated } = useContext(AuthContext);
+    // const { profile, getProfile } = useContext(ProfileContext)
 
-    const { user, isAuthenticated } = useContext(AuthContext);
-    const { profile, getProfile } = useContext(ProfileContext)
-
-    const { id } = useParams()
-    const { url, path } = useRouteMatch()
-
-    useEffect(() => {
-        getProfile(user.profile);
-        // console.log("FROM ACCOUNT BUTTON", profile);
-    }, [isAuthenticated]);
+    // const { id } = useParams()
+    // const { url, path } = useRouteMatch()
+    const user = props.user? props.user: {
+        iconURI: null,
+        profile: undefined,
+        name: "UNDEF"
+    }
 
     const s = {
         height: "50px",

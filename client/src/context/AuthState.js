@@ -1,12 +1,11 @@
 import React, { createContext, useReducer } from 'react';
 import AuthReducer from '../reducers/AuthReducer';
+import axios from 'axios';
+import { loadUser } from '../actions/AuthActions';
 import {
-    LOGOUT_SUCCESS,
     DELETE_ACCOUNT,
     UPDATE_SUCCESS
 } from "../types/actionTypes";
-import axios from 'axios';
-import { loadUser } from '../actions/AuthActions';
 
 // TODO: more refactoring
 
@@ -59,7 +58,6 @@ export const AuthProvider = ({ children }) => {
         try {
             const body = JSON.stringify(payload);
             const res = await axios.patch('/api/auth/user/edit', body, tokenConfig(state));
-            //console.log("res.data = ", res.data);
             dispatch({
                 type: UPDATE_SUCCESS,
                 payload: res.data
@@ -78,7 +76,6 @@ export const AuthProvider = ({ children }) => {
     async function deleteAccount() {
         try {
             const res = await axios.delete('/api/auth/user/delete', tokenConfig(state));
-            //console.log("res.data = ", res.data);
             dispatch({
                 type: DELETE_ACCOUNT,
                 payload: res.data //deleted user info
@@ -94,13 +91,6 @@ export const AuthProvider = ({ children }) => {
             });
         }
     }
-
-    // logout user
-    function logout() {
-        dispatch({
-            type: LOGOUT_SUCCESS
-        });
-    };
 
     return (<AuthContext.Provider value={{
         loadUser: loadUserCaller,

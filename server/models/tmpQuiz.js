@@ -22,7 +22,6 @@ const QuestionSchema = new Schema({
 });
 // Validation for choices array size
 // QuestionSchema.path('choices').validate(function (value) {
-//     console.log("Quiz Question choice array length validator: ", value.length);
 //     // TODO: discuss limit
 //     if (value.length > 10) {
 //         throw new Error("Choice size can't be greater than 10!");
@@ -38,15 +37,14 @@ const QuizSchema = new Schema({
     likes: { type: Number, default: 0 },
     questions: {
         type: [QuestionSchema],
-        validate: [(val) => val.length<=50, 'No more than 50 questions allowed']
+        validate: [(val) => val.length <= 50, 'No more than 50 questions allowed']
     },
-    totalQuestions: { type: Number, default: 0},
+    totalQuestions: { type: Number, default: 0 },
     totalScore: { type: Number, default: 0 },
     isPublished: { type: Boolean, default: false }
 }, { timestamps: true });
 // Validation for questions array size
 // QuizSchema.path('questions').validate(function (value) {
-//     console.log(value.length);
 //     // TODO: discuss size limit
 //     if (value.length > 50) {
 //         throw new Error("No more than 50 quizzes allowed");

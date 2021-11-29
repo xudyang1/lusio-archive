@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'materialize-css';
-import SectionList from '../common/SectionList';
+import SectionList from '../sections/SectionList';
 import { QUIZ_CARD } from '../../types/cardTypes';
 
 // sample data

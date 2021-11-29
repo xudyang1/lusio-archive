@@ -24,19 +24,14 @@ export default function QuizReducer (state, action) {
     case GET_QUIZ:
       return {
         ...state,
-//<<<<<<< LiuxinLi
         quiz: state.quizzes.filter(quiz => quiz._id === action.payload),
         loading: false
       }
-// =======
-//         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
-//       };
     case DELETE_QUIZ:
       return {
         ...state,
         quiz: state._id !== action.payload
       };
-//>>>>>>> main
     case ADD_QUIZ:
       return {
         ...state,
@@ -46,14 +41,6 @@ export default function QuizReducer (state, action) {
       return {
         ...state,
         quiz: action.payload
-// <<<<<<< LiuxinLi
-//       }
-//     case DELETE_QUIZ:
-//       return {
-//         ...state,
-//         quiz: action.payload
-// =======
-// >>>>>>> main
       };
     case GET_ERRORS:
       return {

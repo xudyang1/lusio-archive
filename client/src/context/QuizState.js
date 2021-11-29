@@ -14,7 +14,7 @@ import axios from 'axios';
 
 // Initial state
 const initialState = {
-// <<<<<<< LiuxinLi
+    // <<<<<<< LiuxinLi
     quizzes: [],
     quiz: {
         id: null,
@@ -29,7 +29,7 @@ const initialState = {
         retakeOption: false,
         questions: [{
             title: "",
-            choices: [""], 
+            choices: [""],
             answerKey: 1, //correctAnswers
             score: 0
         }],
@@ -58,30 +58,26 @@ export const QuizzesProvider = ({ children }) => {
                 type: GET_QUIZZES,
                 payload: res.data
             });
-            //console.log("quizzes are : ", res.data);
             return res.data;
         } catch (err) {
-            console.error(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
             });
         }
     };
-    async function getQuiz(id, updateState=true) {
+    async function getQuiz(id, updateState = true) {
         try {
-            if(updateState)
-            dispatch(setQuizzesLoading());
+            if (updateState)
+                dispatch(setQuizzesLoading());
             const res = await axios.get(`/api/quizzes/edit/${id}`);
-            if(updateState)
-            dispatch({
-                type: GET_QUIZ,
-                payload: id
-            });
-            //console.log("quiz is : ", res.data);
+            if (updateState)
+                dispatch({
+                    type: GET_QUIZ,
+                    payload: id
+                });
             return res.data;
         } catch (err) {
-            console.error(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
@@ -89,8 +85,7 @@ export const QuizzesProvider = ({ children }) => {
         }
     };
 
-    async function addQuiz({ userId, name, author, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
-        //console.log("ADDQUIZ", userId)
+    async function addQuiz({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -98,7 +93,6 @@ export const QuizzesProvider = ({ children }) => {
         };
         //{ userId, name, author, description, questions, likes, isPublished }
         const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished });
-        //console.log(body);
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
             dispatch({
@@ -107,7 +101,6 @@ export const QuizzesProvider = ({ children }) => {
             });
             return res.data.quiz.id;
         } catch (err) {
-            //console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
@@ -128,7 +121,6 @@ export const QuizzesProvider = ({ children }) => {
                 type: UPDATE_QUIZ,
                 payload: res.data
             });
-            //console.log("After adding quiz, success, state: ", res.data);
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
@@ -151,17 +143,16 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
     function finishQuiz(score) {
-      try {
-        dispatch({
-          type: FINISH_QUIZ,
-          payload: score
-        });
-        //console.log("after the act of FINISH_QUIZ:", state.isPlaying);
-      } catch (err){
-        dispatch({
-          type: GET_ERRORS
-        });
-      }
+        try {
+            dispatch({
+                type: FINISH_QUIZ,
+                payload: score
+            });
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS
+            });
+        }
     }
     const setQuizzesLoading = () => {
         return {

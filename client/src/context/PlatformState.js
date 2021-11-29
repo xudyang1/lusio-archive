@@ -2,15 +2,15 @@ import axios from "axios";
 import React from "react";
 import { createContext, useContext, useReducer } from "react";
 import { PlatformReducer } from "../reducers/PlatformReducer";
-import { 
-    ADD_PLATFORM, 
-    CLEAR_ERRORS, 
-    DELETE_PLATFORM, 
-    GET_ERRORS, 
-    GET_PLATFORM, 
-    GET_PLATFORMS, 
-    GET_PLATFORM_LIST, 
-    UPDATE_PLATFORM 
+import {
+    ADD_PLATFORM,
+    CLEAR_ERRORS,
+    DELETE_PLATFORM,
+    GET_ERRORS,
+    GET_PLATFORM,
+    GET_PLATFORMS,
+    GET_PLATFORM_LIST,
+    UPDATE_PLATFORM
 } from "../types/actionTypes";
 import { AuthContext } from "./AuthState";
 
@@ -55,33 +55,25 @@ export const PlatformProvider = ({ children }) => {
         }
         return config;
     };
-    //TODO
-    // _____ ___  ___   ___  
-    // |_   _/ _ \|   \ / _ \ 
-    //   | || (_) | |) | (_) |
-    //   |_| \___/|___/ \___/
-    
+
     // token: can be null
-    async function getPlatformList(token) {
+    async function getPlatformList() {
         try {
             const res = await axios.get('/api/platforms/platformList', tokenConfig(token));
-            //console.log("res", res);
             dispatch({
                 type: GET_PLATFORM_LIST,
                 payload: res.data
             });
         } catch (err) {
-            console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
             });
         }
     };
-    async function getPlatform(id, reload=true) {
+    async function getPlatform(id, reload = true) {
         try {
             const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
-            //console.log("res", res);
             if (reload)
                 dispatch({
                     type: GET_PLATFORM,
@@ -89,7 +81,6 @@ export const PlatformProvider = ({ children }) => {
                 });
             return res.data
         } catch (err) {
-            console.log(err)
             if (reload)
                 dispatch({
                     type: GET_ERRORS,
@@ -105,14 +96,12 @@ export const PlatformProvider = ({ children }) => {
         try {
             const body = JSON.stringify(init);
             const res = await axios.post('/api/platforms/add', body, tokenConfig(token));
-            // console.log("res", res);
             dispatch({
                 type: ADD_PLATFORM,
                 payload: res.data
             });
             return res.data
         } catch (err) {
-            //console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
@@ -133,7 +122,6 @@ export const PlatformProvider = ({ children }) => {
         try {
             const body = JSON.stringify(payload);
             const res = await axios.patch(`/api/platforms/platform/edit/${platformId}`, body, tokenConfig(token));
-            // console.log("res", res);
             dispatch({
                 type: UPDATE_PLATFORM,
                 payload: res.data
@@ -150,7 +138,6 @@ export const PlatformProvider = ({ children }) => {
     async function removePlatform(platformId) {
         try {
             const res = await axios.delete(`/api/platforms/platform/${platformId}`, tokenConfig(token));
-            // console.log("res", res);
             dispatch({
                 type: DELETE_PLATFORM,
                 payload: res.data
@@ -167,7 +154,6 @@ export const PlatformProvider = ({ children }) => {
         dispatch({
             type: CLEAR_ERRORS
         });
-        // console.log("Called clearErrors()");
     };
 
     return (<PlatformContext.Provider value={{

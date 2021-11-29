@@ -1,5 +1,5 @@
 import './css/App.css';
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import HomePage from './components/frontpage/HomePage';
 import SearchPage from './components/searchpage/SearchPage';
 import ProfilePage from './components/profilepage/ProfilePage';

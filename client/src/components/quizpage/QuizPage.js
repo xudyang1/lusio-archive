@@ -1,4 +1,4 @@
-import React , { useContext, useState, useEffect} from 'react';
+import React , { useContext, useEffect} from 'react';
 import { useParams } from 'react-router';
 import { AuthContext } from "../../context/AuthState";
 import QuizPageContent from "./QuizPageContent";
