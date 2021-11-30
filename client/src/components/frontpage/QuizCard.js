@@ -40,7 +40,7 @@ export default function QuizCard(props) {
                     </div>
                     <div className="row" style={{ marginBottom: "0px" }}>
                         <div className="col">
-                            <AccountProfileButton user={profile} />
+                            <AccountProfileButton user={profile} userId={profile._id}/>
                         </div>
                     </div>
                 </div>
