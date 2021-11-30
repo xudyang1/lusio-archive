@@ -17,19 +17,19 @@ const { nonNullJson, errorHandler } = require('../utils/jsonTool');
  *                    }
  */
 exports.getPlatformList = async (req, res, next) => {
-    try {
-        const selectedPlatform = await Platform.find({}, null, { $limit: 10 });
+  try {
+    const selectedPlatform = await Platform.find({}, null, { $limit: 10 });
 
-        return res.status(200).json({
-            platforms: selectedPlatform
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return errorHandler(res, 400, messages);
-        }
-        return errorHandler(res, 500, 'Server Error');
+    return res.status(200).json({
+      platforms: selectedPlatform
+    });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
     }
+    return errorHandler(res, 500, 'Server Error');
+  }
 };
 
 /**
@@ -45,22 +45,22 @@ exports.getPlatformList = async (req, res, next) => {
  *                    }
  */
 exports.getPlatform = async (req, res, next) => {
-    try {
-        const selectedPlatform = await Platform.findById(req.params.platformId);
+  try {
+    const selectedPlatform = await Platform.findById(req.params.platformId);
 
-        if (!selectedPlatform) { return errorHandler(res, 404, 'The platform does not exist.'); }
+    if (!selectedPlatform) { return errorHandler(res, 404, 'The platform does not exist.'); }
 
-        return res.status(200).json({
-            viewType: req.viewType,
-            platform: selectedPlatform
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return errorHandler(res, 400, messages);
-        }
-        return errorHandler(res, 500, 'Server Error');
+    return res.status(200).json({
+      viewType: req.viewType,
+      platform: selectedPlatform
+    });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
     }
+    return errorHandler(res, 500, 'Server Error');
+  }
 };
 
 /**
@@ -76,40 +76,40 @@ exports.getPlatform = async (req, res, next) => {
  *                    }
  */
 exports.addPlatform = async (req, res, next) => {
-    try {
-        if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload'); }
+  try {
+    if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload'); }
 
-        //set up
-        const { name, description, bannerURI, backgroundURI } = req.body.platform;
-        var format = { name, description, bannerURI, backgroundURI };
-        // add owner profile id
-        const profileId = req.user.profile;
-        format = { ...format, owner: profileId };
+    //set up
+    const { name, description, bannerURI, backgroundURI } = req.body.platform;
+    var format = { name, description, bannerURI, backgroundURI };
+    // add owner profile id
+    const profileId = req.user.profile;
+    format = { ...format, owner: profileId };
 
-        format = nonNullJson(format);
-        if (!format.name) { return errorHandler(res, 400, 'You must provide a name.'); }
+    format = nonNullJson(format);
+    if (!format.name) { return errorHandler(res, 400, 'You must provide a name.'); }
 
-        const platform = new Platform({ ...format });
-        const savedPlatform = await platform.save();
+    const platform = new Platform({ ...format });
+    const savedPlatform = await platform.save();
 
-        if (!savedPlatform) { return errorHandler(res, 500, 'Unable to create the platform'); }
+    if (!savedPlatform) { return errorHandler(res, 500, 'Unable to create the platform'); }
 
 
-        // append to profile
-        const updatedProfile = await UserProfile.findByIdAndUpdate(profileId,
-            { $push: { platformsCreated: savedPlatform._id } },
-            { new: true });
-        return res.status(201).json({
-            success: true,
-            platform: savedPlatform
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return errorHandler(res, 400, messages);
-        }
-        return errorHandler(res, 500, 'Server Error');
+    // append to profile
+    const updatedProfile = await UserProfile.findByIdAndUpdate(profileId,
+      { $push: { platformsCreated: savedPlatform._id } },
+      { new: true });
+    return res.status(201).json({
+      success: true,
+      platform: savedPlatform
+    });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
     }
+    return errorHandler(res, 500, 'Server Error');
+  }
 };
 
 /**
@@ -118,7 +118,7 @@ exports.addPlatform = async (req, res, next) => {
  * @route PATCH api/platforms/platform/edit/:platformId
  * @access  Private
  * @detail  Client side can only send limited updated content:
- *              edit existing: {owner, name, description, bannerURI, backgroundURI}
+ *              edit existing: {owner, name, description, bannerURI, backgroundURI, quizSections}
  *              add or delete: {admins, 
  *                              quizzes, 
  *                              quizSections}
@@ -127,9 +127,12 @@ exports.addPlatform = async (req, res, next) => {
  * 
  * @format  req.header('x-auth-token): JWT token 
  *          req.body: 
- *            { mode: "EDIT", platform: owner || name || description || iconURI || bannerURI: newValue } 
+ *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
+ *                                    or quizSections: { _id, sectionName, sectionIndex } } }
  *            Or
- *            { mode: "ADD" || "DELETE", platform: admins || quizzes || quizSections: {_id} }
+ *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
+ *            Or
+ *            { mode: "DELETE", platform: { admins || quizzes || quizSections: {_id} } }
  *          res.data:
  *            {
  *              success: true,
@@ -138,63 +141,84 @@ exports.addPlatform = async (req, res, next) => {
  *            }
  */
 exports.updatePlatform = async (req, res, next) => {
-    try {
-        // Note, to verify user id, use req.user.id rather than req.params.profileId
-        if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
+  try {
+    // Note, to verify user id, use req.user.id rather than req.params.profileId
+    //console.log(req.body)
+    if (!req.body.platform) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
-        // destructure
+    // destructure
 
-        const { owner, name, description, bannerURI, backgroundURI, admins, quizzes, quizSections } = req.body.platform;
-        const MODE = req.body.mode;
+    const { owner, name, description, bannerURI, backgroundURI, admins, quizzes, quizSections } = req.body.platform;
+    const MODE = req.body.mode;
 
-        var provided = keys = updated = null;
-        if (req.viewType !== 'OWNER_VIEW' && req.viewType !== 'ADMIN_VIEW') { return errorHandler(res, 403, 'No authorization'); }
-        // set options
-        const options = { runValidators: true, new: true };
+    var provided = keys = updated = null;
+    //console.log("req.viewtyoe", req.viewType);
+    if (req.viewType !== 'OWNER_VIEW' && req.viewType !== 'ADMIN_VIEW') { return errorHandler(res, 403, 'No authorization'); }
+    // set options
+    const options = { runValidators: true, new: true };
 
-        switch (MODE) {
-            case "EDIT":
-                provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI });
-                // transfer ownership require the owner the platform
-                if (provided.owner && req.viewType !== 'OWNER_VIEW') { return errorHandler(res, 403, 'No authortization'); }
+    switch (MODE) {
+      case "EDIT":
+        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI, quizSections });
+        // transfer ownership require the owner the platform
+        if (provided.owner && req.viewType !== 'OWNER_VIEW') { return errorHandler(res, 403, 'No authortization'); }
 
-                keys = Object.keys(provided);
-                updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
-                break;
-            case "ADD":
-                provided = nonNullJson({ admins, quizzes, quizSections });
-                keys = Object.keys(provided);
-                updated = await Platform.findByIdAndUpdate(req.params.platformId, { $push: provided }, options).select(keys);
-                break;
-            case "DELETE":
-                provided = nonNullJson({ admins, quizzes, quizSections });
-                keys = Object.keys(provided);
-
-                updated = await Platform.findOneAndUpdate({ _id: req.params.platformId }, { $pull: provided }, options).select(keys);
-                break;
-            default:
-                // non matched mode
-                return errorHandler(res, 400, 'You must provide a valid mode');
+        keys = Object.keys(provided);
+        // deal with array element
+        if (provided.quizSections) {
+          updated = await Platform.findOneAndUpdate(
+            { _id: req.params.platformId, quizSections: { $elemMatch: { _id: provided.quizSections._id } } },
+            {
+              $set: {
+                "quizSections.$.sectionName": provided.quizSections.sectionName,
+                "quizSections.$.sectionIndex": provided.quizSections.sectionIndex
+              }
+            },
+            { new: true });
         }
-
-        // no valid content provided
-        if (!provided || Object.keys(provided).length === 0) { return errorHandler(res, 400, 'Invalid content provided, nothing is updated'); }
-        // no query returned
-        else if (!updated) { return errorHandler(res, 500, 'Unable to update the content'); }
-
-        // success
-        return res.status(200).json({
-            success: true,
-            mode: MODE,
-            content: updated
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return errorHandler(res, 400, messages);
+        else {
+          updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
         }
-        return errorHandler(res, 500, 'Server Error');
+        //console.log("updated", updated);
+        break;
+      case "ADD":
+        provided = nonNullJson({ admins, quizzes, quizSections });
+        keys = Object.keys(provided);
+        //console.log('$pushAll provided: ', provided);
+        updated = await Platform.findByIdAndUpdate(req.params.platformId, { $push: provided }, options).select(keys);
+        break;
+      case "DELETE":
+        provided = nonNullJson({ admins, quizzes, quizSections });
+        keys = Object.keys(provided);
+
+        console.log(provided);
+        updated = await Platform.findOneAndUpdate({ _id: req.params.platformId }, { $pull: provided }, options).select(keys);
+        //console.log(updated)
+        break;
+      default:
+        // non matched mode
+        return errorHandler(res, 400, 'You must provide a valid mode');
     }
+
+    // no valid content provided
+    if (!provided || Object.keys(provided).length === 0) { return errorHandler(res, 400, 'Invalid content provided, nothing is updated'); }
+    // no query returned
+    else if (!updated) { return errorHandler(res, 500, 'Unable to update the content'); }
+
+    // success
+    return res.status(200).json({
+      success: true,
+      mode: MODE,
+      content: updated
+    });
+  } catch (err) {
+    console.log(err);
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
+    }
+    return errorHandler(res, 500, 'Server Error');
+  }
 };
 
 /**
@@ -206,32 +230,32 @@ exports.updatePlatform = async (req, res, next) => {
  *          res.data: { success: true, platform: { ...deletedPlatform } }
  */
 exports.deletePlatform = async (req, res, next) => {
-    try {
-        // get viewer's created platforms list
-        const profile = await UserProfile.findById(req.user.profile).select('platformsCreated');
-        var list = profile.platformsCreated.map(id => id.toString());
+  try {
+    // get viewer's created platforms list
+    const profile = await UserProfile.findById(req.user.profile).select('platformsCreated');
+    var list = profile.platformsCreated.map(id => id.toString());
 
-        // not the owner
-        if (!list.includes(req.params.platformId)) { return errorHandler(res, 403, 'No authorization'); }
+    // not the owner
+    if (!list.includes(req.params.platformId)) { return errorHandler(res, 403, 'No authorization'); }
 
-        const deletedPlatform = await Platform.findByIdAndRemove(req.params.platformId);
-        if (!deletedPlatform) { return errorHandler(res, 404, 'Platform does not exist'); }
+    const deletedPlatform = await Platform.findByIdAndRemove(req.params.platformId);
+    if (!deletedPlatform) { return errorHandler(res, 404, 'Platform does not exist'); }
 
-        // pull from the profile
-        const updatedProfile = await UserProfile.findByIdAndUpdate(req.user.profile,
-            { $pull: { platformsCreated: deletedPlatform._id } },
-            { new: true });
-        if (!updatedProfile) { return errorHandler(res, 404, 'Profile does not exist'); }
+    // pull from the profile
+    const updatedProfile = await UserProfile.findByIdAndUpdate(req.user.profile,
+      { $pull: { platformsCreated: deletedPlatform._id } },
+      { new: true });
+    if (!updatedProfile) { return errorHandler(res, 404, 'Profile does not exist'); }
 
-        return res.status(200).json({
-            success: true,
-            platform: deletedPlatform
-        });
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            const messages = Object.values(err.errors).map(val => val.message);
-            return errorHandler(res, 400, messages);
-        }
-        return errorHandler(res, 500, 'Server Error');
+    return res.status(200).json({
+      success: true,
+      platform: deletedPlatform
+    });
+  } catch (err) {
+    if (err.name === 'ValidationError') {
+      const messages = Object.values(err.errors).map(val => val.message);
+      return errorHandler(res, 400, messages);
     }
+    return errorHandler(res, 500, 'Server Error');
+  }
 };

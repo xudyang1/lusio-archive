@@ -79,7 +79,7 @@ export const PlatformProvider = ({ children }) => {
                     type: GET_PLATFORM,
                     payload: res.data
                 });
-            return res.data
+            return res.data;
         } catch (err) {
             if (reload)
                 dispatch({
@@ -100,7 +100,7 @@ export const PlatformProvider = ({ children }) => {
                 type: ADD_PLATFORM,
                 payload: res.data
             });
-            return res.data
+            return res.data;
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
@@ -108,15 +108,23 @@ export const PlatformProvider = ({ children }) => {
             });
         }
     };
-    /**
+    
+   /**
     *
-    * @payload req.body = 
-    *      { mode: "EDIT", platform: owner | description | iconURI | bannerURI } 
-    *  Or
-    *      {
-    *        mode: "ADD" | "DELETE", 
-    *        platform: admins | quizzes | quizSections
-    *      }
+    * @payload  req.header('x-auth-token): JWT token
+    *           req.body: 
+    *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
+    *                                    or quizSections: { _id, sectionName, sectionIndex } } }
+    *            Or
+    *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
+    *            Or
+    *            { mode: "DELETE", platform: { admins || quizzes || quizSections: {_id} } }
+    *          res.data:
+    *            {
+    *              success: true,
+    *              mode: "EDIT" || "ADD" || "DELETE"
+    *              content: { description || ... || quizSections: updated data }
+    *            }
     */
     async function updatePlatform(platformId, payload) {
         try {
@@ -127,7 +135,7 @@ export const PlatformProvider = ({ children }) => {
                 payload: res.data
             });
         } catch (err) {
-            console.log(err)
+            console.log(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }

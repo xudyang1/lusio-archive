@@ -1,52 +1,44 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useReducer, useRef } from "react";
 import { AuthContext } from '../../context/AuthState';
 import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
-// import "materialize-css/dist/js/materialize.min.js";
 import "../../css/auth.css";
 import Spinner from "../common/Spinner";
+import { errorInitialState, ErrorReducer } from "../../reducers/ErrorReducer";
+import { clearErrors } from "../../actions/ErrorActions";
+import { register } from "../../actions/AuthActions";
+
+const initialState = {
+    modalInstance: null,
+    name: null,
+    email: null,
+    password: null,
+    loading: false
+};
 
 export const RegisterModal = () => {
-    const initialState = {
-        modalInstance: null,
-        name: null,
-        email: null,
-        password: null,
-        msg: null,
-        loading: false
-    };
+    // normal flow
     const [state, setState] = useState(initialState);
-    const { register, error, isAuthenticated, clearErrors } = useContext(AuthContext);
+    // error flow
+    const [error, errorDispatch] = useReducer(ErrorReducer, errorInitialState);
+    // auth flow
+    const { authDispatch, isAuthenticated } = useContext(AuthContext);
 
+    // modal init
+    const registerModalRef = useRef(null);
     useEffect(() => {
-        // check for register error
-        if (error && error.id === 'REGISTER_FAIL')
-            setState({ ...state, msg: error.msg, loading: false });
-        else
-            setState({ ...state, msg: null, loading: false });
-    }, [error]);
-
-    // init modal & close modal if register success
-    useEffect(() => {
-        if (!isAuthenticated) {
-            var elem = document.querySelector('#registerModal');
-            // clear errors before open and after close
-            var options = {
-                preventScrolling: false,
-                onOpenStart: clearErrors,
-                onCloseEnd: clearErrors
-            };
-            M.Modal.init(elem, options);
-            // set modal instance
-            state.modalInstance = M.Modal.getInstance(elem);
+        // clear errors before open and after close
+        const options = {
+            preventScrolling: false,
+            onOpenStart: () => errorDispatch(clearErrors()),
+            onCloseEnd: () => errorDispatch(clearErrors())
         };
-        if (isAuthenticated && state.modalInstance.isOpen) {
-            setState({ ...state, loading: false });
-            state.modalInstance.close();
-        }
-    }, [isAuthenticated]);
+        M.Modal.init(registerModalRef.current, options);
+        // set modal instance
+        state.modalInstance = M.Modal.getInstance(registerModalRef.current);
+    }, []);
 
-    // set email & password
+    // set username & email & password
     const handleOnChange = e => {
         setState({ ...state, [e.target.name]: e.target.value });
     };
@@ -56,34 +48,44 @@ export const RegisterModal = () => {
         e.preventDefault();
 
         const user = { name: state.name, email: state.email, password: state.password };
-
-        setState({ ...state, loading: true });
         // attempt to register
-        register(user);
+        setState({ ...state, loading: true });
+        register(user)(authDispatch, errorDispatch);
     };
+
+    // check for register error
     useEffect(() => {
-    }, [state.loading])
+        setState({ ...state, loading: false });
+    }, [error]);
+
+    // close modal if register success
+    useEffect(() => {
+        if (isAuthenticated && state.modalInstance.isOpen) {
+            setState({ ...state, loading: false });
+            state.modalInstance.close();
+        }
+    }, [isAuthenticated]);
 
     return (
         <div>
             <a className="modal-trigger" href="#registerModal">Register</a>
-            <div id="registerModal" className="modal black-text ">
+            <div id="registerModal" className="modal black-text " ref={registerModalRef}>
                 <div className="modal-content">
                     <h3 className="modalHeader col s12">Register</h3>
                     <div className="row">
                         <div>
-                            {state.msg ? (<p className="deep-orange-text text-accent-4">{state.msg}</p>) : null}
+                            {error.msg && (<p className="deep-orange-text text-accent-4">{error.msg}</p>)}
                         </div>
                         <form className="col s12" onSubmit={handleOnSubmit}>
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">face</i>
-                                <input id="registerName" type="text" className="validate" name="name" onChange={handleOnChange} />
+                                <input id="registerName" type="text" className="validate" name="name" autoComplete="username" onChange={handleOnChange} />
                                 <label htmlFor="registerName">Name</label>
                             </div>
 
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">account_circle</i>
-                                <input id="registerEmail" type="email" className="validate" name="email" onChange={handleOnChange} />
+                                <input id="registerEmail" type="email" className="validate" name="email" autoComplete="email" onChange={handleOnChange} />
                                 <label htmlFor="registerEmail">Email</label>
                             </div>
 
@@ -91,7 +93,7 @@ export const RegisterModal = () => {
                                 <i className="material-icons prefix">
                                     lock_open
                                 </i>
-                                <input id="registerPassword" type="password" className="active validate" name="password" onChange={handleOnChange} />
+                                <input id="registerPassword" type="password" className="active validate" name="password" autoComplete="new-password" onChange={handleOnChange} />
                                 <label htmlFor="registerPassword">Password</label>
                             </div>
                             {state.loading ? <Spinner /> :

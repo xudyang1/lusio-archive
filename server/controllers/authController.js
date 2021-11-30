@@ -32,10 +32,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 exports.register = async (req, res, next) => {
     const { name, email, password } = req.body;
-
+    console.log(req.body)
     try {
         // simple validation
-        if (!name || !email || !password) { return errorHandler(res, 400, 'Please enter all fields!'); }
+        if (!name || !email || !password) { console.log("NNN"); return errorHandler(res, 400, 'Please enter all fields!'); }
 
         // check the existing user
         const user = await UserAccount.findOne({ email });
@@ -87,6 +87,7 @@ exports.register = async (req, res, next) => {
             }
         });
     } catch (err) {
+        //console.log(err);
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
@@ -143,6 +144,7 @@ exports.login = async (req, res, next) => {
             }
         });
     } catch (err) {
+        // console.log(err);
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
@@ -163,6 +165,7 @@ exports.login = async (req, res, next) => {
  *                              name: String, 
  *                              email: String, 
  *                              profile: ObjectId (the profileId of the user)
+ *                              iconURI: String
  *                            } 
  *                    }
  */
@@ -175,7 +178,6 @@ exports.getUser = async (req, res, next) => {
 
         res.json({
             user: {
-                // id: user._id, not sent
                 name: user.name,
                 email: user.email,
                 profile: user.profile,
@@ -183,6 +185,7 @@ exports.getUser = async (req, res, next) => {
             }
         });
     } catch (err) {
+        // console.log(err)
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
@@ -242,7 +245,8 @@ exports.updateUser = async (req, res, next) => {
         // update name field for the profile
         if (target.name) {
             const newProfile = await UserProfile.findByIdAndUpdate(newUser.profile, { $set: { name: newUser.name } }, { new: true }).select('name');
-            if (!newProfile.name) { errorHandler(res, 500, 'Unable to update name in the profile') }
+            //console.log("new profile.name", newProfile.name)
+            if (!newProfile.name) { errorHandler(res, 500, 'Unable to update name in the profile'); }
         }
 
         return res.status(200).json({
@@ -255,6 +259,7 @@ exports.updateUser = async (req, res, next) => {
         });
     }
     catch (err) {
+        //console.log(err)
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
