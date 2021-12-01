@@ -1,7 +1,7 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
 import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
@@ -11,8 +11,6 @@ import { ProfileContext } from "../../context/ProfileState";
 import { useForceUpdate } from "../../utils/useForceUpdate";
 
 function getCards(t, index, element, canEdit) {
-    //console.log("CALLED GET CARDS")
-    //console.log("called getCards with type: ", t, element)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} id={element.id} name={element.name} desc={element.description} /></div>
@@ -48,13 +46,13 @@ export default function SectionList(props) {
     const [itemList, setList] = useState([])
     const [shouldRender, setShouldRender] = useState(true);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setShouldRender(false);
-        }, 2000);
-        // setList(props.items)
-        forceUpdate();
-    }, [props.items])
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setShouldRender(false);
+    //     }, 2000);
+    //     // setList(props.items)
+    //     forceUpdate();
+    // }, [])
 
     return (
         <div>
@@ -66,11 +64,11 @@ export default function SectionList(props) {
                     <div className="valign-wrapper">
                         <div className="LSection">
                             {
-                                props.items?
-                                props.items.map((element, index) => (
-                                    getCards(props.type, index, element, viewType=="OWNER_VIEW")
-                                ))
-                                :<div></div>
+                                // props.items ?
+                                //     props.items.map((element, index) => (
+                                //         getCards(props.type, index, element, viewType == "OWNER_VIEW")
+                                //     ))
+                                //     : <div></div>
                             }
                             {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
                             {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>}

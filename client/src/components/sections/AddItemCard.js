@@ -1,6 +1,3 @@
-import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
-
-
 export default function AddItemCard(props) {
     return (
         <div>

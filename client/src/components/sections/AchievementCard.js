@@ -1,7 +1,3 @@
-
-
-
-
 export default function AchievementCard() {
     return (
         <div className="col s3">
