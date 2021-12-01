@@ -90,7 +90,8 @@ exports.addQuiz = async (req, res, next) => {
             likes: req.body.likes,
             plays: req.body.plays,
             isPublished: req.body.isPublished,
-            scoreBoard: scoreB
+            scoreBoard: scoreB,
+            comments: req.body.comments
         });
         
         const savedQuiz = await newQuiz.save();
@@ -112,7 +113,8 @@ exports.addQuiz = async (req, res, next) => {
                 likes: savedQuiz.likes,
                 plays: savedQuiz.plays,
                 isPublished: savedQuiz.isPublished,
-                scoreBoard: savedQuiz.scoreBoard
+                scoreBoard: savedQuiz.scoreBoard,
+                comments: savedQuiz.comments
             }
         }); 
         
@@ -137,7 +139,8 @@ exports.updateQuiz = async (req, res, next) => {
         likes: req.body.likes,
         plays: req.body.plays,
         isPublished: req.body.isPublished,
-        scoreBoard: req.body.scoreBoard
+        scoreBoard: req.body.scoreBoard,
+        comments: req.body.comments
     });
     try {
         res.status(200).json({

@@ -12,6 +12,22 @@ const UserSchema = new Schema({
     }
 }, { _id : false })
 
+const CommentSchema = new Schema({
+    userId: {
+        type: String,
+    },
+    userName: {
+        type: String,
+    },
+    text: {
+        type: String,
+        default: ""
+    },
+    id: {
+        type: Number,
+    }
+})
+
 // TODO: defaults to be discussed
 const QuestionSchema = new Schema({
     title: { 
@@ -79,6 +95,9 @@ const QuizSchema = new Schema({
     },
     scoreBoard: {
         type: [UserSchema]
+    },
+    comments: {
+        type: [CommentSchema]
     }
 }, {timestamps: true});
 // Validation for questions array size

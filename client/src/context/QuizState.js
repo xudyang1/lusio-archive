@@ -37,7 +37,8 @@ const initialState = {
         likes: 0,
         plays: 0,
         isPublished: false,
-        scoreBoard: []
+        scoreBoard: [],
+        comments: []
     },
     error: null,
     loading: true,
@@ -89,13 +90,13 @@ export const QuizzesProvider = ({ children }) => {
         }
     };
 
-    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore }) {
+    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore });
+        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
             const deepCopyQuiz = cloneDeep(res.data.quiz);
@@ -112,13 +113,13 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished, scoreBoard }) {
+    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished, scoreBoard, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished, scoreBoard });
+        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, retakeOption, questions, likes, plays, isPublished, scoreBoard, comments });
         try {
             const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
             //deep copy of nested quiz

@@ -1,12 +1,13 @@
 import React , { useContext, useEffect} from 'react';
 import { AuthContext } from "../../context/AuthState";
 import QuizPageContent from "./QuizPageContent";
+import QuizComments from "./QuizComments";
 import QuizReport from "./QuizReport";
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 
 export default function QuizPage(){
-    const {isAuthenticated} = useContext(AuthContext);
+    const {isAuthenticated, user} = useContext(AuthContext);
     
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
@@ -44,6 +45,7 @@ export default function QuizPage(){
                     <QuizPageContent/>
                 </div>
             </div>
+            <QuizComments dataFromQuizPage = {user}/>
         </div>
         )
 }
