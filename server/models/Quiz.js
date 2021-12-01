@@ -30,12 +30,15 @@ const QuestionSchema = new Schema({
 });
 
 // platformId to be added
-// quizScoreboard to be added 
 const QuizSchema = new Schema({
     userId: {
         //type: Schema.Types.ObjectId,
         type: String,
         required: [true]
+    },
+    platformId: {
+        //type: Schema.Types.ObjectId to be changed after connection made with Platform
+        type: String
     },
     name: {
         type: String,

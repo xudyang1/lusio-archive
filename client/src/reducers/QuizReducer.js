@@ -69,7 +69,7 @@ export default function QuizReducer (state, action) {
     case PLAY_QUIZ:
       return {
         ...state,
-        played: true
+        isPlaying: true
       };
     case FINISH_QUIZ:
       return {

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext, Component } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
-import PlayQuizPage from '../playquizpage/PlayQuizPage';
 
 
 class QuizPageContent extends Component{    
@@ -15,15 +14,17 @@ class QuizPageContent extends Component{
             quizImgURI: "",
             description: "",
             author: "",
-            platformId: 0,
+            platformId: "",
             likes: 0,
             liked: false, // need to implement: "liked" depends on user
             plays: 0,
+            played: false, // need to implement: "played" depends on user
             timer: 0,
             numQ: 0,
             scoreBoard: [],
             retakeOption: false,
-            isDisabled: false
+            isDisabled: false,
+            played: false
         };
                 
     }
@@ -33,12 +34,10 @@ class QuizPageContent extends Component{
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
-                    //console.log("result is", result);
                     return result;
                 })
             }
             const quizL = await quizzes();
-            //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
             return quiz[0];
         }
@@ -49,20 +48,20 @@ class QuizPageContent extends Component{
             quizImgURI: quiz.quizImgURI,
             description: quiz.description,
             author: quiz.author,
-            platformId: 0,
+            platformId: quiz.platformId,
             likes: quiz.likes,
             //liked: (depends on user)
             plays: quiz.plays,
             timer: quiz.time,
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
-            //played: this.props.played,
-            retakeOption: quiz.retakeOption
+            //played: (depends on user),
+            retakeOption: quiz.retakeOption,
+            played: this.context.played
         });
         
     }
 
-    /*
     checkRetake = () => {
         console.log(this.state.retakeOption);
         console.log(this.state.played);
@@ -70,7 +69,6 @@ class QuizPageContent extends Component{
             this.setState({isDisabled: true});
         }
     }
-    */
 
     numLikeHandler = async e => {
         e.preventDefault();
@@ -85,11 +83,9 @@ class QuizPageContent extends Component{
     handleLikeState = () => {
         if (!this.state.liked){
             this.setState({likes: this.state.likes+1, liked: true});
-            //console.log("You liked the quiz");
         }
         else {
             this.setState({likes: this.state.likes-1, liked: false});
-            //console.log("You unliked the quiz");
         }
     }
     
@@ -102,21 +98,19 @@ class QuizPageContent extends Component{
             plays: this.state.plays
         };
         await this.context.updateQuiz(updateFQuiz);
-        //console.log("You played a quiz");
+
         document.location.href = "/play/" + this.state.id;
     }
     handlePlayState = () => {
         this.setState({plays: this.state.plays+1});
-        //console.log("You played the quiz");
     }
 
     componentDidMount(){
         const id = this.props.match.params.id;
-        const {getQuizzes, playQuiz} = this.context;
+        const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
 
-        
-        //this.checkRetake();
+        this.checkRetake();
     }
 
     render(){
@@ -128,6 +122,7 @@ class QuizPageContent extends Component{
                             {this.state.name}
                         </p>
                         <p className="row flow-text">
+                            {/*TODO: change to platform's name and navigate to platform onClick */}
                                 Platform {this.state.platformId}
                         </p>
                         <p className="row flow-text">
@@ -197,7 +192,6 @@ class QuizPageContent extends Component{
                         </div>
                     </div>
                 </div>
-               
             </div>
         )
     }

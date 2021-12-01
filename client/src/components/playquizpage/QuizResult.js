@@ -1,23 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
 import "materialize-css/dist/css/materialize.min.css";
-import PlayQuizContent from './PlayQuizContent';
 import { QuizzesContext } from '../../context/QuizState';
 import { AuthContext } from '../../context/AuthState';
 
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import M from 'materialize-css';
 
 export default function QuizResult(){
-    const { isPlaying , score , timeSpent, updateQuiz, getQuiz, played} = useContext(QuizzesContext);
+    const { isPlaying , score , timeSpent, updateQuiz, getQuiz} = useContext(QuizzesContext);
     const { isAuthenticated, user } = useContext(AuthContext);
     const [isVisible, setVisibility] = useState("hidden");
     const { id } = useParams();
-    const history = useHistory();
 
     const routeToQuiz = (e) => {
-        //console.log("played?", played);
-        //console.log(history);
-        //history.push("/quiz/"+id, {played: played});
         document.location.href = "/quiz/" + id;
         
     }
@@ -31,7 +26,6 @@ export default function QuizResult(){
         const quiz = quizContent.data;
         const canRetake = quiz.retakeOption;
         
-        //console.log("can retake?", canRetake);
         if(canRetake){
             setVisibility("visible"); 
         }
@@ -69,8 +63,6 @@ export default function QuizResult(){
             break;
           }
         }
-        //console.log(initialSB);
-        //console.log("updated scoreboard", initialSB.slice(0,3));
         updateScoreboard(initialSB.slice(0,3));
       }
     
@@ -100,7 +92,7 @@ export default function QuizResult(){
                     <div className="modal-content">
                         <h6>You finished taking the quiz</h6>
                         <h3>Your Score {score}</h3>
-                        <h5>Time Spent: {timeSpent}</h5>
+                        <h5>Time Spent: <br/> {Math.floor(timeSpent/3600)}hours {Math.floor(timeSpent/60)}minutes {timeSpent%60}seconds</h5>
                         <a className="waves-effect waves-light btn" onClick={forRankCheck}>
                             Update Score on Scoreboard
                         </a>

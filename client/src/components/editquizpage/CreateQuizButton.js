@@ -7,16 +7,17 @@ import "materialize-css/dist/css/materialize.min.css";
 
 
 export const CreateQuizButton = () => {
-    const {isAuthenticated, user, loadUser } = useContext(AuthContext);
-    const { addQuiz, getQuizzes } = useContext(QuizzesContext);
+    const {isAuthenticated, user } = useContext(AuthContext);
+    const { addQuiz } = useContext(QuizzesContext);
     const {updateProfile, profile} = useContext(ProfileContext);
 
     const handleCreate = async e => {
-        //console.log(profile._id)
         e.preventDefault();
 
         const quiz = { 
-            userId: profile._id, 
+            userId: profile._id,
+            //TODO: chang to platform._id 
+            platformId: profile._id, 
             name: "", 
             author: user.name, 
             quizImgURI: "https://c4.wallpaperflare.com/wallpaper/967/372/978/gray-simple-background-gradient-wallpaper-preview.jpg",
@@ -37,20 +38,6 @@ export const CreateQuizButton = () => {
             isPublished: false,
             scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}]
         }; 
-        //showQuestion: false, showAnswer: false, likes: 0, created: new Date().getTime(), EXP: 0, questions: [""], answers: [[""],[""],[""],[""],[""]], isPublished: false};
-        
-        //console.log("Before adding quiz: ", quiz);
-        /*
-        const res = await fetch('/api/quizzes/edit', {
-            method: 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-            },
-            body : JSON.stringify(quiz)
-        });
-        const body = await res;
-        console.log(body);
-        */
         
         const getID = () => {
             return (addQuiz(quiz))
@@ -61,8 +48,6 @@ export const CreateQuizButton = () => {
 
         const id = await getID();
 
-        //implement for adding quizzes to profile section
-        //>>>>>quizzesCreated
         updateProfile({
             mode: "ADD",
             profile:{
@@ -70,9 +55,8 @@ export const CreateQuizButton = () => {
                 quizzesCreated: id
             }
         })
-        //>>>>>>>>>>>>
+
         document.location.href = "/edit/" + id;
-        //return id;
     }
 
     useEffect(() => {
@@ -86,7 +70,7 @@ export const CreateQuizButton = () => {
     return(
         <div>
             <a className="waves-effect waves-light btn modal-trigger" href="#quizModal">
-                Create New Quiz
+                Create New Quiz 
             </a>
             <div id="quizModal" className="modal">
                 {isAuthenticated ? (

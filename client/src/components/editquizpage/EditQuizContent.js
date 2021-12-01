@@ -1,7 +1,7 @@
-import React, {useContext, useState, useEffect, Component} from 'react';
+import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
-
+import { createRef } from 'react';
 
 class EditQuizContent extends Component{
     static contextType = QuizzesContext;
@@ -13,7 +13,7 @@ class EditQuizContent extends Component{
             userId: "",
             name: "",
             author: "",
-            quizImgURI: null,
+            quizImgURI: "",
             description: "",
             timedOption: false,
             time: 0,
@@ -29,6 +29,7 @@ class EditQuizContent extends Component{
             isPublished: false,
             openModal: false
         };
+        this.changedImgURI = createRef(this.state.quizImgURI);
     }
     
     getItem = async (id, getQuizzes) => {
@@ -36,18 +37,14 @@ class EditQuizContent extends Component{
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
-                    //console.log("result is", result);
                     return result;
                 })
             }
             const quizL = await quizzes();
-            //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            //console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        //console.log("current quiz is ", quiz);
         this.setState({
             id: quiz._id,
             userId: quiz.userId,
@@ -64,13 +61,29 @@ class EditQuizContent extends Component{
             isPublished: quiz.isPublished,
             openModal: false
         });
-        //console.log("quiz questions are", this.state.questions);
-        //console.log("current state is ", this.state);
     }
-    handleDelete = async e => {
+    
+    handleDeleteIndQuiz = async e => {
         e.preventDefault();
         await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
+    }
+    
+    //remove Quiz from userProfile db
+    handleDelete = (e) => {
+        e.preventDefault();
+        //Usage of multiple contexts in extended Component
+        //updateProfile = passedFunc 
+        this.props.passedFunc({
+            mode: "DELETE",
+            profile:{
+                owner: this.state.userId,
+                quizzesCreated: this.state.id
+            }
+        })
+
+        //Delete independent Quiz db
+        this.handleDeleteIndQuiz(e);
     }
 
     nameHandler = (e) => {
@@ -89,9 +102,6 @@ class EditQuizContent extends Component{
         this.setState({questions: list});
     }
     handleAnswerRemove = (qi, item) => {
-        //const list = [...this.state.answers];
-        //if(list.length > 1){list.splice(item, 1);}
-        //this.setState({answers: list});
         let list = [...this.state.questions];
         let oldItem = {...list[qi]};
         oldItem.choices.pop();
@@ -102,30 +112,22 @@ class EditQuizContent extends Component{
 
     handleAddQuestion = () => {
         this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
-        //console.log("Current state",this.state);
     }
     handleQuestionRemove = () => {
         const list = [...this.state.questions];
-        //const alist = [...this.state.answers];
         if(list.length > 1){ list.splice(list.length-1, 1);}
-        //if(list.length > 1){list.splice(item, 1); alist.splice(item, 1);}
         this.setState({questions: list});
-        //this.setState({answers: alist})
     }
     questionHandler = (qi, e) => {
         this.state.questions[qi].title = e;
-        //console.log(this.state.questions);
     }
     answerHandler = (qi,ai,e) => {
         this.state.questions[qi].choices[ai].content = e;
-        //console.log(this.state.questions[qi].answers);
     } 
 
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
         this.setState({timedOption: this.state.timedOption});
-        
-        //console.log(this.state);
     }
     timeHandler = (e) => {
         if (this.state.timedOption){
@@ -143,22 +145,28 @@ class EditQuizContent extends Component{
     retakeHandler = () => {
         this.state.retakeOption = !this.state.retakeOption;
         this.setState({retakeOption: this.state.retakeOption});
-        //console.log(this.state);
     }
     scoreHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].score = Number(e.target.value);
-        //console.log(this.state.questions);
     }
     answerKeyHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].answerKey = Number(e.target.value);
-        //console.log(this.state.questions);
     }
+
+    //TODO: discuss if file upload is necessary
+    //solution to memory leak needed/ server: Image Schema
+    /*
     quizImgHandler = (e) => {
-        this.setState({quizImgURI: URL.createObjectURL(e.target.files[0])});
-        console.log(typeof this.state.quizImgURI);
+        if (e.target.files[0] != null){
+            this.setState({quizImgURI: URL.createObjectURL(e.target.files[0])});
+            console.log(typeof this.state.quizImgURI);      
+        }    
     }
+    */
+
+
     /*
     //Wishlist
     showQHandler = () => {
@@ -175,7 +183,7 @@ class EditQuizContent extends Component{
 
     handleSave = async e => {
         e.preventDefault();
-        //console.log("current quiz: ", this.state);
+        console.log("current quiz publish statement: ", this.state.isPublished);
         
         const { updateQuiz } = this.context;
         const updateFQuiz = {
@@ -183,7 +191,7 @@ class EditQuizContent extends Component{
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
-            quizImgURI: this.state.quizImgURI,
+            quizImgURI: this.changedImgURI.current.value,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
@@ -198,50 +206,13 @@ class EditQuizContent extends Component{
     }
     handlePublish = (e) => {
         e.preventDefault();
-        this.state.isPublished = true;
-        //console.log("current quiz: ", this.state);
-        
-        const { updateQuiz } = this.context;
-        const updateFQuiz = {
-            id: this.state.id,
-            userId: this.state.userId,
-            name: this.state.name,
-            author: this.state.author,
-            quizImgURI: this.state.quizImgURI,
-            description: this.state.description,
-            timedOption: this.state.timedOption,
-            time: this.state.time,
-            retakeOption: this.state.retakeOption,
-            questions: this.state.questions, 
-            likes: this.state.likes,
-            plays: this.state.plays,
-            isPublished: this.state.isPublished
-        };
-        updateQuiz(updateFQuiz);
-        
+        this.setState({isPublished: true}, () => this.handleSave(e));
+        console.log("check state update", this.context.quiz);
     }
     handleUnpublish = (e) => {
         e.preventDefault();
-        this.state.isPublished = false;
-        //console.log("current quiz: ", this.state);
         
-        const { updateQuiz } = this.context;
-        const updateFQuiz = {
-            id: this.state.id,
-            userId: this.state.userId,
-            name: this.state.name,
-            author: this.state.author,
-            quizImgURI: this.state.quizImgURI,
-            description: this.state.description,
-            timedOption: this.state.timedOption,
-            time: this.state.time,
-            retakeOption: this.state.retakeOption,
-            questions: this.state.questions, 
-            likes: this.state.likes,
-            plays: this.state.plays,
-            isPublished: this.state.isPublished
-        };
-        updateQuiz(updateFQuiz);
+        this.setState({isPublished: false}, () => this.handleSave(e));
     }
     
     onOpenModal = e => {
@@ -272,7 +243,8 @@ class EditQuizContent extends Component{
                     </div>
                     <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
                         <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/>
-                        <input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>
+                        {/*<input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>*/}
+                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} />
                     </div>
                     <div className="col s3" style={{paddingLeft: '100px', paddingTop: '30px'}}>
                         <form action="#">

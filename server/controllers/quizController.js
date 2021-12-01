@@ -78,6 +78,7 @@ exports.addQuiz = async (req, res, next) => {
         
         const newQuiz = new Quiz({
             userId: req.body.userId,
+            platformId: req.body.platformId,
             name: req.body.name,
             author: req.body.author,
             quizImgURI: req.body.quizImgURI,
@@ -99,6 +100,7 @@ exports.addQuiz = async (req, res, next) => {
             quiz: {
                 id: savedQuiz._id,
                 userId: savedQuiz.userId,
+                platformId: savedQuiz.platformId,
                 name: savedQuiz.name,
                 author: savedQuiz.author,
                 quizImgURI: savedQuiz.quizImgURI,
@@ -123,6 +125,7 @@ exports.updateQuiz = async (req, res, next) => {
     const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
         id: req.body.id,
         userId: req.body.userId,
+        platformId: req.body.platformId,
         name: req.body.name,
         author: req.body.author,
         quizImgURI: req.body.quizImgURI,

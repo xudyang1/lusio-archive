@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext, Component } from 'react';
-//import { useParams } from 'react-router';
+import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
 import QuizResult from './QuizResult';
@@ -28,6 +27,7 @@ class PlayQuizContent extends Component{
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
+
     }
 
     //const { id } = useParams();
@@ -57,18 +57,15 @@ class PlayQuizContent extends Component{
             const quizzes = () => {
                 return getQuizzes()
                 .then(function(result){
-                    //console.log("result is", result);
                     return result;
                 })
             }
             const quizL = await quizzes();
-            //console.log("QuizList is ",quizL.data);
             const quiz = quizL.data.filter(q => q._id === id);
-            //console.log("Quiz", quiz[0]);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        //console.log("current quiz is ", quiz);
+
         this.setState({
             id: quiz._id,
             name: quiz.name,
@@ -83,9 +80,7 @@ class PlayQuizContent extends Component{
             quizTime: this.convertTime(quiz.time),
             initialTime: quiz.time
         });
-        this.startTimer();
-
-        
+        this.startTimer();   
     }
     
     componentDidMount(){
@@ -94,7 +89,6 @@ class PlayQuizContent extends Component{
         this.getItem(id, getQuizzes); 
         
         playQuiz();
-        //console.log(this.state.quizTime);
     }
 
     //binded(this) for use of props
@@ -143,7 +137,6 @@ class PlayQuizContent extends Component{
     }
 
     onSubmit = (e) => {
-        const { isPlaying } = this.context;
         clearInterval(this.timer);
         console.log(this.state.initialTime - this.state.time);
 
@@ -154,9 +147,7 @@ class PlayQuizContent extends Component{
                 answerCompare.push(checks[i].value);
             }
         }
-        
         this.scoreHandler(answerCompare, this.state.questions);
-        //console.log("onSubmit", isPlaying);
 
         this.setState({isDisabled: true});
         e.preventDefault();
