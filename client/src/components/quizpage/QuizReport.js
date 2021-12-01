@@ -1,4 +1,5 @@
 import React , { Component} from 'react';
+import { withRouter } from "react-router";
 import emailjs from 'emailjs-com';
 
 /* 
@@ -27,7 +28,8 @@ class QuizReport extends Component {
     }
     onChangeValue(e){
         this.setState({
-            selectedOption: e.target.value
+            selectedOption: e.target.value,
+            quizId: this.props.match.params.id
         });
     }
     handleReport(e) {
@@ -35,9 +37,8 @@ class QuizReport extends Component {
         var templateParams = {
             from_name: "Lusio Team",
             from_email: "lusioquiz@gmail.com",
-            message: this.state.selectedOption
+            message: "Quiz " + this.state.quizId + " has been reported for " + this.state.selectedOption
         }
-        // May need to hash 'user_AIO163yEXkq8D7aABTTKl'
         emailjs.send('service_ad57k0p', 'template_iycih3s', templateParams, 'user_AIO163yEXkq8D7aABTTKl').then((res) => {
             console.log('Success', res.status, res.text);
         }, (err) => {
@@ -70,5 +71,5 @@ class QuizReport extends Component {
     }
 }
 
-export default QuizReport;
+export default withRouter (QuizReport);
 
