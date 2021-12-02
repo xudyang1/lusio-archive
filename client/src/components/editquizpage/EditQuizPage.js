@@ -12,7 +12,7 @@ export default function EditQuizPage(){
   //TODO: discuss whether to set
   //auth mode on the server side or control from the client side
   //two mode types if on server: PLAYER_VIEW (can play) | OWNER_VIEW (can edit, can play)
-  const { getQuiz} = useContext(QuizzesContext);
+  const { getQuiz } = useContext(QuizzesContext);
   const { isAuthenticated, user } = useContext(AuthContext);
   const { updateProfile } = useContext(ProfileContext);
   

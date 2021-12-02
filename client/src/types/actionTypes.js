@@ -1,12 +1,15 @@
 // example
 export const QUIZZES_LOADING = 'QUIZZES_LOADING';
 export const GET_QUIZZES = 'GET_QUIZZES';
+export const GET_QUIZZESBYID = 'GET_QUIZZESBYID';
+export const GET_COMMENTBYID = 'GET_COMMENTBYID';
 export const ADD_QUIZ = 'ADD_QUIZ';
 export const DELETE_QUIZ = 'DELETE_QUIZ';
 export const UPDATE_QUIZ = 'UPDATE_QUIZ';
 export const GET_QUIZ = 'GET_QUIZ';
 export const PLAY_QUIZ = 'PLAY_QUIZ';
 export const FINISH_QUIZ = 'FINISH_QUIZ';
+
 // platform
 export const PLATFORMS_LOADING = 'PLATFORMS_LOADING';
 export const GET_PLATFORM = 'GET_PLATFORM';

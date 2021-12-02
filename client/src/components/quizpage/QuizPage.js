@@ -1,5 +1,7 @@
 import React , { useContext, useEffect} from 'react';
 import { AuthContext } from "../../context/AuthState";
+import { QuizzesContext } from '../../context/QuizState';
+import { ProfileContext } from '../../context/ProfileState';
 import QuizPageContent from "./QuizPageContent";
 import QuizComments from "./QuizComments";
 import QuizReport from "./QuizReport";
@@ -8,6 +10,8 @@ import "materialize-css/dist/css/materialize.min.css";
 
 export default function QuizPage(){
     const {isAuthenticated, user} = useContext(AuthContext);
+    const {getQuizzesById} = useContext(QuizzesContext);
+    const {profile, updateProfile} = useContext(ProfileContext);
     
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
@@ -16,6 +20,8 @@ export default function QuizPage(){
         };
         M.Modal.init(elem, options);
         
+        //console.log("Profile Owner", profile._id);
+        getQuizzesById(["61a6ce4830c656b400ab09f4", "61a6cde230c656b400ab09ba"]);
     })
     return(
         <div className="container z-depth-3" >
@@ -45,7 +51,7 @@ export default function QuizPage(){
                     <QuizPageContent/>
                 </div>
             </div>
-            <QuizComments dataFromQuizPage = {user}/>
+            <QuizComments userName={user.name} userId={profile._id} passedFunc={updateProfile}/>
         </div>
         )
 }

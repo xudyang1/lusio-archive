@@ -1,6 +1,8 @@
 import { GET_QUIZZES, 
   GET_QUIZ,
-  QUIZZES_LOADING, 
+  GET_QUIZZESBYID,
+  QUIZZES_LOADING,
+  GET_COMMENTBYID, 
   ADD_QUIZ, 
   DELETE_QUIZ, 
   UPDATE_QUIZ,
@@ -28,7 +30,15 @@ export default function QuizReducer (state, action) {
 //<<<<<<< LiuxinLi
         quiz: state.quizzes.filter(quiz => quiz._id === action.payload),
         loading: false
-      }
+      };
+    case GET_QUIZZESBYID:
+      return {
+        ...state,
+      };
+    case GET_COMMENTBYID:
+      return {
+        ...state
+      };
 // =======
 //         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)
 //       };

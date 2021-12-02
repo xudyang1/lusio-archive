@@ -46,7 +46,6 @@ export const CreateQuizButton = () => {
                 return res;
             })
         }
-
         const id = await getID();
 
         updateProfile({

@@ -58,12 +58,13 @@ class QuizComments extends Component{
         console.log("USER: " + this.state.currUserId + " " + this.state.currUserName);
     }
     handleSubmit = async e => {
+        console.log(this.props.userId);
         e.preventDefault();
         let list = [...this.state.comments];
         list.push({
             id: this.state.comments.length,
-            userId: this.state.currUserId,
-            userName: this.state.currUserName,
+            userId: this.props.userId,
+            userName: this.props.userName,
             text: this.state.commentValue
         });
 
@@ -71,12 +72,42 @@ class QuizComments extends Component{
     }
     handleSave = async e => {
         e.preventDefault();
-        const {updateQuiz, getQuizzes} = this.context;
+        const {updateQuiz, getCommentById} = this.context;
         const updateFQuiz = {
             id: this.state.quizId,
             comments: this.state.comments
         }
         updateQuiz(updateFQuiz);
+
+        getCommentById(this.state.quizId).then(commentId => {
+            //update Profile
+            this.props.passedFunc({
+                mode: "ADD",
+                profile:{
+                    owner: this.props.userId,
+                    commentsCreated: commentId
+                }
+            });
+            /*
+            const lastInd = this.state.comments.length - 1;
+            const comment = this.state.comments[lastInd];
+            const commentUpdate = {
+                id: result,
+                userId: comment.userId,
+                userName: comment.userName,
+                text: comment.commentValue
+            }
+            this.state.comments.splice(lastInd, 0, commentUpdate);
+
+            const updateAfterComment = {
+                id: this.state.quizId,
+                comments: this.state.comments
+            }
+            updateQuiz(updateAfterComment);
+            */
+            //this.setState({id: result}, ()=>console.log("Comment Id",this.state.commentValue) );
+        });
+        
     }
     /*handleClick() {
         this.setState({
@@ -84,6 +115,19 @@ class QuizComments extends Component{
         });
     }*/
     handleDeleteComment = (e, id) => {
+        const {getCommentById} = this.context;
+        
+        getCommentById(this.state.quizId).then(result => {
+            //update Profile
+            this.props.passedFunc({
+                mode: "DELETE",
+                profile:{
+                    owner: this.props.userId,
+                    commentsCreated: result
+                }
+            });
+        });
+        
         let list = [...this.state.comments];
         list = list.filter(list => list.id !== id);
         this.setState({comments: list}, () => this.handleSave(e));

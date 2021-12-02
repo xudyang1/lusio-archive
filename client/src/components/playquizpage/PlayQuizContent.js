@@ -30,12 +30,6 @@ class PlayQuizContent extends Component{
 
     }
 
-    //const { id } = useParams();
-    // useEffect(() => {
-    //     getQuiz(id)
-    //     //console.log(quiz)
-    // }, []);
-
     convertTime(secs){
         let hours = Math.floor(secs / 3600);
         

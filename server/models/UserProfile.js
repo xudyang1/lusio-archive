@@ -12,6 +12,8 @@ const UserProfileSchema = new Schema({
     name: { type: String, required: [true, 'User name is missing'] },
     platformsCreated: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],
     quizzesCreated: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+    //>>>>>>>>>>>>>>>>>>>>>>ADDONS to be checked
+    commentsCreated: [{type: Schema.Types.ObjectId}],
     // TODO: uncomment this part after adding report system
     // accountStatus: { type: String, enum: ['active', 'suspended'], default: 'active' },
     description: { type: String, default: 'Hello, World!' },

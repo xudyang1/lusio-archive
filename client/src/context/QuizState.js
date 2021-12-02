@@ -4,7 +4,9 @@ import {
     QUIZZES_LOADING,
     GET_QUIZZES,
     GET_QUIZ,
+    GET_QUIZZESBYID,
     UPDATE_QUIZ,
+    GET_COMMENTBYID,
     ADD_QUIZ,
     DELETE_QUIZ,
     PLAY_QUIZ,
@@ -72,14 +74,16 @@ export const QuizzesProvider = ({ children }) => {
     };
     async function getQuiz(id, updateState=true) {
         try {
-            if(updateState)
-            dispatch(setQuizzesLoading());
+            if(updateState){
+                dispatch(setQuizzesLoading());
+            }
             const res = await axios.get(`/api/quizzes/edit/${id}`);
-            if(updateState)
-            dispatch({
-                type: GET_QUIZ,
-                payload: id
-            });
+            if(updateState){
+                dispatch({
+                    type: GET_QUIZ,
+                    payload: id
+                });
+            }
             return res.data;
         } catch (err) {
             console.error(err);
@@ -89,6 +93,39 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     };
+    //>>>>>>>>>>>>>>>>>>>>>>>>for Displaying Quizzes on Platform
+    async function getQuizzesById(quizIdList) {
+        try {
+            const quizL = [];
+            for (let i = 0; i < quizIdList.length; i++) {
+                const id = quizIdList[i];
+                const res = await axios.get(`/api/quizzes/edit/${id}`);
+                quizL.push(res.data.data);
+                console.log(quizL);
+            }
+            return quizL;
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS,
+                paylod: { msg: err.message, status: err.name}
+            })
+        }
+    }
+    async function getCommentById(quizId) {
+        try {
+            const res = await axios.get(`/api/quizzes/edit/${quizId}`);
+            //console.log("getComment", res.data);
+            const comments = res.data.data.comments;
+            const currentCom = comments[comments.length-1];
+            //console.log("CurrentComment", currentCom);
+            return currentCom._id;
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS,
+                paylod: { msg: err.message, status: err.name}
+            })
+        }
+    }
 
     async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
         const config = {
@@ -190,6 +227,8 @@ export const QuizzesProvider = ({ children }) => {
         timeSpent: state.timeSpent,
         getQuizzes,
         getQuiz,
+        getQuizzesById,
+        getCommentById,
         addQuiz,
         updateQuiz,
         deleteQuiz,
