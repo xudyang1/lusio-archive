@@ -1,18 +1,13 @@
-import React, { Component } from 'react';
-import { Link, Route, Switch } from "react-router-dom";
+import React from 'react';
+import { Route, Switch } from "react-router-dom";
 import ProfileSidebar from './ProfileSidebar';
-import ProfileHeader from './ProfileHeader';
 
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 
 import { useHistory, useParams, useRouteMatch } from 'react-router';
 import { ProfileContext } from '../../context/ProfileState';
-import GeneralSections from '../common/GeneralSections';
-
-
-import M from 'materialize-css';
-import SectionList from '../common/SectionList';
+import SectionList from '../sections/SectionList'
 import ProfileHome from './ProfileHome';
 import SettingsPage from './SettingsPage';
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from '../../types/cardTypes';
@@ -37,63 +32,23 @@ export default function ProfilePage() {
     const { createPlatform, getPlatform } = useContext(PlatformContext)
 
 
-    function getQuizzes(items) {
+    async function getQuizzes(items) {
         var templist = []
-        items.forEach(element => {
-            element = getQuiz(element, false)
-            //console.log(element)
-            element.then(value => {
-                templist.push(
-                    {
-                        name: value.data.name,
-                        id: value.data._id,
-                        description: value.data.description,
-                        author: value.data.author,
-                        likes: value.data.likes,
-                        dateCreated: value.data.createdAt
-                    }
-                )
-            })
-        });
-        templist.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
-        console.log("SENDING QUIZZES TO PROP", templist)
+
         return templist
     }
 
-    function getPlatformInformation(items){
+    async function getPlatformInformation(items) {
         var templist = []
-        items.forEach(element => {
-            element = getPlatform(element, false)
-            //console.log(element)
-            element.then(value => {
-                templist.push(
-                    {
-                        name: value.platform.name,
-                        id: value.platform._id,
-                        description: value.platform.description,
-                        owner: value.platform.owner,
-                        likes: value.platform.likes,
-                        dateCreated: value.platform.createdAt
-                    }
-                )
-            })
-        });
-        templist.sort((a, b) => (a.dateCreated > b.dateCreated) ? 1 : -1)
-        //console.log(templist)
+
         return templist
     }
 
     useEffect(() => {
         getProfile(id);
-        //console.log(user.id, id)
-    }, [isAuthenticated])
-
-    // useEffect(()=>{
-    //     history.push(`/platform/${_id}`)
-    // }, [createPlatform])
+    }, [isAuthenticated, loadUser])
 
     async function createPlat(e) {
-        //console.log("Creating a new platform")
         const init = {
             platform: {
                 name: "new platform",
@@ -111,9 +66,9 @@ export default function ProfilePage() {
             {(viewType === "OWNER_VIEW") ? <ProfileSidebar profileIconURI={profile.iconURI} leve={profile.level} path={url} /> : <div />}
             <div className="container z-depth-3">
                 <Switch>
-                    <Route exact path={url}><ProfileHome quizzes={getQuizzes(profile.quizzesCreated)} profile={profile} name={profile.name} /></Route>
-                    <Route path={url + "/allquiz"}><SectionList items={getQuizzes(profile.quizzesCreated)} name={"All Quizzes"} type={QUIZ_CARD} callback={"createQuiz"} /></Route>
-                    <Route path={url + "/allplatforms"}><SectionList items={getPlatformInformation(profile.platformsCreated)} name={"All Platforms"} type={SUB_PLAT_CARD} callback={"createPlat"} callbackFunc={createPlat} /></Route>
+                    <Route exact path={url}><ProfileHome profile={profile} name={profile.name} /></Route>
+                    <Route path={url + "/allquiz"}><SectionList items={profile.quizzesCreated} name={"All Quizzes"} type={QUIZ_CARD} callback={"createQuiz"} /></Route>
+                    <Route path={url + "/allplatforms"}><SectionList items={profile.platformsCreated} name={"All Platforms"} type={SUB_PLAT_CARD} callback={"createPlat"} callbackFunc={createPlat} /></Route>
                     <Route path={url + "/achievements"}><SectionList items={profile.achievements} name={"Achievements"} type={ACHIEVEMENT_CARD} /></Route>
                     <Route path={url + "/subusers"}><SectionList items={profile.subscribedUsers} name={"Subscribed Users"} type={SUB_USER_CARD} /></Route>
                     <Route path={url + "/subplats"}><SectionList items={profile.subscribedPlatforms} name={"Subscribed Platforms"} type={SUB_PLAT_CARD} /></Route>

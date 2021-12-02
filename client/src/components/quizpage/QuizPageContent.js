@@ -98,7 +98,6 @@ class QuizPageContent extends Component{
             plays: this.state.plays
         };
         await this.context.updateQuiz(updateFQuiz);
-
         document.location.href = "/play/" + this.state.id;
     }
     handlePlayState = () => {

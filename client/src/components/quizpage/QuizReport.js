@@ -18,7 +18,7 @@ Access Token: 8085dcbe2ea1b481db538284cd2407ce
 
 
 class QuizReport extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             selectedOption: ""
@@ -26,7 +26,7 @@ class QuizReport extends Component {
         this.onChangeValue = this.onChangeValue.bind(this);
         this.handleReport = this.handleReport.bind(this);
     }
-    onChangeValue(e){
+    onChangeValue(e) {
         this.setState({
             selectedOption: e.target.value,
             quizId: this.props.match.params.id
@@ -46,26 +46,26 @@ class QuizReport extends Component {
         })
     }
 
-    render(){
-        return(
-            <form onSubmit={this.handleReport} style={{textAlign:"left", margin:"15px"}}>
+    render() {
+        return (
+            <form onSubmit={this.handleReport} style={{ textAlign: "left", margin: "15px" }}>
                 <label>
-                    <input value="Abusive Community" name="group1" type="radio" checked={this.state.selectedOption === "Abusive Community"} onChange={this.onChangeValue}/>
+                    <input value="Abusive Community" name="group1" type="radio" checked={this.state.selectedOption === "Abusive Community"} onChange={this.onChangeValue} />
                     <span>Abusive Community</span>
                 </label>
                 <label>
-                    <input value="Copyright Infringement" name="group1" type="radio" checked={this.state.selectedOption === "Copyright Infringement"} onChange={this.onChangeValue}/>
+                    <input value="Copyright Infringement" name="group1" type="radio" checked={this.state.selectedOption === "Copyright Infringement"} onChange={this.onChangeValue} />
                     <span>Copyright Infringement</span>
                 </label>
                 <label>
-                    <input value="Trash / Scam" name="group1" type="radio" checked={this.state.selectedOption === "Trash / Scam"} onChange={this.onChangeValue}/>
+                    <input value="Trash / Scam" name="group1" type="radio" checked={this.state.selectedOption === "Trash / Scam"} onChange={this.onChangeValue} />
                     <span>Trash / Scam</span>
                 </label>
                 <label>
-                    <input value="Sexual or Violent Content" name="group1" type="radio" checked={this.state.selectedOption === "Sexual or Violent Content"} onChange={this.onChangeValue}/>
+                    <input value="Sexual or Violent Content" name="group1" type="radio" checked={this.state.selectedOption === "Sexual or Violent Content"} onChange={this.onChangeValue} />
                     <span>Sexual or Violent Content</span>
                 </label>
-                <button type="submit" className="modal-close waves-effect waves-green btn blue" style={{margin: "30px"}}>SUBMIT</button>
+                <button type="submit" className="modal-close waves-effect waves-green btn blue" style={{ margin: "30px" }}>SUBMIT</button>
             </form>
         );
     }

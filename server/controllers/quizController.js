@@ -53,7 +53,7 @@ exports.addQuiz = async (req, res, next) => {
 
         const questionsToPut = req.body.questions;
         questionsToPut.forEach((q) => {
-            const answersToPut = q.choices; 
+            const answersToPut = q.choices;
             answersToPut.forEach((a) => {
                 dataA.push({
                     content: a.content
@@ -64,7 +64,7 @@ exports.addQuiz = async (req, res, next) => {
                 choices: dataA,
                 answerKey: q.answerKey,
                 score: q.score
-            });      
+            });
         });
 
         const scoreB = [];
@@ -93,9 +93,8 @@ exports.addQuiz = async (req, res, next) => {
             scoreBoard: scoreB,
             comments: req.body.comments
         });
-        
+
         const savedQuiz = await newQuiz.save();
-        //console.log(savedQuiz);
         if (!savedQuiz) throw Error('Something went wrong saving the quiz');
         res.status(200).json({
             quiz: {
@@ -116,8 +115,8 @@ exports.addQuiz = async (req, res, next) => {
                 scoreBoard: savedQuiz.scoreBoard,
                 comments: savedQuiz.comments
             }
-        }); 
-        
+        });
+
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }

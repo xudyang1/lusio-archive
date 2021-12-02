@@ -69,9 +69,7 @@ export const ProfilesProvider = ({ children }) => {
                 type: GET_PROFILES,
                 payload: res.data
             });
-            // console.log("return: ", res.data.data);
         } catch (err) {
-            // console.error(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
@@ -79,19 +77,21 @@ export const ProfilesProvider = ({ children }) => {
         }
     };
 
-    async function getProfile(id) {
+    async function getProfile(id, reload = true) {
         try {
             const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
-            //console.log("res", res);
-            dispatch({
-                type: GET_PROFILE,
-                payload: res.data
-            });
+            if (reload)
+                dispatch({
+                    type: GET_PROFILE,
+                    payload: res.data
+                });
+            return res
         } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
+            if (reload)
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: { msg: err.response.data.msg, status: err.response.status }
+                });
         }
     };
 
@@ -127,23 +127,7 @@ export const ProfilesProvider = ({ children }) => {
         dispatch({
             type: CLEAR_ERRORS
         });
-        // console.log("Called clearErrors()");
     };
-    /** implemented inside AuthState.js */
-    // async function deleteAccount(id) {
-    //     try {
-    //         await axios.delete(`/api/profiles/profile/${id}`);
-    //         dispatch({
-    //             type: DELETE_ACCOUNT,
-    //             payload: id
-    //         });
-    //     } catch (err) {
-    //         dispatch({
-    //             type: GET_ERRORS,
-    //             payload: { msg: err.response.data.msg, status: err.response.status }
-    //         });
-    //     }
-    // };
 
     return (<ProfileContext.Provider value={{
         getProfiles,

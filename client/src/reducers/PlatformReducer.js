@@ -1,10 +1,3 @@
-
-//TODO
-// _____ ___  ___   ___  
-// |_   _/ _ \|   \ / _ \ 
-//   | || (_) | |) | (_) |
-//   |_| \___/|___/ \___/
-
 import { ADD_PLATFORM, DELETE_PLATFORM, GET_ERRORS, GET_PLATFORM, GET_PLATFORMS, UPDATE_PLATFORM, CLEAR_ERRORS, GET_PLATFORM_LIST } from "../types/actionTypes";
 
 const initialState = {
@@ -25,7 +18,6 @@ const initialState = {
     loading: true
 };
 export const PlatformReducer = (state, action) => {
-    console.log(action.type, action.payload)
     switch (action.type) {
         case GET_PLATFORM_LIST:
             return {

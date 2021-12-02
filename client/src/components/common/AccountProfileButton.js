@@ -1,22 +1,23 @@
-import { Component, useContext, useEffect, useState } from "react";
 import React from 'react';
-import { AuthContext } from "../../context/AuthState";
-import { ProfileContext } from "../../context/ProfileState";
-import { useParams, useRouteMatch } from "react-router";
+import { NavLink } from "react-router-dom";
 
+/***
+ * @param props Takes props.user
+ */
+export default function AccountProfileButton(props) {
 
-export default function AccountProfileButton() {
+    // const { user, isAuthenticated } = useContext(AuthContext);
+    // const { profile, getProfile } = useContext(ProfileContext)
 
-    const { user, isAuthenticated } = useContext(AuthContext);
-    const { profile, getProfile } = useContext(ProfileContext)
+    // const { id } = useParams()
+    // const { url, path } = useRouteMatch()
+    const userId = props.userId
 
-    const { id } = useParams()
-    const { url, path } = useRouteMatch()
-
-    useEffect(() => {
-        getProfile(user.profile);
-        // console.log("FROM ACCOUNT BUTTON", profile);
-    }, [isAuthenticated]);
+    const user = props.user? props.user: {
+        iconURI: null,
+        profile: undefined,
+        name: "UNDEF"
+    }
 
     const s = {
         height: "50px",
@@ -27,7 +28,7 @@ export default function AccountProfileButton() {
 
     return (
         <div className="valign-wrapper">
-            <a href={"/profile/" + user.profile} style={s}>
+            <a href={"/profile/" + userId} style={s}>
                 <img className="circle" src={user.iconURI ? user.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
             </a>
             {user.name}

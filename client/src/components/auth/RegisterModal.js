@@ -1,55 +1,44 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useReducer, useRef } from "react";
 import { AuthContext } from '../../context/AuthState';
 import M from "materialize-css";
 import "materialize-css/dist/css/materialize.min.css";
-// import "materialize-css/dist/js/materialize.min.js";
 import "../../css/auth.css";
 import Spinner from "../common/Spinner";
+import { errorInitialState, ErrorReducer } from "../../reducers/ErrorReducer";
+import { clearErrors } from "../../actions/ErrorActions";
+import { register } from "../../actions/AuthActions";
+
+const initialState = {
+    modalInstance: null,
+    name: null,
+    email: null,
+    password: null,
+    loading: false
+};
 
 export const RegisterModal = () => {
-    const initialState = {
-        modalInstance: null,
-        name: null,
-        email: null,
-        password: null,
-        msg: null,
-        loading: false
-    };
+    // normal flow
     const [state, setState] = useState(initialState);
-    // console.log(state);
-    const { register, error, isAuthenticated, clearErrors } = useContext(AuthContext);
+    // error flow
+    const [error, errorDispatch] = useReducer(ErrorReducer, errorInitialState);
+    // auth flow
+    const { authDispatch, isAuthenticated } = useContext(AuthContext);
 
+    // modal init
+    const registerModalRef = useRef(null);
     useEffect(() => {
-        // check for register error
-        // console.log("modal.error msg", state.msg);
-        if (error && error.id === 'REGISTER_FAIL')
-            setState({ ...state, msg: error.msg, loading: false });
-        else
-            setState({ ...state, msg: null, loading: false });
-    }, [error]);
-
-    // init modal & close modal if register success
-    useEffect(() => {
-        if (!isAuthenticated) {
-            // console.log("Loading Modal Init....................");
-            var elem = document.querySelector('#registerModal');
-            // clear errors before open and after close
-            var options = {
-                preventScrolling: false,
-                onOpenStart: clearErrors,
-                onCloseEnd: clearErrors
-            };
-            M.Modal.init(elem, options);
-            // set modal instance
-            state.modalInstance = M.Modal.getInstance(elem);
+        // clear errors before open and after close
+        const options = {
+            preventScrolling: false,
+            onOpenStart: () => errorDispatch(clearErrors()),
+            onCloseEnd: () => errorDispatch(clearErrors())
         };
-        if (isAuthenticated && state.modalInstance.isOpen) {
-            setState({ ...state, loading: false });
-            state.modalInstance.close();
-        }
-    }, [isAuthenticated]);
+        M.Modal.init(registerModalRef.current, options);
+        // set modal instance
+        state.modalInstance = M.Modal.getInstance(registerModalRef.current);
+    }, []);
 
-    // set email & password
+    // set username & email & password
     const handleOnChange = e => {
         setState({ ...state, [e.target.name]: e.target.value });
     };
@@ -59,56 +48,44 @@ export const RegisterModal = () => {
         e.preventDefault();
 
         const user = { name: state.name, email: state.email, password: state.password };
-
-        setState({ ...state, loading: true });
         // attempt to register
-        register(user);
-
-        // const printid = () => {
-        //     return (register(user))
-        //         .then(function (res) {
-        //             console.log(res);
-        //             return res;
-        //         });
-        // };
-        // const id = await printid();
-
-        // // UserProfile will be created at the same time, as the user registers
-        // const userProfile = { userId: id, accountStatus: 1, name: state.name, email: state.email, description: "Enter your description", profileIcon: "https://www.seekpng.com/png/detail/506-5061704_cool-profile-avatar-picture-cool-picture-for-profile.png", profileBanner: "https://i.pinimg.com/736x/87/d1/a0/87d1a0a7b4611165f56f95d5229a72b9.jpg", level: 1, currentExp: 0, maxExp: 1000, achievements: [""], quizzes: [""], subscribedUser: [""], subscribedPlat: [""] };
-        // const res = await fetch('/api/profiles/profile', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(userProfile)
-        // });
-        // const body = await res.text();
-        // console.log(body);
+        setState({ ...state, loading: true });
+        register(user)(authDispatch, errorDispatch);
     };
-    useEffect(()=>{
-        //console.log("LOADING,", state.loading)
-    },[state.loading])
+
+    // check for register error
+    useEffect(() => {
+        setState({ ...state, loading: false });
+    }, [error]);
+
+    // close modal if register success
+    useEffect(() => {
+        if (isAuthenticated && state.modalInstance.isOpen) {
+            setState({ ...state, loading: false });
+            state.modalInstance.close();
+        }
+    }, [isAuthenticated]);
 
     return (
         <div>
             <a className="modal-trigger" href="#registerModal">Register</a>
-            <div id="registerModal" className="modal black-text ">
+            <div id="registerModal" className="modal black-text " ref={registerModalRef}>
                 <div className="modal-content">
                     <h3 className="modalHeader col s12">Register</h3>
                     <div className="row">
                         <div>
-                            {state.msg ? (<p className="deep-orange-text text-accent-4">{state.msg}</p>) : null}
+                            {error.msg && (<p className="deep-orange-text text-accent-4">{error.msg}</p>)}
                         </div>
                         <form className="col s12" onSubmit={handleOnSubmit}>
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">face</i>
-                                <input id="registerName" type="text" className="validate" name="name" onChange={handleOnChange} />
+                                <input id="registerName" type="text" className="validate" name="name" autoComplete="username" onChange={handleOnChange} />
                                 <label htmlFor="registerName">Name</label>
                             </div>
 
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">account_circle</i>
-                                <input id="registerEmail" type="email" className="validate" name="email" onChange={handleOnChange} />
+                                <input id="registerEmail" type="email" className="validate" name="email" autoComplete="email" onChange={handleOnChange} />
                                 <label htmlFor="registerEmail">Email</label>
                             </div>
 
@@ -116,13 +93,13 @@ export const RegisterModal = () => {
                                 <i className="material-icons prefix">
                                     lock_open
                                 </i>
-                                <input id="registerPassword" type="password" className="active validate" name="password" onChange={handleOnChange} />
+                                <input id="registerPassword" type="password" className="active validate" name="password" autoComplete="new-password" onChange={handleOnChange} />
                                 <label htmlFor="registerPassword">Password</label>
                             </div>
-                            {state.loading? <Spinner/> :
-                            (<button className="btn green sendBtn" type="submit" name="action">
-                                REGISTER<span className="material-icons right sendIcon">login</span>
-                            </button>)}
+                            {state.loading ? <Spinner /> :
+                                (<button className="btn green sendBtn" type="submit" name="action">
+                                    REGISTER<span className="material-icons right sendIcon">login</span>
+                                </button>)}
                         </form>
                     </div>
                 </div>

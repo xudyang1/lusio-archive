@@ -78,7 +78,7 @@ export default function QuizResult(){
     useEffect(() => {
         forRetake();
         var elem = document.querySelector('#quizResultModal')
-        var opt = { preventScrolling: false};
+        var opt = { preventScrolling: false };
         M.Modal.init(elem, opt);
     },[])
     return(
@@ -86,7 +86,7 @@ export default function QuizResult(){
             <a className="waves-effect waves-light btn modal-trigger" href="#quizResultModal">
                 Results
             </a>
-            <div id="quizResultModal" className="modal black-text">    
+            <div id="quizResultModal" className="modal black-text">
                 {!isPlaying ?
                 (<div>
                     <div className="modal-content">
