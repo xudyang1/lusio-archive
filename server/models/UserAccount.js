@@ -6,14 +6,14 @@ const UserAccountSchema = new Schema({
     name: {
         type: String, 
         required: [true, 'Please add an username'],
-        // minlength: [3, 'Minimum 3 characters'],
-        maxlength: [15, 'Maximum 15 characters']
+        minlength: [3, 'Name too short: at least 3 characters'],
+        maxlength: [15, 'Name too long: at most 15 characters']
     },
     email: { 
         type: String, 
         required: true, 
         unique: true,
-        maxlength: [256, 'Maximum 256 characters']
+        maxlength: [254, 'Email too long: at most 254 characters']
     },
     password: {
         type: String,

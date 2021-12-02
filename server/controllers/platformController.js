@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Platform = require('../models/Platform');
 const UserProfile = require('../models/UserProfile');
 const { nonNullJson, errorHandler } = require('../utils/jsonTool');

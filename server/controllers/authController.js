@@ -32,14 +32,20 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 exports.register = async (req, res, next) => {
     const { name, email, password } = req.body;
-    console.log(req.body)
+
     try {
         // simple validation
-        if (!name || !email || !password) { console.log("NNN"); return errorHandler(res, 400, 'Please enter all fields!'); }
+        if (!name || !email || !password) { return errorHandler(res, 400, 'Please enter all fields!'); }
 
         // check the existing user
         const user = await UserAccount.findOne({ email });
         if (user) { return errorHandler(res, 400, 'User already exists!'); }
+
+        // TODO: uncomment this when in production
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*-_=,.?])[A-Za-z\d!@#$%^&*-_=,.?]{8,30}$/;
+        if (!password.match(passwordPattern)) {
+            return errorHandler(res, 400, 'Invalid password format!');
+        }
 
         const salt = await bcrypt.genSalt(10);
 

@@ -1,8 +1,14 @@
 .modal-trigger{
     font-size: 1.5em;
 }
-.modal{
+#loginModal{
     width:33vw;
+    height: 800px;
+    font-size: 24px;
+    text-align: center;
+}
+#registerModal{
+    width: 33vw;
     height: 800px;
     font-size: 24px;
     text-align: center;
@@ -62,4 +68,21 @@ input#registerPassword{
     height: 60px;
     width: 180px;
     border-radius: 10px;
+}
+
+.pwdFormat{
+    margin-left: 1.5em;
+    margin-bottom: 2em;
+}
+.pwdFormat .material-icons{
+    font-size: 1.3em;
+}
+
+.pwdFormat ul{
+    text-align: left;
+    font-size: 0.7em;
+    line-height: 1em;
+}
+.pwdFormat ul li{
+    float: none;
 }

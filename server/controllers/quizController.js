@@ -32,7 +32,7 @@ exports.getQuiz = async (req, res, next) => {
             });
         return res.status(404).json({
             success: false,
-            msg: 'The profile does not exist.'
+            msg: 'The quiz does not exist.'
         });
     } catch (err) {
         return res.status(500).json({

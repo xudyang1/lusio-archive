@@ -142,7 +142,7 @@ export const login = ({ email, password }) => async (dispatch, errorDispatch = d
  *                            } 
  *                    }
  *      
- *     Note: email may have different implementation since we need to verify the email address
+ *     NOTE: email may have different implementation since we need to verify the email address
  */
 export const updateUser = (token, payload) => async (dispatch, errorDispatch = dispatch) => {
     try {
