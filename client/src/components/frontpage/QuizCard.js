@@ -6,7 +6,7 @@ import { ProfileContext } from "../../context/ProfileState";
 
 export default function QuizCard(props) {
     const quiz = props.element
-    console.log(quiz)
+    //console.log(quiz)
     const quizName = quiz? quiz.name: "TEMP"
     const quizDescription = quiz? quiz.description: "TEMP"
     const quizId = quiz? quiz._id: 0
@@ -18,7 +18,7 @@ export default function QuizCard(props) {
     useEffect(() => {
         if (userId)
             getProfile(userId, false).then(function (result) {
-                console.log("result from quizcard", result)
+                //console.log("result from quizcard", result)
                 setProfile(result.data.profile)
             })
     }, [])

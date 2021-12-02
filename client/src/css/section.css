@@ -5,6 +5,9 @@
     padding: 10px;
 }
 
-#confirmModal{
-    height: 250px;
+.confirmModal{
+    width:33vw;
+    height: 300px;
+    font-size: 24px;
+    text-align: center;
 }

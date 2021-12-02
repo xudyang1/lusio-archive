@@ -12,6 +12,7 @@ import { AuthProvider } from './context/AuthState';
 import { ProfilesProvider } from './context/ProfileState';
 import { QuizzesProvider } from './context/QuizState';
 import { PlatformProvider } from './context/PlatformState';
+import Footer from './components/common/Footer';
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                         </Switch>
                     </PlatformProvider>
                 </QuizzesProvider>
+                <Footer/>
             </ProfilesProvider>
         </AuthProvider>
     );

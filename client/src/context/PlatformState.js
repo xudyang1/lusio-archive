@@ -57,18 +57,21 @@ export const PlatformProvider = ({ children }) => {
     };
 
     // token: can be null
-    async function getPlatformList() {
+    async function getPlatformList(reload = true) {
         try {
             const res = await axios.get('/api/platforms/platformList', tokenConfig(token));
-            dispatch({
-                type: GET_PLATFORM_LIST,
-                payload: res.data
-            });
+            if (reload)
+                dispatch({
+                    type: GET_PLATFORM_LIST,
+                    payload: res.data
+                });
+            return res.data
         } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
+            if (reload)
+                dispatch({
+                    type: GET_ERRORS,
+                    payload: { msg: err.response.data.msg, status: err.response.status }
+                });
         }
     };
     async function getPlatform(id, reload = true) {
@@ -108,24 +111,24 @@ export const PlatformProvider = ({ children }) => {
             });
         }
     };
-    
-   /**
-    *
-    * @payload  req.header('x-auth-token): JWT token
-    *           req.body: 
-    *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
-    *                                    or quizSections: { _id, sectionName, sectionIndex } } }
-    *            Or
-    *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
-    *            Or
-    *            { mode: "DELETE", platform: { admins || quizzes || quizSections: {_id} } }
-    *          res.data:
-    *            {
-    *              success: true,
-    *              mode: "EDIT" || "ADD" || "DELETE"
-    *              content: { description || ... || quizSections: updated data }
-    *            }
-    */
+
+    /**
+     *
+     * @payload  req.header('x-auth-token): JWT token
+     *           req.body: 
+     *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
+     *                                    or quizSections: { _id, sectionName, sectionIndex } } }
+     *            Or
+     *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
+     *            Or
+     *            { mode: "DELETE", platform: { admins || quizzes || quizSections: {_id} } }
+     *          res.data:
+     *            {
+     *              success: true,
+     *              mode: "EDIT" || "ADD" || "DELETE"
+     *              content: { description || ... || quizSections: updated data }
+     *            }
+     */
     async function updatePlatform(platformId, payload) {
         try {
             const body = JSON.stringify(payload);
@@ -134,6 +137,7 @@ export const PlatformProvider = ({ children }) => {
                 type: UPDATE_PLATFORM,
                 payload: res.data
             });
+            console.log(res)
         } catch (err) {
             console.log(err);
             dispatch({

@@ -1,16 +1,23 @@
 import M from "materialize-css";
 import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
+import { PlatformContext } from "../../context/PlatformState";
 import { ProfileContext } from "../../context/ProfileState";
 
 export default function AddQuizToSectionButton(props) {
-    const callback = props.callback
+    const addQuizToPlatform = props.addQuizToPlatform
+    const addQuizToSection = props.addQuizToSection
+
+
+
     const { user } = useContext(AuthContext)
     const { profile, getProfile } = useContext(ProfileContext)
+    const { platform } = useContext(PlatformContext)
     const [listID, setListID] = useState([])
-    const [isLoading, setLoading] = useState(true)
+    const [platformQuizBank, setPlatformBank] = useState([])
 
     const selector = createRef();
+    const selector2 = createRef();
 
     var elems2 = document.querySelectorAll('select');
 
@@ -32,6 +39,14 @@ export default function AddQuizToSectionButton(props) {
         return opts
     }
 
+    function createOptions2() {
+        let opts = []
+        platformQuizBank.forEach((element, index) => {
+            opts.push(<option value={element} key={index}>{element}</option>)
+        })
+        return opts
+    }
+
     useEffect(() => {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {
@@ -43,6 +58,7 @@ export default function AddQuizToSectionButton(props) {
         // var instances2 = M.FormSelect.init(elems2, {});
 
         setListID(profile.quizzesCreated)
+        setPlatformBank(platform.quizzes)
     }, [])
 
     useEffect(() => {
@@ -57,23 +73,26 @@ export default function AddQuizToSectionButton(props) {
                     <h4>Add A Quiz to This Section</h4>
                     <div className="row">
                         <div className="input-field col s9">
-                            <input placeholder="Enter your quizID" type="text" />
-                        </div>
-                        <div className="col s1">
-                            <input type="button" defaultValue="Submit" />
-                        </div>
-                    </div>
-                    <h4>OR</h4>
-                    <div className="row">
-                        <div className="input-field col s9">
                             <select defaultValue="" ref={selector}>
                                 {createOptions()}
                             </select>
                         </div>
                         <div className="col s1">
-                            <input className="modal-close" style={{width: "100px"}} type="button" defaultValue="Submit" onClick={() => {
-                                callback(selector.current.value)
-                                //console.log(selector.current.value)
+                            <input className="modal-close" style={{ width: "100px" }} type="button" defaultValue="Submit" onClick={() => {
+                                addQuizToPlatform(selector.current.value)
+                            }} />
+                        </div>
+                    </div>
+                    <h4>OR</h4>
+                    <div className="row">
+                        <div className="input-field col s9">
+                            <select defaultValue="" ref={selector2}>
+                                {createOptions2()}
+                            </select>
+                        </div>
+                        <div className="col s1">
+                            <input className="modal-close" style={{ width: "100px" }} type="button" defaultValue="Submit" onClick={() => {
+                                addQuizToSection(selector2.current.value)
                             }} />
                         </div>
                     </div>

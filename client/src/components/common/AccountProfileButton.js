@@ -28,9 +28,9 @@ export default function AccountProfileButton(props) {
 
     return (
         <div className="valign-wrapper">
-            <NavLink to={"/profile/" + user.profile} style={s}>
+            <a href={"/profile/" + userId} style={s}>
                 <img className="circle" src={user.iconURI ? user.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
-            </NavLink>
+            </a>
             {user.name}
         </div>
     )

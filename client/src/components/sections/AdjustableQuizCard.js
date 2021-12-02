@@ -16,7 +16,7 @@ export default function AdjustableQuizCard(props) {
 
     useEffect(()=>{
         end = props.end
-        console.log(props.end)
+        //console.log(props.end)
     })
 
     return (
