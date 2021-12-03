@@ -17,7 +17,8 @@ exports.getProfileCards = async (req, res, next) => {
     try {
         const profileIds = req.query.id;
         // console.log(profileIds)
-        const profileCards = await UserProfile.find({ _id: { $in: profileIds } });
+        const profileCards = await UserProfile.find({ _id: { $in: profileIds } })
+            .select('_id name description iconURI level currentExp maxExp');
 
         const length = profileCards ? profileCards.length : 0;
         return res.status(200).json({
