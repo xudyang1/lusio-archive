@@ -225,7 +225,14 @@ export default function GeneralSections(props) {
                                 : name}
                             </div>
                             {/* {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection(sectionID)}><i className="material-icons">delete</i></a> : <div></div>} */}
-                            {props.security > 0 ? <ConfirmModal key={props.sectionID} msgTitle={"Confirm Delete Section"} msgBody={"This Action is Irreversible, Are you sure you want to delete?"} callback={() => onClickDeleteSection()} /> : <div></div>}
+                            {props.security > 0 ? <ConfirmModal
+                                key={props.sectionID} id={props.sectionID}
+                                msgTitle={"Confirm Delete Section"}
+                                msgBody={"This Action is Irreversible, Are you sure you want to delete?"}
+                                callback={() => onClickDeleteSection()}
+                                button={<a className="right btn-floating btn-small waves-effect waves-light red modal-trigger" href={"#" + props.sectionID + "confirmModal"} style={{ fontSize: "0em" }} ><i className="material-icons">delete</i></a>} />
+                                : <div></div>}
+
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons">expand_less</i></a> : <div></div>}
                             {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons">expand_more</i></a> : <div></div>}
                             {props.security > 0 && !editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => { setEditing(true) }}><i className="material-icons">edit</i></a> : <div></div>}

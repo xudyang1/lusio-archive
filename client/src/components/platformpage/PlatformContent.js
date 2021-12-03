@@ -44,13 +44,6 @@ export default function PlatformContent(props) {
                     <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} platformID={id} element={element.sectionQuizzes} sectionID={element._id} type={QUIZ_CARD}/>
                 ))
             }
-            <script>
-                {
-                    sections.map((element, index) => (
-                        console.log(element)
-                    ))
-                }
-            </script>
             {
                 security > 0 ? <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={onClickAddSection}>add</i></a> : <div></div>
             }

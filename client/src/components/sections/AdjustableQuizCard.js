@@ -14,7 +14,7 @@ export default function AdjustableQuizCard(props) {
     const deleteQuiz = props.delete
     var end = props.end
 
-    useEffect(()=>{
+    useEffect(() => {
         end = props.end
         //console.log(props.end)
     })
@@ -23,7 +23,7 @@ export default function AdjustableQuizCard(props) {
         <div className="row z-depth-3">
             <div className="col s10">
                 <div className="col s1">{position}</div>
-                <div className="col s2">Name: {quiz.name}</div>
+                <div className="col s3">Name: {quiz.name}</div>
                 <div className="col s2">Author: {quiz.author}</div>
                 <div className="col s2">Likes: {quiz.likes}</div>
                 <div className="col s2">PlatformID: {quiz.platform_id}</div>
@@ -43,7 +43,12 @@ export default function AdjustableQuizCard(props) {
                 {position == end ? <a className="right btn-floating btn-small waves-effect waves-light grey disabled"><i className="material-icons">expand_more</i></a> :
                     <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons" onClick={() => moveDown(position)}>expand_more</i></a>}
 
-                <ConfirmModal id={"removeFromSection"+quiz.id} msgTitle={"Confirm Delete Section"} msgBody={"This Action is Irreversible, Are you sure you want to delete?"} callback={()=>deleteQuiz(position)} />
+                <ConfirmModal
+                    id={"removeFromSection" + quiz.id}
+                    msgTitle={"Confirm Delete Section"}
+                    msgBody={"This Action is Irreversible, Are you sure you want to delete?"}
+                    callback={() => deleteQuiz(position)}
+                    button={<a className="right btn-floating btn-small waves-effect waves-light red modal-trigger" href={"#" + "removeFromSection" + quiz.id + "confirmModal"} style={{ fontSize: "0em" }} ><i className="material-icons">delete</i></a>} />
                 {/* <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => deleteQuiz(position)}><i className="material-icons">delete</i></a> */}
             </div>
         </div>

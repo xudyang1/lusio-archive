@@ -10,13 +10,13 @@ import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import { ProfileContext } from "../../context/ProfileState";
 import { useForceUpdate } from "../../utils/useForceUpdate";
 
-function getCards(t, index, element, canEdit) {
+function getCards(t, index, element, args = false) {
     console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={canEdit} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
         case SUB_PLAT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
         case SUB_USER_CARD:
@@ -31,6 +31,7 @@ export default function SectionList(props) {
     const { viewType } = useContext(ProfileContext)
 
     const name = props.name ? props.name : ""
+    const achievementList = []
     const [items, setItems] = useState([])
 
     const getQuizList = async (listOfId) => {
@@ -58,8 +59,8 @@ export default function SectionList(props) {
         // return quiz;
     }
 
-    function renderSwitch(){
-        switch(props.callback){
+    function renderSwitch() {
+        switch (props.callback) {
             case "createQuiz":
                 return <CreateQuizButton />
             case "createPlat":
@@ -69,21 +70,46 @@ export default function SectionList(props) {
 
     useEffect(() => {
         if (props.items) {
-            switch(props.type){
-                case QUIZ_CARD:{
+            switch (props.type) {
+                case QUIZ_CARD: {
                     let quizzes = getQuizList(props.items).then(function (result) {
                         setItems(result)
                     })
-                }break;
-                case SUB_PLAT_CARD:{
+                } break;
+                case SUB_PLAT_CARD: {
                     let plats = getPlatforms(props.items).then(function (result) {
                         console.log(result)
                         setItems(result)
                     })
-                }break;
+                } break;
+                case ACHIEVEMENT_CARD: {
+                    console.log(props.items)
+                } break;
             }
         }
     }, [props.items])
+
+    function getList(list, type) {
+        let res = []
+        switch (type) {
+            case QUIZ_CARD: {
+                list.map((element, index) => (
+                    res.push(getCards(props.type, index, element, viewType == "OWNER_VIEW"))
+                ))
+            } break;
+            case SUB_PLAT_CARD: {
+                list.map((element, index) => (
+                    res.push(getCards(props.type, index, element))
+                ))
+            } break;
+            case ACHIEVEMENT_CARD: {
+                achievementList.map((element, index) => (
+                    res.push(getCards(props.type, index, element, list.includes(element)))
+                ))
+            } break;
+        }
+        return res
+    }
 
     return (
         <div>
@@ -95,10 +121,13 @@ export default function SectionList(props) {
                     </div>
                     <div className="valign-wrapper">
                         <div className="LSection">
-                            {
+                            {/* {
                                 items.map((element, index) => (
                                     getCards(props.type, index, element, viewType == "OWNER_VIEW")
                                 ))
+                            } */}
+                            {
+                                getList(items, props.type)
                             }
                             {/* {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
                             {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>} */}
