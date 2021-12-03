@@ -15,7 +15,6 @@ export default function AccountProfileButton(props) {
 
     const user = props.user? props.user: {
         iconURI: null,
-        profile: undefined,
         name: "UNDEF"
     }
 

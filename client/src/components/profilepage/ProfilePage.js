@@ -70,7 +70,7 @@ export default function ProfilePage() {
                     <Route path={url + "/allquiz"}><SectionList items={profile.quizzesCreated} name={"All Quizzes"} type={QUIZ_CARD} callback={"createQuiz"} /></Route>
                     <Route path={url + "/allplatforms"}><SectionList items={profile.platformsCreated} name={"All Platforms"} type={SUB_PLAT_CARD} callback={"createPlat"} callbackFunc={createPlat} /></Route>
                     <Route path={url + "/achievements"}><SectionList items={profile.achievements} name={"Achievements"} type={ACHIEVEMENT_CARD} /></Route>
-                    <Route path={url + "/subusers"}><SectionList items={profile.subscribedUsers} name={"Subscribed Users"} type={SUB_USER_CARD} /></Route>
+                    {/* <Route path={url + "/subusers"}><SectionList items={profile.subscribedUsers} name={"Subscribed Users"} type={SUB_USER_CARD} /></Route> */}
                     <Route path={url + "/subplats"}><SectionList items={profile.subscribedPlatforms} name={"Subscribed Platforms"} type={SUB_PLAT_CARD} /></Route>
                     <Route path={url + "/liked"}><SectionList items={profile.likedQuizzes} name={"Liked Quizzes"} type={QUIZ_CARD} /></Route>
                     <Route path={url + "/history"}><SectionList items={profile.quizzesTaken} name={"Quiz History"} type={QUIZ_CARD} /></Route>

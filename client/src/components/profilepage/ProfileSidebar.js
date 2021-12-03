@@ -31,7 +31,7 @@ export default function ProfileSidebar(props) {
                 <li><Link to={props.path + "/achievements"}><i className="material-icons">emoji_events</i>My Achievements</Link></li>
                 <li><Link to={props.path + "/liked"}><i className="material-icons">thumb_up</i>Liked Quizzes</Link></li>
                 <li><Link to={props.path + "/history"}><i className="material-icons">history</i>Quiz Hisotry</Link></li>
-                <li><Link to={props.path + "/subusers"}><i className="material-icons">contact_page</i>Subscribed User</Link></li>
+                {/* <li><Link to={props.path + "/subusers"}><i className="material-icons">contact_page</i>Subscribed User</Link></li> */}
                 <li><Link to={props.path + "/subplats"}><i className="material-icons">subscriptions</i>Subscribed Platforms</Link></li>
                 <li><Link to={props.path + "/accountsetting"}><i className="material-icons">settings</i>Account Setting</Link></li>
             </ul>
