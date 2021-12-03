@@ -20,7 +20,6 @@ exports.getQuizCards = async (req, res, next) => {
 
         const fields = ['_id', 'name', 'author', 'platform', 'description', 'tags', 'likes'];
         const quizzes = await Quiz.find({ _id: { $in: req.body.quizzes } }).select(fields);
-        console.log(quizzes)
         const result = selectEntries(quizzes, fields);
 
         return res.status(200).json({
@@ -28,7 +27,6 @@ exports.getQuizCards = async (req, res, next) => {
         });
 
     } catch (err) {
-        console.log(err);
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);

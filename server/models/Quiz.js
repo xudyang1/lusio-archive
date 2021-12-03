@@ -76,7 +76,6 @@ const QuizSchema = new Schema({
     },
     timedOption: { type: Boolean, default: false },
     time: { type: Number, default: 0 },
-    retakeOption: { type: Boolean, default: false },
     questions:  {
         type: [QuestionSchema], 
         validate: [(val) => val.length <= 50, 'Number of questions are limited to 50']

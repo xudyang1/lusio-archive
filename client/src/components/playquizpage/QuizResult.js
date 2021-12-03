@@ -20,20 +20,6 @@ export default function QuizResult(){
         document.location.href = "/play/" + id;
     }
 
-    const forRetake = async e => {
-        //may change after making changes to reducer
-        const quizContent = await getQuiz(id, false);
-        const quiz = quizContent.data;
-        const canRetake = quiz.retakeOption;
-        
-        if(canRetake){
-            setVisibility("visible"); 
-        }
-        if(!canRetake){
-            setVisibility("hidden");
-        }
-    }
-
     //retrieving data of quiz board
     //to update leaderboard
     const forRankCheck = async e => {
@@ -76,9 +62,8 @@ export default function QuizResult(){
     }
 
     useEffect(() => {
-        forRetake();
         var elem = document.querySelector('#quizResultModal')
-        var opt = { preventScrolling: false};
+        var opt = { preventScrolling: false };
         M.Modal.init(elem, opt);
     },[])
     return(
@@ -86,7 +71,7 @@ export default function QuizResult(){
             <a className="waves-effect waves-light btn modal-trigger" href="#quizResultModal">
                 Results
             </a>
-            <div id="quizResultModal" className="modal black-text">    
+            <div id="quizResultModal" className="modal black-text">
                 {!isPlaying ?
                 (<div>
                     <div className="modal-content">
@@ -97,8 +82,7 @@ export default function QuizResult(){
                             Update Score on Scoreboard
                         </a>
                     </div>
-                    <div className="modal-footer">
-                        <a className="waves-effect waves-green btn-flat" style={{visibility: isVisible}} onClick={routeToPlay}>Retake</a>  
+                    <div className="modal-footer">  
                         <a className="modal-close waves-effect waves-green btn-flat" onClick={routeToQuiz}>Return</a>
                     </div>
                 </div>)

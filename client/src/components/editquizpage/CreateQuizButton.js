@@ -24,7 +24,6 @@ export const CreateQuizButton = () => {
             description: "", 
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [{
                 title: "",
                 choices: [{
@@ -42,20 +41,19 @@ export const CreateQuizButton = () => {
         
         const getID = () => {
             return (addQuiz(quiz))
-            .then(function(res){
-                return res;
-            })
+                .then(function (res) {
+                    return res;
+                })
         }
         const id = await getID();
 
         updateProfile({
             mode: "ADD",
-            profile:{
+            profile: {
                 owner: profile._id,
                 quizzesCreated: id
             }
         })
-
         document.location.href = "/edit/" + id;
     }
 
@@ -67,29 +65,29 @@ export const CreateQuizButton = () => {
         M.Modal.init(elem, options);
     }, [])
 
-    return(
+    return (
         <div>
             <a className="waves-effect waves-light btn modal-trigger" href="#quizModal">
                 Create New Quiz 
             </a>
             <div id="quizModal" className="modal">
                 {isAuthenticated ? (
-                <div>
-                    <div className="modal-content">
-                        <h4>Would you like to create a new quiz?</h4>
-                    </div>
-                    <div className="modal-footer">
-                        <a onClick={handleCreate} className="modal-close waves-effect waves-green btn-flat">CREATE</a>
-                    </div>
-                </div>) :
-                (<div>
-                    <div className="modal-content">
-                        <h4>Please login first</h4>
-                    </div>
-                    <div className="modal-footer">
-                        <a className="modal-close waves-effect waves-green btn-flat">OK</a>
-                    </div>
-                </div>)
+                    <div>
+                        <div className="modal-content">
+                            <h4>Would you like to create a new quiz?</h4>
+                        </div>
+                        <div className="modal-footer">
+                            <a onClick={handleCreate} className="modal-close waves-effect waves-green btn-flat">CREATE</a>
+                        </div>
+                    </div>) :
+                    (<div>
+                        <div className="modal-content">
+                            <h4>Please login first</h4>
+                        </div>
+                        <div className="modal-footer">
+                            <a className="modal-close waves-effect waves-green btn-flat">OK</a>
+                        </div>
+                    </div>)
                 }
             </div>
         </div>

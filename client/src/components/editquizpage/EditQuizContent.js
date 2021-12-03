@@ -3,10 +3,10 @@ import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
 import { createRef } from 'react';
 
-class EditQuizContent extends Component{
+class EditQuizContent extends Component {
     static contextType = QuizzesContext;
 
-    constructor(){
+    constructor() {
         super();
         this.state = {
             id: "",
@@ -17,13 +17,12 @@ class EditQuizContent extends Component{
             description: "",
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [{
                 title: "",
-                choices: [""], 
+                choices: [""],
                 answerKey: 1,
                 score: 0
-            }], 
+            }],
             likes: 0,
             plays: 0,
             isPublished: false,
@@ -31,7 +30,7 @@ class EditQuizContent extends Component{
         };
         this.changedImgURI = createRef(this.state.quizImgURI);
     }
-    
+
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
             const quizzes = () => {
@@ -54,7 +53,6 @@ class EditQuizContent extends Component{
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
-            retakeOption: quiz.retakeOption,
             questions: quiz.questions, 
             likes: quiz.likes,
             plays: quiz.plays,
@@ -87,28 +85,28 @@ class EditQuizContent extends Component{
     }
 
     nameHandler = (e) => {
-        this.setState({name: e.target.value});
+        this.setState({ name: e.target.value });
     }
     descriptionHandler = (e) => {
-        this.setState({description: e.target.value});
+        this.setState({ description: e.target.value });
     }
 
-    
+
     handleAddAnswer = (qi, item) => {
         let list = [...this.state.questions];
-        let newItem = {...list[qi]};
-        newItem.choices.push({content: ""});
+        let newItem = { ...list[qi] };
+        newItem.choices.push({ content: "" });
         list[qi] = newItem;
-        this.setState({questions: list});
+        this.setState({ questions: list });
     }
     handleAnswerRemove = (qi, item) => {
         let list = [...this.state.questions];
-        let oldItem = {...list[qi]};
+        let oldItem = { ...list[qi] };
         oldItem.choices.pop();
         list[qi] = oldItem;
-        this.setState({questions: list});
+        this.setState({ questions: list });
     }
-    
+
 
     handleAddQuestion = () => {
         this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
@@ -121,7 +119,7 @@ class EditQuizContent extends Component{
     questionHandler = (qi, e) => {
         this.state.questions[qi].title = e;
     }
-    answerHandler = (qi,ai,e) => {
+    answerHandler = (qi, ai, e) => {
         this.state.questions[qi].choices[ai].content = e;
     } 
 
@@ -142,42 +140,25 @@ class EditQuizContent extends Component{
         
         console.log(this.state.time);
     }
-    retakeHandler = () => {
-        this.state.retakeOption = !this.state.retakeOption;
-        this.setState({retakeOption: this.state.retakeOption});
-    }
+    
     scoreHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].score = Number(e.target.value);
     }
-    answerKeyHandler = (qi,e) => {
+    answerKeyHandler = (qi, e) => {
         e.preventDefault();
         this.state.questions[qi].answerKey = Number(e.target.value);
     }
-
-    //TODO: discuss if file upload is necessary
-    //solution to memory leak needed/ server: Image Schema
-    /*
-    quizImgHandler = (e) => {
-        if (e.target.files[0] != null){
-            this.setState({quizImgURI: URL.createObjectURL(e.target.files[0])});
-            console.log(typeof this.state.quizImgURI);      
-        }    
-    }
-    */
-
 
     /*
     //Wishlist
     showQHandler = () => {
         this.state.showQuestion = !this.state.showQuestion;
         this.setState({showQuestion: this.state.showQuestion});
-        //console.log(this.state);
     }
     showAHandler = () => {
         this.state.showAnswer = !this.state.showAnswer;
         this.setState({showAnswer: this.state.showAnswer});
-        //console.log(this.state);
     }
     */
 
@@ -195,7 +176,6 @@ class EditQuizContent extends Component{
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
-            retakeOption: this.state.retakeOption,
             questions: this.state.questions, 
             likes: this.state.likes,
             plays: this.state.plays,
@@ -211,24 +191,22 @@ class EditQuizContent extends Component{
     }
     handleUnpublish = (e) => {
         e.preventDefault();
-        
         this.setState({isPublished: false}, () => this.handleSave(e));
     }
-    
+
     onOpenModal = e => {
         e.preventDefault();
-        this.setState({openModal: true});
+        this.setState({ openModal: true });
     }
     onCloseModal = e => {
         e.preventDefault();
-        this.setState({openModal: false});
+        this.setState({ openModal: false });
     }
-    componentDidMount(){
+    componentDidMount() {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
-        this.getItem(id, getQuizzes);  
+        this.getItem(id, getQuizzes);
     }
-    
 
     render(){
             return(
@@ -238,7 +216,7 @@ class EditQuizContent extends Component{
                             <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler}/>
                         </div>
                         <div className="section input-field">Description
-                        <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
+                            <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
                         </div>
                     </div>
                     <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
@@ -253,12 +231,6 @@ class EditQuizContent extends Component{
                                     <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
                                     <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.retakeOption} onClick={this.retakeHandler}/>
-                                    <span>Allow retake</span>
                                 </label>
                             </p>
                             {/*
@@ -276,62 +248,63 @@ class EditQuizContent extends Component{
                                 </label>
                             </p>
                              */}
-                        </form>
-                    </div>
-                    
-                    {this.state.questions.map((q, qi) => {
-                        return(
-                            <div className="section col s12" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px'}}>
-                                <textarea type="text" style={{border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px'}} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title}/>
-                                <div className="col s6" style={{padding: '20px'}}>
-                                {this.state.questions[qi].choices.map((a,ai)=> {
+                    </form>
+                </div>
+
+                {this.state.questions.map((q, qi) => {
+                    return (
+                        <div className="section col s12" style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px' }}>
+                            <textarea type="text" style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px' }} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title} />
+                            <div className="col s6" style={{ padding: '20px' }}>
+                                {this.state.questions[qi].choices.map((a, ai) => {
                                     return (
                                         <div className="text-box">
-                                            <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, ai, e.target.value)} defaultValue={q.choices[ai].content}/>
+                                            <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, ai, e.target.value)} defaultValue={q.choices[ai].content} />
                                         </div>
                                     )
                                 })}
                                 <div className="row">
-                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{margin: "5px"}} onClick={(item) => {this.handleAddAnswer(qi, item)}}><i className="material-icons">add</i></button>
-                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{margin: "5px"}} onClick={(item) => {this.handleAnswerRemove(qi, item)}}><i className="material-icons">remove</i></button>
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{ margin: "5px" }} onClick={(item) => { this.handleAddAnswer(qi, item) }}><i className="material-icons">add</i></button>
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{ margin: "5px" }} onClick={(item) => { this.handleAnswerRemove(qi, item) }}><i className="material-icons">remove</i></button>
                                 </div>
-                                
-                                </div>
-                                
-                                <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
-                                    Set Score: {this.state.questions[qi].score}
-                                </div>
-                                <input className="col s1" onChange={(e)=> this.scoreHandler(qi,e)}></input>
-                                <div className="col s5" style={{textAlign: 'right', padding: '30px'}}>
-                                    Set Answer: {this.state.questions[qi].answerKey}
-                                </div>
-                                <input className="col s1" onChange={(e)=> this.answerKeyHandler(qi,e)}></input>
+
                             </div>
-                        )})
-                    }
-                    
-                    <div className="section col s12" style={{padding: "20px"}}>
-                            <div className="col s4">
-                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Undo</a>
-                                <a className="waves-effect waves-light btn-small" style={{margin: "5px"}}>Redo</a>
+
+                            <div className="col s5" style={{ textAlign: 'right', padding: '30px' }}>
+                                Set Score: {this.state.questions[qi].score}
                             </div>
-                            <div className="col s4">
-                                <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={this.handleAddQuestion}><i className="material-icons">add</i></button>
-                                <button className="btn-floating btn-large waves-effect waves-light red" style={{margin: "5px"}} onClick={this.handleQuestionRemove}><i className="material-icons">remove</i></button>
+                            <input className="col s1" onChange={(e) => this.scoreHandler(qi, e)}></input>
+                            <div className="col s5" style={{ textAlign: 'right', padding: '30px' }}>
+                                Set Answer: {this.state.questions[qi].answerKey}
                             </div>
-                            <div className="col s4">
-                                <div className="row">
-                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleSave}>Save</a>
-                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handlePublish} >Publish</a>
-                                    <a className="waves-effect waves-light btn-small" style={{margin: "5px"}} onClick={this.handleUnpublish} >Unpublish</a>
-                                </div>
-                                <button className="waves-effect waves-light btn-small red" style={{margin: "5px"}} onClick={this.handleDelete}>
-                                    Delete
-                                </button>
-                            </div>
+                            <input className="col s1" onChange={(e) => this.answerKeyHandler(qi, e)}></input>
                         </div>
+                    )
+                })
+                }
+
+                <div className="section col s12" style={{ padding: "20px" }}>
+                    <div className="col s4">
+                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Undo</a>
+                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Redo</a>
+                    </div>
+                    <div className="col s4">
+                        <button className="btn-floating btn-large waves-effect waves-light red" style={{ margin: "5px" }} onClick={this.handleAddQuestion}><i className="material-icons">add</i></button>
+                        <button className="btn-floating btn-large waves-effect waves-light red" style={{ margin: "5px" }} onClick={this.handleQuestionRemove}><i className="material-icons">remove</i></button>
+                    </div>
+                    <div className="col s4">
+                        <div className="row">
+                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handleSave}>Save</a>
+                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handlePublish} >Publish</a>
+                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handleUnpublish} >Unpublish</a>
+                        </div>
+                        <button className="waves-effect waves-light btn-small red" style={{ margin: "5px" }} onClick={this.handleDelete}>
+                            Delete
+                        </button>
+                    </div>
                 </div>
-            )
+            </div>
+        )
     }
 }
 

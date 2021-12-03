@@ -53,7 +53,7 @@ exports.addQuiz = async (req, res, next) => {
 
         const questionsToPut = req.body.questions;
         questionsToPut.forEach((q) => {
-            const answersToPut = q.choices; 
+            const answersToPut = q.choices;
             answersToPut.forEach((a) => {
                 dataA.push({
                     content: a.content
@@ -64,7 +64,7 @@ exports.addQuiz = async (req, res, next) => {
                 choices: dataA,
                 answerKey: q.answerKey,
                 score: q.score
-            });      
+            });
         });
 
         const scoreB = [];
@@ -85,7 +85,6 @@ exports.addQuiz = async (req, res, next) => {
             description: req.body.description,
             timedOption: req.body.timedOption,
             time: req.body.time,
-            retakeOption: req.body.retakeOption,
             questions: dataQ,
             likes: req.body.likes,
             plays: req.body.plays,
@@ -93,9 +92,8 @@ exports.addQuiz = async (req, res, next) => {
             scoreBoard: scoreB,
             comments: req.body.comments
         });
-        
+
         const savedQuiz = await newQuiz.save();
-        //console.log(savedQuiz);
         if (!savedQuiz) throw Error('Something went wrong saving the quiz');
         res.status(200).json({
             quiz: {
@@ -108,7 +106,6 @@ exports.addQuiz = async (req, res, next) => {
                 description: savedQuiz.description,
                 timedOption: savedQuiz.timedOption,
                 time: savedQuiz.time,
-                retakeOption: savedQuiz.retakeOption,
                 questions: savedQuiz.questions,
                 likes: savedQuiz.likes,
                 plays: savedQuiz.plays,
@@ -116,8 +113,8 @@ exports.addQuiz = async (req, res, next) => {
                 scoreBoard: savedQuiz.scoreBoard,
                 comments: savedQuiz.comments
             }
-        }); 
-        
+        });
+
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }
@@ -134,7 +131,6 @@ exports.updateQuiz = async (req, res, next) => {
         description: req.body.description,
         timedOption: req.body.timedOption,
         time: req.body.time,
-        retakeOption: req.body.retakeOption,
         questions: req.body.questions,
         likes: req.body.likes,
         plays: req.body.plays,

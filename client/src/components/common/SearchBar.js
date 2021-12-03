@@ -8,7 +8,6 @@ const SearchBar = () => (
             <i className="material-icons">close</i>
         </div>
     </form>
-    
 );
 
 export default SearchBar;

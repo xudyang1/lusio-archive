@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
-import { AuthContext } from "../../context/AuthState";
 import '../../css/quizcomments.css'
 
 
@@ -15,6 +14,7 @@ class QuizComments extends Component{
             currUserId: "",
             currUserName: "",
             commentValue: "",
+            commentId: "",
             comments: [{
                 id: "",
                 userId: "",
@@ -58,28 +58,35 @@ class QuizComments extends Component{
         console.log("USER: " + this.state.currUserId + " " + this.state.currUserName);
     }
     handleSubmit = async e => {
-        console.log(this.props.userId);
         e.preventDefault();
-        let list = [...this.state.comments];
-        list.push({
-            id: this.state.comments.length,
-            userId: this.props.userId,
-            userName: this.props.userName,
-            text: this.state.commentValue
-        });
 
-        this.setState({comments: list}, () => this.handleSave(e));
+        if (this.props.userId==""){ 
+            alert('You need to log in first');
+        }
+        else {
+            let list = [...this.state.comments];
+            list.push({
+                id: this.state.comments.length,
+                userId: this.props.userId,
+                userName: this.props.userName,
+                text: this.state.commentValue
+            });
+
+            this.setState({comments: list}, () => this.handleSave(e));
+        }
     }
     handleSave = async e => {
         e.preventDefault();
         const {updateQuiz, getCommentById} = this.context;
+        console.log(this.state.comments);
         const updateFQuiz = {
             id: this.state.quizId,
             comments: this.state.comments
         }
-        updateQuiz(updateFQuiz);
+        await updateQuiz(updateFQuiz);
 
-        getCommentById(this.state.quizId).then(commentId => {
+        var currentCommId = "";
+        await getCommentById(this.state.quizId).then(commentId=> {
             //update Profile
             this.props.passedFunc({
                 mode: "ADD",
@@ -88,42 +95,51 @@ class QuizComments extends Component{
                     commentsCreated: commentId
                 }
             });
-            /*
-            const lastInd = this.state.comments.length - 1;
-            const comment = this.state.comments[lastInd];
-            const commentUpdate = {
-                id: result,
-                userId: comment.userId,
-                userName: comment.userName,
-                text: comment.commentValue
-            }
-            this.state.comments.splice(lastInd, 0, commentUpdate);
-
-            const updateAfterComment = {
-                id: this.state.quizId,
-                comments: this.state.comments
-            }
-            updateQuiz(updateAfterComment);
-            */
-            //this.setState({id: result}, ()=>console.log("Comment Id",this.state.commentValue) );
-        });
+            currentCommId = commentId;
+        }).catch((e) => console.log(e));
+        //this.handleSaveCommentId(currentCommId);
+    }
+    handleSaveCommentId = (commentId) => {
+        const {updateQuiz} = this.context;
+        const comment = this.state.comments[this.state.comments.length-1];
+        /*
+        const commentUpdate = {
+            id: commentId,
+            userId: comment.userId,
+            userName: comment.userName,
+            text: comment.text
+        }
+        console.log("commentUpdate",commentUpdate);
+        this.state.comments.splice(this.state.comments.length-1, 0, commentUpdate);
+        
+        const updateAfterComment = {
+            id: this.state.quizId,
+            comments: this.state.comments.slice(0,this.state.comments.length-1)
+        }
+        updateQuiz(updateAfterComment);
+        */
         
     }
-
-    handleDeleteComment = (e, id) => {
-        const {getCommentById} = this.context;
+    /*handleClick() {
+        this.setState({
+            showComments: !this.state.showComments
+        });
+    }*/
+    handleDeleteComment = async (e, id) => {
         
-        getCommentById(this.state.quizId).then(result => {
+        const {getCommentById, quiz} = this.context;
+        
+        await getCommentById(this.state.quizId).then(commentId => {
             //update Profile
             this.props.passedFunc({
                 mode: "DELETE",
                 profile:{
                     owner: this.props.userId,
-                    commentsCreated: result
+                    commentsCreated: commentId
                 }
             });
         });
-        
+        //console.log("quiz",quiz.comments[quiz.comments.length-1]._id);
         let list = [...this.state.comments];
         list = list.filter(list => list.id !== id);
         this.setState({comments: list}, () => this.handleSave(e));
@@ -133,8 +149,10 @@ class QuizComments extends Component{
 
     componentDidMount(){
         const id = this.props.match.params.id;
-        const {getQuizzes} = this.context;
+        const {getQuizzes, quiz} = this.context;
         this.getItem(id, getQuizzes);
+        //this.setState({commentId: quiz.comments[quiz.comments.length-1]._id})
+        //this.getUser(this.props.dataFromQuizPage);
     }
 
     render(){
@@ -148,7 +166,9 @@ class QuizComments extends Component{
                             <textarea placeholder="Comment" rows="6" required onChange={this.handleChange}></textarea>
                         </div>
                         <div>
-                            <button type="submit">Post Comment</button>
+                            {this.props.userId != "" ? <button type="submit">Post Comment</button>
+                            :
+                            null}
                         </div>
                     </form>
                     <h6>{this.state.comments.length} Comments</h6>
@@ -158,7 +178,9 @@ class QuizComments extends Component{
                                 <p>{c.userName}</p>
                                 <p>{c.text}</p>
                                 <div>
-                                    <button href="#" className="commentDelete" onClick={(e) => this.handleDeleteComment(e, c.id)}>Delete Comment</button>
+                                    {this.props.userId == c.userId ? <button href="#" className="commentDelete" onClick={(e) => this.handleDeleteComment(e, c.id)}>Delete Comment</button>
+                                    :
+                                    null}
                                 </div>
                             </div>
                         )

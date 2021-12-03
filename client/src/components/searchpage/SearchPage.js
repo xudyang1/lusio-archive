@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import 'materialize-css';
-import SectionList from '../common/SectionList';
+import SectionList from '../sections/SectionList';
 import { QUIZ_CARD } from '../../types/cardTypes';
 import { QuizzesContext } from '../../context/QuizState';
 import { PlatformContext } from '../../context/PlatformState';

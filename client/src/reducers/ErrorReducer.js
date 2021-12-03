@@ -1,26 +1,24 @@
 import { GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
 
-const initialState = {
-    msg: {},
+export const errorInitialState = {
+    msg: null,
     status: null,
     id: null
-}
+};
 
-export const ErrorReducer = (state = initialState, action) => {
-    switch(action.type){
+export const ErrorReducer = (state, { type, payload }) => {
+    console.log("ErrorReducer: type", type);
+    console.log("ErrorReducer: payload", payload);
+    switch (type) {
         case GET_ERRORS:
-            return { 
-                msg: action.payload.msg,
-                status: action.payload.status,
-                id: action.payload.id
-            }
-        case CLEAR_ERRORS:
             return {
-                msg: {},
-                status: null,
-                id: null
+                msg: payload.msg,
+                status: payload.status,
+                id: payload.id
             };
+        case CLEAR_ERRORS:
+            return errorInitialState;
         default:
             return state;
     }
-}
+};

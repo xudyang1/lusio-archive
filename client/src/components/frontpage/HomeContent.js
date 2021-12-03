@@ -1,12 +1,11 @@
-import React, { Component, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 //import PlatformSections from "./PlatformSections";
 import DailyChallengeSection from "./DailyChallengeSection";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import 'materialize-css';
 import '../../css/frontpage.css'
-import GeneralSections from "../common/GeneralSections";
+import GeneralSections from "../sections/GeneralSections";
 import { QUIZ_CARD } from "../../types/cardTypes";
-import { GlobalContext } from "../../context/GlobalState";
 import { PlatformContext } from "../../context/PlatformState";
 
 
@@ -17,7 +16,6 @@ export default function HomeContent() {
 
     useEffect(() => {
         getPlatformList();
-        console.log(platformList)
     }, [])
 
     return (
@@ -25,14 +23,14 @@ export default function HomeContent() {
             <CreateQuizButton />
             <DailyChallengeSection />
             <div className="container">
-                
+            <script>{console.log(platformList)}</script>
                 {
                     // replace tempPlatform with platforms when finished
-                    platformList?
-                    platformList.map((element, index) => (
-                        <GeneralSections key={index} items={element.quizzes} name={element.name} type={QUIZ_CARD} id={element._id} homeContent={true} />
-                    ))
-                    :<div></div>
+                    platformList ?
+                        platformList.map((element, index) => (
+                            <GeneralSections key={index} element={element.quizzes} name={element.name} type={QUIZ_CARD} platformID={element._id} homeContent={true} />
+                        ))
+                        : <div></div>
                 }
             </div>
         </div>

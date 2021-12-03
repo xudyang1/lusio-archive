@@ -32,10 +32,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 exports.register = async (req, res, next) => {
     const { name, email, password } = req.body;
-
+    console.log(req.body)
     try {
         // simple validation
-        if (!name || !email || !password) { return errorHandler(res, 400, 'Please enter all fields!'); }
+        if (!name || !email || !password) { console.log("NNN"); return errorHandler(res, 400, 'Please enter all fields!'); }
 
         // check the existing user
         const user = await UserAccount.findOne({ email });
@@ -63,7 +63,6 @@ exports.register = async (req, res, next) => {
         });
 
         const savedProfile = await profile.save();
-        //console.log("saved profile", savedProfile);
         if (!savedProfile) { return errorHandler(res, 500, 'Something went wrong saving the default profile'); }
 
         // add profile id to user
@@ -89,7 +88,7 @@ exports.register = async (req, res, next) => {
         });
     } catch (err) {
         //console.log(err);
-        if(err.name === 'ValidationError') {
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }
@@ -131,7 +130,7 @@ exports.login = async (req, res, next) => {
         const token = jwt.sign({ id: user._id, profile: user.profile }, JWT_SECRET, { expiresIn: 3600 });
 
         if (!token) { return errorHandler(res, 500, 'Could not sign the token'); }
-    
+
         const userProfile = await UserProfile.findById(user.profile).select('iconURI');
 
         res.status(200).json({
@@ -145,8 +144,8 @@ exports.login = async (req, res, next) => {
             }
         });
     } catch (err) {
-        console.log(err);
-        if(err.name === 'ValidationError') {
+        // console.log(err);
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }
@@ -166,6 +165,7 @@ exports.login = async (req, res, next) => {
  *                              name: String, 
  *                              email: String, 
  *                              profile: ObjectId (the profileId of the user)
+ *                              iconURI: String
  *                            } 
  *                    }
  */
@@ -173,13 +173,11 @@ exports.getUser = async (req, res, next) => {
     try {
         const user = await UserAccount.findById(req.user.id);
         if (!user) { return errorHandler(res, 400, 'User does not exist'); }
-        // console.log("see if password is loaded: ", user);
 
         const profile = await UserProfile.findById(user.profile).select('iconURI');
 
         res.json({
             user: {
-                // id: user._id, not sent
                 name: user.name,
                 email: user.email,
                 profile: user.profile,
@@ -187,7 +185,8 @@ exports.getUser = async (req, res, next) => {
             }
         });
     } catch (err) {
-        if(err.name === 'ValidationError') {
+        // console.log(err)
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }
@@ -238,19 +237,16 @@ exports.updateUser = async (req, res, next) => {
         else {
             return errorHandler(res, 400, 'Invalid payload, update failed');
         }
-        //console.log("Update UserAccount (target)", target);
         const newUser = await UserAccount.findByIdAndUpdate(req.user.id, { $set: target }, { new: true }).select(['name', 'email', 'profile']);
 
-        //console.log(newUser);
 
         if (!newUser) { return errorHandler(res, 500, 'Something went wrong updating user account'); }
 
         // update name field for the profile
-        //console.log("Target.name", target.name)
         if (target.name) {
             const newProfile = await UserProfile.findByIdAndUpdate(newUser.profile, { $set: { name: newUser.name } }, { new: true }).select('name');
             //console.log("new profile.name", newProfile.name)
-            if(!newProfile.name) {errorHandler(res, 500, 'Unable to update name in the profile')}
+            if (!newProfile.name) { errorHandler(res, 500, 'Unable to update name in the profile'); }
         }
 
         return res.status(200).json({
@@ -264,7 +260,7 @@ exports.updateUser = async (req, res, next) => {
     }
     catch (err) {
         //console.log(err)
-        if(err.name === 'ValidationError') {
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }
@@ -294,7 +290,6 @@ exports.deleteUser = async (req, res, next) => {
     try {
         // remove user account
         const removedUser = await UserAccount.findOneAndRemove({ _id: req.user.id });
-        //console.log(removedUser);
         if (!removedUser) { return errorHandler(res, 500, 'Unable to delete the user. The user may not exist'); }
 
         // remove user profile
@@ -303,11 +298,9 @@ exports.deleteUser = async (req, res, next) => {
 
         // remove platforms created
         const rmPlatCounts = await Platform.deleteMany({ _id: removedProfile.platformsCreated });
-        //console.log("removed platforms count:", rmPlatCounts);
 
         // remove quizzes created
         const rmQuizzesCounts = await Quiz.deleteMany({ _id: removedProfile.quizzesCreated });
-        //console.log("removed quizzes count:", rmQuizzesCounts);
 
         // TODO: decrease likes and comments?
         res.json({
@@ -320,7 +313,7 @@ exports.deleteUser = async (req, res, next) => {
             success: true
         });
     } catch (err) {
-        if(err.name === 'ValidationError') {
+        if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }

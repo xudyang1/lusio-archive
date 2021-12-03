@@ -20,8 +20,6 @@ export default function QuizPage(){
         };
         M.Modal.init(elem, options);
         
-        //console.log("Profile Owner", profile._id);
-        getQuizzesById(["61a6ce4830c656b400ab09f4", "61a6cde230c656b400ab09ba"]);
     })
     return(
         <div className="container z-depth-3" >
@@ -51,7 +49,9 @@ export default function QuizPage(){
                     <QuizPageContent/>
                 </div>
             </div>
-            <QuizComments userName={user.name} userId={profile._id} passedFunc={updateProfile}/>
+            {isAuthenticated ? <QuizComments userName={user.name} userId={profile._id} passedFunc={updateProfile}/>
+            : <QuizComments userName="" userId="" passedFunc={updateProfile}/>
+        }
         </div>
         )
 }
