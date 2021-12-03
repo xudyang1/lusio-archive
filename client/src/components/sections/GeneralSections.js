@@ -102,6 +102,7 @@ export default function GeneralSections(props) {
                 }
             }
         }
+        console.log(payload)
         updatePlatform(platformID, payload)
     }
 
@@ -199,6 +200,8 @@ export default function GeneralSections(props) {
                 })
         }
         const quizL = await quizzes();
+        console.log(quizL)
+        console.log(listOfId)
         const quiz = quizL.data.filter(q => listOfId.includes(q._id));
         return quiz;
     }
@@ -207,6 +210,7 @@ export default function GeneralSections(props) {
         if (props.element) {
             switch (type) {
                 case QUIZ_CARD: {
+                    console.log("PROPS", props.element)
                     let quizzes = getQuizList(props.element).then(function (result) {
                         setQuizzesInSection(result)
                     })
