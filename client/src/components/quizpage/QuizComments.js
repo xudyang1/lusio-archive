@@ -109,11 +109,7 @@ class QuizComments extends Component{
         });
         
     }
-    /*handleClick() {
-        this.setState({
-            showComments: !this.state.showComments
-        });
-    }*/
+
     handleDeleteComment = (e, id) => {
         const {getCommentById} = this.context;
         
@@ -139,17 +135,9 @@ class QuizComments extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
-        //this.getUser(this.props.dataFromQuizPage);
     }
 
-    render(){/*
-        let commentItems;
-        let buttonView = 'Show Comments';
-        
-        if (this.state.showComments) {
-            buttonView = 'Hide Comments';
-            commentItems = <div className="commentList">{this.state.comments}</div>;
-        }*/
+    render(){
         return(
             <div>
                 <div className="commentSection">
@@ -175,13 +163,6 @@ class QuizComments extends Component{
                             </div>
                         )
                     })}
-                    {/*<button onClick={this.handleClick()}>
-                        {buttonView}
-                    </button>
-                    <h4>
-                        {this.state.comments.length}
-                    </h4>
-                    {commentItems}*/}
                 </div>
             </div>
         )
