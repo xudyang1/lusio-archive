@@ -1,14 +1,16 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
 import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
 import PlatformCard from "./PlatformCard";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import { ProfileContext } from "../../context/ProfileState";
-import { useForceUpdate } from "../../utils/useForceUpdate";
+
+import { getAllBadges } from "../../actions/AchievementActions";
+import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
 function getCards(t, index, element, args = false) {
     console.log("ELEMENT", element)
@@ -31,8 +33,8 @@ export default function SectionList(props) {
     const { viewType } = useContext(ProfileContext)
 
     const name = props.name ? props.name : ""
-    const achievementList = []
     const [items, setItems] = useState([])
+    const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
 
     const getQuizList = async (listOfId) => {
         const quizzes = () => {
@@ -83,11 +85,15 @@ export default function SectionList(props) {
                     })
                 } break;
                 case ACHIEVEMENT_CARD: {
-                    console.log(props.items)
+                    getAllBadges()(dispatch)
                 } break;
             }
         }
     }, [props.items])
+
+    useEffect(()=>{
+        setItems(achievements.allBadges)
+    }, [achievements.allBadges])
 
     function getList(list, type) {
         let res = []
@@ -103,8 +109,8 @@ export default function SectionList(props) {
                 ))
             } break;
             case ACHIEVEMENT_CARD: {
-                achievementList.map((element, index) => (
-                    res.push(getCards(props.type, index, element, list.includes(element)))
+                list.map((element, index) => (
+                    res.push(getCards(props.type, index, element))
                 ))
             } break;
         }
