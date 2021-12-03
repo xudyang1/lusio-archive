@@ -1,0 +1,13 @@
+.adjustable {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.confirmModal{
+    width:33vw;
+    height: 300px;
+    font-size: 24px;
+    text-align: center;
+}

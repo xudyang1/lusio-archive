@@ -1,6 +1,5 @@
 import './css/App.css';
-import React, { useContext, useEffect } from 'react';
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import HomePage from './components/frontpage/HomePage';
 import SearchPage from './components/searchpage/SearchPage';
 import ProfilePage from './components/profilepage/ProfilePage';
@@ -13,6 +12,7 @@ import { AuthProvider } from './context/AuthState';
 import { ProfilesProvider } from './context/ProfileState';
 import { QuizzesProvider } from './context/QuizState';
 import { PlatformProvider } from './context/PlatformState';
+import Footer from './components/common/Footer';
 
 function App() {
     return (
@@ -21,15 +21,18 @@ function App() {
                 <AppNavbar />
                 <QuizzesProvider>
                     <PlatformProvider>
-                        <Route exact path="/" component={HomePage} />
-                        <Route path="/quiz/:id" component={QuizPage} />
-                        <Route path="/edit/:id" component={EditQuizPage} />
-                        <Route path="/play/:id" component={PlayQuizPage} />
-                        <Route path="/search/:key" component={SearchPage} />
-                        <Route path="/profile/:id" component={ProfilePage} />
-                        <Route path="/platform/:id" component={PlatformPage} />
+                        <Switch>
+                            <Route exact path="/" component={HomePage} />
+                            <Route path="/quiz/:id" component={QuizPage} />
+                            <Route path="/edit/:id" component={EditQuizPage} />
+                            <Route path="/play/:id" component={PlayQuizPage} />
+                            <Route path="/search/:key" component={SearchPage} />
+                            <Route path="/profile/:id" component={ProfilePage} />
+                            <Route path="/platform/:id" component={PlatformPage} />
+                        </Switch>
                     </PlatformProvider>
                 </QuizzesProvider>
+                <Footer/>
             </ProfilesProvider>
         </AuthProvider>
     );

@@ -17,7 +17,7 @@ import axios from 'axios';
 
 // Initial state
 const initialState = {
-// <<<<<<< LiuxinLi
+    // <<<<<<< LiuxinLi
     quizzes: [],
     quiz: {
         id: null,
@@ -64,14 +64,13 @@ export const QuizzesProvider = ({ children }) => {
             });
             return res.data;
         } catch (err) {
-            console.error(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
             });
         }
     };
-    async function getQuiz(id, updateState=true) {
+    async function getQuiz(id, updateState = true) {
         try {
             if(updateState){
                 dispatch(setQuizzesLoading());
@@ -85,7 +84,6 @@ export const QuizzesProvider = ({ children }) => {
             }
             return res.data;
         } catch (err) {
-            console.error(err);
             dispatch({
                 type: GET_ERRORS,
                 payload: { msg: err.response.data.msg, status: err.response.status }
