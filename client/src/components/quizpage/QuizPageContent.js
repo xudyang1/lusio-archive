@@ -15,18 +15,24 @@ class QuizPageContent extends Component{
             description: "",
             author: "",
             platformId: "",
+            platformName: "",
             likes: 0,
             liked: false, // need to implement: "liked" depends on user
             plays: 0,
-            played: false, // need to implement: "played" depends on user
             timer: 0,
             numQ: 0,
             scoreBoard: [],
-            isDisabled: false,
-            played: false
+            isDisabled: false
         };
                 
     }
+    /*
+    setPlatformName = async (platformId) => {
+        const platformContent = await this.props.passedFunc(platformId, false);
+        const platform = platformContent.data;
+        console.log(platform);
+    }
+    */
 
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
@@ -54,11 +60,11 @@ class QuizPageContent extends Component{
             timer: quiz.time,
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
-            //played: (depends on user),
-            played: this.context.played
+
         });
         
     }
+
 
     numLikeHandler = async e => {
         e.preventDefault();
@@ -98,6 +104,8 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
+
+        
     }
 
     render(){

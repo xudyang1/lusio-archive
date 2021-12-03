@@ -46,6 +46,7 @@ class QuizComments extends Component{
             comments: quiz.comments,
         });
     }
+
     getUser = async (user) => {
         this.setState({
             currUserId: user.id,
@@ -57,6 +58,7 @@ class QuizComments extends Component{
         this.setState({commentValue: e.target.value});
         console.log("USER: " + this.state.currUserId + " " + this.state.currUserName);
     }
+
     handleSubmit = async e => {
         e.preventDefault();
 
@@ -85,24 +87,29 @@ class QuizComments extends Component{
         }
         await updateQuiz(updateFQuiz);
 
-        var currentCommId = "";
-        await getCommentById(this.state.quizId).then(commentId=> {
-            //update Profile
-            this.props.passedFunc({
-                mode: "ADD",
-                profile:{
-                    owner: this.props.userId,
-                    commentsCreated: commentId
-                }
-            });
-            currentCommId = commentId;
-        }).catch((e) => console.log(e));
-        //this.handleSaveCommentId(currentCommId);
+        //Get CommentId
+        const getComID = () => {
+            return (getCommentById(this.state.quizId)).then(function(commentId) {
+                return commentId;
+        }).catch((e) => console.log(e));}
+        const id = await getComID();
+        console.log(id);
+    
+        //update Profile
+        this.props.passedFunc({
+            mode: "ADD",
+            profile:{
+                owner: this.props.userId,
+                commentsCreated: id
+            }
+        });
+        //await this.handleSaveCommentId(id);
     }
-    handleSaveCommentId = (commentId) => {
-        const {updateQuiz} = this.context;
+    /*
+    handleSaveCommentId = async (commentId) => {
+        const {updateQuiz, quiz} = this.context;
         const comment = this.state.comments[this.state.comments.length-1];
-        /*
+        
         const commentUpdate = {
             id: commentId,
             userId: comment.userId,
@@ -110,15 +117,18 @@ class QuizComments extends Component{
             text: comment.text
         }
         console.log("commentUpdate",commentUpdate);
-        this.state.comments.splice(this.state.comments.length-1, 0, commentUpdate);
+        const tempComments = quiz.comments;
+        
+        tempComments[tempComments.length-1] = commentUpdate;
+        
         
         const updateAfterComment = {
             id: this.state.quizId,
-            comments: this.state.comments.slice(0,this.state.comments.length-1)
+            comments: tempComments
         }
-        updateQuiz(updateAfterComment);
-        */
+        console.log("updateAfterComment", updateAfterComment.comments);
         
+        await updateQuiz(updateAfterComment);
     }
     /*handleClick() {
         this.setState({

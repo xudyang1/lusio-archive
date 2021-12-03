@@ -75,7 +75,18 @@ exports.addQuiz = async (req, res, next) => {
                 userScore: u.userScore
             });
         });
-        
+        /*
+        const commentsL = [];
+        const comments = req.body.comments;
+        comments.forEach((c)=> {
+            commentsL.push({
+                userId: c.userId,
+                userName: c.userName,
+                text: c.text,
+                id: c.id
+            });
+        });
+        */
         const newQuiz = new Quiz({
             userId: req.body.userId,
             platformId: req.body.platformId,

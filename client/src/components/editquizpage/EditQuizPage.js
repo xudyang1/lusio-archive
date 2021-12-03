@@ -31,11 +31,13 @@ export default function EditQuizPage(){
     }
   }
   useEffect(()=> {
-    checkMode();
+
+      checkMode();
+
   })
   return(
     <div>
-      {isOwner ? <EditQuizContent passedFunc={updateProfile}/> : <div>You do not have access to this page.</div>}
+      {isOwner ? <EditQuizContent updateProfile={updateProfile}/> : <div>You do not have access to this page.</div>}
     </div>
     )
 }

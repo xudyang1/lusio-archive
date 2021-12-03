@@ -5,11 +5,7 @@ import QuizResult from './QuizResult';
 import '../../css/frontpage.css';
 
 
-<<<<<<< HEAD
 class PlayQuizContent extends Component{
-=======
-class PlayQuizContent extends Component {
->>>>>>> origin/LiuxinLi
     static contextType = QuizzesContext;
 
     constructor() {
@@ -52,25 +48,15 @@ class PlayQuizContent extends Component {
         const setCurrentQuiz = async (id) => {
             const quizzes = () => {
                 return getQuizzes()
-<<<<<<< HEAD
                 .then(function(result){
                     return result;
                 })
-=======
-                    .then(function (result) {
-                        return result;
-                    })
->>>>>>> origin/LiuxinLi
             }
             const quizL = await quizzes();
             const quiz = quizL.data.filter(q => q._id === id);
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/LiuxinLi
         this.setState({
             id: quiz._id,
             name: quiz.name,
@@ -78,7 +64,6 @@ class PlayQuizContent extends Component {
             timedOption: quiz.timedOption,
             time: quiz.time,
             questions: quiz.questions,
-<<<<<<< HEAD
             openModal: false,
             // After getting Quiz retrieve time attribute
             // convert it into h:m:s
@@ -102,15 +87,6 @@ class PlayQuizContent extends Component {
             //call countDown func every 1 second
             this.timer = setInterval(this.countDown, 1000);
         }
-=======
-            openModal: false
-        });
-    }
-    componentDidMount() {
-        const id = this.props.match.params.id;
-        const { getQuizzes, isPlaying } = this.context;
-        this.getItem(id, getQuizzes);
->>>>>>> origin/LiuxinLi
     }
     countDown() {
         //reduce second by 1 by every 1 second 
@@ -134,13 +110,8 @@ class PlayQuizContent extends Component {
                 scoreEval = scoreEval + q.score;
             }
         })
-<<<<<<< HEAD
         
         this.setState({score: scoreEval}, () => finishQuiz(this.state.score, (this.state.initialTime - this.state.time)));
-=======
-        this.setState({ score: scoreEval });
-        this.setState({ score: scoreEval }, () => finishQuiz(this.state.score));
->>>>>>> origin/LiuxinLi
     }
 
     // allow to check only one answer
@@ -156,12 +127,8 @@ class PlayQuizContent extends Component {
     }
 
     onSubmit = (e) => {
-<<<<<<< HEAD
         clearInterval(this.timer);
         console.log(this.state.initialTime - this.state.time);
-=======
-        const { isPlaying } = this.context;
->>>>>>> origin/LiuxinLi
 
         const checks = document.getElementsByClassName('filled-in');
         const answerCompare = []

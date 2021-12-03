@@ -26,7 +26,7 @@ export default function ProfilePage() {
     const { id } = useParams();
     const { url, path } = useRouteMatch();
 
-    const { getQuiz } = useContext(QuizzesContext)
+    const { getQuizzesByIdList } = useContext(QuizzesContext)
     const { isAuthenticated, loadUser, user } = useContext(AuthContext)
     const { profile, getProfile, viewType } = useContext(ProfileContext)
     const { createPlatform, getPlatform } = useContext(PlatformContext)
@@ -34,7 +34,7 @@ export default function ProfilePage() {
 
     async function getQuizzes(items) {
         var templist = []
-
+        templist = getQuizzesByIdList(items);
         return templist
     }
 
