@@ -23,7 +23,7 @@ const AppNavbar = () => {
 
                     <NavLink to="/" className="brand-logo" style={{ paddingLeft: '1em' }}>Lusio</NavLink>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        {isAuthenticated ? (<span><li><AccountProfileButton user={user}/></li><li><Logout /></li></span>) :
+                        {isAuthenticated ? (<span><li><AccountProfileButton user={user} userId={user.profile}/></li><li><Logout /></li></span>) :
                             (<span><li><LoginModal /></li><li><RegisterModal /></li></span>)}
                         <li><NavLink to="https://github.com/xudyang1/CSE416_Lusio" style={{ fontSize: "1.5em" }}>Github</NavLink></li>
                     </ul>

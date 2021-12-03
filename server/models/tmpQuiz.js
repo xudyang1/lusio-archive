@@ -6,7 +6,6 @@ const QuestionSchema = new Schema({
     title: { type: String, required: [true, 'Question title must be provided'] },
     timedOption: { type: Boolean, default: false },
     time: { type: Number, default: 0 },
-    retakeOption: { type: Boolean, default: false },
     choices: [{
         index: {
             type: Number,

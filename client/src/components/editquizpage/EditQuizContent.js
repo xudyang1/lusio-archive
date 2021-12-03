@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect, Component } from 'react';
+import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
-
+import { createRef } from 'react';
 
 class EditQuizContent extends Component {
     static contextType = QuizzesContext;
@@ -13,10 +13,10 @@ class EditQuizContent extends Component {
             userId: "",
             name: "",
             author: "",
+            quizImgURI: "",
             description: "",
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [{
                 title: "",
                 choices: [""],
@@ -28,15 +28,16 @@ class EditQuizContent extends Component {
             isPublished: false,
             openModal: false
         };
+        this.changedImgURI = createRef(this.state.quizImgURI);
     }
 
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
             const quizzes = () => {
                 return getQuizzes()
-                    .then(function (result) {
-                        return result;
-                    })
+                .then(function(result){
+                    return result;
+                })
             }
             const quizL = await quizzes();
             const quiz = quizL.data.filter(q => q._id === id);
@@ -48,21 +49,39 @@ class EditQuizContent extends Component {
             userId: quiz.userId,
             name: quiz.name,
             author: quiz.author,
+            quizImgURI: quiz.quizImgURI,
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
-            retakeOption: quiz.retakeOption,
-            questions: quiz.questions,
+            questions: quiz.questions, 
             likes: quiz.likes,
             plays: quiz.plays,
             isPublished: quiz.isPublished,
             openModal: false
         });
     }
-    handleDelete = async e => {
+    
+    handleDeleteIndQuiz = async e => {
         e.preventDefault();
         await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
+    }
+    
+    //remove Quiz from userProfile db
+    handleDelete = (e) => {
+        e.preventDefault();
+        //Usage of multiple contexts in extended Component
+        //updateProfile = passedFunc 
+        this.props.updateProfile({
+            mode: "DELETE",
+            profile:{
+                owner: this.state.userId,
+                quizzesCreated: this.state.id
+            }
+        })
+
+        //Delete independent Quiz db
+        this.handleDeleteIndQuiz(e);
     }
 
     nameHandler = (e) => {
@@ -90,31 +109,39 @@ class EditQuizContent extends Component {
 
 
     handleAddQuestion = () => {
-        this.setState({ questions: [...this.state.questions, { title: "", choices: [{ content: "" }] }] });
+        this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
     }
     handleQuestionRemove = () => {
         const list = [...this.state.questions];
-        if (list.length > 1) { list.splice(list.length - 1, 1); }
-        this.setState({ questions: list });
+        if(list.length > 1){ list.splice(list.length-1, 1);}
+        this.setState({questions: list});
     }
     questionHandler = (qi, e) => {
         this.state.questions[qi].title = e;
     }
     answerHandler = (qi, ai, e) => {
         this.state.questions[qi].choices[ai].content = e;
-    }
-    //+answers would be nested as it corresponds to different questions
-    //so answerHandler would be changed 
+    } 
 
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
-        this.setState({ timedOption: this.state.timedOption });
+        this.setState({timedOption: this.state.timedOption});
     }
-    retakeHandler = () => {
-        this.state.retakeOption = !this.state.retakeOption;
-        this.setState({ retakeOption: this.state.retakeOption });
+    timeHandler = (e) => {
+        if (this.state.timedOption){
+            this.setState({time: e.target.value});
+            console.log(e.target.value);
+        }
+        else{
+            e.preventDefault();
+            alert("Select Timed Option first");
+            this.setState({time: 0});
+        }
+        
+        console.log(this.state.time);
     }
-    scoreHandler = (qi, e) => {
+    
+    scoreHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].score = Number(e.target.value);
     }
@@ -122,6 +149,7 @@ class EditQuizContent extends Component {
         e.preventDefault();
         this.state.questions[qi].answerKey = Number(e.target.value);
     }
+
     /*
     //Wishlist
     showQHandler = () => {
@@ -136,66 +164,34 @@ class EditQuizContent extends Component {
 
     handleSave = async e => {
         e.preventDefault();
-
+        console.log("current quiz publish statement: ", this.state.isPublished);
+        
         const { updateQuiz } = this.context;
         const updateFQuiz = {
             id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
+            quizImgURI: this.changedImgURI.current.value,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
-            retakeOption: this.state.retakeOption,
-            questions: this.state.questions,
+            questions: this.state.questions, 
             likes: this.state.likes,
             plays: this.state.plays,
             isPublished: this.state.isPublished
         };
         updateQuiz(updateFQuiz);
+        
     }
     handlePublish = (e) => {
         e.preventDefault();
-        this.state.isPublished = true;
-
-        const { updateQuiz } = this.context;
-        const updateFQuiz = {
-            id: this.state.id,
-            userId: this.state.userId,
-            name: this.state.name,
-            author: this.state.author,
-            description: this.state.description,
-            timedOption: this.state.timedOption,
-            time: this.state.time,
-            retakeOption: this.state.retakeOption,
-            questions: this.state.questions,
-            likes: this.state.likes,
-            plays: this.state.plays,
-            isPublished: this.state.isPublished
-        };
-        updateQuiz(updateFQuiz);
-
+        this.setState({isPublished: true}, () => this.handleSave(e));
+        console.log("check state update", this.context.quiz);
     }
     handleUnpublish = (e) => {
         e.preventDefault();
-        this.state.isPublished = false;
-
-        const { updateQuiz } = this.context;
-        const updateFQuiz = {
-            id: this.state.id,
-            userId: this.state.userId,
-            name: this.state.name,
-            author: this.state.author,
-            description: this.state.description,
-            timedOption: this.state.timedOption,
-            time: this.state.time,
-            retakeOption: this.state.retakeOption,
-            questions: this.state.questions,
-            likes: this.state.likes,
-            plays: this.state.plays,
-            isPublished: this.state.isPublished
-        };
-        updateQuiz(updateFQuiz);
+        this.setState({isPublished: false}, () => this.handleSave(e));
     }
 
     onOpenModal = e => {
@@ -212,33 +208,32 @@ class EditQuizContent extends Component {
         this.getItem(id, getQuizzes);
     }
 
-
-    render() {
-        return (
-            <div className="row section" style={{ padding: '35px' }}>
-                <div className="col s6">
-                    <div className="section input-field">Quiz Name
-                        <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler} />
+    render(){
+            return(
+                <div className="row section" style={{padding: '35px'}}>                
+                    <div className="col s5">
+                        <div className="section input-field">Quiz Name
+                            <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler}/>
+                        </div>
+                        <div className="section input-field">Description
+                            <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
+                        </div>
                     </div>
-                    <div className="section input-field">Description
-                        <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
+                    <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
+                        <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/>
+                        {/*<input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>*/}
+                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} />
                     </div>
-                </div>
-                <div className="col s6" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
-                    <form action="#">
-                        <p>
-                            <label>
-                                <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.timedOption} onClick={this.timedHandler} />
-                                <span>Timed quiz</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.retakeOption} onClick={this.retakeHandler} />
-                                <span>Allow retake</span>
-                            </label>
-                        </p>
-                        {/*
+                    <div className="col s3" style={{paddingLeft: '100px', paddingTop: '30px'}}>
+                        <form action="#">
+                            <p>
+                                <label>
+                                    <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
+                                    <span>Timed quiz</span>
+                                    <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
+                                </label>
+                            </p>
+                            {/*
                             //Wishlist
                             <p>
                                 <label>

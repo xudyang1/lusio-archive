@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { PlatformContext } from "../../context/PlatformState"
+import { QUIZ_CARD } from "../../types/cardTypes"
 import GeneralSections from "../sections/GeneralSections"
 
 export default function PlatformContent(props) {
@@ -40,9 +41,16 @@ export default function PlatformContent(props) {
         <div>
             {
                 sections.map((element, index) => (
-                    <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} id={id} element={element} />
+                    <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} platformID={id} element={element.sectionQuizzes} sectionID={element._id} type={QUIZ_CARD}/>
                 ))
             }
+            <script>
+                {
+                    sections.map((element, index) => (
+                        console.log(element)
+                    ))
+                }
+            </script>
             {
                 security > 0 ? <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={onClickAddSection}>add</i></a> : <div></div>
             }

@@ -10,6 +10,8 @@ const initialState = {
         owner: null,
         platformsCreated: [],
         quizzesCreated: [],
+        //>>>>>>>>>>ADDON to be checked
+        commentsCreated: [],
         description: null,
         iconURI: null,
         bannerURI: null,

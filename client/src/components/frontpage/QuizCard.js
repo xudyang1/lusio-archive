@@ -6,7 +6,7 @@ import { ProfileContext } from "../../context/ProfileState";
 
 export default function QuizCard(props) {
     const quiz = props.element
-    console.log(quiz)
+    //console.log(quiz)
     const quizName = quiz? quiz.name: "TEMP"
     const quizDescription = quiz? quiz.description: "TEMP"
     const quizId = quiz? quiz._id: 0
@@ -18,7 +18,7 @@ export default function QuizCard(props) {
     useEffect(() => {
         if (userId)
             getProfile(userId, false).then(function (result) {
-                console.log("result from quizcard", result)
+                //console.log("result from quizcard", result)
                 setProfile(result.data.profile)
             })
     }, [])
@@ -40,7 +40,7 @@ export default function QuizCard(props) {
                     </div>
                     <div className="row" style={{ marginBottom: "0px" }}>
                         <div className="col">
-                            <AccountProfileButton user={profile} />
+                            <AccountProfileButton user={profile} userId={profile._id}/>
                         </div>
                     </div>
                 </div>
