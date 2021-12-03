@@ -126,14 +126,24 @@ export default function GeneralSections(props) {
      */
     function removeQuizFromSection(index) {
         console.log("QUIZ WITH INDEX ", index, " NEEDS TO BE REMOVED")
-        console.log(quizzesInSection[index].name)
-        console.log(quizzesInSection[index].description)
-        console.log(quizzesInSection[index].author)
         let temp = quizzesInSection
         temp.splice(index, 1)
         setQuizzesInSection([...temp])
-        console.log(temp)
-        console.log(quizzesInSection)
+        const arrofID = quizzesInSection.map((element, index) => {
+            return { quiz: element._id, quizIndex: index }
+        })
+        const payload = {
+            mode: "EDIT",
+            platform: {
+                quizSections: {
+                    _id: props.sectionID,
+                    sectionName: sectionName.current.value,
+                    sectionQuizzes: arrofID
+                }
+            }
+        }
+        console.log(payload)
+        updatePlatform(platformID, payload)
     }
 
     function addQuizToSection(quizID) {
