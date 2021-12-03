@@ -127,7 +127,7 @@ exports.addPlatform = async (req, res, next) => {
  * @format  req.header('x-auth-token): JWT token 
  *          req.body: 
  *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
- *                                    or quizSections: { _id, sectionName, sectionIndex } } }
+ *                                    or quizSections: { _id, sectionName, sectionIndex, sectionQuizzes } } }
  *            Or
  *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
  *            Or
@@ -170,7 +170,8 @@ exports.updatePlatform = async (req, res, next) => {
             {
               $set: {
                 "quizSections.$.sectionName": provided.quizSections.sectionName,
-                "quizSections.$.sectionIndex": provided.quizSections.sectionIndex
+                "quizSections.$.sectionIndex": provided.quizSections.sectionIndex,
+                "quizSections.$.sectionQuizzes": provided.quizSections.sectionQuizzes
               }
             },
             { new: true });

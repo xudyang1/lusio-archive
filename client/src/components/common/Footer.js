@@ -1,5 +1,3 @@
-import { NavLink } from "react-router-dom";
-
 export default function Footer() {
     return (
         <footer className="page-footer">
@@ -12,7 +10,7 @@ export default function Footer() {
                     <div className="col l4 offset-l2 s12">
                         <h5 className="white-text">Links</h5>
                         <ul>
-                            <li><NavLink to="https://github.com/xudyang1/CSE416_Lusio" className="grey-text text-lighten-3" style={{ fontSize: "1.5em" }}>Github</NavLink></li>
+                            <li><a href="https://github.com/xudyang1/CSE416_Lusio" className="grey-text text-lighten-3" style={{ fontSize: "1.5em" }}>Github</a></li>
                         </ul>
                     </div>
                 </div>
