@@ -17,7 +17,6 @@ class PlayQuizContent extends Component{
             description: "",
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [],
             score: 0,
             quizTime: {},
@@ -66,7 +65,6 @@ class PlayQuizContent extends Component{
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
-            retakeOption: quiz.retakeOption,
             questions: quiz.questions,
             openModal: false,
             // After getting Quiz retrieve time attribute

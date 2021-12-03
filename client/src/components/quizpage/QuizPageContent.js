@@ -22,7 +22,6 @@ class QuizPageContent extends Component{
             timer: 0,
             numQ: 0,
             scoreBoard: [],
-            retakeOption: false,
             isDisabled: false,
             played: false
         };
@@ -56,18 +55,9 @@ class QuizPageContent extends Component{
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
             //played: (depends on user),
-            retakeOption: quiz.retakeOption,
             played: this.context.played
         });
         
-    }
-
-    checkRetake = () => {
-        console.log(this.state.retakeOption);
-        console.log(this.state.played);
-        if (!this.state.retakeOption && this.state.played) {
-            this.setState({isDisabled: true});
-        }
     }
 
     numLikeHandler = async e => {
@@ -109,8 +99,6 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
-
-        this.checkRetake();
     }
 
     render(){

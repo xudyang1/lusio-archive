@@ -17,7 +17,6 @@ class EditQuizContent extends Component{
             description: "",
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [{
                 title: "",
                 choices: [""], 
@@ -54,7 +53,6 @@ class EditQuizContent extends Component{
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
-            retakeOption: quiz.retakeOption,
             questions: quiz.questions, 
             likes: quiz.likes,
             plays: quiz.plays,
@@ -142,10 +140,7 @@ class EditQuizContent extends Component{
         
         console.log(this.state.time);
     }
-    retakeHandler = () => {
-        this.state.retakeOption = !this.state.retakeOption;
-        this.setState({retakeOption: this.state.retakeOption});
-    }
+    
     scoreHandler = (qi,e) => {
         e.preventDefault();
         this.state.questions[qi].score = Number(e.target.value);
@@ -154,18 +149,6 @@ class EditQuizContent extends Component{
         e.preventDefault();
         this.state.questions[qi].answerKey = Number(e.target.value);
     }
-
-    //TODO: discuss if file upload is necessary
-    //solution to memory leak needed/ server: Image Schema
-    /*
-    quizImgHandler = (e) => {
-        if (e.target.files[0] != null){
-            this.setState({quizImgURI: URL.createObjectURL(e.target.files[0])});
-            console.log(typeof this.state.quizImgURI);      
-        }    
-    }
-    */
-
 
     /*
     //Wishlist
@@ -195,7 +178,6 @@ class EditQuizContent extends Component{
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
-            retakeOption: this.state.retakeOption,
             questions: this.state.questions, 
             likes: this.state.likes,
             plays: this.state.plays,
@@ -211,7 +193,6 @@ class EditQuizContent extends Component{
     }
     handleUnpublish = (e) => {
         e.preventDefault();
-        
         this.setState({isPublished: false}, () => this.handleSave(e));
     }
     
@@ -253,12 +234,6 @@ class EditQuizContent extends Component{
                                     <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
                                     <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.retakeOption} onClick={this.retakeHandler}/>
-                                    <span>Allow retake</span>
                                 </label>
                             </p>
                             {/*

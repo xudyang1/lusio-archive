@@ -24,7 +24,6 @@ export const CreateQuizButton = () => {
             description: "", 
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [{
                 title: "",
                 choices: [{
