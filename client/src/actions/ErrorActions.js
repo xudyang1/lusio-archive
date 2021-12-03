@@ -6,7 +6,7 @@ import { GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
  * @returns a JSON object representing {GET_ERRORS} action
  * @usage   someDispatch(returnErrors(error, errorId)); usually used in catch blocks
  */
-export const returnErrors = (error, errorId) => {
+export const returnErrors = (error, errorId = null) => {
     return {
         type: GET_ERRORS,
         payload: {

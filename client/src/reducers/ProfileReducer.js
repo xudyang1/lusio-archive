@@ -1,60 +1,71 @@
 import {
-    ADD_PROFILE,
-    GET_PROFILES,
+    GET_PROFILE_CARDS,
     GET_PROFILE,
     UPDATE_PROFILE,
-    PROFILES_LOADING,
     GET_ERRORS,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
 } from "../types/actionTypes";
 
-export const ProfileReducer = (state, action) => {
-    switch (action.type) {
-        case PROFILES_LOADING:
+export const profileInitialState = {
+    profile: {
+        _id: null,
+        owner: null,
+        platformsCreated: [],
+        quizzesCreated: [],
+        description: null,
+        iconURI: null,
+        bannerURI: null,
+        level: 0,
+        currentExp: 0,
+        maxExp: 0,
+        achievements: [],
+        quizzesTaken: [],
+        likedQuizzes: [],
+        subscribedUsers: [],
+        subscribedPlatforms: [],
+        fans: []
+    },
+    viewType: 'GUEST_VIEW', // 'GUEST_VIEW' or 'OWNER_VIEW'
+    error: {
+        msg: null,
+        status: null,
+        id: null
+    }
+};
+
+export const ProfileReducer = (state, { type, payload }) => {
+    switch (type) {
+        case GET_PROFILE_CARDS:
             return {
                 ...state,
-                loading: true
-            };
-        case GET_PROFILES:
-            return {
-                ...state,
-                loading: false,
-                profile: action.payload.profile
+                profileCards: payload.profileCards
             };
         case GET_PROFILE:
             return {
                 ...state,
-                loading: false,
-                profile: action.payload.profile,
-                viewType: action.payload.viewType
+                profile: payload.profile,
+                viewType: payload.viewType
             };
-        // case ADD_PROFILE:
-        //   return {
-        //     ...state,
-        //     loading: false,
-        //     userProfile: action.payload
-        //   };
         case UPDATE_PROFILE:
             return {
                 ...state,
-                profile: { ...state.profile, ...action.payload.profile }
+                profile: { ...state.profile, ...payload.profile }
             };
-        // case DELETE_ACCOUNT:
-        //   return {
-        //     ...state,
-        //     userProfile: null
-        //   };
         case GET_ERRORS:
             return {
                 ...state,
-                error: action.payload
+                error: {
+                    msg: payload.msg,
+                    status: payload.status,
+                    id: payload.id
+                }
             };
         case CLEAR_ERRORS:
             return {
                 ...state,
-                error: null
-            }
+                error: profileInitialState.error
+            };
         default:
             return state;
     }
-}
+};

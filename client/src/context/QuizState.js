@@ -4,9 +4,12 @@ import {
     QUIZZES_LOADING,
     GET_QUIZZES,
     GET_QUIZ,
+    GET_QUIZZESBYID,
     UPDATE_QUIZ,
+    GET_COMMENTBYID,
     ADD_QUIZ,
     DELETE_QUIZ,
+    PLAY_QUIZ,
     FINISH_QUIZ,
     GET_ERRORS
 } from '../types/actionTypes';
@@ -19,29 +22,30 @@ const initialState = {
     quiz: {
         id: null,
         userId: null,
-        //quizImgURI //Needs update
-        //platformId: "", //Needs update
-        name: "",
-        author: "",
-        description: "",
+        platformId: null, 
+        name: null,
+        author: null,
+        quizImgURI: null,
+        description: null,
         timedOption: false,
         time: 0,
-        retakeOption: false,
         questions: [{
-            title: "",
-            choices: [""],
+            title: null,
+            choices: [""], 
             answerKey: 1, //correctAnswers
             score: 0
         }],
         likes: 0,
         plays: 0,
-        //scoreboard: [], //Needsupdate
-        isPublished: false
+        isPublished: false,
+        scoreBoard: [],
+        comments: []
     },
     error: null,
     loading: true,
     isPlaying: true,
-    score: 0
+    score: 0,
+    timeSpent: 0
 };
 
 // Create context
@@ -49,7 +53,7 @@ export const QuizzesContext = createContext(initialState);
 
 export const QuizzesProvider = ({ children }) => {
     const [state, dispatch] = useReducer(QuizReducer, initialState);
-
+    const cloneDeep = require('lodash.clonedeep');
     async function getQuizzes() {
         try {
             dispatch(setQuizzesLoading());
@@ -68,14 +72,16 @@ export const QuizzesProvider = ({ children }) => {
     };
     async function getQuiz(id, updateState = true) {
         try {
-            if (updateState)
+            if(updateState){
                 dispatch(setQuizzesLoading());
+            }
             const res = await axios.get(`/api/quizzes/edit/${id}`);
-            if (updateState)
+            if(updateState){
                 dispatch({
                     type: GET_QUIZ,
                     payload: id
                 });
+            }
             return res.data;
         } catch (err) {
             dispatch({
@@ -84,20 +90,59 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     };
+    //>>>>>>>>>>>>>>>>>>>>>>>>for Displaying Quizzes on Platform
+    async function getQuizzesById(quizIdList) {
+        try {
+            const quizL = [];
+            for (let i = 0; i < quizIdList.length; i++) {
+                const id = quizIdList[i];
+                const res = await axios.get(`/api/quizzes/edit/${id}`);
+                quizL.push(res.data.data);
+                console.log(quizL);
+            }
+            return quizL;
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS,
+                paylod: { msg: err.message, status: err.name}
+            })
+        }
+    }
+    async function getCommentById(quizId) {
+        try {
+            const res = await axios.get(`/api/quizzes/edit/${quizId}`);
+            //console.log("getComment", res.data);
+            const comments = res.data.data.comments;
+            const currentCom = comments[comments.length-1];
+            //console.log("CurrentComment", currentCom);
+            dispatch({
+                type: GET_COMMENTBYID,
+                payload: res.data.data
+            });
+            return currentCom._id;
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS,
+                paylod: { msg: err.message, status: err.name}
+            })
+        }
+    }
 
-    async function addQuiz({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished }) {
+    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        //{ userId, name, author, description, questions, likes, isPublished }
-        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished });
+        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
+        console.log("insideAdd", body);
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
+            console.log("insideAdd", res);
+            const deepCopyQuiz = cloneDeep(res.data.quiz);
             dispatch({
                 type: ADD_QUIZ,
-                payload: res.data
+                payload: deepCopyQuiz
             });
             return res.data.quiz.id;
         } catch (err) {
@@ -108,18 +153,22 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function updateQuiz({ id, userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished }) {
+    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, questions, likes, plays, isPublished, scoreBoard, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, author, description, timedOption, time, retakeOption, questions, likes, plays, isPublished });
+        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, questions, likes, plays, isPublished, scoreBoard, comments });
         try {
             const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
+            //deep copy of nested quiz
+            const deepCopyQuiz = cloneDeep(res.data.quiz);
+            console.log("deepcopy",deepCopyQuiz);
+
             dispatch({
                 type: UPDATE_QUIZ,
-                payload: res.data
+                payload: deepCopyQuiz
             });
         } catch (err) {
             dispatch({
@@ -142,17 +191,29 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
-    function finishQuiz(score) {
+    function playQuiz() {
         try {
             dispatch({
-                type: FINISH_QUIZ,
-                payload: score
+                type: PLAY_QUIZ,
+                //no data to be transferred
             });
         } catch (err) {
             dispatch({
                 type: GET_ERRORS
             });
         }
+    }
+    function finishQuiz(score, timeSpent) {
+      try {
+        dispatch({
+          type: FINISH_QUIZ,
+          payload: {score: score, timeSpent: timeSpent}
+        });
+      } catch (err){
+        dispatch({
+          type: GET_ERRORS
+        });
+      }
     }
     const setQuizzesLoading = () => {
         return {
@@ -161,15 +222,20 @@ export const QuizzesProvider = ({ children }) => {
     };
     return (<QuizzesContext.Provider value={{
         quizzes: state.quizzes,
+        quiz: state.quiz,
         error: state.error,
         loading: state.loading,
         isPlaying: state.isPlaying,
         score: state.score,
+        timeSpent: state.timeSpent,
         getQuizzes,
         getQuiz,
+        getQuizzesById,
+        getCommentById,
         addQuiz,
         updateQuiz,
         deleteQuiz,
+        playQuiz,
         finishQuiz
     }}>
         {children}

@@ -32,7 +32,7 @@ exports.getQuiz = async (req, res, next) => {
             });
         return res.status(404).json({
             success: false,
-            msg: 'The profile does not exist.'
+            msg: 'The Quiz does not exist.'
         });
     } catch (err) {
         return res.status(500).json({
@@ -67,18 +67,41 @@ exports.addQuiz = async (req, res, next) => {
             });
         });
 
+        const scoreB = [];
+        const quizScoreboard = req.body.scoreBoard;
+        quizScoreboard.forEach((u)=> {
+            scoreB.push({
+                userName: u.userName,
+                userScore: u.userScore
+            });
+        });
+        /*
+        const commentsL = [];
+        const comments = req.body.comments;
+        comments.forEach((c)=> {
+            commentsL.push({
+                userId: c.userId,
+                userName: c.userName,
+                text: c.text,
+                id: c.id
+            });
+        });
+        */
         const newQuiz = new Quiz({
             userId: req.body.userId,
+            platformId: req.body.platformId,
             name: req.body.name,
             author: req.body.author,
+            quizImgURI: req.body.quizImgURI,
             description: req.body.description,
             timedOption: req.body.timedOption,
             time: req.body.time,
-            retakeOption: req.body.retakeOption,
             questions: dataQ,
             likes: req.body.likes,
             plays: req.body.plays,
-            isPublished: req.body.isPublished
+            isPublished: req.body.isPublished,
+            scoreBoard: scoreB,
+            comments: req.body.comments
         });
 
         const savedQuiz = await newQuiz.save();
@@ -87,16 +110,19 @@ exports.addQuiz = async (req, res, next) => {
             quiz: {
                 id: savedQuiz._id,
                 userId: savedQuiz.userId,
+                platformId: savedQuiz.platformId,
                 name: savedQuiz.name,
                 author: savedQuiz.author,
+                quizImgURI: savedQuiz.quizImgURI,
                 description: savedQuiz.description,
                 timedOption: savedQuiz.timedOption,
                 time: savedQuiz.time,
-                retakeOption: savedQuiz.retakeOption,
                 questions: savedQuiz.questions,
                 likes: savedQuiz.likes,
                 plays: savedQuiz.plays,
-                isPublished: savedQuiz.isPublished
+                isPublished: savedQuiz.isPublished,
+                scoreBoard: savedQuiz.scoreBoard,
+                comments: savedQuiz.comments
             }
         });
 
@@ -109,19 +135,23 @@ exports.updateQuiz = async (req, res, next) => {
     const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
         id: req.body.id,
         userId: req.body.userId,
+        platformId: req.body.platformId,
         name: req.body.name,
         author: req.body.author,
+        quizImgURI: req.body.quizImgURI,
         description: req.body.description,
         timedOption: req.body.timedOption,
         time: req.body.time,
-        retakeOption: req.body.retakeOption,
         questions: req.body.questions,
         likes: req.body.likes,
         plays: req.body.plays,
-        isPublished: req.body.isPublished
+        isPublished: req.body.isPublished,
+        scoreBoard: req.body.scoreBoard,
+        comments: req.body.comments
     });
     try {
         res.status(200).json({
+            quiz: quiz,
             success: true,
             msg: "Quiz updated"
         });
@@ -139,43 +169,6 @@ exports.updateQuiz = async (req, res, next) => {
     }
 }
 
-/*
-exports.updateQuiz = async (req, res, next) => {
-    const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
-        id: req.body.id,
-        userId: req.body.userId,
-        name: req.body.name,
-        description: req.body.description,
-        timed: req.body.timed,
-        retake: req.body.retake,
-        showQuestion: req.body.showQuestion,
-        showAnswer: req.body.showAnswer,
-        likes: req.body.likes,
-        created: req.body.created,
-        EXP: req.body.EXP,
-        questions: req.body.questions,
-        answers: req.body.answers,
-        isPublished: req.body.isPublished
-    });
-    try {
-        res.status(200).json({
-            success: true,
-            msg: "Quiz updated"
-        });
-        if (!quiz) {
-            return res.status(404).json({
-                success: false,
-                msg: 'No quiz found'
-            });
-        }
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            msg: 'Server Error'
-        });
-    }
-}
-*/
 
 // TODO: modify this sample later 
 // @desc    Delete quiz

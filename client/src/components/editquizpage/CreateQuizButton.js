@@ -7,44 +7,45 @@ import "materialize-css/dist/css/materialize.min.css";
 
 
 export const CreateQuizButton = () => {
-    const { isAuthenticated, user, loadUser } = useContext(AuthContext);
-    const { addQuiz, getQuizzes } = useContext(QuizzesContext);
-    const { updateProfile, profile } = useContext(ProfileContext);
+    const {isAuthenticated, user } = useContext(AuthContext);
+    const { addQuiz } = useContext(QuizzesContext);
+    const {updateProfile, profile} = useContext(ProfileContext);
 
     const handleCreate = async e => {
         e.preventDefault();
-
-        const quiz = {
-            userId: profile._id,
-            name: "",
-            author: user.name,
-            description: "",
+        console.log(user.profile);
+        const quiz = { 
+            userId: user.profile,
+            //TODO: chang to platform._id 
+            platformId: user.profile, 
+            name: "", 
+            author: user.name, 
+            quizImgURI: "https://c4.wallpaperflare.com/wallpaper/967/372/978/gray-simple-background-gradient-wallpaper-preview.jpg",
+            description: "", 
             timedOption: false,
             time: 0,
-            retakeOption: false,
             questions: [{
                 title: "",
                 choices: [{
                     content: ""
-                }],
+                }], 
                 answerKey: 1,
                 score: 0
-            }],
+            }], 
             likes: 0,
             plays: 0,
-            isPublished: false
-        };
-
+            isPublished: false,
+            scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}],
+            comments: []
+        }; 
+        
         const getID = () => {
-            return (addQuiz(quiz))
-                .then(function (res) {
+            return (addQuiz(quiz)).then(function(res) {
                     return res;
-                })
+                });
         }
-
         const id = await getID();
 
-        //implement for adding quizzes to profile section
         updateProfile({
             mode: "ADD",
             profile: {
@@ -52,6 +53,7 @@ export const CreateQuizButton = () => {
                 quizzesCreated: id
             }
         })
+        
         document.location.href = "/edit/" + id;
     }
 
@@ -66,7 +68,7 @@ export const CreateQuizButton = () => {
     return (
         <div>
             <a className="waves-effect waves-light btn modal-trigger" href="#quizModal">
-                Create New Quiz
+                Create New Quiz 
             </a>
             <div id="quizModal" className="modal">
                 {isAuthenticated ? (

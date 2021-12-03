@@ -1,6 +1,33 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const UserSchema = new Schema({
+    userName: {
+        type: String,
+        default: ""
+    },
+    userScore: {
+        type: Number,
+        default: 0
+    }
+}, { _id : false })
+
+const CommentSchema = new Schema({
+    userId: {
+        type: String,
+    },
+    userName: {
+        type: String,
+    },
+    text: {
+        type: String,
+        default: ""
+    },
+    id: {
+        type: Number,
+    }
+})
+
 // TODO: defaults to be discussed
 const QuestionSchema = new Schema({
     title: { 
@@ -19,13 +46,15 @@ const QuestionSchema = new Schema({
 });
 
 // platformId to be added
-// quizImgURI to be added
-// quizScoreboard to be added 
 const QuizSchema = new Schema({
     userId: {
         //type: Schema.Types.ObjectId,
         type: String,
         required: [true]
+    },
+    platformId: {
+        //type: Schema.Types.ObjectId to be changed after connection made with Platform
+        type: String
     },
     name: {
         type: String,
@@ -36,6 +65,10 @@ const QuizSchema = new Schema({
         default: ""
         //required: [true, 'Please add an author'] 
     },
+    quizImgURI: {
+        type: String,
+        default: ""
+    },
     description: { 
         type: String,
         default: "" 
@@ -43,7 +76,6 @@ const QuizSchema = new Schema({
     },
     timedOption: { type: Boolean, default: false },
     time: { type: Number, default: 0 },
-    retakeOption: { type: Boolean, default: false },
     questions:  {
         type: [QuestionSchema], 
         validate: [(val) => val.length <= 50, 'Number of questions are limited to 50']
@@ -58,7 +90,14 @@ const QuizSchema = new Schema({
     },
     isPublished: { 
         type: Boolean, 
-        required: [true]}
+        required: [true]
+    },
+    scoreBoard: {
+        type: [UserSchema]
+    },
+    comments: {
+        type: [CommentSchema]
+    }
 }, {timestamps: true});
 // Validation for questions array size
 // TODO: size limit to be discussed
