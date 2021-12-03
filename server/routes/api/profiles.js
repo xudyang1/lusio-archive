@@ -1,7 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { getProfile, updateProfile } = require('../../controllers/profileController');
+const { getProfile, updateProfile, getProfileCards } = require('../../controllers/profileController');
 const { strictAuth, softAuth } = require('../../middleware/auth');
+
+/**
+ * @desc  Retrive a list of user profile card information
+ * @route GET api/profiles/profileCards?id=1&id=2&...
+ * @access  Public
+ */
+router
+  .route('/profileCards')
+  .get(getProfileCards);
 
 /**
  * @desc  Get a user's profile for view

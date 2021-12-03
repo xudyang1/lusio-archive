@@ -28,6 +28,8 @@ const platformRouter = require('./routes/api/platforms');
 const quizRouter = require('./routes/api/quizzes');
 // TODO: temporary
 const tmpQuizRouter = require('./routes/api/tmpQuizzes');
+
+const achievementRouter = require('./routes/api/achievement');
 // use routes
 app.use('/api/auth', authRouter);
 app.use('/api/profiles', profileRouter);
@@ -35,6 +37,7 @@ app.use('/api/platforms', platformRouter);
 app.use('/api/quizzes', quizRouter);
 // TODO: temporary 
 app.use('/api/tmpQuizzes', tmpQuizRouter);
+app.use('/api/achievement', achievementRouter);
 // end of test
 
 

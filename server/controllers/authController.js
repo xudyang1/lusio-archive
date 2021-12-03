@@ -32,14 +32,38 @@ const JWT_SECRET = process.env.JWT_SECRET;
  */
 exports.register = async (req, res, next) => {
     const { name, email, password } = req.body;
-    console.log(req.body)
+
     try {
         // simple validation
-        if (!name || !email || !password) { console.log("NNN"); return errorHandler(res, 400, 'Please enter all fields!'); }
+        if (!name || !email || !password) { return errorHandler(res, 400, 'Please enter all fields!'); }
 
         // check the existing user
-        const user = await UserAccount.findOne({ email });
-        if (user) { return errorHandler(res, 400, 'User already exists!'); }
+        const userEmail = await UserAccount.findOne({ email });
+        const userName = await UserAccount.findOne({ name });
+        if (userEmail) { return errorHandler(res, 400, 'Email is already used!'); }
+        if (userName) { return errorHandler(res, 400, 'Name is already used!'); }
+
+        // TODO: uncomment this when in production
+        const namePattern = /^(?=.*[a-zA-Z])[a-zA-Z\d-_]{3,10}$/;
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d!@#$%^&*-_=,.?]{8,30}$/;
+
+        /**
+         * Name must be between 3 and 10 characters long and must contain at least one alphabetic character.
+         * Valid alphanumeric character or special character of -_
+         */
+        if (!name.match(namePattern)) {
+            return errorHandler(res, 400, 'Invalid name format!');
+        }
+        /**
+         * Password must be between 8 and 40 characters long and must contain at least one character of the following types
+         *  1. <b>Uppercase</b> letter A to Z
+         *  2. <b>Lowercase</b> letter a to z
+         *  3. <b>Special</b> character of !@#$%^&*-_=,.?
+         *  4. <b>Number</b> from 0 to 9
+         */
+        if (!password.match(passwordPattern)) {
+            return errorHandler(res, 400, 'Invalid password format!');
+        }
 
         const salt = await bcrypt.genSalt(10);
 
