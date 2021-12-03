@@ -17,7 +17,7 @@ import { tokenConfig } from './AuthActions';
 export const getProfileCards = (ids) => async (dispatch, errorDispatch) => {
     try {
         const queryStr = ids.map(id => 'id=' + id).join('&');
-        const res = await axios.get(`/api/profiles/profileCards?+${queryStr}`);
+        const res = await axios.get(`/api/profiles/profileCards?${queryStr}`);
         dispatch({
             type: GET_PROFILE_CARDS,
             payload: res.data

@@ -16,8 +16,8 @@ export const UPDATE_PLATFORM = 'UPDATE_PLATFORM';
 
 // profiles
 export const PROFILES_LOADING = 'PROFILES_LOADING';
-export const GET_PROFILE_CARDS= 'GET_PROFILE_CARDS';
-export const GET_PROFILE= 'GET_PROFILE';
+export const GET_PROFILE_CARDS = 'GET_PROFILE_CARDS';
+export const GET_PROFILE = 'GET_PROFILE';
 export const ADD_PROFILE = 'ADD_PROFILE';
 export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
@@ -38,3 +38,7 @@ export const DELETE_ACCOUNT = 'DELETE_ACCOUNT';
 export const DELETE_FAIL = 'DELETE_FAIL';
 export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
 export const UPDATE_FAIL = 'UPDATE_FAIL';
+
+// achievements
+export const GET_BADGES = 'GET_BADGES';
+export const GET_ALL_BADGES = 'GET_ALL_BADGES';
