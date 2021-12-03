@@ -28,7 +28,6 @@ export default function ProfileSidebar(props) {
                 <li><Link to={props.path}><i className="material-icons">home</i>Home</Link></li>
                 <li><Link to={props.path + "/allquiz"}><i className="material-icons">library_books</i>My Quizzes</Link></li>
                 <li><Link to={props.path + "/allplatforms"}><i className="material-icons">business</i>My Platforms</Link></li>
-                <li><Link to={props.path + "/allplatforms"}><i className="material-icons">business</i>My Platforms222</Link></li>
                 <li><Link to={props.path + "/achievements"}><i className="material-icons">emoji_events</i>My Achievements</Link></li>
                 <li><Link to={props.path + "/liked"}><i className="material-icons">thumb_up</i>Liked Quizzes</Link></li>
                 <li><Link to={props.path + "/history"}><i className="material-icons">history</i>Quiz Hisotry</Link></li>

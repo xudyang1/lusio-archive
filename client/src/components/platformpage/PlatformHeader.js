@@ -72,7 +72,7 @@ export default function PlatformHeader(props) {
                     {security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i className="material-icons">check</i></a> : <div></div>}
                 </div>
                 <div className="col s2">
-                    <button className="btn waves-effect waves-light">Subscribe</button>
+                    {security > 0 ? <div></div> : <button className="btn waves-effect waves-light">Subscribe</button>}
                 </div>
                 <div className="col s2">
                     <button className="btn waves-effect waves-light" onClick={onClickAbout}>About</button>

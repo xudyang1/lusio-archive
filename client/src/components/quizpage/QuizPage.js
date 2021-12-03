@@ -1,21 +1,25 @@
 import React , { useContext, useEffect} from 'react';
-import { useParams } from 'react-router';
 import { AuthContext } from "../../context/AuthState";
+import {PlatformContext} from "../../context/PlatformState";
+import { ProfileContext } from '../../context/ProfileState';
 import QuizPageContent from "./QuizPageContent";
+import QuizComments from "./QuizComments";
 import QuizReport from "./QuizReport";
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 
 export default function QuizPage(){
-    const {isAuthenticated} = useContext(AuthContext);
-    const {id } = useParams();
-
+    const {isAuthenticated, user} = useContext(AuthContext);
+    const {updateProfile} = useContext(ProfileContext);
+    const {getPlatform} = useContext(PlatformContext);
+    
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
         var options = {
             preventScrolling: false,
         };
         M.Modal.init(elem, options);
+        
     })
     return(
         <div className="container z-depth-3" >
@@ -42,9 +46,12 @@ export default function QuizPage(){
                         }
                     </div>
                     <br/> 
-                    <QuizPageContent/> 
+                    <QuizPageContent passedFuncGet={getPlatform}/>
                 </div>
             </div>
+            {isAuthenticated ? <QuizComments userName={user.name} userId={user.profile} passedFunc={updateProfile}/>
+            : <QuizComments userName="" userId="" passedFunc={updateProfile}/>
+        }
         </div>
         )
 }
