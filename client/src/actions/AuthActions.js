@@ -23,7 +23,7 @@ export const config = { headers: { 'Content-Type': 'application/json' } };
 /**
  * @description token config for headers in request with authentication
  */
-export const tokenConfig = (token) => {
+export const tokenConfig = (token = null) => {
     const tokenConfig = { headers: { 'Content-Type': 'application/json' } };
     // if token, add to headers
     if (token) {
@@ -128,7 +128,7 @@ export const login = ({ email, password }) => async (dispatch, errorDispatch = d
 /**
  * @description update user account information
  * @param {string} token JWT token
- * @param {Json} payload see @format {req.body}
+ * @param {JSON} payload see @format {req.body}
  * @detail  For changing name | password | (email?)
  * @format  req.headers: { 'Content-Type': 'application/json', 
  *                         'x-auth-token': JWT token }

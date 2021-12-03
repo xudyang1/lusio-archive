@@ -1,15 +1,7 @@
 import React, { createContext, useContext, useReducer } from 'react';
+import { getProfile, updateProfile } from '../actions/ProfileActions';
 import { ProfileReducer } from '../reducers/ProfileReducer';
-import {
-    PROFILES_LOADING,
-    GET_PROFILES,
-    GET_PROFILE,
-    UPDATE_PROFILE,
-    GET_ERRORS,
-    CLEAR_ERRORS
-} from '../types/actionTypes';
-import axios from 'axios';
-import { AuthContext, AuthProvider } from './AuthState';
+import { AuthContext } from './AuthState';
 
 // Initial state
 const initialState = {
@@ -23,7 +15,7 @@ const initialState = {
         bannerURI: null,
         level: 0,
         currentExp: 0,
-        maxExp: 500,
+        maxExp: 0,
         achievements: [],
         quizzesTaken: [],
         likedQuizzes: [],
@@ -31,9 +23,12 @@ const initialState = {
         subscribedPlatforms: [],
         fans: []
     },
-    error: null,
-    loading: true,
-    viewType: 'GUEST_VIEW' // 'GUEST_VIEW' or 'OWNER_VIEW'
+    viewType: 'GUEST_VIEW', // 'GUEST_VIEW' or 'OWNER_VIEW'
+    error: {
+        msg: null,
+        status: null,
+        id: null
+    }
 };
 
 // Create context
@@ -43,96 +38,70 @@ export const ProfilesProvider = ({ children }) => {
     const { token } = useContext(AuthContext);
     const [state, dispatch] = useReducer(ProfileReducer, initialState);
 
-    // set up config/headers and token
-    const tokenConfig = token => {
-        // headers
-        const config = {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        };
 
-        // if token, add to headers
-        if (token) {
-            config.headers['x-auth-token'] = token;
-        }
-        return config;
-    };
-
-    async function getProfiles() {
-        try {
-            dispatch({ type: PROFILES_LOADING });
-            const res = await axios.get('/api/profiles');
-            dispatch({
-                type: GET_PROFILES,
-                payload: res.data
-            });
-        } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
-        }
-    };
-
-    async function getProfile(id, reload = true) {
-        try {
-            const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
-            if (reload)
-                dispatch({
-                    type: GET_PROFILE,
-                    payload: res.data
-                });
-            return res
-        } catch (err) {
-            if (reload)
-                dispatch({
-                    type: GET_ERRORS,
-                    payload: { msg: err.response.data.msg, status: err.response.status }
-                });
-        }
-    };
-
+    // getProfileCards(ids) function is inside ProfileActions.js
+    // To call the function, set local profileCards state inside your functional component:
+    /**
+     * const profileCardsInitialState = {
+     *  _id: null, 
+     *  name: null, 
+     *  description: null, 
+     *  iconURI: null, 
+     *  level: 0, 
+     *  currentExp: 0, 
+     *  maxExp: 0
+     * }
+     * const [profileCards, dispatch] = useReducer(profileCardsInitialState)
+     * ......
+     * somewhere: 
+     *  getProfileCards()(dispatch)
+     * 
+     */
 
     /**
-     * @param payload format: 
-     *        
-     *      { mode: "EDIT", profile: description | iconURI | bannerURI } 
-     *  Or
-     *      {
-     *        mode: "ADD" | "DELETE", 
-     *        profile: subscribedUsers | subscribedPlatforms | fans
-     *      }
-     * ex. 
+     * @desc  Get a user's profile for view
+     * @param {string}  id  profile id of the target profile
+     * @returns 
+     * @format  req.header('x-auth-token'): JWT token || null
+     *          res.data: { 
+     *                      viewType: "GUEST_VIEW" || "OWNER_VIEW", 
+     *                      profile: { profile document except 'owner' attribute }         
+     *                    }
      */
-    async function updateProfile(payload) {
-        const body = JSON.stringify(payload);
-        try {
-            const res = await axios.patch(`/api/profiles/profile/edit/${state.profile._id}`, body, tokenConfig(token));
-            dispatch({
-                type: UPDATE_PROFILE,
-                payload: res.data
-            });
-        } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                payload: { msg: err.response.data.msg, status: err.response.status }
-            });
-        }
-    };
-    // clear errors
-    function clearErrors() {
-        dispatch({
-            type: CLEAR_ERRORS
-        });
-    };
+    const getProfileCaller = (id, reload = true) => getProfile(token, id, reload)(dispatch);
+
+    /**
+     * @desc  Update the profile for the owner
+     * @param {JSON}    payload see @format
+     * @returns Promise<void>
+     * @detail  Client side can only send limited updated content:
+     *              edit existing: {description, iconURI, bannerURI}
+     *              add or delete: {platformsCreated, 
+     *                              quizzesCreated, 
+     *                              subscribedUsers,
+     *                              subscribedPlatforms, 
+     *                              fans}
+     * 
+     *              Other fields should not be updated here.
+     * 
+     * @format  req.body: { mode: "EDIT", profile: description || iconURI || bannerURI: newVal } 
+     *                    Or
+     *                    {
+     *                      mode: "ADD" || "DELETE", 
+     *                      profile: { platformsCreated || quizzesCreated || subscribedUsers || subscribedPlatforms || fans: {_id: ObjectId} }
+     *                    }
+     *          res.data: {
+     *                      success: true,
+     *                      mode: "EDIT" || "ADD" || "DELETE",
+     *                      content: { description || iconURI || ... || fans: updated content }
+     *                    }
+     */
+    const updateProfileCaller = (payload) => updateProfile(token, state.profile._id, payload)(dispatch);
 
     return (<ProfileContext.Provider value={{
-        getProfiles,
-        getProfile,
-        //addProfile,
-        updateProfile,
-        clearErrors,
+        getProfile: getProfileCaller,
+        updateProfile: updateProfileCaller,
+        profileDispatch: dispatch,
         ...state
     }}>
         {children}

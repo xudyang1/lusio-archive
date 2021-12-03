@@ -13,6 +13,11 @@ const initialState = {
         name: null,
         profile: null,
         iconURI: null
+    },
+    error: {
+        msg: null,
+        status: null,
+        id: null
     }
 };
 

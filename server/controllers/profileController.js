@@ -3,6 +3,38 @@ const { dropEntries, nonNullJson, errorHandler } = require('../utils/jsonTool');
 
 /**
  * TODO: 
+ * @desc  Retrive a list of user profile card information
+ * @route GET api/profiles/profileCards?id=1&id=2&...
+ * @access  Public
+ * @detail  Only profile _id, name, description, iconURI, level, currentExp, maxExp are needed
+ * @format  req.query: { id: [1,2...] }
+ *          res.data: { 
+ *                      length: Number, 
+ *                      profileCards: [{ _id, name, description, iconURI, level, currentExp, maxExp }]       
+ *                    }
+ */
+exports.getProfileCards = async (req, res, next) => {
+    try {
+        const profileIds = req.query.id;
+        // console.log(profileIds)
+        const profileCards = await UserProfile.find({ _id: { $in: profileIds } });
+
+        const length = profileCards ? profileCards.length : 0;
+        return res.status(200).json({
+            length,
+            profileCards
+        });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
+        return errorHandler(res, 500, 'Server Error');
+    }
+};
+
+/**
+ * TODO: 
  * @desc  Get a user's profile for view
  * @route GET api/profiles/profile/:profileId
  * @access  Public
