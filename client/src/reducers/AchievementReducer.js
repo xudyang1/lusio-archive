@@ -1,4 +1,4 @@
-import { GET_ALL_BADGES, GET_BADGES } from "../types/actionTypes";
+import { GET_ALL_BADGES, GET_BADGES, GET_ERRORS, CLEAR_ERRORS } from "../types/actionTypes";
 
 export const achievementInitialState = {
     badges: [],
@@ -36,7 +36,7 @@ export const AchievementReducer = (state, { type, payload }) => {
         case CLEAR_ERRORS:
             return {
                 ...state,
-                error: authInitialState.error
+                error: achievementInitialState.error
             };
         default:
             return state;

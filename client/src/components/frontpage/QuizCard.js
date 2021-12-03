@@ -11,6 +11,7 @@ export default function QuizCard(props) {
     const quizDescription = quiz? quiz.description: "TEMP"
     const quizId = quiz? quiz._id: 0
     const userId = quiz? quiz.userId: 0
+    const img = quiz? quiz.quizImgURI: "https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png"
 
     const { getProfile } = useContext(ProfileContext)
     const [profile, setProfile] = useState({})
@@ -35,7 +36,7 @@ export default function QuizCard(props) {
                 <div className="card-content white-text" style={{ padding: "0px", paddingTop: "24px" }}>
                     <span className="card-title center">{quizName}</span>
                     <div className="cardText" style={{ whitespace: "break-spaces" }}>
-                        <img src="https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png" width="200" height="200" /><br />
+                        <img src={img} width="200" height="200" /><br />
                         {quizDescription}
                     </div>
                     <div className="row" style={{ marginBottom: "0px" }}>
