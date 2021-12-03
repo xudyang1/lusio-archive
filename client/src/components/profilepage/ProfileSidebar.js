@@ -10,6 +10,10 @@ export default function ProfileSidebar(props) {
     const { loadUser, isAuthenticated, user } = useContext(AuthContext)
     const { profile } = useContext(ProfileContext)
 
+    const s = {
+        lineHeight: "20px"
+    }
+
     useEffect(() => {
         var elems = document.querySelectorAll('.sidenav');
         var instances = M.Sidenav.init(elems, {});
@@ -18,12 +22,17 @@ export default function ProfileSidebar(props) {
     return (
         <div>
             <ul id="slide-out" className="sidenav">
-                <li><div className="user-view">
+                <li style={s}><div className="user-view">
                     <div className="background">
                     </div>
-                    <a href="#user"><img className="circle" src={props.profileIconURI ? props.profileIconURI : "https://static.thenounproject.com/png/363633-200.png"} width='65%' height='300px' /></a>
-                    <a href="#name"><span className="name">{profile.name}</span></a>
-                    <a href="#email"><span className="email">{user ? user.email : ""}</span></a>
+                    <a><img className="circle" src={props.profileIconURI ? props.profileIconURI : "https://static.thenounproject.com/png/363633-200.png"} width='65%' height='300px' /></a>
+                    <a><span className="name">{profile.name}</span></a>
+                    <a>Level: {profile.level}</a>
+                    <div>
+                        <a><progress id="exp" value={profile.currentExp} max={profile.maxExp}> </progress></a>
+                    </div>
+                    <a>EXP: {profile.currentExp}/{profile.maxExp}</a>
+                    {/* <a href="#email"><span className="email">{user ? user.email : ""}</span></a> */}
                 </div></li>
                 <li><Link to={props.path}><i className="material-icons">home</i>Home</Link></li>
                 <li><Link to={props.path + "/allquiz"}><i className="material-icons">library_books</i>My Quizzes</Link></li>

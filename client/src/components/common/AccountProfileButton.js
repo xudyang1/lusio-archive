@@ -13,7 +13,7 @@ export default function AccountProfileButton(props) {
     // const { url, path } = useRouteMatch()
     const userId = props.userId
 
-    const user = props.user? props.user: {
+    const user = props.user ? props.user : {
         iconURI: null,
         name: "UNDEF"
     }
@@ -22,11 +22,12 @@ export default function AccountProfileButton(props) {
         height: "50px",
         paddingLeft: "0px",
         paddingRight: "0px",
-        marginTop: "5px"
+        marginTop: "5px",
+        marginRight: "10px"
     }
 
     return (
-        <div className="valign-wrapper">
+        <div className="valign-wrapper" style={{width: "120px"}}>
             <a href={"/profile/" + userId} style={s}>
                 <img className="circle" src={user.iconURI ? user.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
             </a>
