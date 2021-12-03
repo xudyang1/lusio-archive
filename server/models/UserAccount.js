@@ -7,7 +7,7 @@ const UserAccountSchema = new Schema({
         type: String, 
         required: [true, 'Please add an username'],
         minlength: [3, 'Name too short: at least 3 characters'],
-        maxlength: [15, 'Name too long: at most 15 characters']
+        maxlength: [10, 'Name too long: at most 10 characters']
     },
     email: { 
         type: String, 

@@ -8,28 +8,29 @@
     text-align: center;
 }
 #registerModal{
-    width: 33vw;
     height: 800px;
+    max-height: 85vh;
+    width: 33vw;
     font-size: 24px;
     text-align: center;
 }
-.modalHeader{
+#loginModal .modalHeader, #registerModal .modalHeader{
     font-weight: bold;
 }
-.modal-content{
+#loginModal .modal-content, #registerModal .modal-content{
     height: 85%;
     width: 100%;
     align-items: center;
 }
 p.deep-orange-text{
-    font-size: 1.3em;
+    font-size: 1em;
     font-weight: bold;
 }
 .input-field{
     width: 100%;
 }
 i.material-icons.prefix{
-    font-size: 2em
+    font-size: 1.5em
 }
 input#loginEmail,
 input#loginPassword,
@@ -37,11 +38,11 @@ input#registerName,
 input#registerEmail,
 input#registerPassword{
     height: 2em;
-    font-size: 1.5em;
+    font-size: 1em;
     line-height: 1em;
 }
 .input-field label{
-    font-size: 1.4em;
+    font-size: 1em;
 }
 
 .sendBtn {
@@ -70,19 +71,15 @@ input#registerPassword{
     border-radius: 10px;
 }
 
-.pwdFormat{
-    margin-left: 1.5em;
-    margin-bottom: 2em;
-}
-.pwdFormat .material-icons{
-    font-size: 1.3em;
-}
-
-.pwdFormat ul{
+.registerHelperText ul{
     text-align: left;
-    font-size: 0.7em;
+    font-size: 1.1em;
     line-height: 1em;
 }
-.pwdFormat ul li{
+.registerHelperText ul li{
     float: none;
+}
+
+.registerWarningIcon{
+    display: flex
 }
