@@ -71,6 +71,7 @@ export default function AddQuizToSectionButton(props) {
             <div id="addQuizToSectionModal" className="modal">
                 <div className="modal-content">
                     <h4>Add A Quiz to This Section</h4>
+                    <h6>First add your quiz to the platform quiz bank</h6>
                     <div className="row">
                         <div className="input-field col s9">
                             <select defaultValue="" ref={selector}>
@@ -83,7 +84,7 @@ export default function AddQuizToSectionButton(props) {
                             }} />
                         </div>
                     </div>
-                    <h4>OR</h4>
+                    <h6>Then add a quiz to this section</h6>
                     <div className="row">
                         <div className="input-field col s9">
                             <select defaultValue="" ref={selector2}>

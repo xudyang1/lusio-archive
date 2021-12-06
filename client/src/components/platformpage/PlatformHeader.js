@@ -1,13 +1,20 @@
-import React, { createRef, useContext, useState } from 'react';
+import React, { createRef, useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
+import { AuthContext } from '../../context/AuthState';
 import { PlatformContext } from '../../context/PlatformState';
+import { ProfileContext } from '../../context/ProfileState';
 
 export default function PlatformHeader(props) {
     const { id } = useParams();
     const history = useHistory();
     const { viewType, updatePlatform } = useContext(PlatformContext);
+    const { profile, updateProfile } = useContext(ProfileContext);
     const [editing, setEditing] = useState(false)
     const [editImg, setEditImg] = useState(false)
+    const [subToggle, setSubToggle] = useState(false)
+    const [aboutToggle, setAboutToggle] = useState(false)
+
+    const aboutButtonText = createRef();
     const platformName = createRef();
     const bannerURL = createRef();
 
@@ -46,12 +53,55 @@ export default function PlatformHeader(props) {
         })
     }
 
-    function onClickAbout() {
-        history.push(`/platform/${id}/About`)
+    function onClickSubScribe() {
+        const payload = {
+            mode: "ADD",
+            profile: {
+                subscribedPlatforms: id
+            }
+        }
+        updateProfile(payload)
+        setSubToggle(true)
     }
 
-    function onClickHeader() {
-        history.push(`/platform/${id}`)
+    function onClickUnsubScribe() {
+        const payload = {
+            mode: "DELETE",
+            profile: {
+                subscribedPlatforms: id
+            }
+        }
+        updateProfile(payload)
+        setSubToggle(false)
+    }
+
+    function onClickAbout() {
+        if(aboutToggle){
+            history.push(`/platform/${id}`)
+            setAboutToggle(false)
+            aboutButtonText.current.innerHTML = "About"
+        }
+        else{
+            history.push(`/platform/${id}/About`)
+            setAboutToggle(true)
+            aboutButtonText.current.innerHTML = "Back"
+        }
+    }
+
+    useEffect(() => {
+        // console.log(profile.subscribedPlatforms)
+        setSubToggle(profile.subscribedPlatforms.includes(id))
+    }, [profile.subscribedPlatforms])
+
+    function subButton() {
+        if (security > 0)
+            return <div></div>
+        if (subToggle) {
+            return <button className="btn waves-effect waves-light red" onClick={() => onClickUnsubScribe()}>Unsubscribe</button>
+        }
+        else {
+            return <button className="btn waves-effect waves-light" onClick={() => onClickSubScribe()}>Subscribe</button>
+        }
     }
 
     return (
@@ -63,7 +113,7 @@ export default function PlatformHeader(props) {
                             <div className="input-field">
                                 <input type="text" defaultValue={props.name} ref={platformName} />
                             </div>
-                            : <h2 onClick={onClickHeader}>{props.name}</h2>
+                            : <h2>{props.name}</h2>
                     }
                 </div>
                 <div>
@@ -72,10 +122,11 @@ export default function PlatformHeader(props) {
                     {security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i className="material-icons">check</i></a> : <div></div>}
                 </div>
                 <div className="col s2">
-                    {security > 0 ? <div></div> : <button className="btn waves-effect waves-light">Subscribe</button>}
+                    {/* {security > 0 ? <div></div> : <button className="btn waves-effect waves-light" onClick={() => onClickSubScribe()}>Subscribe</button>} */}
+                    {subButton()}
                 </div>
                 <div className="col s2">
-                    <button className="btn waves-effect waves-light" onClick={onClickAbout}>About</button>
+                    <button className="btn waves-effect waves-light" onClick={onClickAbout} ref={aboutButtonText}>About</button>
                 </div>
             </div>
             <div>

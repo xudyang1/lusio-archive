@@ -72,7 +72,7 @@ class EditQuizContent extends Component {
         e.preventDefault();
         //Usage of multiple contexts in extended Component
         //updateProfile = passedFunc 
-        this.props.passedFunc({
+        this.props.updateProfile({
             mode: "DELETE",
             profile:{
                 owner: this.state.userId,

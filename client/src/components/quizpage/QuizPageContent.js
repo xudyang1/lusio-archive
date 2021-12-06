@@ -15,18 +15,24 @@ class QuizPageContent extends Component{
             description: "",
             author: "",
             platformId: "",
+            platformName: "",
             likes: 0,
             liked: false, // need to implement: "liked" depends on user
             plays: 0,
-            played: false, // need to implement: "played" depends on user
             timer: 0,
             numQ: 0,
             scoreBoard: [],
-            isDisabled: false,
-            played: false
+            isDisabled: false
         };
                 
     }
+    /*
+    setPlatformName = async (platformId) => {
+        const platformContent = await this.props.passedFunc(platformId, false);
+        const platform = platformContent.data;
+        console.log(platform);
+    }
+    */
 
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
@@ -54,28 +60,64 @@ class QuizPageContent extends Component{
             timer: quiz.time,
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
-            //played: (depends on user),
-            played: this.context.played
+
         });
         
     }
 
+
     numLikeHandler = async e => {
         e.preventDefault();
-        await this.handleLikeState();
-        const updateFQuiz = await {
-            id: this.state.id,
-            likes: this.state.likes,
-        };
-        await this.context.updateQuiz(updateFQuiz);
+        if (this.props.userId != "") {
+            await this.handleLikeState(e);
+
+            const updateFQuiz = await {
+                id: this.state.id,
+                likes: this.state.likes,
+            };
+            await this.context.updateQuiz(updateFQuiz);
+        }
+        //userId does not exist : Guest User
+        //can not like the Quiz
+        else {
+            alert("You have to login first");
+        }
+        
 
     }
-    handleLikeState = () => {
-        if (!this.state.liked){
-            this.setState({likes: this.state.likes+1, liked: true});
+    handleLikeState = async (e) => {
+        const getLikedQList = () => { 
+            return (this.props.getProfile(this.props.userId)).then(function (result)
+             {return result.data.profile.likedQuizzes;});
         }
-        else {
+        const qList = await getLikedQList();
+        console.log("LikedQuizzes is", qList);
+
+        //if a quiz is already liked by User
+        //action becomes unliking a Quiz
+        if (qList.includes(this.state.id)) {
+            alert("You unliked the quiz.");
             this.setState({likes: this.state.likes-1, liked: false});
+            await this.props.updateProfile({
+                mode: "DELETE",
+                profile: {
+                    owner: this.props.userId,
+                    likedQuizzes: this.state.id
+                }
+            })
+        }
+        //if a quiz is not liked by User
+        //action becomes liking a Quiz
+        else {
+            alert("You liked the quiz.");
+            this.setState({likes: this.state.likes+1, liked: true});
+            await this.props.updateProfile({
+                mode: "ADD",
+                profile: {
+                    owner: this.props.userId,
+                    likedQuizzes: this.state.id
+                }
+            })
         }
     }
     
@@ -98,6 +140,7 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
+        console.log(this.props.userId);
     }
 
     render(){
@@ -168,7 +211,8 @@ class QuizPageContent extends Component{
                             </div>
                             <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
                                 <div className="col s4">{this.state.numQ}</div>
-                                <div className="col s4">{this.state.timer}</div>
+                                {this.state.timer != 0 ? <div className="col s4">{this.state.timer}</div>
+                                : <div className="col s4">No Timer Set</div>}
                                 <div className="col s4">N/A</div>
                             </div>
                         </div>

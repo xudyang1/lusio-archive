@@ -39,7 +39,11 @@ const initialState = {
         plays: 0,
         isPublished: false,
         scoreBoard: [],
-        comments: []
+        comments: [{
+            userId: "",
+            userName: "",
+            text: "",
+            commentId: null}]
     },
     error: null,
     loading: true,
@@ -115,6 +119,10 @@ export const QuizzesProvider = ({ children }) => {
             const comments = res.data.data.comments;
             const currentCom = comments[comments.length-1];
             //console.log("CurrentComment", currentCom);
+            dispatch({
+                type: GET_COMMENTBYID,
+                payload: res.data.data
+            });
             return currentCom._id;
         } catch (err) {
             dispatch({
@@ -131,8 +139,10 @@ export const QuizzesProvider = ({ children }) => {
             }
         };
         const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
+        console.log("insideAdd", body);
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
+            console.log("insideAdd", res);
             const deepCopyQuiz = cloneDeep(res.data.quiz);
             dispatch({
                 type: ADD_QUIZ,
@@ -157,8 +167,9 @@ export const QuizzesProvider = ({ children }) => {
         try {
             const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
             //deep copy of nested quiz
+            console.log(res.data.quiz);
             const deepCopyQuiz = cloneDeep(res.data.quiz);
-            //console.log(deepCopyQuiz);
+            console.log("deepcopy",deepCopyQuiz);
 
             dispatch({
                 type: UPDATE_QUIZ,

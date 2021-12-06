@@ -1,22 +1,24 @@
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import { QuizzesContext } from "../../context/QuizState";
 import AddItemCard from "./AddItemCard";
 import { PlatformContext } from "../../context/PlatformState";
 import PlatformCard from "./PlatformCard";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import { ProfileContext } from "../../context/ProfileState";
-import { useForceUpdate } from "../../utils/useForceUpdate";
 
-function getCards(t, index, element, canEdit) {
+import { getAllBadges } from "../../actions/AchievementActions";
+import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
+
+function getCards(t, index, element, args = false) {
     console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={canEdit} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
         case SUB_PLAT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
         case SUB_USER_CARD:
@@ -32,6 +34,7 @@ export default function SectionList(props) {
 
     const name = props.name ? props.name : ""
     const [items, setItems] = useState([])
+    const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
 
     const getQuizList = async (listOfId) => {
         const quizzes = () => {
@@ -58,8 +61,8 @@ export default function SectionList(props) {
         // return quiz;
     }
 
-    function renderSwitch(){
-        switch(props.callback){
+    function renderSwitch() {
+        switch (props.callback) {
             case "createQuiz":
                 return <CreateQuizButton />
             case "createPlat":
@@ -69,21 +72,50 @@ export default function SectionList(props) {
 
     useEffect(() => {
         if (props.items) {
-            switch(props.type){
-                case QUIZ_CARD:{
+            switch (props.type) {
+                case QUIZ_CARD: {
                     let quizzes = getQuizList(props.items).then(function (result) {
                         setItems(result)
                     })
-                }break;
-                case SUB_PLAT_CARD:{
+                } break;
+                case SUB_PLAT_CARD: {
                     let plats = getPlatforms(props.items).then(function (result) {
                         console.log(result)
                         setItems(result)
                     })
-                }break;
+                } break;
+                case ACHIEVEMENT_CARD: {
+                    getAllBadges()(dispatch)
+                } break;
             }
         }
     }, [props.items])
+
+    useEffect(()=>{
+        setItems(achievements.allBadges)
+    }, [achievements.allBadges])
+
+    function getList(list, type) {
+        let res = []
+        switch (type) {
+            case QUIZ_CARD: {
+                list.map((element, index) => (
+                    res.push(getCards(props.type, index, element, viewType == "OWNER_VIEW"))
+                ))
+            } break;
+            case SUB_PLAT_CARD: {
+                list.map((element, index) => (
+                    res.push(getCards(props.type, index, element))
+                ))
+            } break;
+            case ACHIEVEMENT_CARD: {
+                list.map((element, index) => (
+                    res.push(getCards(props.type, index, element))
+                ))
+            } break;
+        }
+        return res
+    }
 
     return (
         <div>
@@ -95,10 +127,13 @@ export default function SectionList(props) {
                     </div>
                     <div className="valign-wrapper">
                         <div className="LSection">
-                            {
+                            {/* {
                                 items.map((element, index) => (
                                     getCards(props.type, index, element, viewType == "OWNER_VIEW")
                                 ))
+                            } */}
+                            {
+                                getList(items, props.type)
                             }
                             {/* {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}
                             {callback == "createPlat" ? <AddItemCard callback={props.callbackFunc} /> : <div></div>} */}

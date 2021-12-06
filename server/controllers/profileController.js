@@ -3,6 +3,39 @@ const { dropEntries, nonNullJson, errorHandler } = require('../utils/jsonTool');
 
 /**
  * TODO: 
+ * @desc  Retrive a list of user profile card information
+ * @route GET api/profiles/profileCards?id=1&id=2&...
+ * @access  Public
+ * @detail  Only profile _id, name, description, iconURI, level, currentExp, maxExp are needed
+ * @format  req.query: { id: [1,2...] }
+ *          res.data: { 
+ *                      length: Number, 
+ *                      profileCards: [{ _id, name, description, iconURI, level, currentExp, maxExp }]       
+ *                    }
+ */
+exports.getProfileCards = async (req, res, next) => {
+    try {
+        const profileIds = req.query.id;
+        // console.log(profileIds)
+        const profileCards = await UserProfile.find({ _id: { $in: profileIds } })
+            .select('_id name description iconURI level currentExp maxExp');
+
+        const length = profileCards ? profileCards.length : 0;
+        return res.status(200).json({
+            length,
+            profileCards
+        });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return errorHandler(res, 400, messages);
+        }
+        return errorHandler(res, 500, 'Server Error');
+    }
+};
+
+/**
+ * TODO: 
  * @desc  Get a user's profile for view
  * @route GET api/profiles/profile/:profileId
  * @access  Public
@@ -67,7 +100,7 @@ exports.updateProfile = async (req, res, next) => {
         if (!req.body.profile) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
         // destructure
-        const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, commentsCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
+        const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
         const MODE = req.body.mode;
 
         var provided = keys = updated = null;
@@ -82,12 +115,12 @@ exports.updateProfile = async (req, res, next) => {
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, provided, options).select(keys);
                 break;
             case "ADD":
-                provided = nonNullJson({ platformsCreated, quizzesCreated, commentsCreated, subscribedUsers, subscribedPlatforms, fans });
+                provided = nonNullJson({ platformsCreated, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, { $push: provided }, options).select(keys);
                 break;
             case "DELETE":
-                provided = nonNullJson({ platformsCreated, quizzesCreated, commentsCreated, subscribedUsers, subscribedPlatforms, fans });
+                provided = nonNullJson({ platformsCreated, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findOneAndUpdate({ _id: req.user.profile }, { $pull: provided }, options).select(keys);
                 break;

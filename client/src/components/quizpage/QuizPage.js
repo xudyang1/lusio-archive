@@ -1,6 +1,6 @@
 import React , { useContext, useEffect} from 'react';
 import { AuthContext } from "../../context/AuthState";
-import { QuizzesContext } from '../../context/QuizState';
+import {PlatformContext} from "../../context/PlatformState";
 import { ProfileContext } from '../../context/ProfileState';
 import QuizPageContent from "./QuizPageContent";
 import QuizComments from "./QuizComments";
@@ -10,8 +10,8 @@ import "materialize-css/dist/css/materialize.min.css";
 
 export default function QuizPage(){
     const {isAuthenticated, user} = useContext(AuthContext);
-    const {getQuizzesById} = useContext(QuizzesContext);
-    const {profile, updateProfile} = useContext(ProfileContext);
+    const {updateProfile, getProfile} = useContext(ProfileContext);
+    const {getPlatform} = useContext(PlatformContext);
     
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
@@ -46,10 +46,11 @@ export default function QuizPage(){
                         }
                     </div>
                     <br/> 
-                    <QuizPageContent/>
+                    {isAuthenticated ? <QuizPageContent passedFuncGet={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
+                    : <QuizPageContent passedFuncGet={getPlatform} userId="" updateProfile={updateProfile}/>}
                 </div>
             </div>
-            {isAuthenticated ? <QuizComments userName={user.name} userId={profile._id} passedFunc={updateProfile}/>
+            {isAuthenticated ? <QuizComments userName={user.name} userId={user.profile} passedFunc={updateProfile}/>
             : <QuizComments userName="" userId="" passedFunc={updateProfile}/>
         }
         </div>

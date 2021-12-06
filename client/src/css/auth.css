@@ -1,29 +1,36 @@
 .modal-trigger{
     font-size: 1.5em;
 }
-.modal{
+#loginModal{
     width:33vw;
     height: 800px;
     font-size: 24px;
     text-align: center;
 }
-.modalHeader{
+#registerModal{
+    height: 800px;
+    max-height: 85vh;
+    width: 33vw;
+    font-size: 24px;
+    text-align: center;
+}
+#loginModal .modalHeader, #registerModal .modalHeader{
     font-weight: bold;
 }
-.modal-content{
+#loginModal .modal-content, #registerModal .modal-content{
     height: 85%;
     width: 100%;
     align-items: center;
 }
 p.deep-orange-text{
-    font-size: 1.3em;
+    font-size: 1em;
     font-weight: bold;
 }
 .input-field{
     width: 100%;
 }
 i.material-icons.prefix{
-    font-size: 2em
+    font-size: 1.5em
 }
 input#loginEmail,
 input#loginPassword,
@@ -31,11 +38,11 @@ input#registerName,
 input#registerEmail,
 input#registerPassword{
     height: 2em;
-    font-size: 1.5em;
+    font-size: 1em;
     line-height: 1em;
 }
 .input-field label{
-    font-size: 1.4em;
+    font-size: 1em;
 }
 
 .sendBtn {
@@ -62,4 +69,17 @@ input#registerPassword{
     height: 60px;
     width: 180px;
     border-radius: 10px;
+}
+
+.registerHelperText ul{
+    text-align: left;
+    font-size: 1.1em;
+    line-height: 1em;
+}
+.registerHelperText ul li{
+    float: none;
+}
+
+.registerWarningIcon{
+    display: flex
 }

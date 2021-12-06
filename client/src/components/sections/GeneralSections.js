@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState, useContext } from "react";
+import React, { createRef, useEffect, useState, useContext, useReducer } from "react";
 import { ACHIEVEMENT_CARD, QUIZ_CARD, SUB_PLAT_CARD, SUB_USER_CARD } from "../../types/cardTypes";
 import AchievementCard from "./AchievementCard";
 import QuizCards from "../frontpage/QuizCard";
@@ -12,6 +12,8 @@ import AddQuizToSectionButton from "./AddQuizToSectionButton";
 import ConfirmModal from "../common/ConfirmModal";
 import { QuizzesContext } from "../../context/QuizState";
 
+import { getAllBadges, getBadgesByIds } from "../../actions/AchievementActions";
+import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
 /**
  * Return and displays the corresponding card given card type and card information
@@ -22,13 +24,13 @@ import { QuizzesContext } from "../../context/QuizState";
  * @param {Boolean} canEdit set true if type == QUIZ_CARD && view_type == owner_view
  * @returns 
  */
-function getCards(t, index, element, canEdit) {
+ function getCards(t, index, element, args = false) {
     //console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={canEdit} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
         case SUB_PLAT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
         case SUB_USER_CARD:
@@ -78,6 +80,8 @@ export default function GeneralSections(props) {
     const sectionName = createRef();
     const platformID = props.platformID
 
+    const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
+
 
     /**
      * @todo Edit Section Name, update SectionQuizzes
@@ -98,6 +102,7 @@ export default function GeneralSections(props) {
                 }
             }
         }
+        console.log(payload)
         updatePlatform(platformID, payload)
     }
 
@@ -121,14 +126,24 @@ export default function GeneralSections(props) {
      */
     function removeQuizFromSection(index) {
         console.log("QUIZ WITH INDEX ", index, " NEEDS TO BE REMOVED")
-        console.log(quizzesInSection[index].name)
-        console.log(quizzesInSection[index].description)
-        console.log(quizzesInSection[index].author)
         let temp = quizzesInSection
         temp.splice(index, 1)
         setQuizzesInSection([...temp])
-        console.log(temp)
-        console.log(quizzesInSection)
+        const arrofID = quizzesInSection.map((element, index) => {
+            return { quiz: element._id, quizIndex: index }
+        })
+        const payload = {
+            mode: "EDIT",
+            platform: {
+                quizSections: {
+                    _id: props.sectionID,
+                    sectionName: sectionName.current.value,
+                    sectionQuizzes: arrofID
+                }
+            }
+        }
+        console.log(payload)
+        updatePlatform(platformID, payload)
     }
 
     function addQuizToSection(quizID) {
@@ -195,6 +210,8 @@ export default function GeneralSections(props) {
                 })
         }
         const quizL = await quizzes();
+        console.log(quizL)
+        console.log(listOfId)
         const quiz = quizL.data.filter(q => listOfId.includes(q._id));
         return quiz;
     }
@@ -203,8 +220,16 @@ export default function GeneralSections(props) {
         if (props.element) {
             switch (type) {
                 case QUIZ_CARD: {
+                    console.log("PROPS", props.element)
                     let quizzes = getQuizList(props.element).then(function (result) {
                         setQuizzesInSection(result)
+                    })
+                } break;
+                case ACHIEVEMENT_CARD: {
+                    console.log("LISTS OF IDS:", props.element)
+                    getBadgesByIds(props.element)(dispatch).then(function (result) {
+                        console.log(achievements)
+                        setQuizzesInSection(achievements.badges)
                     })
                 } break;
             }
@@ -225,9 +250,16 @@ export default function GeneralSections(props) {
                                 : name}
                             </div>
                             {/* {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => onClickDeleteSection(sectionID)}><i className="material-icons">delete</i></a> : <div></div>} */}
-                            {props.security > 0 ? <ConfirmModal key={props.sectionID} msgTitle={"Confirm Delete Section"} msgBody={"This Action is Irreversible, Are you sure you want to delete?"} callback={() => onClickDeleteSection()} /> : <div></div>}
-                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons">expand_less</i></a> : <div></div>}
-                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons">expand_more</i></a> : <div></div>}
+                            {props.security > 0 ? <ConfirmModal
+                                key={props.sectionID} id={props.sectionID}
+                                msgTitle={"Confirm Delete Section"}
+                                msgBody={"This Action is Irreversible, Are you sure you want to delete?"}
+                                callback={() => onClickDeleteSection()}
+                                button={<a className="right btn-floating btn-small waves-effect waves-light red modal-trigger" href={"#" + props.sectionID + "confirmModal"} style={{ fontSize: "0em" }} ><i className="material-icons">delete</i></a>} />
+                                : <div></div>}
+
+                            {/* {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons">expand_less</i></a> : <div></div>}
+                            {props.security > 0 ? <a className="right btn-floating btn-small waves-effect waves-light blue"><i className="material-icons">expand_more</i></a> : <div></div>} */}
                             {props.security > 0 && !editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => { setEditing(true) }}><i className="material-icons">edit</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light red" onClick={() => { setEditing(false) }}><i className="material-icons">clear</i></a> : <div></div>}
                             {props.security > 0 && editing ? <a className="right btn-floating btn-small waves-effect waves-light green" onClick={() => onClickConfirm()}><i className="material-icons">check</i></a> : <div></div>}

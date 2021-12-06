@@ -13,11 +13,11 @@ export const CreateQuizButton = () => {
 
     const handleCreate = async e => {
         e.preventDefault();
-
+        console.log(user.profile);
         const quiz = { 
-            userId: profile._id,
+            userId: user.profile,
             //TODO: chang to platform._id 
-            platformId: profile._id, 
+            platformId: user.profile, 
             name: "", 
             author: user.name, 
             quizImgURI: "https://c4.wallpaperflare.com/wallpaper/967/372/978/gray-simple-background-gradient-wallpaper-preview.jpg",
@@ -35,15 +35,14 @@ export const CreateQuizButton = () => {
             likes: 0,
             plays: 0,
             isPublished: false,
-            scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}],
+            scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}],
             comments: []
         }; 
         
         const getID = () => {
-            return (addQuiz(quiz))
-                .then(function (res) {
+            return (addQuiz(quiz)).then(function(res) {
                     return res;
-                })
+                });
         }
         const id = await getID();
 
@@ -54,6 +53,7 @@ export const CreateQuizButton = () => {
                 quizzesCreated: id
             }
         })
+        
         document.location.href = "/edit/" + id;
     }
 

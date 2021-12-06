@@ -37,20 +37,28 @@ export default function PlatformContent(props) {
         updatePlatform(id, payload)
     }
 
+    function getSections() {
+        let res = []
+        for (let i = 0; i < sections.length; i++) {
+            let quizIDs = []
+            let data = sections[i]
+            console.log("data", data)
+            data.sectionQuizzes.forEach(element => {
+                quizIDs.push(element.quiz)
+            });
+            res.push(<GeneralSections key={i} name={data.sectionName} security={security} index={data.sectionIndex} platformID={id} element={quizIDs} sectionID={data._id} type={QUIZ_CARD} />)
+        }
+        return res
+    }
+
     return (
         <div>
             {
-                sections.map((element, index) => (
-                    <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} platformID={id} element={element.sectionQuizzes} sectionID={element._id} type={QUIZ_CARD}/>
-                ))
+                // sections.map((element, index) => (
+                //     <GeneralSections key={index} name={element.sectionName} security={security} index={element.sectionIndex} platformID={id} element={element.sectionQuizzes} sectionID={element._id} type={QUIZ_CARD} />
+                // ))
+                getSections()
             }
-            <script>
-                {
-                    sections.map((element, index) => (
-                        console.log(element)
-                    ))
-                }
-            </script>
             {
                 security > 0 ? <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={onClickAddSection}>add</i></a> : <div></div>
             }

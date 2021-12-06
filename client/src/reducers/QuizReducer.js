@@ -36,7 +36,8 @@ export default function QuizReducer (state, action) {
       };
     case GET_COMMENTBYID:
       return {
-        ...state
+        ...state,
+        quiz: action.payload
       };
 // =======
 //         quiz: state.quizzes.filter(quiz => quiz._id === action.payload)

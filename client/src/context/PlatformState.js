@@ -82,6 +82,7 @@ export const PlatformProvider = ({ children }) => {
                     type: GET_PLATFORM,
                     payload: res.data
                 });
+            console.log(res.data);
             return res.data;
         } catch (err) {
             if (reload)

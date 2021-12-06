@@ -81,6 +81,19 @@ export const RegisterModal = () => {
                                 <i className="material-icons prefix">face</i>
                                 <input id="registerName" type="text" className="validate" name="name" autoComplete="username" onChange={handleOnChange} />
                                 <label htmlFor="registerName">Name</label>
+                                <span class="registerHelperText helper-text">
+                                    {
+                                        error.msg === 'Invalid name format!' &&
+                                        <span className="registerWarningIcon material-icons deep-orange-text">
+                                            warning_amber
+                                        </span>
+                                    }
+                                    <ul>
+                                        <li>1. Name must be between <b>3</b> and <b>10</b> characters long</li>
+                                        <li>2. Valid characters are <b>alphanumeric</b> character and <b>special</b> character of -_</li>
+                                        <li>3. Must contain at least <b>one alphabetic</b> character.</li>
+                                    </ul>
+                                </span>
                             </div>
 
                             <div className="input-field col s12">
@@ -95,11 +108,29 @@ export const RegisterModal = () => {
                                 </i>
                                 <input id="registerPassword" type="password" className="active validate" name="password" autoComplete="new-password" onChange={handleOnChange} />
                                 <label htmlFor="registerPassword">Password</label>
+                                <span class="registerHelperText helper-text">
+                                    {
+                                        error.msg === 'Invalid password format!' &&
+                                        <span className="registerWarningIcon material-icons deep-orange-text">
+                                            warning_amber
+                                        </span>
+                                    }
+                                    <ul>
+                                        <li>Password must be between <b>8</b> and <b>40</b> characters long and must contain at least one character of the following types:</li>
+                                        <li>1. <b>Uppercase</b> letter A to Z</li>
+                                        <li>2. <b>Lowercase</b> letter a to z</li>
+                                        <li>3. <b>Special</b> character of !@#$%^&*-_=,.?</li>
+                                        <li>4. <b>Number</b> from 0 to 9</li>
+                                    </ul>
+                                </span>
                             </div>
-                            {state.loading ? <Spinner /> :
-                                (<button className="btn green sendBtn" type="submit" name="action">
-                                    REGISTER<span className="material-icons right sendIcon">login</span>
-                                </button>)}
+
+                            {
+                                state.loading ? <Spinner /> :
+                                    (<button className="btn green sendBtn" type="submit" name="action">
+                                        REGISTER<span className="material-icons right sendIcon">login</span>
+                                    </button>)
+                            }
                         </form>
                     </div>
                 </div>
