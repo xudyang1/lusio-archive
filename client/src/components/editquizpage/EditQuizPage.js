@@ -25,15 +25,13 @@ export default function EditQuizPage(){
     const owner = quiz.author;
 
     if(isAuthenticated && owner == user.name){
-        console.log("owner", owner);
-        console.log("player's name", user.name);
+        //console.log("owner", owner);
+        //console.log("player's name", user.name);
         setMode(true);
     }
   }
   useEffect(()=> {
-
       checkMode();
-
   })
   return(
     <div>

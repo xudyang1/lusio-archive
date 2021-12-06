@@ -68,20 +68,56 @@ class QuizPageContent extends Component{
 
     numLikeHandler = async e => {
         e.preventDefault();
-        await this.handleLikeState();
-        const updateFQuiz = await {
-            id: this.state.id,
-            likes: this.state.likes,
-        };
-        await this.context.updateQuiz(updateFQuiz);
+        if (this.props.userId != "") {
+            await this.handleLikeState(e);
+
+            const updateFQuiz = await {
+                id: this.state.id,
+                likes: this.state.likes,
+            };
+            await this.context.updateQuiz(updateFQuiz);
+        }
+        //userId does not exist : Guest User
+        //can not like the Quiz
+        else {
+            alert("You have to login first");
+        }
+        
 
     }
-    handleLikeState = () => {
-        if (!this.state.liked){
-            this.setState({likes: this.state.likes+1, liked: true});
+    handleLikeState = async (e) => {
+        const getLikedQList = () => { 
+            return (this.props.getProfile(this.props.userId)).then(function (result)
+             {return result.data.profile.likedQuizzes;});
         }
-        else {
+        const qList = await getLikedQList();
+        console.log("LikedQuizzes is", qList);
+
+        //if a quiz is already liked by User
+        //action becomes unliking a Quiz
+        if (qList.includes(this.state.id)) {
+            alert("You unliked the quiz.");
             this.setState({likes: this.state.likes-1, liked: false});
+            await this.props.updateProfile({
+                mode: "DELETE",
+                profile: {
+                    owner: this.props.userId,
+                    likedQuizzes: this.state.id
+                }
+            })
+        }
+        //if a quiz is not liked by User
+        //action becomes liking a Quiz
+        else {
+            alert("You liked the quiz.");
+            this.setState({likes: this.state.likes+1, liked: true});
+            await this.props.updateProfile({
+                mode: "ADD",
+                profile: {
+                    owner: this.props.userId,
+                    likedQuizzes: this.state.id
+                }
+            })
         }
     }
     
@@ -104,8 +140,7 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
-
-        
+        console.log(this.props.userId);
     }
 
     render(){

@@ -10,7 +10,7 @@ import "materialize-css/dist/css/materialize.min.css";
 
 export default function QuizPage(){
     const {isAuthenticated, user} = useContext(AuthContext);
-    const {updateProfile} = useContext(ProfileContext);
+    const {updateProfile, getProfile} = useContext(ProfileContext);
     const {getPlatform} = useContext(PlatformContext);
     
     useEffect(() => {
@@ -46,7 +46,8 @@ export default function QuizPage(){
                         }
                     </div>
                     <br/> 
-                    <QuizPageContent passedFuncGet={getPlatform}/>
+                    {isAuthenticated ? <QuizPageContent passedFuncGet={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
+                    : <QuizPageContent passedFuncGet={getPlatform} userId="" updateProfile={updateProfile}/>}
                 </div>
             </div>
             {isAuthenticated ? <QuizComments userName={user.name} userId={user.profile} passedFunc={updateProfile}/>

@@ -39,7 +39,11 @@ const initialState = {
         plays: 0,
         isPublished: false,
         scoreBoard: [],
-        comments: []
+        comments: [{
+            userId: "",
+            userName: "",
+            text: "",
+            commentId: null}]
     },
     error: null,
     loading: true,
@@ -163,6 +167,7 @@ export const QuizzesProvider = ({ children }) => {
         try {
             const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
             //deep copy of nested quiz
+            console.log(res.data.quiz);
             const deepCopyQuiz = cloneDeep(res.data.quiz);
             console.log("deepcopy",deepCopyQuiz);
 

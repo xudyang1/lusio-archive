@@ -83,7 +83,7 @@ exports.addQuiz = async (req, res, next) => {
                 userId: c.userId,
                 userName: c.userName,
                 text: c.text,
-                id: c.id
+                commentId: c.commentId
             });
         });
         */

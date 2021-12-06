@@ -16,7 +16,6 @@ class QuizComments extends Component{
             commentValue: "",
             commentId: "",
             comments: [{
-                id: "",
                 userId: "",
                 userName: "",
                 text: ""
@@ -67,99 +66,58 @@ class QuizComments extends Component{
         }
         else {
             let list = [...this.state.comments];
+
             list.push({
-                id: this.state.comments.length,
                 userId: this.props.userId,
                 userName: this.props.userName,
                 text: this.state.commentValue
             });
-
+            console.log("After added", list);
             this.setState({comments: list}, () => this.handleSave(e));
         }
     }
     handleSave = async e => {
         e.preventDefault();
-        const {updateQuiz, getCommentById} = this.context;
+        const {updateQuiz} = this.context;
         console.log(this.state.comments);
         const updateFQuiz = {
             id: this.state.quizId,
             comments: this.state.comments
         }
         await updateQuiz(updateFQuiz);
+    }
+   
 
-        //Get CommentId
-        const getComID = () => {
-            return (getCommentById(this.state.quizId)).then(function(commentId) {
-                return commentId;
-        }).catch((e) => console.log(e));}
-        const id = await getComID();
-        console.log(id);
-    
-        //update Profile
-        this.props.passedFunc({
-            mode: "ADD",
-            profile:{
-                owner: this.props.userId,
-                commentsCreated: id
-            }
-        });
-        //await this.handleSaveCommentId(id);
-    }
-    /*
-    handleSaveCommentId = async (commentId) => {
-        const {updateQuiz, quiz} = this.context;
-        const comment = this.state.comments[this.state.comments.length-1];
-        
-        const commentUpdate = {
-            id: commentId,
-            userId: comment.userId,
-            userName: comment.userName,
-            text: comment.text
-        }
-        console.log("commentUpdate",commentUpdate);
-        const tempComments = quiz.comments;
-        
-        tempComments[tempComments.length-1] = commentUpdate;
-        
-        
-        const updateAfterComment = {
-            id: this.state.quizId,
-            comments: tempComments
-        }
-        console.log("updateAfterComment", updateAfterComment.comments);
-        
-        await updateQuiz(updateAfterComment);
-    }
     /*handleClick() {
         this.setState({
             showComments: !this.state.showComments
         });
     }*/
     handleDeleteComment = async (e, id) => {
+        //update Profile
+        console.log(this.props.userId);
         
-        const {getCommentById, quiz} = this.context;
-        
-        await getCommentById(this.state.quizId).then(commentId => {
-            //update Profile
-            this.props.passedFunc({
-                mode: "DELETE",
-                profile:{
-                    owner: this.props.userId,
-                    commentsCreated: commentId
-                }
-            });
-        });
         //console.log("quiz",quiz.comments[quiz.comments.length-1]._id);
         let list = [...this.state.comments];
-        list = list.filter(list => list.id !== id);
-        this.setState({comments: list}, () => this.handleSave(e));
+        list = list.filter(list => list._id !== id);
+        this.setState({comments: list}, () => this.handleSaveOnDelete(e));
     }
 
+    handleSaveOnDelete = async e => {
+        e.preventDefault();
+        const {updateQuiz} = this.context;
+        console.log(this.state.comments);
+        const updateFQuiz = {
+            id: this.state.quizId,
+            comments: this.state.comments
+        }
+        await updateQuiz(updateFQuiz);
+    }
 
 
     componentDidMount(){
         const id = this.props.match.params.id;
-        const {getQuizzes, quiz} = this.context;
+        const {getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
         //this.setState({commentId: quiz.comments[quiz.comments.length-1]._id})
         //this.getUser(this.props.dataFromQuizPage);
@@ -192,10 +150,10 @@ class QuizComments extends Component{
                     {this.state.comments.map((c) => {
                         return(
                             <div className="commentNodes">
-                                <p>{c.userName}</p>
+                                <p><b>{c.userName}</b></p>
                                 <p>{c.text}</p>
                                 <div>
-                                    {this.props.userId == c.userId ? <button href="#" className="commentDelete" onClick={(e) => this.handleDeleteComment(e, c.id)}>Delete Comment</button>
+                                    {this.props.userId == c.userId ? <button href="#" className="commentDelete" onClick={(e) => this.handleDeleteComment(e, c._id)}>Delete Comment</button>
                                     :
                                     null}
                                 </div>

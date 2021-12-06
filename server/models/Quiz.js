@@ -22,9 +22,6 @@ const CommentSchema = new Schema({
     text: {
         type: String,
         default: ""
-    },
-    id: {
-        type: Number,
     }
 })
 
