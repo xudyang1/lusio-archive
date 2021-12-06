@@ -35,7 +35,7 @@ export const CreateQuizButton = () => {
             likes: 0,
             plays: 0,
             isPublished: false,
-            scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}],
+            scoreBoard: [{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0},{userName: "", userScore: 0}],
             comments: []
         }; 
         

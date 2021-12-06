@@ -211,7 +211,8 @@ class QuizPageContent extends Component{
                             </div>
                             <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
                                 <div className="col s4">{this.state.numQ}</div>
-                                <div className="col s4">{this.state.timer}</div>
+                                {this.state.timer != 0 ? <div className="col s4">{this.state.timer}</div>
+                                : <div className="col s4">No Timer Set</div>}
                                 <div className="col s4">N/A</div>
                             </div>
                         </div>
