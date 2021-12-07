@@ -26,7 +26,7 @@ class EditQuizContent extends Component {
             likes: 0,
             plays: 0,
             isPublished: false,
-            openModal: false
+            publishText: "PUBLISH"
         };
         this.changedImgURI = createRef(this.state.quizImgURI);
     }
@@ -44,21 +44,40 @@ class EditQuizContent extends Component {
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
-        this.setState({
-            id: quiz._id,
-            userId: quiz.userId,
-            name: quiz.name,
-            author: quiz.author,
-            quizImgURI: quiz.quizImgURI,
-            description: quiz.description,
-            timedOption: quiz.timedOption,
-            time: quiz.time,
-            questions: quiz.questions, 
-            likes: quiz.likes,
-            plays: quiz.plays,
-            isPublished: quiz.isPublished,
-            openModal: false
-        });
+        if(quiz.isPublished){
+            this.setState({
+                id: quiz._id,
+                userId: quiz.userId,
+                name: quiz.name,
+                author: quiz.author,
+                quizImgURI: quiz.quizImgURI,
+                description: quiz.description,
+                timedOption: quiz.timedOption,
+                time: quiz.time,
+                questions: quiz.questions, 
+                likes: quiz.likes,
+                plays: quiz.plays,
+                isPublished: quiz.isPublished,
+                publishText: "UNPUBLISH"
+            });
+        }
+        else{
+            this.setState({
+                id: quiz._id,
+                userId: quiz.userId,
+                name: quiz.name,
+                author: quiz.author,
+                quizImgURI: quiz.quizImgURI,
+                description: quiz.description,
+                timedOption: quiz.timedOption,
+                time: quiz.time,
+                questions: quiz.questions, 
+                likes: quiz.likes,
+                plays: quiz.plays,
+                isPublished: quiz.isPublished,
+                publishText: "PUBLISH"
+            });
+        }
     }
     
     handleDeleteIndQuiz = async e => {
@@ -186,22 +205,14 @@ class EditQuizContent extends Component {
     }
     handlePublish = (e) => {
         e.preventDefault();
-        this.setState({isPublished: true}, () => this.handleSave(e));
-        console.log("check state update", this.context.quiz);
-    }
-    handleUnpublish = (e) => {
-        e.preventDefault();
-        this.setState({isPublished: false}, () => this.handleSave(e));
+        if(this.state.isPublished){
+            this.setState({isPublished: false, publishText: "PUBLISH"}, () => this.handleSave(e));
+        }
+        else{
+            this.setState({isPublished: true, publishText: "UNPUBLISH"}, () => this.handleSave(e));
+        }
     }
 
-    onOpenModal = e => {
-        e.preventDefault();
-        this.setState({ openModal: true });
-    }
-    onCloseModal = e => {
-        e.preventDefault();
-        this.setState({ openModal: false });
-    }
     componentDidMount() {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
@@ -209,6 +220,7 @@ class EditQuizContent extends Component {
     }
 
     render(){
+        var {publishText} = this.state;
             return(
                 <div className="row section" style={{padding: '35px'}}>                
                     <div className="col s5">
@@ -295,8 +307,7 @@ class EditQuizContent extends Component {
                     <div className="col s4">
                         <div className="row">
                             <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handleSave}>Save</a>
-                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handlePublish} >Publish</a>
-                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handleUnpublish} >Unpublish</a>
+                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handlePublish} >{publishText}</a>
                         </div>
                         <button className="waves-effect waves-light btn-small red" style={{ margin: "5px" }} onClick={this.handleDelete}>
                             Delete
