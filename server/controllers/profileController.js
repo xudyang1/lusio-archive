@@ -100,7 +100,7 @@ exports.updateProfile = async (req, res, next) => {
         if (!req.body.profile) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
         // destructure
-        const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
+        const { description, iconURI, bannerURI, platformsCreated, quizzesTaken, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
         const MODE = req.body.mode;
 
         var provided = keys = updated = null;
@@ -115,12 +115,12 @@ exports.updateProfile = async (req, res, next) => {
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, provided, options).select(keys);
                 break;
             case "ADD":
-                provided = nonNullJson({ platformsCreated, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans });
+                provided = nonNullJson({ platformsCreated, quizzesCreated, quizzesTaken, likedQuizzes, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, { $push: provided }, options).select(keys);
                 break;
             case "DELETE":
-                provided = nonNullJson({ platformsCreated, quizzesCreated, likedQuizzes, subscribedUsers, subscribedPlatforms, fans });
+                provided = nonNullJson({ platformsCreated, quizzesCreated, quizzesTaken, likedQuizzes, subscribedUsers, subscribedPlatforms, fans });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findOneAndUpdate({ _id: req.user.profile }, { $pull: provided }, options).select(keys);
                 break;

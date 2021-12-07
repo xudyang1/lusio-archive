@@ -85,6 +85,12 @@ class QuizComments extends Component{
             comments: this.state.comments
         }
         await updateQuiz(updateFQuiz);
+        this.refreshPage();
+    }
+
+    // Need to refresh to update _id of comment on the page
+    refreshPage(){
+        window.location.reload(false);
     }
    
 
@@ -97,7 +103,6 @@ class QuizComments extends Component{
         //update Profile
         console.log(this.props.userId);
         
-        //console.log("quiz",quiz.comments[quiz.comments.length-1]._id);
         let list = [...this.state.comments];
         list = list.filter(list => list._id !== id);
         this.setState({comments: list}, () => this.handleSaveOnDelete(e));
@@ -123,14 +128,7 @@ class QuizComments extends Component{
         //this.getUser(this.props.dataFromQuizPage);
     }
 
-    render(){/*
-        let commentItems;
-        let buttonView = 'Show Comments';
-        
-        if (this.state.showComments) {
-            buttonView = 'Hide Comments';
-            commentItems = <div className="commentList">{this.state.comments}</div>;
-        }*/
+    render(){
         return(
             <div>
                 <div className="commentSection">
@@ -160,13 +158,6 @@ class QuizComments extends Component{
                             </div>
                         )
                     })}
-                    {/*<button onClick={this.handleClick()}>
-                        {buttonView}
-                    </button>
-                    <h4>
-                        {this.state.comments.length}
-                    </h4>
-                    {commentItems}*/}
                 </div>
             </div>
         )

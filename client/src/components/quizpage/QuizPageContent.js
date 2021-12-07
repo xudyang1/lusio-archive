@@ -129,10 +129,26 @@ class QuizPageContent extends Component{
             })
         }
     }
-    
-    numPlayHandler = async e => {
+    numLikeHandler = async e => {
         e.preventDefault();
-        await this.handlePlayState();
+        if (this.props.userId != "") {
+            await this.handleLikeState(e);
+
+            const updateFQuiz = await {
+                id: this.state.id,
+                likes: this.state.likes,
+            };
+            await this.context.updateQuiz(updateFQuiz);
+        }
+        //userId does not exist : Guest User
+        //can not like the Quiz
+        else {
+            alert("You have to login first");
+        }
+    }
+    numPlayHandler = async (e) => {
+        e.preventDefault();
+        await this.handlePlayState(e);
 
         const updateFQuiz = await {
             id: this.state.id,
@@ -141,7 +157,34 @@ class QuizPageContent extends Component{
         await this.context.updateQuiz(updateFQuiz);
         document.location.href = "/play/" + this.state.id;
     }
-    handlePlayState = () => {
+    handlePlayState = async (e) => {
+        if (this.props.userId != "") {
+            const getPlayedQList = () => { 
+                return (this.props.getProfile(this.props.userId)).then(function (result)
+                 {return result.data.profile.quizzesTaken;});
+            }
+            const qList = await getPlayedQList();
+    
+            // Removes quiz from quiz history
+            if (qList.includes(this.state.id)) {
+                await this.props.updateProfile({
+                    mode: "DELETE",
+                    profile: {
+                        owner: this.props.userId,
+                        quizzesTaken: this.state.id
+                    }
+                })
+            }
+            // Adds / re-add (for re-ordering) to quiz history list
+            await this.props.updateProfile({
+                mode: "ADD",
+                profile: {
+                    owner: this.props.userId,
+                    quizzesTaken: this.state.id
+                }
+            })
+        }
+        // Guest users also increase play count
         this.setState({plays: this.state.plays+1});
     }
 

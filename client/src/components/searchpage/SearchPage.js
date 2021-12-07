@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import 'materialize-css';
 import SectionList from '../sections/SectionList';
 import { QUIZ_CARD } from '../../types/cardTypes';
+import { QuizzesContext } from '../../context/QuizState';
+import { PlatformContext } from '../../context/PlatformState';
 
 // sample data
-const quiz = [
-    { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platform_id: '1', likes: 4, created: new Date('2010/01/22') },
-    { id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platform_id: '2', likes: 1, created: new Date('2010/01/21') },
-    { id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platform_id: '2', likes: 10, created: new Date('2021/10/22') },
-    { id: '4', name: 'Qtop', description: 'Description for Q4', author: 'desktop', platform_id: '3', likes: 0, created: new Date('2021/01/22') },
-    { id: '5', name: 'Q25', description: 'Description for Q25', author: 'shinetop', platform_id: '3', likes: 200, created: new Date('2021/01/22') }
+const squiz = [
+    { id: '1', name: 'Q1', description: 'Description for Q1', author: 'Qwert', platformId: '1', likes: 4, createdAt: new Date('2010/01/22') },
+    { id: '2', name: 'Q2', description: 'Description for Q2', author: 'qazx', platformId: '2', likes: 1, createdAt: new Date('2010/01/21') },
+    { id: '3', name: 'Q3', description: 'Description for Q3', author: 'sktop', platformId: '2', likes: 10, createdAt: new Date('2021/10/22') },
+    { id: '4', name: 'Qtop', description: 'Description for Q4', author: 'desktop', platformId: '3', likes: 0, createdAt: new Date('2021/01/22') },
+    { id: '5', name: 'Q25', description: 'Description for Q25', author: 'shinetop', platformId: '3', likes: 200, createdAt: new Date('2021/01/22') }
 ]
 const platform = [
     { id: '1', name: 'ABC' },
@@ -20,8 +22,13 @@ const platform = [
 
 
 function SearchPage() {
+    const { getQuizzes } = useContext(QuizzesContext)
+    const { getPlatformList } = useContext(PlatformContext)
+    let quiz = [];
+    //console.log("!!!: " + getList());
+
     function findPlatformName(a) {
-        const platf = platform.find(b => b.id === a.platform_id);
+        const platf = platform.find(b => b.id === a.platformId);
         return platf.name;
     }
     const { search } = window.location;
@@ -59,10 +66,25 @@ function SearchPage() {
     const [sortType, setSortType] = useState('name');
     const [filterType, setFilterType] = useState('all');
     useEffect(() => {
+        async function getList() {
+            const quizzes = () => {
+                return getQuizzes()
+                .then(function(result){
+                    quiz.push(result.data);
+                    console.log("RESULT: " + result.data[0]._id);
+                    return result;
+                })
+            }
+            await quizzes();
+            console.log("LIST: " + quiz);
+            return quiz[0];
+        }
+        quiz = getList();
+        console.log("QQ: "+quiz);
         const sortArray = type => {
             const stypes = {
                 name: 'name',
-                created: 'created',
+                createdAt: 'createdAt',
                 likes: 'likes'
             };
             const sortTypes = stypes[type];
@@ -79,7 +101,7 @@ function SearchPage() {
                     <select className="browser-default" onChange={(e) => setSortType(e.target.value)}>
                         <option value='' disabled selected>Sort</option>
                         <option value='name'>Name (A-Z)</option>
-                        <option value='created'>Date Created</option>
+                        <option value='createdAt'>Date Created</option>
                         <option value='likes'>Likes</option>
                     </select>
                 </div>
