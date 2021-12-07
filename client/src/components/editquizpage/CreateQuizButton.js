@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { QuizzesContext } from "../../context/QuizState";
 import { ProfileContext } from "../../context/ProfileState";
+import { PlatformContext } from "../../context/PlatformState";
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 
@@ -10,6 +11,7 @@ export const CreateQuizButton = () => {
     const {isAuthenticated, user } = useContext(AuthContext);
     const { addQuiz } = useContext(QuizzesContext);
     const {updateProfile, profile} = useContext(ProfileContext);
+    const { platform } = useContext(PlatformContext);
 
     const handleCreate = async e => {
         e.preventDefault();
@@ -17,7 +19,7 @@ export const CreateQuizButton = () => {
         const quiz = { 
             userId: user.profile,
             //TODO: chang to platform._id 
-            platformId: user.profile, 
+            platformId: platform.name, 
             name: "", 
             author: user.name, 
             quizImgURI: "https://c4.wallpaperflare.com/wallpaper/967/372/978/gray-simple-background-gradient-wallpaper-preview.jpg",

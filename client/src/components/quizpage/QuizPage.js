@@ -46,8 +46,8 @@ export default function QuizPage(){
                         }
                     </div>
                     <br/> 
-                    {isAuthenticated ? <QuizPageContent passedFuncGet={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
-                    : <QuizPageContent passedFuncGet={getPlatform} userId="" updateProfile={updateProfile}/>}
+                    {isAuthenticated ? <QuizPageContent getPlatform={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
+                    : <QuizPageContent getPlatform={getPlatform} userId="" updateProfile={updateProfile} getProfile={getProfile}/>}
                 </div>
             </div>
             {isAuthenticated ? <QuizComments userName={user.name} userId={user.profile} passedFunc={updateProfile}/>

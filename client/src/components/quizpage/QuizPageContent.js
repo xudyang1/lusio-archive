@@ -61,8 +61,17 @@ class QuizPageContent extends Component{
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
 
-        });
-        
+        }, () => this.getPlat(this.state.platformId));
+    }
+
+    getPlat = async (platformId) => {
+        const plat = () => { 
+            return (this.props.getPlatform(platformId, false)).then(function (result)
+             {return result;}
+             );
+        }
+        const platform = await plat();
+        console.log("Platform", platform);
     }
 
 
@@ -140,7 +149,7 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getItem(id, getQuizzes);
-        console.log(this.props.userId);
+        
     }
 
     render(){
