@@ -222,85 +222,79 @@ class QuizPageContent extends Component{
     render(){
         return(
             <div>
-                <div className="row">
-                    <div className="col s6">
-                        <span className="row flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
+                <table>
+                    <tr><td>
+                    <table style={{width:"70%", marginRight:"0px", marginLeft:"auto"}}>
+                        <p>
+                            <span>
+                                <img src={this.state.quizImgURI} style={{width: "420px", height: "300px"}}></img>
+                            </span> 
+                        </p>
+                        <p style={{fontSize: "30px", fontWeight: "bold"}}>
                             {this.state.name}
-                        </span>
-                        <span className="row flow-text">
+                        </p>
+                        <p>
                             {/*TODO: change to platform's name and navigate to platform onClick */}
-                                Platform {this.state.platformId}
-                        </span>
-                        <span className="row flow-text">
-                            <div style={{fontSize:"15px"}}>Description: <br/></div>
+                            <div style={{fontSize:"17px"}}>Platform: <br/></div>
+                            {this.state.platformId}
+                        </p>
+                        <p>
+                            <div style={{fontSize:"17px"}}>Description: <br/></div>
                             {this.state.description}
-                        </span>
-                    </div>   
-                    <div className="col s6 pull-s6" style={{bottom:"100px"}}>
-                        <span className="flow-text">
-                            <img src={this.state.quizImgURI} style={{width: "350px", height: "250px"}}></img>
-                        </span> 
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col s5 pull-s6">
-                        Related Tags : wishlist
-                    </div>
-                    <div className="col s7">
-                        <div className="row" style={{paddingLeft:"200px"}}>
-                            <span> 
-                                {this.state.plays} plays
-                                <i className="material-icons likeicon" onClick={this.numLikeHandler}>thumb_up</i>
-                                <span> {this.state.likes}</span>
-                            </span>
+                        </p>
+                        <div>
+                            <div>
+                                <div>
+                                    <br/>
+                                    <span> 
+                                        <i className="material-icons likeicon" onClick={this.numLikeHandler}>thumb_up</i>
+                                        <span style={{marginRight:"20%"}}> {this.state.likes}</span>
+                                        {this.state.plays} plays
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="row" style={{marginBottom: "25px"}}>
-                    <hr className="row" style={{width:"150%", position:"absolute", right:"1px"}}></hr>
-                </div>
-                <div className="row">
-                    <div className="col s5 pull-s6" >
-                        <table>
-                            <tbody>
+                    </table>
+                    </td><td style={{padding:"5%", width:"50%"}}>
+                    <table>
+                        <tr>
+                            <th bgcolor="lightgrey"></th>
+                            <th bgcolor="lightgrey">Rank</th>
+                            <th bgcolor="lightgrey">Score</th>
+                        </tr>
+                        {this.state.scoreBoard.map((user, index)=> {
+                            return(
+                                <tr key={index}>
+                                    <td>{index+1}</td>
+                                    <td>{user.userName}</td>
+                                    <td>{user.userScore}</td>
+                                </tr>
+                            )
+                        })}
+                    </table>
+                    </td></tr>
+                </table>
+                <table>
+                    <tr><td>
+                        <table style={{width:"90%", marginRight:"0px", marginLeft:"auto", border:".5px solid gray"}}>
                             <tr>
-                                <th bgcolor="lightgrey"></th>
-                                <th bgcolor="lightgrey">Rank</th>
-                                <th bgcolor="lightgrey">Score</th>
+                                <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}># OF QUESTIONS</td>
+                                <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}>TIMER SET</td>
+                                <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}>PERSONAL SCORE</td>
                             </tr>
-                            {this.state.scoreBoard.map((user, index)=> {
-                                return(
-                                    <tr key={index}>
-                                        <td>{index+1}</td>
-                                        <td>{user.userName}</td>
-                                        <td>{user.userScore}</td>
-                                    </tr>
-                                )
-                            })}
-                            </tbody>
+                            <tr>
+                                <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.numQ}</td>
+                                {this.state.timer != 0 ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.timer}</td>
+                                : <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>No Timer Set</td>}
+                                <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{localStorage.getItem("currentScore")}</td>
+                            </tr>
                         </table>
-                    </div>
-                    <div className="col s7 pull-s2">
-                        <div className="row">
-                            <div className="row" style={{textAlign: 'center', fontSize: "20px"}}>
-                                <div className="col s4"># OF QUESTIONS</div>
-                                <div className="col s4">TIMER SET</div>
-                                <div className="col s4">PERSONAL SCORE</div>
-                            </div>
-                            <div className="row" style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>
-                                <div className="col s4">{this.state.numQ}</div>
-                                {this.state.timer != 0 ? <div className="col s4">{this.state.timer}</div>
-                                : <div className="col s4">No Timer Set</div>}
-                                <div className="col s4">{localStorage.getItem("currentScore")}</div> 
-                            </div>
+                        </td><td style={{padding:"10%", width:"35%"}}>
+                        <div>
+                            <button className="waves-effect waves-light btn-large" style={{width:"140%", fontSize:"85%"}} onClick={this.numPlayHandler} disabled={this.state.isDisabled}>Play Quiz</button>
                         </div>
-                        <br/>
-                        <div className="row" >
-                            <button className="waves-effect waves-light btn"  onClick={this.numPlayHandler} disabled={this.state.isDisabled}>Play Quiz</button>
-                            <button className="waves-effect waves-light btn" style={{left: "50px"}}>View Quiz Statistics</button>
-                        </div>
-                    </div>
-                </div>
+                    </td></tr>
+                </table>
             </div>
         )
     }
