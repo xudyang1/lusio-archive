@@ -41,8 +41,10 @@ class QuizReport extends Component {
         }
         emailjs.send('service_ad57k0p', 'template_iycih3s', templateParams, 'user_AIO163yEXkq8D7aABTTKl').then((res) => {
             console.log('Success', res.status, res.text);
+            alert("Report Success");
         }, (err) => {
             console.log('Failed...', err);
+            alert("Report Failed - Please try again");
         })
     }
 
