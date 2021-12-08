@@ -32,7 +32,7 @@ export default function QuizPage(){
                         <div>
                             <div className="modal-content">
                                 <h4>Report a Problem</h4>
-                                <QuizReport/>
+                                <QuizReport userId={user.profile} userName={user.name}/>
                             </div>
                         </div>) :
                         (<div>
