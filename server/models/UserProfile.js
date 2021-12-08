@@ -33,6 +33,11 @@ const UserProfileSchema = new Schema({
                     badge: { type: Schema.Types.ObjectId, ref: 'Badge' } 
                 }],
     quizzesTaken: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+    //quizzes scores added for personal score db
+    quizzesScore: [{
+        type: String,
+        default: ""
+    }],
     likedQuizzes: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
     subscribedUsers: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }],
     subscribedPlatforms: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],

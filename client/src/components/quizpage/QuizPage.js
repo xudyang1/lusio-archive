@@ -12,7 +12,8 @@ export default function QuizPage(){
     const {isAuthenticated, user} = useContext(AuthContext);
     const {updateProfile, getProfile} = useContext(ProfileContext);
     const {getPlatform} = useContext(PlatformContext);
-    
+
+
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
         var options = {

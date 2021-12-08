@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
-import { QuizzesContext } from '../../context/QuizState';
-
+import { QuizzesContext } from '../../context/QuizState';   
 
 class QuizPageContent extends Component{    
     static contextType = QuizzesContext;
@@ -22,6 +21,7 @@ class QuizPageContent extends Component{
             timer: 0,
             numQ: 0,
             scoreBoard: [],
+            currentScore: 0,
             isDisabled: false
         };
                 
@@ -61,8 +61,31 @@ class QuizPageContent extends Component{
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
 
-        }, () => this.getPlat(this.state.platformId));
+        }
+        //, () => this.getPlat(this.state.platformId)
+        );
+        
     }
+    getRecentScore = async (quizId) => {
+        if (this.props.userId != "") {
+            const getQuizScores = () => {
+                return (this.props.getProfile(this.props.userId)).then(function (result)
+                {return result.data.profile.quizzesScore;});
+            }
+            const sList = await getQuizScores();
+            console.log(sList);
+            for (var i = 0; i < sList.length; i++){
+                if (sList[i].split(":")[0] == quizId){
+                    //may change from localStorage
+                    //need to be discussed
+                    this.setState({currentScore: sList[i].split(":")[1]}, ()=> localStorage.setItem("currentScore", this.state.currentScore));  
+                }
+            } 
+        }
+        
+    }
+
+
 
     getPlat = async (platformId) => {
         const plat = () => { 
@@ -158,6 +181,7 @@ class QuizPageContent extends Component{
         document.location.href = "/play/" + this.state.id;
     }
     handlePlayState = async (e) => {
+        console.log(this.props.userId);
         if (this.props.userId != "") {
             const getPlayedQList = () => { 
                 return (this.props.getProfile(this.props.userId)).then(function (result)
@@ -191,8 +215,8 @@ class QuizPageContent extends Component{
     componentDidMount(){
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
-        this.getItem(id, getQuizzes);
-        
+        this.getItem(id, getQuizzes); 
+        this.getRecentScore(id);  
     }
 
     render(){
@@ -200,17 +224,17 @@ class QuizPageContent extends Component{
             <div>
                 <div className="row">
                     <div className="col s6">
-                        <p className="row flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
+                        <span className="row flow-text" style={{fontSize: "30px", fontWeight: "bold"}}>
                             {this.state.name}
-                        </p>
-                        <p className="row flow-text">
+                        </span>
+                        <span className="row flow-text">
                             {/*TODO: change to platform's name and navigate to platform onClick */}
                                 Platform {this.state.platformId}
-                        </p>
-                        <p className="row flow-text">
+                        </span>
+                        <span className="row flow-text">
                             <div style={{fontSize:"15px"}}>Description: <br/></div>
                             {this.state.description}
-                        </p>
+                        </span>
                     </div>   
                     <div className="col s6 pull-s6" style={{bottom:"100px"}}>
                         <span className="flow-text">
@@ -235,9 +259,10 @@ class QuizPageContent extends Component{
                 <div className="row" style={{marginBottom: "25px"}}>
                     <hr className="row" style={{width:"150%", position:"absolute", right:"1px"}}></hr>
                 </div>
-                <div class="row">
+                <div className="row">
                     <div className="col s5 pull-s6" >
                         <table>
+                            <tbody>
                             <tr>
                                 <th bgcolor="lightgrey"></th>
                                 <th bgcolor="lightgrey">Rank</th>
@@ -252,6 +277,7 @@ class QuizPageContent extends Component{
                                     </tr>
                                 )
                             })}
+                            </tbody>
                         </table>
                     </div>
                     <div className="col s7 pull-s2">
@@ -265,7 +291,7 @@ class QuizPageContent extends Component{
                                 <div className="col s4">{this.state.numQ}</div>
                                 {this.state.timer != 0 ? <div className="col s4">{this.state.timer}</div>
                                 : <div className="col s4">No Timer Set</div>}
-                                <div className="col s4">N/A</div>
+                                <div className="col s4">{localStorage.getItem("currentScore")}</div> 
                             </div>
                         </div>
                         <br/>

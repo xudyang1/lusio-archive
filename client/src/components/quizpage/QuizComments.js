@@ -145,9 +145,9 @@ class QuizComments extends Component{
                         </div>
                     </form>
                     <h6>{this.state.comments.length} Comments</h6>
-                    {this.state.comments.map((c) => {
+                    {this.state.comments.map((c, ci) => {
                         return(
-                            <div className="commentNodes">
+                            <div className="commentNodes" key={ci}>
                                 <p><b>{c.userName}</b></p>
                                 <p>{c.text}</p>
                                 <div>
