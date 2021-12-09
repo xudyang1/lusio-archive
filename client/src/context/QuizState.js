@@ -196,11 +196,12 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
-    function playQuiz() {
+    async function playQuiz(id) {
         try {
+            const res = await axios.get(`/api/quizzes/edit/${id}`);
             dispatch({
                 type: PLAY_QUIZ,
-                //no data to be transferred
+                payload: res.data.data
             });
         } catch (err) {
             dispatch({

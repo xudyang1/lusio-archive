@@ -78,7 +78,7 @@ class PlayQuizContent extends Component{
         const { getQuizzes, playQuiz } = this.context;
         this.getItem(id, getQuizzes); 
         
-        playQuiz();
+        playQuiz(id);
     }
 
     //binded(this) for use of props
@@ -99,6 +99,7 @@ class PlayQuizContent extends Component{
         //if no more time left, stop timer
         if (seconds == 0) {
             clearInterval(this.timer);
+            this.setState({isDisabled: true});
         }
     }
     
@@ -158,14 +159,14 @@ class PlayQuizContent extends Component{
                     <div className="description"> Quiz Description: {this.state.description}</div>
                     {this.state.questions.map((q, qi) => {
                         return (
-                            <div className="question">{q.title}<div className="qpoints" >({q.score}points)</div>
-                            <div style={{visibility: "hidden"}}>
+                            <div className="question" key={qi}>{q.title}<div className="qpoints" >({q.score}points)</div>
+                            <div style={{visibility: "hidden"}} key={qi}>
                                 {questionBase = questionBase + q.choices.length}
                                 {questionRange.push(questionBase)}
                             </div>
                                 {this.state.questions[qi].choices.map((choice, ci) => {
                                     return (
-                                        <div className="row">
+                                        <div className="row" key={ci}>
                                             <label>
                                                 <input type="checkbox" className="filled-in" value={ci+1} onClick={(e)=>this.allowOne(e, questionRange.slice(qi, qi+2))} disabled={this.state.isDisabled}/>
                                                 <span>{choice.content}</span>
@@ -178,7 +179,7 @@ class PlayQuizContent extends Component{
                     })}
                     <div className='row' style={{ textAlign: "right" }}>
                         <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
-                        <QuizResult />
+                        <QuizResult/>
                     </div>
                 </div>
             </div>

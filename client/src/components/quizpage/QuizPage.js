@@ -12,7 +12,8 @@ export default function QuizPage(){
     const {isAuthenticated, user} = useContext(AuthContext);
     const {updateProfile, getProfile} = useContext(ProfileContext);
     const {getPlatform} = useContext(PlatformContext);
-    
+
+
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
         var options = {
@@ -45,8 +46,9 @@ export default function QuizPage(){
                         </div>)
                         }
                     </div>
-                    {isAuthenticated ? <QuizPageContent passedFuncGet={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
-                    : <QuizPageContent passedFuncGet={getPlatform} userId="" updateProfile={updateProfile}/>}
+                    <br/> 
+                    {isAuthenticated ? <QuizPageContent getPlatform={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
+                    : <QuizPageContent getPlatform={getPlatform} userId="" updateProfile={updateProfile} getProfile={getProfile}/>}
                 </div>
             </div>
             {isAuthenticated ? <QuizComments userName={user.name} userId={user.profile} passedFunc={updateProfile}/>

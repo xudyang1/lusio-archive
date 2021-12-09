@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
-import { QuizzesContext } from '../../context/QuizState';
-
+import { QuizzesContext } from '../../context/QuizState';   
 
 class QuizPageContent extends Component{    
     static contextType = QuizzesContext;
@@ -22,6 +21,7 @@ class QuizPageContent extends Component{
             timer: 0,
             numQ: 0,
             scoreBoard: [],
+            currentScore: 0,
             isDisabled: false
         };
                 
@@ -60,8 +60,40 @@ class QuizPageContent extends Component{
             numQ: quiz.questions.length,
             scoreBoard: quiz.scoreBoard,
 
-        });
+        }
+        //, () => this.getPlat(this.state.platformId)
+        );
         
+    }
+    getRecentScore = async (quizId) => {
+        if (this.props.userId != "") {
+            const getQuizScores = () => {
+                return (this.props.getProfile(this.props.userId)).then(function (result)
+                {return result.data.profile.quizzesScore;});
+            }
+            const sList = await getQuizScores();
+            console.log(sList);
+            for (var i = 0; i < sList.length; i++){
+                if (sList[i].split(":")[0] == quizId){
+                    //may change from localStorage
+                    //need to be discussed
+                    this.setState({currentScore: sList[i].split(":")[1]}, ()=> localStorage.setItem("currentScore", this.state.currentScore));  
+                }
+            } 
+        }
+        
+    }
+
+
+
+    getPlat = async (platformId) => {
+        const plat = () => { 
+            return (this.props.getPlatform(platformId, false)).then(function (result)
+             {return result;}
+             );
+        }
+        const platform = await plat();
+        console.log("Platform", platform);
     }
 
 
@@ -148,6 +180,7 @@ class QuizPageContent extends Component{
         document.location.href = "/play/" + this.state.id;
     }
     handlePlayState = async (e) => {
+        console.log(this.props.userId);
         if (this.props.userId != "") {
             const getPlayedQList = () => { 
                 return (this.props.getProfile(this.props.userId)).then(function (result)
@@ -181,8 +214,8 @@ class QuizPageContent extends Component{
     componentDidMount(){
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
-        this.getItem(id, getQuizzes);
-        console.log(this.props.userId);
+        this.getItem(id, getQuizzes); 
+        this.getRecentScore(id);  
     }
 
     render(){
@@ -252,7 +285,7 @@ class QuizPageContent extends Component{
                                 <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.numQ}</td>
                                 {this.state.timer != 0 ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.timer}</td>
                                 : <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>No Timer Set</td>}
-                                <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>N/A</td>
+                                <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{localStorage.getItem("currentScore")}</td>
                             </tr>
                         </table>
                         </td><td style={{padding:"10%", width:"35%"}}>

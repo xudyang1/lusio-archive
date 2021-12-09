@@ -2,13 +2,16 @@ import React, {useContext, useEffect, useState} from 'react';
 import "materialize-css/dist/css/materialize.min.css";
 import { QuizzesContext } from '../../context/QuizState';
 import { AuthContext } from '../../context/AuthState';
+import { ProfileContext } from '../../context/ProfileState';
 
 import {useParams} from 'react-router-dom';
 import M from 'materialize-css';
 
 export default function QuizResult(){
-    const { isPlaying , score , timeSpent, updateQuiz, getQuiz} = useContext(QuizzesContext);
+    const { isPlaying , score , timeSpent, updateQuiz, getQuiz, quiz} = useContext(QuizzesContext);
     const { isAuthenticated, user } = useContext(AuthContext);
+    const { updateProfile, getProfile } = useContext(ProfileContext);
+
     const [isVisible, setVisibility] = useState("hidden");
     const { id } = useParams();
 
@@ -49,15 +52,45 @@ export default function QuizResult(){
             break;
           }
         }
-        updateScoreboard(initialSB.slice(0,3));
+        updateScoreboard(initialSB.slice(0,10));
       }
     
-    const updateScoreboard = (updatedSB) => {
+    const updateScoreboard = async (updatedSB) => {
         const updateFQuiz = {
             id: id,
             scoreBoard: updatedSB
         };
         updateQuiz(updateFQuiz);
+        
+
+        const getQuizzesScoreL = () => { 
+            return (getProfile(user.profile)).then(function (result)
+             {return result.data.profile.quizzesScore;});
+        }
+        const qScoreList = await getQuizzesScoreL();
+        console.log("QuizzesScore are", qScoreList);
+
+        //check if score already exists in quizzesScore
+        for(var i=0; i < qScoreList.length; i++){
+            if (qScoreList[i].split(":")[0] == quiz._id){
+                //console.log("index", i);
+                updateProfile({
+                    mode: "DELETE",
+                    profile: {
+                        owner: user.profile,
+                        quizzesScore: qScoreList[i]
+                    }
+                })
+            }
+        }
+        //storing quiz score in quizzesScore database
+        updateProfile({
+            mode: "ADD",
+            profile: {
+                owner: user.profile,
+                quizzesScore: quiz._id + ":" + score.toString()
+            }
+        })
         routeToQuiz();
     }
 
