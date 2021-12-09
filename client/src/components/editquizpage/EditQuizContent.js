@@ -17,6 +17,7 @@ class EditQuizContent extends Component {
             description: "",
             timedOption: false,
             time: 0,
+            showAnsOption: false,
             questions: [{
                 title: "",
                 choices: [""],
@@ -29,6 +30,17 @@ class EditQuizContent extends Component {
             publishText: "PUBLISH"
         };
         this.changedImgURI = createRef(this.state.quizImgURI);
+    }
+
+    checkURI = (e) => {
+        if (this.changedImgURI.current.value.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+            this.setState({quizImgURI: this.changedImgURI.current.value});
+        }
+        else {
+            if (e.key == "Enter"){
+                alert("Type in a correct image URL format (jpeg/jpg/gif/png)");
+            }
+        }
     }
 
     getItem = async (id, getQuizzes) => {
@@ -54,6 +66,7 @@ class EditQuizContent extends Component {
                 description: quiz.description,
                 timedOption: quiz.timedOption,
                 time: quiz.time,
+                showAnsOption: quiz.showAnsOption,
                 questions: quiz.questions, 
                 likes: quiz.likes,
                 plays: quiz.plays,
@@ -71,6 +84,7 @@ class EditQuizContent extends Component {
                 description: quiz.description,
                 timedOption: quiz.timedOption,
                 time: quiz.time,
+                showAnsOption: quiz.showAnsOption,
                 questions: quiz.questions, 
                 likes: quiz.likes,
                 plays: quiz.plays,
@@ -159,6 +173,10 @@ class EditQuizContent extends Component {
         
         console.log(this.state.time);
     }
+    showAnsHandler = () => {
+        this.state.showAnsOption = !this.state.showAnsOption;
+        this.setState({showAnsOption: this.state.showAnsOption});
+    }
     
     scoreHandler = (qi,e) => {
         e.preventDefault();
@@ -175,26 +193,23 @@ class EditQuizContent extends Component {
         this.state.showQuestion = !this.state.showQuestion;
         this.setState({showQuestion: this.state.showQuestion});
     }
-    showAHandler = () => {
-        this.state.showAnswer = !this.state.showAnswer;
-        this.setState({showAnswer: this.state.showAnswer});
-    }
     */
 
     handleSave = async e => {
         e.preventDefault();
         console.log("current quiz publish statement: ", this.state.isPublished);
-        
+        console.log(this.state.showAnsOption);
         const { updateQuiz } = this.context;
         const updateFQuiz = {
             id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
-            quizImgURI: this.changedImgURI.current.value,
+            quizImgURI: this.state.quizImgURI,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
+            showAnsOption: this.state.showAnsOption,
             questions: this.state.questions, 
             likes: this.state.likes,
             plays: this.state.plays,
@@ -217,6 +232,7 @@ class EditQuizContent extends Component {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
+        
     }
 
     render(){
@@ -234,17 +250,23 @@ class EditQuizContent extends Component {
                     <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
                         <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/>
                         {/*<input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>*/}
-                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} />
+                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} onChange={this.checkURI} onKeyUp={this.checkURI}/>
                     </div>
                     <div className="col s3" style={{paddingLeft: '100px', paddingTop: '30px'}}>
                         <form action="#">
-                            <p>
+                            <span>
                                 <label>
                                     <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
                                     <span>Timed quiz</span>
                                     <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
                                 </label>
-                            </p>
+                            </span>
+                            <span>
+                                <label>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnsOption} onClick={this.showAnsHandler}/>
+                                    <span>Show answer after submission</span>
+                                </label>
+                            </span>
                             {/*
                             //Wishlist
                             <p>
@@ -253,12 +275,7 @@ class EditQuizContent extends Component {
                                     <span>Show questions one at a time</span>
                                 </label>
                             </p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnswer} onClick={this.showAHandler}/>
-                                    <span>Show answer after submission</span>
-                                </label>
-                            </p>
+                            
                              */}
                     </form>
                 </div>

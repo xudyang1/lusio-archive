@@ -26,6 +26,7 @@ export const CreateQuizButton = () => {
             description: "", 
             timedOption: false,
             time: 0,
+            showAnsOption: false,
             questions: [{
                 title: "",
                 choices: [{

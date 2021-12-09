@@ -257,20 +257,24 @@ class QuizPageContent extends Component{
                     </table>
                     </td><td style={{padding:"5%", width:"50%"}}>
                     <table>
-                        <tr>
-                            <th bgcolor="lightgrey"></th>
-                            <th bgcolor="lightgrey">Rank</th>
-                            <th bgcolor="lightgrey">Score</th>
-                        </tr>
-                        {this.state.scoreBoard.map((user, index)=> {
-                            return(
-                                <tr key={index}>
-                                    <td>{index+1}</td>
-                                    <td>{user.userName}</td>
-                                    <td>{user.userScore}</td>
-                                </tr>
-                            )
-                        })}
+                        <thead>
+                            <tr>
+                                <th bgcolor="lightgrey"></th>
+                                <th bgcolor="lightgrey">Rank</th>
+                                <th bgcolor="lightgrey">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.scoreBoard.map((user, index)=> {
+                                return(
+                                    <tr key={index}>
+                                        <td>{index+1}</td>
+                                        <td>{user.userName}</td>
+                                        <td>{user.userScore}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
                     </table>
                     </td></tr>
                 </table>
@@ -286,7 +290,8 @@ class QuizPageContent extends Component{
                                 <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.numQ}</td>
                                 {this.state.timer != 0 ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.timer}</td>
                                 : <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>No Timer Set</td>}
-                                <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{localStorage.getItem("currentScore")}</td>
+                                {this.props.userId != "" ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{localStorage.getItem("currentScore")}</td>
+                                : <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}></td>}   
                             </tr>
                         </table>
                         </td><td style={{padding:"10%", width:"35%"}}>

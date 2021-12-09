@@ -17,10 +17,10 @@ export default function QuizResult(){
 
     const routeToQuiz = (e) => {
         document.location.href = "/quiz/" + id;
-        
     }
-    const routeToPlay = (e) => {
-        document.location.href = "/play/" + id;
+
+    const routeToAnswers = (e) => {
+        document.location.href = "/answers/" + id;
     }
 
     //retrieving data of quiz board
@@ -34,7 +34,7 @@ export default function QuizResult(){
         
         if(isAuthenticated){
             rankCheck(user.name, score, initialSB);
-            alert("Only up to 3rd place will be displayed.")
+            alert("Only up to 10th place will be displayed.")
         }
         if(!isAuthenticated){
             alert("You need to login first");
@@ -91,6 +91,7 @@ export default function QuizResult(){
                 quizzesScore: quiz._id + ":" + score.toString()
             }
         })
+        window.location.reload(false);
         routeToQuiz();
     }
 
@@ -99,6 +100,8 @@ export default function QuizResult(){
         var opt = { preventScrolling: false };
         M.Modal.init(elem, opt);
     },[])
+
+
     return(
         <div>
             <a className="waves-effect waves-light btn modal-trigger" href="#quizResultModal">
@@ -110,6 +113,8 @@ export default function QuizResult(){
                     <div className="modal-content">
                         <h6>You finished taking the quiz</h6>
                         <h3>Your Score {score}</h3>
+                        {quiz.showAnsOption ? <h6 onClick={routeToAnswers}><u>Review Answers</u></h6>
+                         : null}
                         <h5>Time Spent: <br/> {Math.floor(timeSpent/3600)}hours {Math.floor(timeSpent/60)}minutes {timeSpent%60}seconds</h5>
                         <a className="waves-effect waves-light btn" onClick={forRankCheck}>
                             Update Score on Scoreboard

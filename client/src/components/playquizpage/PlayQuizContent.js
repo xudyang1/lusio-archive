@@ -16,6 +16,7 @@ class PlayQuizContent extends Component{
             description: "",
             timedOption: false,
             time: 0,
+            showAnsOption: false,
             questions: [],
             score: 0,
             quizTime: {},
@@ -63,6 +64,7 @@ class PlayQuizContent extends Component{
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
+            showAnsOption: quiz.showAnsOption,
             questions: quiz.questions,
             openModal: false,
             // After getting Quiz retrieve time attribute
@@ -179,7 +181,7 @@ class PlayQuizContent extends Component{
                     })}
                     <div className='row' style={{ textAlign: "right" }}>
                         <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
-                        <QuizResult/>
+                        <QuizResult showAnsOption={this.state.showAnsOption}/>
                     </div>
                 </div>
             </div>
