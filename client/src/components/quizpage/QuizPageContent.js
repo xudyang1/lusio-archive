@@ -17,7 +17,7 @@ class QuizPageContent extends Component{
             platformId: "",
             platformName: "",
             likes: 0,
-            liked: false, // need to implement: "liked" depends on user
+            liked: false,
             plays: 0,
             timer: 0,
             numQ: 0,
@@ -55,7 +55,6 @@ class QuizPageContent extends Component{
             author: quiz.author,
             platformId: quiz.platformId,
             likes: quiz.likes,
-            //liked: (depends on user)
             plays: quiz.plays,
             timer: quiz.time,
             numQ: quiz.questions.length,
