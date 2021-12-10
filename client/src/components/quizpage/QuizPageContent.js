@@ -16,7 +16,7 @@ class QuizPageContent extends Component{
             platformId: "",
             platformName: "",
             likes: 0,
-            liked: false, // need to implement: "liked" depends on user
+            liked: false,
             plays: 0,
             timer: 0,
             numQ: 0,

@@ -2,21 +2,6 @@ import React , { Component} from 'react';
 import { withRouter } from "react-router";
 import emailjs from 'emailjs-com';
 
-/* 
-Lusio email -
-User: lusioquiz@gmail.com
-Pass: lusio123
-
-https://www.emailjs.com -
-User: lusioquiz@gmail.com
-Pass: lusio123
-Service ID: service_ad57k0p
-Current Template ID: template_iycih3s
-User ID: user_AIO163yEXkq8D7aABTTKl
-Access Token: 8085dcbe2ea1b481db538284cd2407ce
-*/
-
-
 class QuizReport extends Component {
     constructor() {
         super();
@@ -29,7 +14,9 @@ class QuizReport extends Component {
     onChangeValue(e) {
         this.setState({
             selectedOption: e.target.value,
-            quizId: this.props.match.params.id
+            quizId: this.props.match.params.id,
+            userId: this.props.userId,
+            userName: this.props.userName
         });
     }
     handleReport(e) {
@@ -37,7 +24,7 @@ class QuizReport extends Component {
         var templateParams = {
             from_name: "Lusio Team",
             from_email: "lusioquiz@gmail.com",
-            message: "Quiz " + this.state.quizId + " has been reported for " + this.state.selectedOption
+            message: "Quiz " + this.state.quizId + " has been reported for " + this.state.selectedOption + " by User " + this.state.userName + " (" + this.state.userId + ")"
         }
         emailjs.send('service_ad57k0p', 'template_iycih3s', templateParams, 'user_AIO163yEXkq8D7aABTTKl').then((res) => {
             console.log('Success', res.status, res.text);
