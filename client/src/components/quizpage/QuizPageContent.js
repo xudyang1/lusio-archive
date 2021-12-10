@@ -47,6 +47,7 @@ class QuizPageContent extends Component{
             return quiz[0];
         }
         const quiz = await setCurrentQuiz(id);
+        
         this.setState({
             id: quiz._id,
             name: quiz.name,
@@ -55,17 +56,14 @@ class QuizPageContent extends Component{
             author: quiz.author,
             platformId: quiz.platformId,
             likes: quiz.likes,
-            //liked: (depends on user)
             plays: quiz.plays,
             timer: quiz.time,
             numQ: quiz.questions.length,
-            scoreBoard: quiz.scoreBoard,
-
-        }
+            scoreBoard: quiz.scoreBoard
+        });
         //, () => this.getPlat(this.state.platformId)
-        );
-        
     }
+
     getRecentScore = async (quizId) => {
         if (this.props.userId != "") {
             const getQuizScores = () => {
@@ -74,18 +72,20 @@ class QuizPageContent extends Component{
             }
             const sList = await getQuizScores();
             console.log(sList);
+            /*
+            localStorage.setItem("currentScore", 0);
             for (var i = 0; i < sList.length; i++){
                 if (sList[i].split(":")[0] == quizId){
                     //may change from localStorage
                     //need to be discussed
-                    this.setState({currentScore: sList[i].split(":")[1]}, ()=> localStorage.setItem("currentScore", this.state.currentScore));  
-                }
+                    localStorage.setItem("currentScore", sList[i].split(":")[1]);
+                    this.setState({currentScore: localStorage.getItem("currentScore")});
+                    break;
+                } 
             } 
+            */
         }
-        
     }
-
-
 
     getPlat = async (platformId) => {
         const plat = () => { 
@@ -215,8 +215,9 @@ class QuizPageContent extends Component{
     componentDidMount(){
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
+        this.getRecentScore(id);
         this.getItem(id, getQuizzes); 
-        this.getRecentScore(id);  
+          
     }
 
     render(){
@@ -290,7 +291,7 @@ class QuizPageContent extends Component{
                                 <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.numQ}</td>
                                 {this.state.timer != 0 ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.timer}</td>
                                 : <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>No Timer Set</td>}
-                                {this.props.userId != "" ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{localStorage.getItem("currentScore")}</td>
+                                {this.props.userId != "" ? <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.currentScore}</td>
                                 : <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}></td>}   
                             </tr>
                         </table>

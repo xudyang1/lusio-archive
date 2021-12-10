@@ -13,6 +13,7 @@ export default function QuizResult(){
     const { updateProfile, getProfile } = useContext(ProfileContext);
 
     const [isVisible, setVisibility] = useState("hidden");
+    const [rank, setRank] = useState(null);
     const { id } = useParams();
 
     const routeToQuiz = (e) => {
@@ -41,13 +42,18 @@ export default function QuizResult(){
         }
     }
 
+    
+
     //Changes in the ranking if the current user has higher score
     //than the user in the scoreboard
     //TODO: discuss about the circumstance of tying score
     const rankCheck = (currentUser, currentScore, initialSB) => {
+        setRank("11+");
         for (var i = 0; i < initialSB.length; i++) {
           if (initialSB[i].userScore <= currentScore) {
             console.log(currentScore);
+            setRank(i+1);
+            setVisibility("visible");
             initialSB.splice(i, 0, {userName: currentUser, userScore: currentScore});
             break;
           }
@@ -91,42 +97,56 @@ export default function QuizResult(){
                 quizzesScore: quiz._id + ":" + score.toString()
             }
         })
-        window.location.reload(false);
-        routeToQuiz();
+        //window.location.reload(false);
+        //routeToQuiz();
     }
+    const alertMessage = () => {
+        alert("Your score will not be updated automatically. Make sure you update your score first.");
+        
+    }
+    
+
 
     useEffect(() => {
         var elem = document.querySelector('#quizResultModal')
         var opt = { preventScrolling: false };
         M.Modal.init(elem, opt);
+
+        var elem2 = document.querySelector('#quizAnswersModal')
+        M.Modal.init(elem2, opt);
+
+        
+        
     },[])
 
 
     return(
         <div>
+            <br/>
+            {!isPlaying ?
             <a className="waves-effect waves-light btn modal-trigger" href="#quizResultModal">
                 Results
             </a>
+            : null}
             <div id="quizResultModal" className="modal black-text">
                 {!isPlaying ?
                 (<div>
-                    <div className="modal-content">
+                    <div className="modal-content" style={{textAlign: "center"}}>
                         <h6>You finished taking the quiz</h6>
                         <h3>Your Score {score}</h3>
-                        {quiz.showAnsOption ? <h6 onClick={routeToAnswers}><u>Review Answers</u></h6>
-                         : null}
                         <h5>Time Spent: <br/> {Math.floor(timeSpent/3600)}hours {Math.floor(timeSpent/60)}minutes {timeSpent%60}seconds</h5>
                         <a className="waves-effect waves-light btn" onClick={forRankCheck}>
                             Update Score on Scoreboard
                         </a>
+                        <h6 visibility={isVisible}>Your rank is {rank}</h6>
                     </div>
                     <div className="modal-footer">  
-                        <a className="modal-close waves-effect waves-green btn-flat" onClick={routeToQuiz}>Return</a>
+                        <a className="modal-close waves-effect waves-green btn-flat" onClick={routeToQuiz}>Return to Quiz</a>
                     </div>
                 </div>)
                 :
                 (<div>
-                    <div className="modal-content">
+                    <div className="modal-content" style={{textAlign: "center"}}>
                         <h6>You have to finish your quiz to see the results.</h6>
                     </div>
                     <div className="modal-footer">
@@ -135,6 +155,23 @@ export default function QuizResult(){
                 </div>)
                 }
             </div>
+           {!isPlaying ? 
+           <a href="#quizAnswersModal" className="waves-effect waves-light btn modal-trigger" onClick={alertMessage}>Review Answers</a>
+           : null }
+            <div id="quizAnswersModal" className="modal">
+                <div className="modal-content" style={{textAlign:"center"}}>
+                {quiz.showAnsOption ?  
+                <h6 onClick={routeToAnswers}><u>Review Answers</u></h6>
+                : <h6>Reviewing answers is not available for this quiz.</h6>}
+                {quiz.showAnsOption && !isPlaying ? 
+                <a className="waves-effect waves-light btn" onClick={forRankCheck}>
+                    Update Score First
+                </a>
+                : null}
+                <h6>Your rank is {rank}</h6>
+                </div>
+            </div> 
+            
         </div>
     )
 }
