@@ -72,8 +72,7 @@ class QuizPageContent extends Component{
             }
             const sList = await getQuizScores();
             console.log(sList);
-            /*
-            localStorage.setItem("currentScore", 0);
+            console.log(localStorage.getItem("currentScore"));
             for (var i = 0; i < sList.length; i++){
                 if (sList[i].split(":")[0] == quizId){
                     //may change from localStorage
@@ -82,8 +81,14 @@ class QuizPageContent extends Component{
                     this.setState({currentScore: localStorage.getItem("currentScore")});
                     break;
                 } 
+                else {
+                    localStorage.setItem("currentScore", 0);
+                    this.setState({currentScore: localStorage.getItem("currentScore")});
+                
+
+                }
             } 
-            */
+            
         }
     }
 
@@ -216,8 +221,7 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getRecentScore(id);
-        this.getItem(id, getQuizzes); 
-          
+        this.getItem(id, getQuizzes);     
     }
 
     render(){
