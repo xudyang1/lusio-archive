@@ -24,55 +24,35 @@
 /* .container {
   outline: 2px solid darkgrey;
 } */
-.quiz {
-  font-size: 30px;
-  font-weight: bolder;
+
+.GSection {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  justify-content: center;
 }
-.question {
-  font-size: large;
-  font-weight: 300;
-  font-weight: bold;
+.GSection::-webkit-scrollbar {
+  display: none;
 }
-.qpoints {
-  padding-left: 600px;
+.GSection-Cards {
+  width: 332px;
+  display: inline-block;
+  padding: 20px;
 }
-.likeicon:hover {
-  color: darkgrey;
+
+.cardText {
+  white-space: break-spaces;
+  height: 250px;
 }
-#timer {
-  width: 20%;
+
+.card-title {
   height: 30px;
 }
 
-.GSection{
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-    scroll-behavior: smooth;
-    justify-content: center;
+.LSection {
+  white-space: break-spaces;
 }
-.GSection::-webkit-scrollbar {
-    display: none;
-}
-.GSection-Cards{
-    width: 332px;
-    display: inline-block;
-    padding: 20px;
-}
-
-.cardText{
-    white-space: break-spaces;
-    height: 250px;
-}
-
-.card-title{
-    height: 30px;
-}
-
-.LSection{
-    white-space: break-spaces;
-}
-
 
 /* .carousel .carousel-item {
     opacity: 1 !important;

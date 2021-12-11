@@ -10,9 +10,10 @@ import "materialize-css/dist/css/materialize.min.css";
 
 export default function QuizPage(){
     const {isAuthenticated, user} = useContext(AuthContext);
-    const {updateProfile} = useContext(ProfileContext);
+    const {updateProfile, getProfile} = useContext(ProfileContext);
     const {getPlatform} = useContext(PlatformContext);
-    
+
+
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
         var options = {
@@ -22,17 +23,17 @@ export default function QuizPage(){
         
     })
     return(
-        <div className="container z-depth-3" >
-            <div className = "row">
-                <div className="col s7 push-s4">
+        <div>
+            <div>
+                <div>
                     <br/>
-                    <a className="waves-effect waves-light btn modal-trigger col push-s8" href="#reportModal"><i className="material-icons right">report</i>Report</a>
+                    <a className="waves-effect waves-light btn red modal-trigger" style={{marginRight:"5%", float:"right"}} href="#reportModal"><i className="material-icons right">report</i>Report</a>
                     <div id="reportModal" className="modal">
                         {isAuthenticated ? (
                         <div>
                             <div className="modal-content">
                                 <h4>Report a Problem</h4>
-                                <QuizReport/>
+                                <QuizReport userId={user.profile} userName={user.name}/>
                             </div>
                         </div>) :
                         (<div>
@@ -46,7 +47,8 @@ export default function QuizPage(){
                         }
                     </div>
                     <br/> 
-                    <QuizPageContent passedFuncGet={getPlatform}/>
+                    {isAuthenticated ? <QuizPageContent getPlatform={getPlatform} userId={user.profile} updateProfile={updateProfile} getProfile={getProfile}/> 
+                    : <QuizPageContent getPlatform={getPlatform} userId="" updateProfile={updateProfile} getProfile={getProfile}/>}
                 </div>
             </div>
             {isAuthenticated ? <QuizComments userName={user.name} userId={user.profile} passedFunc={updateProfile}/>
