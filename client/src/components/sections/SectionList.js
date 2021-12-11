@@ -72,31 +72,44 @@ export default function SectionList(props) {
 
     useEffect(() => {
         if (props.items) {
-            switch (props.type) {
-                case QUIZ_CARD: {
-                    let quizzes = getQuizList(props.items).then(function (result) {
-                        setItems(result)
-                    })
-                } break;
-                case SUB_PLAT_CARD: {
-                    let plats = getPlatforms(props.items).then(function (result) {
-                        console.log(result)
-                        setItems(result)
-                    })
-                } break;
-                case ACHIEVEMENT_CARD: {
-                    getAllBadges()(dispatch)
-                } break;
+            if (props.detailed) {
+                console.log("SETTING ITEMS")
+                console.log(props.items)
+                setItems(props.items)
             }
+            else
+                switch (props.type) {
+                    case QUIZ_CARD: {
+                        let quizzes = getQuizList(props.items).then(function (result) {
+                            console.log("RESULT", result)
+                            setItems(result)
+                        })
+                    } break;
+                    case SUB_PLAT_CARD: {
+                        let plats = getPlatforms(props.items).then(function (result) {
+                            console.log(result)
+                            setItems(result)
+                        })
+                    } break;
+                    case ACHIEVEMENT_CARD: {
+                        getAllBadges()(dispatch)
+                    } break;
+                }
         }
     }, [props.items])
 
-    useEffect(()=>{
+    useEffect(() => {
+        console.log(items)
+    }, [items])
+
+    useEffect(() => {
+        if(props.type == ACHIEVEMENT_CARD)
         setItems(achievements.allBadges)
     }, [achievements.allBadges])
 
     function getList(list, type) {
         let res = []
+        console.log("list", list)
         switch (type) {
             case QUIZ_CARD: {
                 list.map((element, index) => (
