@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
 import QuizResult from './QuizResult';
-import '../../css/frontpage.css';
+import '../../css/playquizpage.css';
 
 
 class PlayQuizContent extends Component{
@@ -16,6 +16,7 @@ class PlayQuizContent extends Component{
             description: "",
             timedOption: false,
             time: 0,
+            showAnsOption: false,
             questions: [],
             score: 0,
             quizTime: {},
@@ -63,6 +64,7 @@ class PlayQuizContent extends Component{
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
+            showAnsOption: quiz.showAnsOption,
             questions: quiz.questions,
             openModal: false,
             // After getting Quiz retrieve time attribute
@@ -72,13 +74,14 @@ class PlayQuizContent extends Component{
         });
         this.startTimer();   
     }
+
     
     componentDidMount(){
         const id = this.props.match.params.id;
         const { getQuizzes, playQuiz } = this.context;
         this.getItem(id, getQuizzes); 
         
-        playQuiz();
+        playQuiz(id);
     }
 
     //binded(this) for use of props
@@ -99,6 +102,7 @@ class PlayQuizContent extends Component{
         //if no more time left, stop timer
         if (seconds == 0) {
             clearInterval(this.timer);
+            this.setState({isDisabled: true});
         }
     }
     
@@ -154,31 +158,36 @@ class PlayQuizContent extends Component{
                         {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.quizTime.h}<b>h</b> {this.state.quizTime.m}<b>m</b> {this.state.quizTime.s}<b>s</b></span> : <span></span>}       
                     </div>
                 </div>
-                <div className="col s12" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
-                    <div className="description"> Quiz Description: {this.state.description}</div>
-                    {this.state.questions.map((q, qi) => {
-                        return (
-                            <div className="question">{q.title}<div className="qpoints" >({q.score}points)</div>
-                            <div style={{visibility: "hidden"}}>
-                                {questionBase = questionBase + q.choices.length}
-                                {questionRange.push(questionBase)}
-                            </div>
-                                {this.state.questions[qi].choices.map((choice, ci) => {
-                                    return (
-                                        <div className="row">
-                                            <label>
-                                                <input type="checkbox" className="filled-in" value={ci+1} onClick={(e)=>this.allowOne(e, questionRange.slice(qi, qi+2))} disabled={this.state.isDisabled}/>
-                                                <span>{choice.content}</span>
-                                            </label>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        )
-                    })}
-                    <div className='row' style={{ textAlign: "right" }}>
-                        <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
-                        <QuizResult />
+                <div className="col s12">
+                    <div className="quizcontent" style={{ paddingLeft: "150px", paddingTop: '30px' }}>
+                        <div className="description"> Quiz Description: {this.state.description}</div>
+                        {this.state.questions.map((q, qi) => {
+                            return (
+                                <div className="question" key={qi}>
+                                    <br/>
+                                    <p className="questiontitle">{q.title}</p>
+                                    <div className="qpoints" >({q.score}points)</div>
+                                <div style={{visibility: "hidden"}} key={qi}>
+                                    {questionBase = questionBase + q.choices.length}
+                                    {questionRange.push(questionBase)}
+                                </div>
+                                    {this.state.questions[qi].choices.map((choice, ci) => {
+                                        return (
+                                            <div className="row" key={ci}>
+                                                <label>
+                                                    <input type="checkbox" className="filled-in" value={ci+1} onClick={(e)=>this.allowOne(e, questionRange.slice(qi, qi+2))} disabled={this.state.isDisabled}/>
+                                                    <span className="choices">{choice.content}</span>
+                                                </label>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )
+                        })}
+                        <div className='row' style={{ textAlign: "right" }}>
+                            <div className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</div>
+                            <QuizResult showAnsOption={this.state.showAnsOption}/>
+                        </div>
                     </div>
                 </div>
             </div>

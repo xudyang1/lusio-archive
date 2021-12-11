@@ -81,7 +81,7 @@ export const RegisterModal = () => {
                                 <i className="material-icons prefix">face</i>
                                 <input id="registerName" type="text" className="validate" name="name" autoComplete="username" onChange={handleOnChange} />
                                 <label htmlFor="registerName">Name</label>
-                                <span class="registerHelperText helper-text">
+                                <span className="registerHelperText helper-text">
                                     {
                                         error.msg === 'Invalid name format!' &&
                                         <span className="registerWarningIcon material-icons deep-orange-text">
@@ -108,7 +108,7 @@ export const RegisterModal = () => {
                                 </i>
                                 <input id="registerPassword" type="password" className="active validate" name="password" autoComplete="new-password" onChange={handleOnChange} />
                                 <label htmlFor="registerPassword">Password</label>
-                                <span class="registerHelperText helper-text">
+                                <span className="registerHelperText helper-text">
                                     {
                                         error.msg === 'Invalid password format!' &&
                                         <span className="registerWarningIcon material-icons deep-orange-text">

@@ -115,6 +115,21 @@ function SearchPage() {
                     (<SectionList items={data} name={"Search Result :"+data.length} type={QUIZ_CARD} detailed={true}/>) : (<div>Sorry, No Results Found</div>)
                 }
             </div>
+{/* =======
+import React, { useContext } from 'react';
+import 'materialize-css';
+import { PlatformContext } from '../../context/PlatformState';
+import SearchPageContent from "./SearchPageContent";
+
+function SearchPage() {
+    const { getPlatform } = useContext(PlatformContext);
+    const { search } = window.location;
+    const query = new URLSearchParams(search).get('search');
+
+    return (
+        <div>
+            <SearchPageContent query={query} getPlatform={getPlatform}/>
+>>>>>>> 291102fb3219b9795dc10652b10a7ab1df157b8c */}
         </div>
     )
 }

@@ -29,6 +29,7 @@ const initialState = {
         description: null,
         timedOption: false,
         time: 0,
+        showAnsOption: false,
         questions: [{
             title: null,
             choices: [""], 
@@ -39,7 +40,11 @@ const initialState = {
         plays: 0,
         isPublished: false,
         scoreBoard: [],
-        comments: []
+        comments: [{
+            userId: "",
+            userName: "",
+            text: "",
+            commentId: null}]
     },
     error: null,
     loading: true,
@@ -128,13 +133,13 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
+    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, showAnsOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
+        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, showAnsOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
         console.log("insideAdd", body);
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
@@ -153,16 +158,17 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, questions, likes, plays, isPublished, scoreBoard, comments }) {
+    async function updateQuiz({ id, userId, name, author, quizImgURI, description, timedOption, time, showAnsOption, questions, likes, plays, isPublished, scoreBoard, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, questions, likes, plays, isPublished, scoreBoard, comments });
+        const body = JSON.stringify({ userId, name, author, quizImgURI, description, timedOption, time, showAnsOption, questions, likes, plays, isPublished, scoreBoard, comments });
         try {
             const res = await axios.put(`/api/quizzes/edit/${id}`, body, config);
             //deep copy of nested quiz
+            console.log(res.data.quiz);
             const deepCopyQuiz = cloneDeep(res.data.quiz);
             console.log("deepcopy",deepCopyQuiz);
 
@@ -191,11 +197,12 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
-    function playQuiz() {
+    async function playQuiz(id) {
         try {
+            const res = await axios.get(`/api/quizzes/edit/${id}`);
             dispatch({
                 type: PLAY_QUIZ,
-                //no data to be transferred
+                payload: res.data.data
             });
         } catch (err) {
             dispatch({

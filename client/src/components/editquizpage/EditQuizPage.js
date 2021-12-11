@@ -19,21 +19,19 @@ export default function EditQuizPage(){
   const [ isOwner, setMode ] = useState(false);
   const { id } = useParams();
   
-  const checkMode = async e => {
+  const checkMode = async () => {
     const quizContent = await getQuiz(id, false);
     const quiz = quizContent.data;
     const owner = quiz.author;
 
     if(isAuthenticated && owner == user.name){
-        console.log("owner", owner);
-        console.log("player's name", user.name);
+        //console.log("owner", owner);
+        //console.log("player's name", user.name);
         setMode(true);
     }
   }
   useEffect(()=> {
-
       checkMode();
-
   })
   return(
     <div>
