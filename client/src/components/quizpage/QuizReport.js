@@ -6,17 +6,24 @@ class QuizReport extends Component {
     constructor() {
         super();
         this.state = {
-            selectedOption: ""
+            selectedOption: "____",
+            quizId: "",
+            userId: "",
+            userName: ""
         };
         this.onChangeValue = this.onChangeValue.bind(this);
         this.handleReport = this.handleReport.bind(this);
     }
-    onChangeValue(e) {
+    getItem(){
         this.setState({
-            selectedOption: e.target.value,
             quizId: this.props.match.params.id,
             userId: this.props.userId,
             userName: this.props.userName
+        }, () => {});
+    }
+    onChangeValue(e) {
+        this.setState({
+            selectedOption: e.target.value
         });
     }
     handleReport(e) {
@@ -33,6 +40,10 @@ class QuizReport extends Component {
             console.log('Failed...', err);
             alert("Report Failed - Please try again");
         })
+    }
+
+    componentDidMount(){
+        this.getItem();
     }
 
     render() {
