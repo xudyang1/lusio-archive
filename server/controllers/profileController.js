@@ -100,7 +100,7 @@ exports.updateProfile = async (req, res, next) => {
         if (!req.body.profile) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
         // destructure
-        const { description, iconURI, bannerURI, platformsCreated, quizzesTaken, quizzesCreated, quizzesScore, likedQuizzes, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
+        const { description, iconURI, bannerURI, currentExp, platformsCreated, quizzesTaken, quizzesCreated, quizzesScore, likedQuizzes, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
         const MODE = req.body.mode;
 
         var provided = keys = updated = null;
@@ -110,7 +110,7 @@ exports.updateProfile = async (req, res, next) => {
 
         switch (MODE) {
             case "EDIT":
-                provided = nonNullJson({ description, iconURI, bannerURI });
+                provided = nonNullJson({ description, iconURI, bannerURI, currentExp });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, provided, options).select(keys);
                 break;
