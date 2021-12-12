@@ -29,7 +29,6 @@ class QuizPageContent extends Component {
             currentScore: 0,
             isDisabled: false
         };
-
     }
     /*
     setPlatformName = async (platformId) => {
@@ -79,19 +78,23 @@ class QuizPageContent extends Component {
     }
 
     getRecentScore = async (quizId) => {
+        console.log("USER: " + this.props.userId);
         if (this.props.userId != "") {
+            console.log("22222: " + this.props.userId);
             const getQuizScores = () => {
                 return (this.props.getProfile(this.props.userId)).then(function (result) { return result.data.profile.quizzesScore; });
             }
             const sList = await getQuizScores();
             console.log(sList);
-            console.log(localStorage.getItem("currentScore"));
+            
+            //localStorage.setItem("currentScore", 0);
             for (var i = 0; i < sList.length; i++){
                 if (sList[i].split(":")[0] == quizId){
                     //may change from localStorage
                     //need to be discussed
-                    localStorage.setItem("currentScore", sList[i].split(":")[1]);
-                    this.setState({currentScore: localStorage.getItem("currentScore")});
+                    //localStorage.setItem("currentScore", sList[i].split(":")[1]);
+                    //this.setState({currentScore: localStorage.getItem("currentScore")});
+                    this.setState({currentScore: sList[i].split(":")[1]});
                     break;
                 } 
                 else {
@@ -101,8 +104,7 @@ class QuizPageContent extends Component {
 
                 }
             } 
-            
-        }
+        } 
     }
 
     getPlat = async (platformId) => {
@@ -113,7 +115,6 @@ class QuizPageContent extends Component {
         const platform = await plat();
         console.log("Platform", platform);
     }
-
 
     numLikeHandler = async e => {
         e.preventDefault();
@@ -231,10 +232,16 @@ class QuizPageContent extends Component {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
         this.getRecentScore(id);
-        this.getItem(id, getQuizzes);     
+        this.getItem(id, getQuizzes); 
+
+    }
+    componentDidUpdate(prevProps){
+        if(this.props.userId !== prevProps.userId){
+            this.getRecentScore(this.props.match.params.id);
+        }
     }
 
-    render() {
+    render(){
         return (
             <div>
                 <table>
@@ -274,8 +281,8 @@ class QuizPageContent extends Component {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th bgcolor="lightgrey"></th>
                                         <th bgcolor="lightgrey">Rank</th>
+                                        <th bgcolor="lightgrey">User</th>
                                         <th bgcolor="lightgrey">Score</th>
                                     </tr>
                                 </thead>
@@ -284,7 +291,7 @@ class QuizPageContent extends Component {
                                         return (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
-                                                <td>{user.userName}</td>
+                                                <td><b>{user.userName}</b></td>
                                                 <td>{user.userScore}</td>
                                             </tr>
                                         )
