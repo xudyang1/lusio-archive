@@ -21,9 +21,9 @@ const AppNavbar = () => {
         <div className="">
             <nav>
                 <div className="nav-wrapper">
-                    <NavLink to="/" className="brand-logo" style={{ paddingLeft: '1em', top: "-20px", left: "10px", position: "absolute" }}>
-                        <img src={logo} style={{maxWidth: "170px", maxHeight: "90px", position: "fixed"}} />
-                    </NavLink>
+                    <a href="/" className="brand-logo" style={{ paddingLeft: '1em', top: "-20px", left: "10px", position: "absolute" }}>
+                        <img src={logo} style={{maxWidth: "170px", maxHeight: "90px"}} />
+                    </a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         {isAuthenticated ? (<span><li><AccountProfileButton user={user} userId={user.profile}/></li><li><Logout /></li></span>) :
                             (<span><li><LoginModal /></li><li><RegisterModal /></li></span>)}
