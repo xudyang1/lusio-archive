@@ -237,6 +237,9 @@ class EditQuizContent extends Component {
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
         
+        window.onbeforeunload = function() {
+            return "";
+        };
     }
 
     render(){

@@ -13,6 +13,7 @@ export default function QuizResult(){
     const { updateProfile, getProfile } = useContext(ProfileContext);
 
     const [isVisible, setVisibility] = useState("hidden");
+    const [checked, setChecked] = useState(false);
     const [rank, setRank] = useState(null);
     const { id } = useParams();
 
@@ -48,17 +49,24 @@ export default function QuizResult(){
     //than the user in the scoreboard
     //TODO: discuss about the circumstance of tying score
     const rankCheck = (currentUser, currentScore, initialSB) => {
-        setRank("11+");
-        for (var i = 0; i < initialSB.length; i++) {
-          if (initialSB[i].userScore <= currentScore) {
-            console.log(currentScore);
-            setRank(i+1);
-            setVisibility("visible");
-            initialSB.splice(i, 0, {userName: currentUser, userScore: currentScore});
-            break;
-          }
+        if (!checked){
+            setRank("11+");
+            for (var i = 0; i < initialSB.length; i++) {
+            if (initialSB[i].userScore <= currentScore) {
+                console.log(currentScore);
+                setRank(i+1);
+                setVisibility("visible");
+                initialSB.splice(i, 0, {userName: currentUser, userScore: currentScore});
+                break;
+            }
+            }
+
+            updateScoreboard(initialSB.slice(0,10));
         }
-        updateScoreboard(initialSB.slice(0,10));
+        else{
+            alert("You already updated your score.");
+        }
+        setChecked(true);
       }
     
     const updateScoreboard = async (updatedSB) => {
