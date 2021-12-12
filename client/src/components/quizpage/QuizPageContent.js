@@ -104,7 +104,6 @@ class QuizPageContent extends Component{
         console.log("Platform", platform);
     }
 
-
     numLikeHandler = async e => {
         e.preventDefault();
         if (this.props.userId != "") {
@@ -223,12 +222,17 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getRecentScore(id);
+        this.getItem(id, getQuizzes); 
+
+    }
+    componentDidUpdate(prevProps){
         if(this.props.userId !== prevProps.userId){
             this.getRecentScore(this.props.match.params.id);
         }
     }
 
     render(){
+        return (
             <div>
                 <table>
                     <tr><td>
@@ -267,8 +271,8 @@ class QuizPageContent extends Component{
                     <table>
                         <thead>
                             <tr>
-                                <th bgcolor="lightgrey"></th>
                                 <th bgcolor="lightgrey">Rank</th>
+                                <th bgcolor="lightgrey">User</th>
                                 <th bgcolor="lightgrey">Score</th>
                             </tr>
                         </thead>
@@ -277,7 +281,7 @@ class QuizPageContent extends Component{
                                 return(
                                     <tr key={index}>
                                         <td>{index+1}</td>
-                                        <td>{user.userName}</td>
+                                        <td><b>{user.userName}</b></td>
                                         <td>{user.userScore}</td>
                                     </tr>
                                 )

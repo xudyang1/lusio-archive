@@ -124,8 +124,7 @@ class QuizComments extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
-        //this.setState({commentId: quiz.comments[quiz.comments.length-1]._id})
-        //this.getUser(this.props.dataFromQuizPage);
+
     }
 
     render(){
