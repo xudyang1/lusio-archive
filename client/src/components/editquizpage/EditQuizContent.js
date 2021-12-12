@@ -311,8 +311,8 @@ class EditQuizContent extends Component {
 
                 <div className="section col s12" style={{ padding: "20px" }}>
                     <div className="col s4">
-                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Undo</a>
-                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Redo</a>
+                        {/* <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Undo</a>
+                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Redo</a> */}
                     </div>
                     <div className="col s4">
                         <button className="btn-floating btn-large waves-effect waves-light red" style={{ margin: "5px" }} onClick={this.handleAddQuestion}><i className="material-icons">add</i></button>

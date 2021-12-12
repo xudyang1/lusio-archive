@@ -3,18 +3,27 @@ import 'materialize-css';
 import '../../css/frontpage.css'
 import AccountProfileButton from "../common/AccountProfileButton";
 import { ProfileContext } from "../../context/ProfileState";
+import { AuthContext } from "../../context/AuthState";
 
 export default function QuizCard(props) {
-    const quiz = props.element
+    const quiz = props.element? props.element : {
+        name: "TEMP",
+        description: "TEMP",
+        _id: 0,
+        userId: 0,
+        quizImgURI: "https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png",
+        isPublished: false,
+    }
     //console.log(quiz)
-    const quizName = quiz? quiz.name: "TEMP"
-    const quizDescription = quiz? quiz.description: "TEMP"
-    const quizId = quiz? quiz._id: 0
-    const userId = quiz? quiz.userId: 0
-    const img = quiz? quiz.quizImgURI: "https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png"
+    const quizName = quiz.name
+    const quizDescription = quiz.description
+    const quizId = quiz._id
+    const userId = quiz.userId
+    const img = quiz.quizImgURI
 
     const { getProfile } = useContext(ProfileContext)
-    const [profile, setProfile] = useState({})
+    const [authorprofile, setProfile] = useState({})
+    const { user } = useContext(AuthContext)
 
     useEffect(() => {
         if (userId)
@@ -24,7 +33,7 @@ export default function QuizCard(props) {
             })
     }, [])
 
-
+    if(quiz.isPublished || quiz.userId == user.profile)
     return (
         <div>
             {
@@ -32,16 +41,16 @@ export default function QuizCard(props) {
                     <a className="right btn-floating btn-small waves-effect waves-light grey" onClick={() => props.quizDeleteCallback()}><i className="material-icons">delete</i></a>
                     : <div></div>
             }
-            <div className="card blue-grey darken-1">
+            <div className="card blue-grey darken-1" style={{opacity: quiz.isPublished? "1" : "0.5"}}>
                 <div className="card-content white-text" style={{ padding: "0px", paddingTop: "24px" }}>
                     <span className="card-title center">{quizName}</span>
-                    <div className="cardText" style={{ whitespace: "break-spaces" }}>
-                        <img src={img} width="200" height="200" /><br />
+                    <div className="cardText" style={{ whitespace: "break-spaces", overflow: "hidden"}}>
+                        <img src={img} width="200" height="200" style={{objectFit: "cover"}}/><br />
                         {quizDescription}
                     </div>
                     <div className="row" style={{ marginBottom: "0px" }}>
                         <div className="col">
-                            <AccountProfileButton user={profile} userId={profile._id}/>
+                            <AccountProfileButton user={authorprofile} userId={authorprofile._id}/>
                         </div>
                     </div>
                 </div>
@@ -55,5 +64,9 @@ export default function QuizCard(props) {
                 </div>
             </div>
         </div>
+    )
+    else
+    return (
+        <></>
     )
 }

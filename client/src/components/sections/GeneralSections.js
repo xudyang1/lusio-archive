@@ -15,6 +15,10 @@ import { QuizzesContext } from "../../context/QuizState";
 import { getAllBadges, getBadgesByIds } from "../../actions/AchievementActions";
 import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
+import sampleAchievement from "../../sampleData/sampleAchievement.json"
+import AchievementManager from "../../utils/AchievementManager"
+import { AuthContext } from "../../context/AuthState";
+
 /**
  * Return and displays the corresponding card given card type and card information
  * 
@@ -24,13 +28,20 @@ import { achievementInitialState, AchievementReducer } from "../../reducers/Achi
  * @param {Boolean} canEdit set true if type == QUIZ_CARD && view_type == owner_view
  * @returns 
  */
- function getCards(t, index, element, args = false) {
+function getCards(t, index, element, userp = null, args = false) {
+    // if(!element.isPublished){
+    //     return
+    // }
     //console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
+            if(element.isPublished || element.userId == userp.profile){
+                return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
+            }
+            else
+                return;
         case SUB_PLAT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
         case SUB_USER_CARD:
@@ -72,9 +83,10 @@ export default function GeneralSections(props) {
     const [editing, setEditing] = useState(false)
     const [quizzesInSection, setQuizzesInSection] = useState([])
 
-    const { viewType } = useContext(ProfileContext)
+    const { viewType, profile } = useContext(ProfileContext)
     const { updatePlatform } = useContext(PlatformContext)
-    const { getQuizzes, getQuiz } = useContext(QuizzesContext)
+    const { getQuizzes, getQuiz, getQuizzesById } = useContext(QuizzesContext)
+    const { user } = useContext(AuthContext)
 
     const Section = createRef();
     const sectionName = createRef();
@@ -88,7 +100,7 @@ export default function GeneralSections(props) {
      */
     function onClickConfirm() {
         setEditing(false)
-        console.log("quizzesInSection", quizzesInSection)
+        //console.log("quizzesInSection", quizzesInSection)
         const arrofID = quizzesInSection.map((element, index) => {
             return { quiz: element._id, quizIndex: index }
         })
@@ -102,7 +114,7 @@ export default function GeneralSections(props) {
                 }
             }
         }
-        console.log(payload)
+        //console.log(payload)
         updatePlatform(platformID, payload)
     }
 
@@ -142,7 +154,7 @@ export default function GeneralSections(props) {
                 }
             }
         }
-        console.log(payload)
+        //console.log(payload)
         updatePlatform(platformID, payload)
     }
 
@@ -210,9 +222,12 @@ export default function GeneralSections(props) {
                 })
         }
         const quizL = await quizzes();
-        console.log(quizL)
-        console.log(listOfId)
-        const quiz = quizL.data.filter(q => listOfId.includes(q._id));
+        //console.log(quizL)
+        //console.log(listOfId)
+        const quiz = listOfId.map((element) => {
+            return quizL.data.find(ele => ele._id == element)
+        })
+        //const quiz = quizL.data.filter(q => listOfId.includes(q._id));
         return quiz;
     }
 
@@ -220,17 +235,22 @@ export default function GeneralSections(props) {
         if (props.element) {
             switch (type) {
                 case QUIZ_CARD: {
-                    console.log("PROPS", props.element)
+                    //console.log("PROPS", props.element)
                     let quizzes = getQuizList(props.element).then(function (result) {
                         setQuizzesInSection(result)
                     })
                 } break;
                 case ACHIEVEMENT_CARD: {
-                    console.log("LISTS OF IDS:", props.element)
-                    getBadgesByIds(props.element)(dispatch).then(function (result) {
-                        console.log(achievements)
-                        setQuizzesInSection(achievements.badges)
-                    })
+                    AchievementManager.setProfile(profile)
+                    setQuizzesInSection(sampleAchievement.achievements.filter(element =>
+                        AchievementManager.evaluateAchievement(element)
+                    ))
+
+                    //console.log("LISTS OF IDS:", props.element)
+                    // getBadgesByIds(props.element)(dispatch).then(function (result) {
+                    //     console.log(achievements)
+                    //     setQuizzesInSection(achievements.badges)
+                    // })
                 } break;
             }
         }
@@ -282,7 +302,7 @@ export default function GeneralSections(props) {
                             <div className="GSection" ref={Section}>
                                 {
                                     quizzesInSection.map((element, index) => (
-                                        getCards(type, index, element, viewType == "OWNER_VIEW")
+                                        getCards(type, index, element, user, viewType == "OWNER_VIEW")
                                     ))
                                 }
                             </div>
