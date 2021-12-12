@@ -33,6 +33,7 @@ const initialState = {
         questions: [{
             title: null,
             choices: [""], 
+            keypoints: "",
             answerKey: 1, //correctAnswers
             score: 0
         }],
@@ -134,13 +135,13 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
 
-    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, showAnsOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
+    async function addQuiz({ userId, platformId, name, author, quizImgURI, description,  timedOption, time, showAnsOption, questions, title, choices, keypoints, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments }) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, showAnsOption, questions, title, choices, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
+        const body = JSON.stringify({ userId, platformId, name, author, quizImgURI, description, timedOption, time, showAnsOption, questions, title, choices, keypoints, content, answerKey, score, likes, plays, isPublished, scoreBoard, userName, userScore, comments });
         console.log("insideAdd", body);
         try {
             const res = await axios.post('/api/quizzes/edit', body, config);
