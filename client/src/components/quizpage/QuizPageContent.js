@@ -296,7 +296,7 @@ class QuizPageContent extends Component{
                             <tr>
                                 <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}># OF QUESTIONS</td>
                                 <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}>TIMER SET</td>
-                                <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}>PERSONAL SCORE</td>
+                                <td style={{textAlign: 'center', fontSize: "20px", border:".5px solid gray"}}>PERSONAL HIGHEST SCORE</td>
                             </tr>
                             <tr>
                                 <td style={{textAlign: 'center', fontSize: "25px", fontWeight: "Bold"}}>{this.state.numQ}</td>
