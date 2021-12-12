@@ -24,7 +24,6 @@ class QuizPageContent extends Component{
             currentScore: 0,
             isDisabled: false
         };
-                
     }
     /*
     setPlatformName = async (platformId) => {
@@ -65,20 +64,24 @@ class QuizPageContent extends Component{
     }
 
     getRecentScore = async (quizId) => {
+        console.log("USER: " + this.props.userId);
         if (this.props.userId != "") {
+            console.log("22222: " + this.props.userId);
             const getQuizScores = () => {
                 return (this.props.getProfile(this.props.userId)).then(function (result)
                 {return result.data.profile.quizzesScore;});
             }
             const sList = await getQuizScores();
             console.log(sList);
-            console.log(localStorage.getItem("currentScore"));
+            
+            //localStorage.setItem("currentScore", 0);
             for (var i = 0; i < sList.length; i++){
                 if (sList[i].split(":")[0] == quizId){
                     //may change from localStorage
                     //need to be discussed
-                    localStorage.setItem("currentScore", sList[i].split(":")[1]);
-                    this.setState({currentScore: localStorage.getItem("currentScore")});
+                    //localStorage.setItem("currentScore", sList[i].split(":")[1]);
+                    //this.setState({currentScore: localStorage.getItem("currentScore")});
+                    this.setState({currentScore: sList[i].split(":")[1]});
                     break;
                 } 
                 else {
@@ -88,8 +91,7 @@ class QuizPageContent extends Component{
 
                 }
             } 
-            
-        }
+        } 
     }
 
     getPlat = async (platformId) => {
@@ -221,11 +223,12 @@ class QuizPageContent extends Component{
         const id = this.props.match.params.id;
         const {getQuizzes} = this.context;
         this.getRecentScore(id);
-        this.getItem(id, getQuizzes);     
+        if(this.props.userId !== prevProps.userId){
+            this.getRecentScore(this.props.match.params.id);
+        }
     }
 
     render(){
-        return(
             <div>
                 <table>
                     <tr><td>
