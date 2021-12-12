@@ -1,4 +1,5 @@
-import { useContext, useState } from "react"
+import M from "materialize-css";
+import { createRef, useContext, useEffect, useState } from "react"
 import { PlatformContext } from "../../context/PlatformState"
 import { QUIZ_CARD } from "../../types/cardTypes"
 import GeneralSections from "../sections/GeneralSections"
@@ -14,6 +15,8 @@ export default function PlatformContent(props) {
 
     const { updatePlatform, platform } = useContext(PlatformContext)
     const [view, setView] = useState("Sections")
+
+    const tabsref = createRef()
 
     var security = 0
     switch (auth) {
@@ -43,17 +46,22 @@ export default function PlatformContent(props) {
     }
 
     function onClickAddQuizToPlat(quizID) {
-        const payload = {
-            mode: "ADD",
-            platform: {
-                quizzes:
-                    quizID
+        if (!platform.quizzes.includes(quizID)) {
+            const payload = {
+                mode: "ADD",
+                platform: {
+                    quizzes:
+                        quizID
+                }
             }
+            updatePlatform(id, payload)
         }
-        updatePlatform(id, payload)
+        else {
+            alert("this quiz is already in the platform");
+        }
     }
 
-    function onClickRemoveQuizFromPlat(quizID){
+    function onClickRemoveQuizFromPlat(quizID) {
         const payload = {
             mode: "DELETE",
             platform: {
@@ -91,24 +99,28 @@ export default function PlatformContent(props) {
         }
     }
 
+    useEffect(() => {
+        var instance = M.Tabs.init(tabsref.current, {});
+    }, [])
+
     return (
         <div>
             <div class="row">
                 <div class="col s12">
-                    <ul class="tabs">
-                        <li className="tab col s3"><a onClick={() => { setView("Sections") }}>Front Page</a></li>
-                        <li className="tab col s3"><a onClick={() => { setView("Allquizzes") }}>All Quizzes</a></li>
+                    <ul class="tabs" ref={tabsref}>
+                        <li className="tab col s3"><a style={{ fontSize: "24px" }} onClick={() => { setView("Sections") }}>Front Page</a></li>
+                        <li className="tab col s3"><a style={{ fontSize: "24px" }} onClick={() => { setView("Allquizzes") }}>All Quizzes</a></li>
                     </ul>
                 </div>
             </div>
             {
                 viewPage()
             }
-            {security > 0 && view === "Sections" ? <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={onClickAddSection}>add</i></a> : <div></div>}
+            {security > 0 && view === "Sections" ? <a className="waves-effect waves-light btn" onClick={onClickAddSection}><i className="material-icons left">add</i>Add Section</a> : <div></div>}
             {security > 0 && view === "Allquizzes" ?
-                <div style={{display: "inline-flex"}}>
+                <div style={{ display: "inline-flex" }}>
                     <AddQuizToPlatButton addQuizToPlatform={onClickAddQuizToPlat} />
-                    <RemoveQuizFromPlatButton removeQuizFromPlatform={onClickRemoveQuizFromPlat}/>
+                    <RemoveQuizFromPlatButton removeQuizFromPlatform={onClickRemoveQuizFromPlat} />
                 </div> : <div></div>}
         </div>
     )

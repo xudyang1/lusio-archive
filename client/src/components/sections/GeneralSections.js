@@ -17,6 +17,7 @@ import { achievementInitialState, AchievementReducer } from "../../reducers/Achi
 
 import sampleAchievement from "../../sampleData/sampleAchievement.json"
 import AchievementManager from "../../utils/AchievementManager"
+import { AuthContext } from "../../context/AuthState";
 
 /**
  * Return and displays the corresponding card given card type and card information
@@ -27,13 +28,20 @@ import AchievementManager from "../../utils/AchievementManager"
  * @param {Boolean} canEdit set true if type == QUIZ_CARD && view_type == owner_view
  * @returns 
  */
-function getCards(t, index, element, args = false) {
+function getCards(t, index, element, userp = null, args = false) {
+    // if(!element.isPublished){
+    //     return
+    // }
     //console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
         case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
+            if(element.isPublished || element.userId == userp.profile){
+                return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
+            }
+            else
+                return;
         case SUB_PLAT_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
         case SUB_USER_CARD:
@@ -77,7 +85,8 @@ export default function GeneralSections(props) {
 
     const { viewType, profile } = useContext(ProfileContext)
     const { updatePlatform } = useContext(PlatformContext)
-    const { getQuizzes, getQuiz } = useContext(QuizzesContext)
+    const { getQuizzes, getQuiz, getQuizzesById } = useContext(QuizzesContext)
+    const { user } = useContext(AuthContext)
 
     const Section = createRef();
     const sectionName = createRef();
@@ -293,7 +302,7 @@ export default function GeneralSections(props) {
                             <div className="GSection" ref={Section}>
                                 {
                                     quizzesInSection.map((element, index) => (
-                                        getCards(type, index, element, viewType == "OWNER_VIEW")
+                                        getCards(type, index, element, user, viewType == "OWNER_VIEW")
                                     ))
                                 }
                             </div>

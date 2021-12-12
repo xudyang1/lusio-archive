@@ -3,22 +3,22 @@ import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { PlatformContext } from "../../context/PlatformState";
 import { ProfileContext } from "../../context/ProfileState";
+import { QuizzesContext } from "../../context/QuizState";
 
 export default function RemoveQuizFromPlatButton(props) {
     const removeQuizFromPlatform = props.removeQuizFromPlatform
 
     const { platform } = useContext(PlatformContext)
+    const { getQuizzesById } = useContext(QuizzesContext)
     const [listID, setListID] = useState([])
     const [platformQuizBank, setPlatformBank] = useState([])
 
     const selector2 = createRef();
 
-    var elems2 = document.querySelectorAll('select');
-
     function createOptions2() {
         let opts = []
         platformQuizBank.forEach((element, index) => {
-            opts.push(<option value={element} key={index}>{element}</option>)
+            opts.push(<option value={element._id} key={index}>{element.name+" -- author: "+element.author}</option>)
         })
         return opts
     }
@@ -29,15 +29,23 @@ export default function RemoveQuizFromPlatButton(props) {
             dismissible: true
         });
 
-        // var elems2 = document.querySelectorAll('select');
-        // var instances2 = M.FormSelect.init(elems2, {});
-
-        setPlatformBank(platform.quizzes)
+        getQuizzesById(platform.quizzes).then(function(result){
+            console.log(result)
+            setPlatformBank(result)
+        })
     }, [])
 
-    useEffect(() => {
-        M.FormSelect.init(elems2, {});
+    useEffect(()=>{
+        getQuizzesById(platform.quizzes).then(function(result){
+            console.log(result)
+            setPlatformBank(result)
+        })
     }, [platform.quizzes])
+
+    useEffect(() => {
+        //console.log("UPDATED PLATFORM QUIZZES")
+        M.FormSelect.init(selector2.current, {});
+    }, [platformQuizBank])
 
     return (
         <div className="col s1">

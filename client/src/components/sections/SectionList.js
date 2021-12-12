@@ -32,24 +32,24 @@ function getCards(t, index, element, args = false) {
 export default function SectionList(props) {
 
     const { getPlatformList } = useContext(PlatformContext)
-    const { getQuizzes } = useContext(QuizzesContext)
+    const { getQuizzes, getQuizzesById } = useContext(QuizzesContext)
     const { viewType, profile } = useContext(ProfileContext)
 
     const name = props.name ? props.name : ""
     const [items, setItems] = useState([])
     const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
 
-    const getQuizList = async (listOfId) => {
-        const quizzes = () => {
-            return getQuizzes()
-                .then(function (result) {
-                    return result;
-                })
-        }
-        const quizL = await quizzes();
-        const quiz = quizL.data.filter(q => listOfId.includes(q._id));
-        return quiz;
-    }
+    // const getQuizList = async (listOfId) => {
+    //     const quizzes = () => {
+    //         return getQuizzes()
+    //             .then(function (result) {
+    //                 return result;
+    //             })
+    //     }
+    //     const quizL = await quizzes();
+    //     const quiz = quizL.data.filter(q => listOfId.includes(q._id));
+    //     return quiz;
+    // }
 
     const getPlatforms = async (listOfId) => {
         const quizzes = () => {
@@ -83,8 +83,8 @@ export default function SectionList(props) {
             else
                 switch (props.type) {
                     case QUIZ_CARD: {
-                        let quizzes = getQuizList(props.items).then(function (result) {
-                            console.log("RESULT", result)
+                        let quizzes = getQuizzesById(props.items).then(function (result) {
+                            //console.log("RESULT", result)
                             setItems(result)
                         })
                     } break;

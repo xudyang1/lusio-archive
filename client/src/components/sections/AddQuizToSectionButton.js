@@ -3,46 +3,26 @@ import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { PlatformContext } from "../../context/PlatformState";
 import { ProfileContext } from "../../context/ProfileState";
+import { QuizzesContext } from "../../context/QuizState";
 
 export default function AddQuizToSectionButton(props) {
     const addQuizToPlatform = props.addQuizToPlatform
     const addQuizToSection = props.addQuizToSection
 
-
-
-    const { user } = useContext(AuthContext)
-    const { profile, getProfile } = useContext(ProfileContext)
     const { platform } = useContext(PlatformContext)
+    const { getQuizzesById } = useContext(QuizzesContext)
     const [listID, setListID] = useState([])
     const [platformQuizBank, setPlatformBank] = useState([])
 
     const selector = createRef();
     const selector2 = createRef();
 
-    var elems2 = document.querySelectorAll('select');
-
-    // function loadOptions() {
-    //     while (selector.current.options.length) {
-    //         selector.current.options.remove(selector.current.options.length - 1)
-    //     }
-    //     listID.map((element, index) => {
-    //         selector.current.options.add(new Option(element, element))
-    //     })
-    //     var instances2 = M.FormSelect.init(elems2, {});
-    // }
-
-    function createOptions() {
-        let opts = []
-        listID.forEach((element, index) => {
-            opts.push(<option value={element} key={index}>{element}</option>)
-        })
-        return opts
-    }
+    //var elems2 = document.querySelectorAll('select');
 
     function createOptions2() {
         let opts = []
         platformQuizBank.forEach((element, index) => {
-            opts.push(<option value={element} key={index}>{element}</option>)
+            opts.push(<option value={element._id} key={index}>{element.name+" -- author: "+element.author}</option>)
         })
         return opts
     }
@@ -53,16 +33,22 @@ export default function AddQuizToSectionButton(props) {
             dismissible: true
         });
 
-        // var elems2 = document.querySelectorAll('select');
-        // var instances2 = M.FormSelect.init(elems2, {});
-
-        setListID(profile.quizzesCreated)
-        setPlatformBank(platform.quizzes)
+        getQuizzesById(platform.quizzes).then(function(result){
+            console.log(result)
+            setPlatformBank(result)
+        })
     }, [])
 
+    useEffect(()=>{
+        getQuizzesById(platform.quizzes).then(function(result){
+            console.log(result)
+            setPlatformBank(result)
+        })
+    }, [platform.quizzes])
+
     useEffect(() => {
-        M.FormSelect.init(elems2, {});
-    }, [listID, platform.quizzes])
+        M.FormSelect.init(selector2.current, {});
+    }, [platformQuizBank])
 
     return (
         <div>
@@ -71,7 +57,7 @@ export default function AddQuizToSectionButton(props) {
                 <div className="modal-content">
                     <h4>Add A Quiz to This Section</h4>
                     <h6>First add your quiz to the platform quiz bank</h6>
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="input-field col s9">
                             <select defaultValue="" ref={selector}>
                                 {createOptions()}
@@ -82,7 +68,7 @@ export default function AddQuizToSectionButton(props) {
                                 addQuizToPlatform(selector.current.value)
                             }} />
                         </div>
-                    </div>
+                    </div> */}
                     <h6>Then add a quiz to this section</h6>
                     <div className="row">
                         <div className="input-field col s9">

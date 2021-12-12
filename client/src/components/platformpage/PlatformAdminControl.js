@@ -37,7 +37,7 @@ export default function PlatformAdminControl({ callback, buttonText, title, msg,
     }, [])
 
     useEffect(() => {
-        M.FormSelect.init(elems2, {});
+        M.FormSelect.init(selector.current, {});
     }, [listProfiles])
 
     return (

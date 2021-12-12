@@ -3,6 +3,7 @@ import { createRef, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import { PlatformContext } from "../../context/PlatformState";
 import { ProfileContext } from "../../context/ProfileState";
+import { QuizzesContext } from "../../context/QuizState";
 
 export default function AddQuizToPlatButton(props) {
     const addQuizToPlatform = props.addQuizToPlatform
@@ -10,16 +11,17 @@ export default function AddQuizToPlatButton(props) {
     const { user } = useContext(AuthContext)
     const { profile, getProfile } = useContext(ProfileContext)
     const { platform } = useContext(PlatformContext)
+    const { getQuizzesById } = useContext(QuizzesContext)
     const [listID, setListID] = useState([])
 
     const selector = createRef();
 
-    var elems2 = document.querySelectorAll('select');
+    //var elems2 = document.querySelectorAll('select');
 
     function createOptions() {
         let opts = []
         listID.forEach((element, index) => {
-            opts.push(<option value={element} key={index}>{element}</option>)
+            opts.push(<option value={element._id} key={index}>{element.name+" -- id: "+element._id}</option>)
         })
         return opts
     }
@@ -32,12 +34,15 @@ export default function AddQuizToPlatButton(props) {
 
         // var elems2 = document.querySelectorAll('select');
         // var instances2 = M.FormSelect.init(elems2, {});
+        getQuizzesById(profile.quizzesCreated).then(function(result){
+            setListID(result)
+        })
 
-        setListID(profile.quizzesCreated)
+        //setListID(profile.quizzesCreated)
     }, [])
 
     useEffect(() => {
-        M.FormSelect.init(elems2, {});
+        M.FormSelect.init(selector.current, {});
     }, [listID])
 
     return (
