@@ -19,6 +19,7 @@ class PlayQuizContent extends Component{
             showAnsOption: false,
             questions: [],
             score: 0,
+            timeForCookie: 0,
             quizTime: {},
             initialTime: 0,
             isDisabled: false
@@ -26,16 +27,20 @@ class PlayQuizContent extends Component{
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
-
+        
     }
 
     convertTime(secs){
         let hours = Math.floor(secs / 3600);
-        
+
         let forMinutes = (secs % 3600);
         let minutes = Math.floor(forMinutes / 60);
 
         let seconds = Math.ceil(forMinutes % 60);
+
+        //create a cookie for timer
+        //updates secs after countDown
+        document.cookie = ("totalTime=" + secs + "; path=/play/" + this.state.id);
 
         let timeSet = {
             "h": hours,
@@ -67,6 +72,7 @@ class PlayQuizContent extends Component{
             showAnsOption: quiz.showAnsOption,
             questions: quiz.questions,
             openModal: false,
+            timeForCookie: quiz.time,
             // After getting Quiz retrieve time attribute
             // convert it into h:m:s
             quizTime: this.convertTime(quiz.time),
@@ -74,15 +80,19 @@ class PlayQuizContent extends Component{
         });
         this.startTimer();   
     }
-
     
     componentDidMount(){
         const id = this.props.match.params.id;
-        const { getQuizzes, playQuiz } = this.context;
+        const { getQuizzes, playQuiz, isPlaying } = this.context;
         this.getItem(id, getQuizzes); 
-        
+
         playQuiz(id);
+        
+        window.onbeforeunload = function() {
+            return "";
+        };
     }
+    
 
     //binded(this) for use of props
     startTimer() {
@@ -93,7 +103,9 @@ class PlayQuizContent extends Component{
     }
     countDown() {
         //reduce second by 1 by every 1 second 
-        let seconds = this.state.time - 1;
+        let seconds = Number(document.cookie.split(";")[0].split("=")[1]) - 1;
+        //let seconds = this.state.time - 1;
+        
         this.setState({
             quizTime: this.convertTime(seconds),
             time: seconds
@@ -103,19 +115,33 @@ class PlayQuizContent extends Component{
         if (seconds == 0) {
             clearInterval(this.timer);
             this.setState({isDisabled: true});
+
+            //delete a cookie
+            document.cookie = ("totalTime=" + "; max-age=0" + "; path=/play/" + this.state.id);
         }
     }
     
     scoreHandler = (userAnswer, quizAnswer) => {
         const { finishQuiz } = this.context;
         var scoreEval = 0;
+        var xp = 0;
         quizAnswer.map((q, qi) => {
             if (q.answerKey == userAnswer[qi]) {
                 scoreEval = scoreEval + q.score;
+                //every time user gets a question right 
+                //earns a 5xp
+                xp = xp + 5;
             }
         })
-        
-        this.setState({score: scoreEval}, () => finishQuiz(this.state.score, (this.state.initialTime - this.state.time)));
+        this.props.updateProfile({
+            mode: "EDIT",
+            profile: {
+                owner: this.props.userId,
+                currentExp: xp
+            }
+        })
+
+        this.setState({score: scoreEval}, () => finishQuiz(this.state.score, xp, (this.state.initialTime - this.state.time)));
     }
 
     // allow to check only one answer
@@ -133,6 +159,7 @@ class PlayQuizContent extends Component{
     onSubmit = (e) => {
         clearInterval(this.timer);
         console.log(this.state.initialTime - this.state.time);
+        this.setState({isClicked: true});
 
         const checks = document.getElementsByClassName('filled-in');
         const answerCompare = []
@@ -142,8 +169,10 @@ class PlayQuizContent extends Component{
             }
         }
         this.scoreHandler(answerCompare, this.state.questions);
-
         this.setState({isDisabled: true});
+
+        //reset time so that time is reset for another take of quiz
+        document.cookie = ("totalTime=" + this.state.timeForCookie + "; path=/play/" + this.state.id);
         e.preventDefault();
 
     }
@@ -155,7 +184,8 @@ class PlayQuizContent extends Component{
                 <div className="container" style={{ backgroundColor: 'ivory', height: "60px" }}>
                     <div>
                         <h className="quiz">{this.state.name}</h>
-                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.quizTime.h}<b>h</b> {this.state.quizTime.m}<b>m</b> {this.state.quizTime.s}<b>s</b></span> : <span></span>}       
+                        {/* {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.quizTime.h}<b>h</b> {this.state.quizTime.m}<b>m</b> {this.state.quizTime.s}<b>s</b></span> : <span></span>} */}
+                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {Math.floor(document.cookie.split(";")[0].split("=")[1]/3600)}<b>h</b> {Math.floor((document.cookie.split(";")[0].split("=")[1]%3600)/60)}<b>m</b> {Math.ceil((document.cookie.split(";")[0].split("=")[1]%3600)%60)}<b>s</b></span> : <span></span>}      
                     </div>
                 </div>
                 <div className="col s12">
@@ -191,7 +221,6 @@ class PlayQuizContent extends Component{
                     </div>
                 </div>
             </div>
-
         )
     }
 }

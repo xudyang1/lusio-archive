@@ -50,6 +50,7 @@ const initialState = {
     loading: true,
     isPlaying: true,
     score: 0,
+    xp: 0,
     timeSpent: 0
 };
 
@@ -210,11 +211,11 @@ export const QuizzesProvider = ({ children }) => {
             });
         }
     }
-    function finishQuiz(score, timeSpent) {
+    function finishQuiz(score, xp, timeSpent) {
       try {
         dispatch({
           type: FINISH_QUIZ,
-          payload: {score: score, timeSpent: timeSpent}
+          payload: {score: score, xp: xp, timeSpent: timeSpent}
         });
       } catch (err){
         dispatch({
@@ -234,6 +235,7 @@ export const QuizzesProvider = ({ children }) => {
         loading: state.loading,
         isPlaying: state.isPlaying,
         score: state.score,
+        xp: state.xp,
         timeSpent: state.timeSpent,
         getQuizzes,
         getQuiz,

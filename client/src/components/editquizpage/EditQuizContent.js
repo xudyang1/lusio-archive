@@ -163,7 +163,6 @@ class EditQuizContent extends Component {
     timeHandler = (e) => {
         if (this.state.timedOption){
             this.setState({time: e.target.value});
-            console.log(e.target.value);
         }
         else{
             e.preventDefault();
@@ -180,20 +179,25 @@ class EditQuizContent extends Component {
     
     scoreHandler = (qi,e) => {
         e.preventDefault();
-        this.state.questions[qi].score = Number(e.target.value);
+        if (0 <= Number(e.target.value) && Number(e.target.value) <= 10000){
+            this.state.questions[qi].score = Number(e.target.value);
+        }
+        else {
+            alert("Score should not be smaller than 0/bigger than 10000. It will be saved as default 0.");
+            this.state.questions[qi].score = 0;
+            
+        }
     }
     answerKeyHandler = (qi, e) => {
         e.preventDefault();
-        this.state.questions[qi].answerKey = Number(e.target.value);
+        if (1 <= Number(e.target.value) && Number(e.target.value) <= this.state.questions[qi].choices.length){
+            this.state.questions[qi].answerKey = Number(e.target.value);
+        }
+        else {
+            alert("Out of Range. It will be saved as default 1.");
+            this.state.questions[qi].answerKey = 1;
+        }
     }
-
-    /*
-    //Wishlist
-    showQHandler = () => {
-        this.state.showQuestion = !this.state.showQuestion;
-        this.setState({showQuestion: this.state.showQuestion});
-    }
-    */
 
     handleSave = async e => {
         e.preventDefault();
@@ -267,16 +271,6 @@ class EditQuizContent extends Component {
                                     <span>Show answer after submission</span>
                                 </label>
                             </span>
-                            {/*
-                            //Wishlist
-                            <p>
-                                <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showQuestion} onClick={this.showQHandler}/>
-                                    <span>Show questions one at a time</span>
-                                </label>
-                            </p>
-                            
-                             */}
                     </form>
                 </div>
 
@@ -302,11 +296,11 @@ class EditQuizContent extends Component {
                             <div className="col s5" style={{ textAlign: 'right', padding: '30px' }}>
                                 Set Score: {this.state.questions[qi].score}
                             </div>
-                            <input className="col s1" onChange={(e) => this.scoreHandler(qi, e)}></input>
+                            <input className="col s1" onChange={(e) => this.scoreHandler(qi, e)} type="number"></input>
                             <div className="col s5" style={{ textAlign: 'right', padding: '30px' }}>
                                 Set Answer: {this.state.questions[qi].answerKey}
                             </div>
-                            <input className="col s1" onChange={(e) => this.answerKeyHandler(qi, e)}></input>
+                            <input className="col s1" onChange={(e) => this.answerKeyHandler(qi, e)} type="number"></input>
                         </div>
                     )
                 })

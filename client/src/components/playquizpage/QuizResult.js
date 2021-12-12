@@ -8,7 +8,7 @@ import {useParams} from 'react-router-dom';
 import M from 'materialize-css';
 
 export default function QuizResult(){
-    const { isPlaying , score , timeSpent, updateQuiz, getQuiz, quiz} = useContext(QuizzesContext);
+    const { isPlaying , score , xp, timeSpent, updateQuiz, getQuiz, quiz} = useContext(QuizzesContext);
     const { isAuthenticated, user } = useContext(AuthContext);
     const { updateProfile, getProfile } = useContext(ProfileContext);
 
@@ -35,7 +35,7 @@ export default function QuizResult(){
         
         if(isAuthenticated){
             rankCheck(user.name, score, initialSB);
-            alert("Only up to 10th place will be displayed.")
+            alert("Only up to 10th place will be displayed.");
         }
         if(!isAuthenticated){
             alert("You need to login first");
@@ -102,21 +102,21 @@ export default function QuizResult(){
     }
     const alertMessage = () => {
         alert("Your score will not be updated automatically. Make sure you update your score first.");
-        
     }
     
 
 
     useEffect(() => {
+        if (!isPlaying){
+            document.getElementById('quizResultModal').click();
+        }
+
         var elem = document.querySelector('#quizResultModal')
         var opt = { preventScrolling: false };
         M.Modal.init(elem, opt);
 
         var elem2 = document.querySelector('#quizAnswersModal')
-        M.Modal.init(elem2, opt);
-
-        
-        
+        M.Modal.init(elem2, opt); 
     },[])
 
 
@@ -134,6 +134,7 @@ export default function QuizResult(){
                     <div className="modal-content" style={{textAlign: "center"}}>
                         <h6>You finished taking the quiz</h6>
                         <h3>Your Score {score}</h3>
+                        <h4>You earned {xp}xp</h4>
                         <h5>Time Spent: <br/> {Math.floor(timeSpent/3600)}hours {Math.floor(timeSpent/60)}minutes {timeSpent%60}seconds</h5>
                         <a className="waves-effect waves-light btn" onClick={forRankCheck}>
                             Update Score on Scoreboard
