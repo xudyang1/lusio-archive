@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from "react";
+import { ProfileContext } from "../../context/ProfileState";
 import { NavLink } from "react-router-dom";
 
 /***
@@ -7,7 +8,17 @@ import { NavLink } from "react-router-dom";
 export default function AccountProfileButton(props) {
 
     // const { user, isAuthenticated } = useContext(AuthContext);
-    // const { profile, getProfile } = useContext(ProfileContext)
+    const { getProfile } = useContext(ProfileContext)
+
+    const [profile, setProfile] = useState({})
+
+    useEffect(() => {
+        if (userId)
+            getProfile(userId, false).then(function (result) {
+                //console.log("result from quizcard", result)
+                setProfile(result.data.profile)
+            })
+    }, [])
 
     // const { id } = useParams()
     // const { url, path } = useRouteMatch()

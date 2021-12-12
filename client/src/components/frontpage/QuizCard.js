@@ -36,7 +36,7 @@ export default function QuizCard(props) {
                 <div className="card-content white-text" style={{ padding: "0px", paddingTop: "24px" }}>
                     <span className="card-title center">{quizName}</span>
                     <div className="cardText" style={{ whitespace: "break-spaces" }}>
-                        <img src={img} width="200" height="200" /><br />
+                        <img src={img} width="200" height="200" style={{objectFit: "cover"}}/><br />
                         {quizDescription}
                     </div>
                     <div className="row" style={{ marginBottom: "0px" }}>

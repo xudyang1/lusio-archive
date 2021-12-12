@@ -15,6 +15,9 @@ import { QuizzesContext } from "../../context/QuizState";
 import { getAllBadges, getBadgesByIds } from "../../actions/AchievementActions";
 import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
+import sampleAchievement from "../../sampleData/sampleAchievement.json"
+import AchievementManager from "../../utils/AchievementManager"
+
 /**
  * Return and displays the corresponding card given card type and card information
  * 
@@ -72,7 +75,7 @@ export default function GeneralSections(props) {
     const [editing, setEditing] = useState(false)
     const [quizzesInSection, setQuizzesInSection] = useState([])
 
-    const { viewType } = useContext(ProfileContext)
+    const { viewType, profile } = useContext(ProfileContext)
     const { updatePlatform } = useContext(PlatformContext)
     const { getQuizzes, getQuiz } = useContext(QuizzesContext)
 
@@ -88,7 +91,7 @@ export default function GeneralSections(props) {
      */
     function onClickConfirm() {
         setEditing(false)
-        console.log("quizzesInSection", quizzesInSection)
+        //console.log("quizzesInSection", quizzesInSection)
         const arrofID = quizzesInSection.map((element, index) => {
             return { quiz: element._id, quizIndex: index }
         })
@@ -102,7 +105,7 @@ export default function GeneralSections(props) {
                 }
             }
         }
-        console.log(payload)
+        //console.log(payload)
         updatePlatform(platformID, payload)
     }
 
@@ -142,7 +145,7 @@ export default function GeneralSections(props) {
                 }
             }
         }
-        console.log(payload)
+        //console.log(payload)
         updatePlatform(platformID, payload)
     }
 
@@ -210,8 +213,8 @@ export default function GeneralSections(props) {
                 })
         }
         const quizL = await quizzes();
-        console.log(quizL)
-        console.log(listOfId)
+        //console.log(quizL)
+        //console.log(listOfId)
         const quiz = quizL.data.filter(q => listOfId.includes(q._id));
         return quiz;
     }
@@ -220,17 +223,22 @@ export default function GeneralSections(props) {
         if (props.element) {
             switch (type) {
                 case QUIZ_CARD: {
-                    console.log("PROPS", props.element)
+                    //console.log("PROPS", props.element)
                     let quizzes = getQuizList(props.element).then(function (result) {
                         setQuizzesInSection(result)
                     })
                 } break;
                 case ACHIEVEMENT_CARD: {
-                    console.log("LISTS OF IDS:", props.element)
-                    getBadgesByIds(props.element)(dispatch).then(function (result) {
-                        console.log(achievements)
-                        setQuizzesInSection(achievements.badges)
-                    })
+                    AchievementManager.setProfile(profile)
+                    setQuizzesInSection(sampleAchievement.achievements.filter(element=>
+                        AchievementManager.evaluateAchievement(element)
+                    ))
+
+                    //console.log("LISTS OF IDS:", props.element)
+                    // getBadgesByIds(props.element)(dispatch).then(function (result) {
+                    //     console.log(achievements)
+                    //     setQuizzesInSection(achievements.badges)
+                    // })
                 } break;
             }
         }

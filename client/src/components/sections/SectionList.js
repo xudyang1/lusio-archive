@@ -12,11 +12,14 @@ import { ProfileContext } from "../../context/ProfileState";
 import { getAllBadges } from "../../actions/AchievementActions";
 import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
+import sampleAchievement from "../../sampleData/sampleAchievement.json"
+import AchievementManager from "../../utils/AchievementManager"
+
 function getCards(t, index, element, args = false) {
-    console.log("ELEMENT", element)
+    //console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={AchievementManager.evaluateAchievement(element)} /></div>
         case QUIZ_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
         case SUB_PLAT_CARD:
@@ -30,7 +33,7 @@ export default function SectionList(props) {
 
     const { getPlatformList } = useContext(PlatformContext)
     const { getQuizzes } = useContext(QuizzesContext)
-    const { viewType } = useContext(ProfileContext)
+    const { viewType, profile } = useContext(ProfileContext)
 
     const name = props.name ? props.name : ""
     const [items, setItems] = useState([])
@@ -92,7 +95,10 @@ export default function SectionList(props) {
                         })
                     } break;
                     case ACHIEVEMENT_CARD: {
-                        getAllBadges()(dispatch)
+                        //getAllBadges()(dispatch)
+                        AchievementManager.setProfile(profile)
+                        setItems(sampleAchievement.achievements)
+                        console.log(sampleAchievement)
                     } break;
                 }
         }
@@ -102,14 +108,14 @@ export default function SectionList(props) {
         console.log(items)
     }, [items])
 
-    useEffect(() => {
-        if(props.type == ACHIEVEMENT_CARD)
-        setItems(achievements.allBadges)
-    }, [achievements.allBadges])
+    // useEffect(() => {
+    //     if(props.type == ACHIEVEMENT_CARD)
+    //     setItems(achievements.allBadges)
+    // }, [achievements.allBadges])
 
     function getList(list, type) {
         let res = []
-        console.log("list", list)
+        //console.log("list", list)
         switch (type) {
             case QUIZ_CARD: {
                 list.map((element, index) => (
