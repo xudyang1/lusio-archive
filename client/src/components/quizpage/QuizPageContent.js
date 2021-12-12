@@ -30,13 +30,6 @@ class QuizPageContent extends Component {
             isDisabled: false
         };
     }
-    /*
-    setPlatformName = async (platformId) => {
-        const platformContent = await this.props.passedFunc(platformId, false);
-        const platform = platformContent.data;
-        console.log(platform);
-    }
-    */
 
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
@@ -87,13 +80,8 @@ class QuizPageContent extends Component {
             const sList = await getQuizScores();
             console.log(sList);
             
-            //localStorage.setItem("currentScore", 0);
             for (var i = 0; i < sList.length; i++){
                 if (sList[i].split(":")[0] == quizId){
-                    //may change from localStorage
-                    //need to be discussed
-                    //localStorage.setItem("currentScore", sList[i].split(":")[1]);
-                    //this.setState({currentScore: localStorage.getItem("currentScore")});
                     this.setState({currentScore: sList[i].split(":")[1]});
                     break;
                 } 
@@ -306,7 +294,7 @@ class QuizPageContent extends Component {
                             <tr>
                                 <td style={{ textAlign: 'center', fontSize: "20px", border: ".5px solid gray" }}># OF QUESTIONS</td>
                                 <td style={{ textAlign: 'center', fontSize: "20px", border: ".5px solid gray" }}>TIMER SET</td>
-                                <td style={{ textAlign: 'center', fontSize: "20px", border: ".5px solid gray" }}>PERSONAL SCORE</td>
+                                <td style={{ textAlign: 'center', fontSize: "20px", border: ".5px solid gray" }}>PERSONAL HIGHEST SCORE</td>
                             </tr>
                             <tr>
                                 <td style={{ textAlign: 'center', fontSize: "25px", fontWeight: "Bold" }}>{this.state.numQ}</td>

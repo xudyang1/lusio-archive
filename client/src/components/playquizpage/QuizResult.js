@@ -52,15 +52,14 @@ export default function QuizResult(){
         if (!checked){
             setRank("11+");
             for (var i = 0; i < initialSB.length; i++) {
-            if (initialSB[i].userScore <= currentScore) {
-                console.log(currentScore);
-                setRank(i+1);
-                setVisibility("visible");
-                initialSB.splice(i, 0, {userName: currentUser, userScore: currentScore});
-                break;
+                if (initialSB[i].userScore <= currentScore) {
+                    console.log(currentScore);
+                    setRank(i+1);
+                    setVisibility("visible");
+                    initialSB.splice(i, 0, {userName: currentUser, userScore: currentScore});
+                    break;
+                }
             }
-            }
-
             updateScoreboard(initialSB.slice(0,10));
         }
         else{
@@ -83,20 +82,27 @@ export default function QuizResult(){
         }
         const qScoreList = await getQuizzesScoreL();
         console.log("QuizzesScore are", qScoreList);
-
+        
+        var priorHigher = false;
         //check if score already exists in quizzesScore
         for(var i=0; i < qScoreList.length; i++){
             if (qScoreList[i].split(":")[0] == quiz._id){
                 //console.log("index", i);
-                updateProfile({
-                    mode: "DELETE",
-                    profile: {
-                        owner: user.profile,
-                        quizzesScore: qScoreList[i]
-                    }
-                })
+                if (score > Number(qScoreList[i].split(":")[1])){
+                    updateProfile({
+                        mode: "DELETE",
+                        profile: {
+                            owner: user.profile,
+                            quizzesScore: qScoreList[i]
+                        }
+                    })
+                }
+                else if (score < Number(qScoreList[i].split(":")[1])){
+                    priorHigher = true;
+                }
             }
         }
+        
         //storing quiz score in quizzesScore database
         updateProfile({
             mode: "ADD",
@@ -105,8 +111,17 @@ export default function QuizResult(){
                 quizzesScore: quiz._id + ":" + score.toString()
             }
         })
-        //window.location.reload(false);
-        //routeToQuiz();
+        
+        if (priorHigher) {
+            updateProfile({
+                mode: "DELETE",
+                profile: {
+                    owner: user.profile,
+                    quizzesScore: quiz._id + ":" + score.toString()
+                }
+            })
+        }
+        
     }
     const alertMessage = () => {
         alert("Your score will not be updated automatically. Make sure you update your score first.");
