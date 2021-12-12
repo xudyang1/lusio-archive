@@ -27,7 +27,7 @@ import AchievementManager from "../../utils/AchievementManager"
  * @param {Boolean} canEdit set true if type == QUIZ_CARD && view_type == owner_view
  * @returns 
  */
- function getCards(t, index, element, args = false) {
+function getCards(t, index, element, args = false) {
     //console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
@@ -215,7 +215,10 @@ export default function GeneralSections(props) {
         const quizL = await quizzes();
         //console.log(quizL)
         //console.log(listOfId)
-        const quiz = quizL.data.filter(q => listOfId.includes(q._id));
+        const quiz = listOfId.map((element) => {
+            return quizL.data.find(ele => ele._id == element)
+        })
+        //const quiz = quizL.data.filter(q => listOfId.includes(q._id));
         return quiz;
     }
 
@@ -230,7 +233,7 @@ export default function GeneralSections(props) {
                 } break;
                 case ACHIEVEMENT_CARD: {
                     AchievementManager.setProfile(profile)
-                    setQuizzesInSection(sampleAchievement.achievements.filter(element=>
+                    setQuizzesInSection(sampleAchievement.achievements.filter(element =>
                         AchievementManager.evaluateAchievement(element)
                     ))
 

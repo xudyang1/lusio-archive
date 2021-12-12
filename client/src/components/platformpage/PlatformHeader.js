@@ -55,7 +55,7 @@ export default function PlatformHeader(props) {
     }
 
     function onClickSubScribe() {
-        if(isAuthenticated){
+        if (isAuthenticated) {
             const payload = {
                 mode: "ADD",
                 profile: {
@@ -65,13 +65,13 @@ export default function PlatformHeader(props) {
             updateProfile(payload)
             setSubToggle(true)
         }
-        else{
+        else {
             alert("please login")
         }
     }
 
     function onClickUnsubScribe() {
-        if(isAuthenticated){
+        if (isAuthenticated) {
             const payload = {
                 mode: "DELETE",
                 profile: {
@@ -81,18 +81,18 @@ export default function PlatformHeader(props) {
             updateProfile(payload)
             setSubToggle(false)
         }
-        else{
+        else {
             alert("please login")
         }
     }
 
     function onClickAbout() {
-        if(aboutToggle){
+        if (aboutToggle) {
             history.push(`/platform/${id}`)
             setAboutToggle(false)
             aboutButtonText.current.innerHTML = "About"
         }
-        else{
+        else {
             history.push(`/platform/${id}/About`)
             setAboutToggle(true)
             aboutButtonText.current.innerHTML = "Back"

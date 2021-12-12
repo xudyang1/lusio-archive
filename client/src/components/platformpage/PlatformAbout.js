@@ -101,8 +101,7 @@ export default function PlatformAbout(props) {
             <div>
                 <h4>{platformData.name}</h4>
                 <h4>Platform ID: {platformData._id}</h4>
-                <h4>Subscribers: {platformData.subscribers.length}</h4>
-                <h4>Data created: {platformData.createdAt}</h4>
+                <h4>Date created: {platformData.createdAt}</h4>
 
                 <div className="row valign-wrapper">
                     <h4 className="col">Owner: </h4>
