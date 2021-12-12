@@ -24,7 +24,6 @@ class QuizPageContent extends Component{
             currentScore: 0,
             isDisabled: false
         };
-                
     }
     /*
     setPlatformName = async (platformId) => {
@@ -65,26 +64,28 @@ class QuizPageContent extends Component{
     }
 
     getRecentScore = async (quizId) => {
+        console.log("USER: " + this.props.userId);
         if (this.props.userId != "") {
+            console.log("22222: " + this.props.userId);
             const getQuizScores = () => {
                 return (this.props.getProfile(this.props.userId)).then(function (result)
                 {return result.data.profile.quizzesScore;});
             }
             const sList = await getQuizScores();
             console.log(sList);
-            /*
-            localStorage.setItem("currentScore", 0);
+            
+            //localStorage.setItem("currentScore", 0);
             for (var i = 0; i < sList.length; i++){
                 if (sList[i].split(":")[0] == quizId){
                     //may change from localStorage
                     //need to be discussed
-                    localStorage.setItem("currentScore", sList[i].split(":")[1]);
-                    this.setState({currentScore: localStorage.getItem("currentScore")});
+                    //localStorage.setItem("currentScore", sList[i].split(":")[1]);
+                    //this.setState({currentScore: localStorage.getItem("currentScore")});
+                    this.setState({currentScore: sList[i].split(":")[1]});
                     break;
                 } 
             } 
-            */
-        }
+        } 
     }
 
     getPlat = async (platformId) => {
@@ -217,7 +218,11 @@ class QuizPageContent extends Component{
         const {getQuizzes} = this.context;
         this.getRecentScore(id);
         this.getItem(id, getQuizzes); 
-          
+    }
+    componentDidUpdate(prevProps){
+        if(this.props.userId !== prevProps.userId){
+            this.getRecentScore(this.props.match.params.id);
+        }
     }
 
     render(){
