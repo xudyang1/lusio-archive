@@ -7,6 +7,7 @@ import { ProfileContext } from '../../context/ProfileState';
 export default function PlatformHeader(props) {
     const { id } = useParams();
     const history = useHistory();
+    const { isAuthenticated } = useContext(AuthContext);
     const { viewType, updatePlatform } = useContext(PlatformContext);
     const { profile, updateProfile } = useContext(ProfileContext);
     const [editing, setEditing] = useState(false)
@@ -54,25 +55,35 @@ export default function PlatformHeader(props) {
     }
 
     function onClickSubScribe() {
-        const payload = {
-            mode: "ADD",
-            profile: {
-                subscribedPlatforms: id
+        if(isAuthenticated){
+            const payload = {
+                mode: "ADD",
+                profile: {
+                    subscribedPlatforms: id
+                }
             }
+            updateProfile(payload)
+            setSubToggle(true)
         }
-        updateProfile(payload)
-        setSubToggle(true)
+        else{
+            alert("please login")
+        }
     }
 
     function onClickUnsubScribe() {
-        const payload = {
-            mode: "DELETE",
-            profile: {
-                subscribedPlatforms: id
+        if(isAuthenticated){
+            const payload = {
+                mode: "DELETE",
+                profile: {
+                    subscribedPlatforms: id
+                }
             }
+            updateProfile(payload)
+            setSubToggle(false)
         }
-        updateProfile(payload)
-        setSubToggle(false)
+        else{
+            alert("please login")
+        }
     }
 
     function onClickAbout() {
@@ -94,9 +105,7 @@ export default function PlatformHeader(props) {
     }, [profile.subscribedPlatforms])
 
     function subButton() {
-        if (security > 0)
-            return <div></div>
-        if (subToggle) {
+        if (subToggle && isAuthenticated) {
             return <button className="btn waves-effect waves-light red" onClick={() => onClickUnsubScribe()}>Unsubscribe</button>
         }
         else {

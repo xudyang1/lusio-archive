@@ -7,21 +7,6 @@ import { NavLink } from "react-router-dom";
  */
 export default function AccountProfileButton(props) {
 
-    // const { user, isAuthenticated } = useContext(AuthContext);
-    const { getProfile } = useContext(ProfileContext)
-
-    const [profile, setProfile] = useState({})
-
-    useEffect(() => {
-        if (userId)
-            getProfile(userId, false).then(function (result) {
-                //console.log("result from quizcard", result)
-                setProfile(result.data.profile)
-            })
-    }, [])
-
-    // const { id } = useParams()
-    // const { url, path } = useRouteMatch()
     const userId = props.userId
 
     const user = props.user ? props.user : {

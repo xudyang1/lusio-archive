@@ -242,7 +242,7 @@ class QuizPageContent extends Component {
                         <table style={{ width: "70%", marginRight: "0px", marginLeft: "auto" }}>
                             <p>
                                 <span>
-                                    <img src={this.state.quizImgURI} style={{ width: "420px", height: "300px" }}></img>
+                                    <img src={this.state.quizImgURI} style={{ width: "420px", height: "300px", objectFit: "scale-down" }}></img>
                                 </span>
                             </p>
                             <p style={{ fontSize: "30px", fontWeight: "bold" }}>
