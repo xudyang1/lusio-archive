@@ -52,7 +52,7 @@ exports.softAuth = async (req, res, next) => {
         req.user = decoded;
 
         // default view type
-        req.viewType = GUEST_VIEW
+        req.viewType = GUEST_VIEW;
 
         // profile
         if (req.params.profileId) {
@@ -92,10 +92,10 @@ exports.softAuth = async (req, res, next) => {
         // run next handler
         next();
     } catch (e) {
-        console.log(e)
+        console.log(e);
         // either no token or token invalid
         req.user = null;
-        req.viewType = GUEST_VIEW
+        req.viewType = GUEST_VIEW;
         // simply run next for guest user
         next();
     }
