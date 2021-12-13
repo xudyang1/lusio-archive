@@ -39,14 +39,13 @@ class QuizAnswersContent extends Component{
             name: quiz.name,
             description: quiz.description,
             questions: quiz.questions
-        });
+        },()=>console.log(this.state.questions));
     }
     
     componentDidMount(){
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes); 
-
     }
     render() {
         return (

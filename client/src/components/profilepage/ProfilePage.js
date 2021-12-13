@@ -61,6 +61,7 @@ export default function ProfilePage() {
         history.push(`/platform/${p.platform._id}`)
     }
 
+
     function secureView() {
         if (viewType === "OWNER_VIEW") {
             return <>

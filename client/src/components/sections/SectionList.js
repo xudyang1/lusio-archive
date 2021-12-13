@@ -146,7 +146,7 @@ export default function SectionList(props) {
                     <div>
                         <h4>{name}</h4>
                     </div>
-                    <div className="valign-wrapper">
+                    <div className="valign-wrapper">     
                         <div className="LSection">
                             {/* {
                                 items.map((element, index) => (
@@ -154,6 +154,7 @@ export default function SectionList(props) {
                                 ))
                             } */}
                             {
+                                
                                 getList(items, props.type)
                             }
                             {/* {callback == "createQuiz" ? <CreateQuizButton /> : <div></div>}

@@ -104,7 +104,6 @@ class PlayQuizContent extends Component{
     countDown() {
         //reduce second by 1 by every 1 second 
         let seconds = Number(document.cookie.split(";")[0].split("=")[1]) - 1;
-        //let seconds = this.state.time - 1;
         console.log(document.cookie);
         this.setState({
             quizTime: this.convertTime(seconds),
@@ -143,6 +142,7 @@ class PlayQuizContent extends Component{
             const profile = await getProfileForQ();
             const qTakenList = profile.quizzesScore;
             const currentExp = profile.currentExp;
+            const level = profile.level;
 
             console.log("QuizzesTaken are", qTakenList);
 
@@ -160,12 +160,32 @@ class PlayQuizContent extends Component{
                     mode: "EDIT",
                     profile: {
                         owner: this.props.userId,
+                        currentExp: xp + currentExp + 50
+                    }
+                })
+                xp = xp + 50;
+            }
+            else if (qtaken){
+                await this.props.updateProfile({
+                    mode: "EDIT",
+                    profile: {
+                        owner: this.props.userId,
                         currentExp: xp + currentExp
                     }
                 })
             }
             console.log("currentExp", xp + currentExp);
             
+            if ((xp + currentExp) > 500) {
+                await this.props.updateProfile({
+                    mode: "EDIT",
+                    profile: {
+                        owner: this.props.userId,
+                        level: level + Math.floor((xp + currentExp)/500),
+                        currentExp: Math.ceil((xp + currentExp)%500)
+                    }
+                })
+            } 
 
             this.setState({score: scoreEval}, () => finishQuiz(this.state.score, xp, (this.state.initialTime - this.state.time)));
         }
@@ -204,15 +224,9 @@ class PlayQuizContent extends Component{
         //reset time so that time is reset for another take of quiz
         document.cookie = ("totalTime=" + this.state.timeForCookie + "; path=/play/" + this.state.id);
         e.preventDefault();
-        //this.clearAll();
+
     }
-    /*
-    clearAll = () => {
-        document.cookie.split(';').forEach(function(c) {
-            document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        });
-    }
-    */
+
     render() {
         var questionBase = 0;
         var questionRange = [0];
