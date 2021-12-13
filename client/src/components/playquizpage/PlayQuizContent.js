@@ -224,15 +224,9 @@ class PlayQuizContent extends Component{
         //reset time so that time is reset for another take of quiz
         document.cookie = ("totalTime=" + this.state.timeForCookie + "; path=/play/" + this.state.id);
         e.preventDefault();
-        //this.clearAll();
+
     }
-    /*
-    clearAll = () => {
-        document.cookie.split(';').forEach(function(c) {
-            document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        });
-    }
-    */
+
     render() {
         var questionBase = 0;
         var questionRange = [0];
