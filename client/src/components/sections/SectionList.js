@@ -17,16 +17,17 @@ import AchievementManager from "../../utils/AchievementManager"
 
 function getCards(t, index, element, args = false) {
     //console.log("ELEMENT", element)
-    switch (t) {
-        case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={AchievementManager.evaluateAchievement(element)} /></div>
-        case QUIZ_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
-        case SUB_PLAT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
-        case SUB_USER_CARD:
-            break;
-    }
+    if (element)
+        switch (t) {
+            case ACHIEVEMENT_CARD:
+                return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={AchievementManager.evaluateAchievement(element)} /></div>
+            case QUIZ_CARD:
+                return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
+            case SUB_PLAT_CARD:
+                return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
+            case SUB_USER_CARD:
+                break;
+        }
 }
 
 export default function SectionList(props) {
@@ -116,23 +117,24 @@ export default function SectionList(props) {
     function getList(list, type) {
         let res = []
         //console.log("list", list)
-        switch (type) {
-            case QUIZ_CARD: {
-                list.map((element, index) => (
-                    res.push(getCards(props.type, index, element, viewType == "OWNER_VIEW"))
-                ))
-            } break;
-            case SUB_PLAT_CARD: {
-                list.map((element, index) => (
-                    res.push(getCards(props.type, index, element))
-                ))
-            } break;
-            case ACHIEVEMENT_CARD: {
-                list.map((element, index) => (
-                    res.push(getCards(props.type, index, element))
-                ))
-            } break;
-        }
+        if (list)
+            switch (type) {
+                case QUIZ_CARD: {
+                    list.map((element, index) => (
+                        res.push(getCards(props.type, index, element, viewType == "OWNER_VIEW"))
+                    ))
+                } break;
+                case SUB_PLAT_CARD: {
+                    list.map((element, index) => (
+                        res.push(getCards(props.type, index, element))
+                    ))
+                } break;
+                case ACHIEVEMENT_CARD: {
+                    list.map((element, index) => (
+                        res.push(getCards(props.type, index, element))
+                    ))
+                } break;
+            }
         return res
     }
 

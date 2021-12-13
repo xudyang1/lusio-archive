@@ -87,7 +87,7 @@ export default function PlatformContent(props) {
     }
 
     function getList() {
-        return <SectionList name={"All Quizzes"} items={platform.quizzes} type={QUIZ_CARD} />
+        return <SectionList name={"All Quizzes"} items={platform.quizzes.reverse()} type={QUIZ_CARD} />
     }
 
     function viewPage() {
