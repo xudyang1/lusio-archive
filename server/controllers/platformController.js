@@ -17,7 +17,7 @@ const { nonNullJson, errorHandler } = require('../utils/jsonTool');
  */
 exports.getPlatformList = async (req, res, next) => {
   try {
-    const selectedPlatform = await Platform.find({}, null, { $limit: 10 });
+    const selectedPlatform = await Platform.find({});
 
     return res.status(200).json({
       platforms: selectedPlatform
@@ -271,22 +271,22 @@ exports.deletePlatform = async (req, res, next) => {
  *                      platform: { bannerURI: newVal }
  *                    }
  */
- exports.updateBanner = async (req, res, next) => {
+exports.updateBanner = async (req, res, next) => {
   try {
-      if (req.file) {
-          target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
-          updated = await Platform.findByIdAndUpdate(req.params.platformId, target, { new: true }).select(req.body.field);
-          // console.log("doc", updated);
-          const response = {
-              success: true,
-              platform: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
-          };
+    if (req.file) {
+      target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
+      updated = await Platform.findByIdAndUpdate(req.params.platformId, target, { new: true }).select(req.body.field);
+      // console.log("doc", updated);
+      const response = {
+        success: true,
+        platform: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
+      };
 
-          return res.status(201).json(response);
-      }
-      else { return res.status(200).json({ success: false }); }
+      return res.status(201).json(response);
+    }
+    else { return res.status(200).json({ success: false }); }
   } catch (err) {
-      console.log(err);
-      return res.status(400).json({ success: false });
+    console.log(err);
+    return res.status(400).json({ success: false });
   }
 };

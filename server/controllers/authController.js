@@ -254,6 +254,8 @@ exports.updateUser = async (req, res, next) => {
         const { name, password, email } = req.body.content;
         var target = null;
         if (name) {
+            const user1 = await UserAccount.findOne({ name });
+            if (user1) { return errorHandler(res, 400, 'Name already exists'); }
             target = { name };
         }
         // TODO: need further validation
