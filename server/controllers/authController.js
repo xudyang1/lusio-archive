@@ -104,8 +104,7 @@ exports.register = async (req, res, next) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-            maxAge: 2000000,
-            signed: true
+            maxAge: 2000000
         });
         return res.status(201).json({
             user: {
@@ -168,8 +167,7 @@ exports.login = async (req, res, next) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-            maxAge: 2000000,
-            signed: true
+            maxAge: 2000000
         });
         return res.status(200).json({
             user: {
