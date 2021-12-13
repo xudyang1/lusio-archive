@@ -22,7 +22,7 @@ const initialState = {
     quiz: {
         id: null,
         userId: null,
-        platformId: null, 
+        platformId: null,
         name: null,
         author: null,
         quizImgURI: null,
@@ -45,7 +45,8 @@ const initialState = {
             userId: "",
             userName: "",
             text: "",
-            commentId: null}]
+            commentId: null
+        }]
     },
     error: null,
     loading: true,
@@ -79,11 +80,11 @@ export const QuizzesProvider = ({ children }) => {
     };
     async function getQuiz(id, updateState = true) {
         try {
-            if(updateState){
+            if (updateState) {
                 dispatch(setQuizzesLoading());
             }
             const res = await axios.get(`/api/quizzes/edit/${id}`);
-            if(updateState){
+            if (updateState) {
                 dispatch({
                     type: GET_QUIZ,
                     payload: id
@@ -99,28 +100,30 @@ export const QuizzesProvider = ({ children }) => {
     };
     //>>>>>>>>>>>>>>>>>>>>>>>>for Displaying Quizzes on Platform
     async function getQuizzesById(quizIdList) {
-        try {
-            const quizL = [];
-            for (let i = 0; i < quizIdList.length; i++) {
+
+        const quizL = [];
+        for (let i = 0; i < quizIdList.length; i++) {
+            try {
                 const id = quizIdList[i];
                 const res = await axios.get(`/api/quizzes/edit/${id}`);
                 quizL.push(res.data.data);
-                console.log(quizL);
+
+            } catch (err) {
+                dispatch({
+                    type: GET_ERRORS,
+                    paylod: { msg: err.message, status: err.name }
+                })
             }
-            return quizL;
-        } catch (err) {
-            dispatch({
-                type: GET_ERRORS,
-                paylod: { msg: err.message, status: err.name}
-            })
         }
+        return quizL;
+
     }
     async function getCommentById(quizId) {
         try {
             const res = await axios.get(`/api/quizzes/edit/${quizId}`);
             //console.log("getComment", res.data);
             const comments = res.data.data.comments;
-            const currentCom = comments[comments.length-1];
+            const currentCom = comments[comments.length - 1];
             //console.log("CurrentComment", currentCom);
             dispatch({
                 type: GET_COMMENTBYID,
@@ -130,7 +133,7 @@ export const QuizzesProvider = ({ children }) => {
         } catch (err) {
             dispatch({
                 type: GET_ERRORS,
-                paylod: { msg: err.message, status: err.name}
+                paylod: { msg: err.message, status: err.name }
             })
         }
     }
@@ -172,7 +175,7 @@ export const QuizzesProvider = ({ children }) => {
             //deep copy of nested quiz
             console.log(res.data.quiz);
             const deepCopyQuiz = cloneDeep(res.data.quiz);
-            console.log("deepcopy",deepCopyQuiz);
+            console.log("deepcopy", deepCopyQuiz);
 
             dispatch({
                 type: UPDATE_QUIZ,
@@ -213,16 +216,16 @@ export const QuizzesProvider = ({ children }) => {
         }
     }
     function finishQuiz(score, xp, timeSpent) {
-      try {
-        dispatch({
-          type: FINISH_QUIZ,
-          payload: {score: score, xp: xp, timeSpent: timeSpent}
-        });
-      } catch (err){
-        dispatch({
-          type: GET_ERRORS
-        });
-      }
+        try {
+            dispatch({
+                type: FINISH_QUIZ,
+                payload: { score: score, xp: xp, timeSpent: timeSpent }
+            });
+        } catch (err) {
+            dispatch({
+                type: GET_ERRORS
+            });
+        }
     }
     const setQuizzesLoading = () => {
         return {

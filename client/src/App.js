@@ -14,6 +14,7 @@ import { ProfilesProvider } from './context/ProfileState';
 import { QuizzesProvider } from './context/QuizState';
 import { PlatformProvider } from './context/PlatformState';
 import Footer from './components/common/Footer';
+import AdminControl from './components/frontpage/AdminControl';
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                             <Route path="/search/:key" component={SearchPage} />
                             <Route path="/profile/:id" component={ProfilePage} />
                             <Route path="/platform/:id" component={PlatformPage} />
+                            <Route path="/admin" component={AdminControl} />
                         </Switch>
                     </PlatformProvider>
                 </QuizzesProvider>

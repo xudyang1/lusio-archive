@@ -18,7 +18,7 @@ export default function RemoveQuizFromPlatButton(props) {
     function createOptions2() {
         let opts = []
         platformQuizBank.forEach((element, index) => {
-            opts.push(<option value={element._id} key={index}>{element.name+" -- author: "+element.author}</option>)
+            opts.push(<option value={element._id} key={index}>{element.name + " -- author: " + element.author}</option>)
         })
         return opts
     }
@@ -29,16 +29,18 @@ export default function RemoveQuizFromPlatButton(props) {
             dismissible: true
         });
 
-        getQuizzesById(platform.quizzes).then(function(result){
+        getQuizzesById(platform.quizzes).then(function (result) {
             console.log(result)
-            setPlatformBank(result)
+            if (result)
+                setPlatformBank([...result])
         })
     }, [])
 
-    useEffect(()=>{
-        getQuizzesById(platform.quizzes).then(function(result){
-            console.log(result)
-            setPlatformBank(result)
+    useEffect(() => {
+        getQuizzesById(platform.quizzes).then(function (result) {
+            console.log("RESULT", result)
+            if (result)
+                setPlatformBank([...result])
         })
     }, [platform.quizzes])
 
