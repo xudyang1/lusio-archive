@@ -33,20 +33,21 @@ function getCards(t, index, element, userp = null, args = false) {
     //     return
     // }
     //console.log("ELEMENT", element)
-    switch (t) {
-        case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
-        case QUIZ_CARD:
-            if(element.isPublished || element.userId == userp.profile){
-                return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
-            }
-            else
-                return;
-        case SUB_PLAT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
-        case SUB_USER_CARD:
-            break;
-    }
+    if (element)
+        switch (t) {
+            case ACHIEVEMENT_CARD:
+                return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
+            case QUIZ_CARD:
+                if (element.isPublished || element.userId == userp.profile) {
+                    return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
+                }
+                else
+                    return;
+            case SUB_PLAT_CARD:
+                return <div className="GSection-Cards center" key={index} id={index}><PlatformCard key={index} element={element} /></div>
+            case SUB_USER_CARD:
+                break;
+        }
 }
 /**
  * 
