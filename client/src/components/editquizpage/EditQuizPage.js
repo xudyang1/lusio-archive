@@ -25,8 +25,6 @@ export default function EditQuizPage(){
     const owner = quiz.author;
 
     if(isAuthenticated && owner == user.name){
-        //console.log("owner", owner);
-        //console.log("player's name", user.name);
         setMode(true);
     }
   }
@@ -35,7 +33,9 @@ export default function EditQuizPage(){
   })
   return(
     <div>
-      {isOwner ? <EditQuizContent updateProfile={updateProfile}/> : <div>You do not have access to this page.</div>}
+      {isOwner ? <EditQuizContent updateProfile={updateProfile}/> 
+      : 
+      <div className="container" style={{background:"white", height: "800px", marginBottom:0}}><h6>You do not have access to this page.</h6></div>}
     </div>
     )
 }
