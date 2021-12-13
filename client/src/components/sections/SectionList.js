@@ -117,23 +117,24 @@ export default function SectionList(props) {
     function getList(list, type) {
         let res = []
         //console.log("list", list)
-        switch (type) {
-            case QUIZ_CARD: {
-                list.map((element, index) => (
-                    res.push(getCards(props.type, index, element, viewType == "OWNER_VIEW"))
-                ))
-            } break;
-            case SUB_PLAT_CARD: {
-                list.map((element, index) => (
-                    res.push(getCards(props.type, index, element))
-                ))
-            } break;
-            case ACHIEVEMENT_CARD: {
-                list.map((element, index) => (
-                    res.push(getCards(props.type, index, element))
-                ))
-            } break;
-        }
+        if (list)
+            switch (type) {
+                case QUIZ_CARD: {
+                    list.map((element, index) => (
+                        res.push(getCards(props.type, index, element, viewType == "OWNER_VIEW"))
+                    ))
+                } break;
+                case SUB_PLAT_CARD: {
+                    list.map((element, index) => (
+                        res.push(getCards(props.type, index, element))
+                    ))
+                } break;
+                case ACHIEVEMENT_CARD: {
+                    list.map((element, index) => (
+                        res.push(getCards(props.type, index, element))
+                    ))
+                } break;
+            }
         return res
     }
 

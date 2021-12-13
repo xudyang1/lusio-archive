@@ -21,7 +21,7 @@ export default function HomeContent() {
     return (
         <div>
             <CreateQuizButton />
-            <DailyChallengeSection />
+            {/* <DailyChallengeSection /> */}
             <div className="container">
             <script>{console.log(platformList)}</script>
                 {
