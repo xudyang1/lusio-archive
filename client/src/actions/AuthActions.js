@@ -21,20 +21,22 @@ export const config = { headers: { 'Content-Type': 'application/json' } };
 
 
 /**
- * @description token config for headers in request with authentication
+ * TODO: check
+ * @description token config for cookie and json
  */
-export const tokenConfig = (token = null) => {
-    const tokenConfig = { headers: { 'Content-Type': 'application/json' } };
-    // if token, add to headers
-    if (token) {
-        tokenConfig.headers['x-auth-token'] = token;
-    }
+export const tokenConfig = () => {
+    const tokenConfig = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: "include"
+    };
+
     return tokenConfig;
 };
 
 /**
  * @description load the user when first mounted
- * @param {string} token JWT token
  * @returns Promise<void>
  * @format  req.headers: { 'Content-Type': 'application/json', 
  *                         'x-auth-token': JWT token }
@@ -47,9 +49,10 @@ export const tokenConfig = (token = null) => {
  *                            } 
  *                    }
  */
-export const loadUser = (token = null) => async (dispatch, errorDispatch = dispatch) => {
+export const loadUser = () => async (dispatch, errorDispatch = dispatch) => {
     try {
-        const res = await axios.get('/api/auth/user', tokenConfig(token));
+        const res = await axios.get('/api/auth/user', { credentials: "include" });
+
         dispatch({
             type: USER_LOADED,
             payload: res.data
@@ -114,7 +117,7 @@ export const login = ({ email, password }) => async (dispatch, errorDispatch = d
 
     try {
         const res = await axios.post('/api/auth/login', body, config);
-
+        console.log("CCCCOOOKIE", res);
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
@@ -127,7 +130,6 @@ export const login = ({ email, password }) => async (dispatch, errorDispatch = d
 
 /**
  * @description update user account information
- * @param {string} token JWT token
  * @param {JSON} payload see @format {req.body}
  * @detail  For changing name | password | (email?)
  * @format  req.headers: { 'Content-Type': 'application/json', 
@@ -144,11 +146,11 @@ export const login = ({ email, password }) => async (dispatch, errorDispatch = d
  *      
  *     NOTE: email may have different implementation since we need to verify the email address
  */
-export const updateUser = (token, payload) => async (dispatch, errorDispatch = dispatch) => {
+export const updateUser = (payload) => async (dispatch, errorDispatch = dispatch) => {
     try {
         const body = JSON.stringify(payload);
 
-        const res = await axios.patch('/api/auth/user/edit', body, tokenConfig(token));
+        const res = await axios.patch('/api/auth/user/edit', body, tokenConfig());
 
         dispatch({
             type: UPDATE_SUCCESS,
@@ -174,9 +176,9 @@ export const updateUser = (token, payload) => async (dispatch, errorDispatch = d
  *                            } 
  *                    }
  */
-export const deleteAccount = (token) => async (dispatch, errorDispatch = dispatch) => {
+export const deleteAccount = () => async (dispatch, errorDispatch = dispatch) => {
     try {
-        const res = await axios.delete('/api/auth/user/delete', tokenConfig(token));
+        const res = await axios.delete('/api/auth/user/delete', tokenConfig());
 
         dispatch({
             type: DELETE_ACCOUNT,
@@ -191,9 +193,16 @@ export const deleteAccount = (token) => async (dispatch, errorDispatch = dispatc
  * @description logout
  * @returns Promise<void>
  */
-export const logout = () => (dispatch) => {
-    dispatch({
-        type: LOGOUT_SUCCESS
-    });
+export const logout = () => async (dispatch, errorDispatch = dispatch) => {
+    try {
+        const res = await axios.post('/api/auth/user/logout', tokenConfig());
+
+        dispatch({
+            type: LOGOUT_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        errorDispatch(returnErrors(err));
+    }
 };
 

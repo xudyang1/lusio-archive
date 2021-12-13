@@ -35,7 +35,7 @@ export default function EditQuizPage(){
     <div>
       {isOwner ? <EditQuizContent updateProfile={updateProfile}/> 
       : 
-      <div className="container" style={{background:"white", height: "700px", marginBottom:0}}><h6>You do not have access to this page.<i class="small material-icons" >lock_outline</i></h6></div>}
+      <div className="container" style={{background:"white", height: "700px", marginBottom:0}}><h6>You do not have access to this page.<i className="small material-icons" >lock_outline</i></h6></div>}
     </div>
     )
 }

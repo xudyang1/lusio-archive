@@ -13,6 +13,8 @@ import {
     UPDATE_PLATFORM
 } from "../types/actionTypes";
 import { AuthContext } from "./AuthState";
+import { tokenConfig } from "../actions/AuthActions";
+
 
 const initialState = {
     platform: {
@@ -39,27 +41,13 @@ export const PlatformContext = createContext(initialState);
 
 export const PlatformProvider = ({ children }) => {
     const [state, dispatch] = useReducer(PlatformReducer, initialState);
-    const { token } = useContext(AuthContext);
-    // set up config/headers and token
-    const tokenConfig = token => {
-        // headers
-        const config = {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        };
 
-        // if token, add to headers
-        if (token) {
-            config.headers['x-auth-token'] = token;
-        }
-        return config;
-    };
+
 
     // token: can be null
     async function getPlatformList(reload = true) {
         try {
-            const res = await axios.get('/api/platforms/platformList', tokenConfig(token));
+            const res = await axios.get('/api/platforms/platformList', tokenConfig());
             if (reload)
                 dispatch({
                     type: GET_PLATFORM_LIST,
@@ -76,7 +64,7 @@ export const PlatformProvider = ({ children }) => {
     };
     async function getPlatform(id, reload = true) {
         try {
-            const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig(token));
+            const res = await axios.get(`/api/platforms/platform/${id}`, tokenConfig());
             if (reload)
                 dispatch({
                     type: GET_PLATFORM,
@@ -99,7 +87,7 @@ export const PlatformProvider = ({ children }) => {
     async function createPlatform(init) {
         try {
             const body = JSON.stringify(init);
-            const res = await axios.post('/api/platforms/add', body, tokenConfig(token));
+            const res = await axios.post('/api/platforms/add', body, tokenConfig());
             dispatch({
                 type: ADD_PLATFORM,
                 payload: res.data
@@ -133,7 +121,7 @@ export const PlatformProvider = ({ children }) => {
     async function updatePlatform(platformId, payload) {
         try {
             const body = JSON.stringify(payload);
-            const res = await axios.patch(`/api/platforms/platform/edit/${platformId}`, body, tokenConfig(token));
+            const res = await axios.patch(`/api/platforms/platform/edit/${platformId}`, body, tokenConfig());
             dispatch({
                 type: UPDATE_PLATFORM,
                 payload: res.data
@@ -150,7 +138,7 @@ export const PlatformProvider = ({ children }) => {
 
     async function removePlatform(platformId) {
         try {
-            const res = await axios.delete(`/api/platforms/platform/${platformId}`, tokenConfig(token));
+            const res = await axios.delete(`/api/platforms/platform/${platformId}`, tokenConfig());
             dispatch({
                 type: DELETE_PLATFORM,
                 payload: res.data
@@ -187,9 +175,9 @@ export const PlatformProvider = ({ children }) => {
 
         const fileConfig = {
             headers: {
-                'Content-Type': 'multipart/form-data',
-                'x-auth-token': token
-            }
+                'Content-Type': 'multipart/form-data'
+            },
+            credentials: "include"
         };
 
         try {

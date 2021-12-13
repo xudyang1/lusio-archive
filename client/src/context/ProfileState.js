@@ -38,7 +38,7 @@ const initialState = {
 export const ProfileContext = createContext(initialState);
 
 export const ProfilesProvider = ({ children }) => {
-    const { token, authDispatch } = useContext(AuthContext);
+    const { authDispatch } = useContext(AuthContext);
     const [state, dispatch] = useReducer(ProfileReducer, initialState);
 
 
@@ -71,7 +71,7 @@ export const ProfilesProvider = ({ children }) => {
      *                      profile: { profile document except 'owner' attribute }         
      *                    }
      */
-    const getProfileCaller = (id, reload = true) => getProfile(token, id, reload)(dispatch);
+    const getProfileCaller = (id, reload = true) => getProfile(id, reload)(dispatch);
 
     /**
      * @desc  Update the profile for the owner
@@ -99,7 +99,7 @@ export const ProfilesProvider = ({ children }) => {
      *                      content: { description || iconURI || ... || fans: updated content }
      *                    }
      */
-    const updateProfileCaller = (payload) => updateProfile(token, state.profile._id, payload)(dispatch);
+    const updateProfileCaller = (payload) => updateProfile(state.profile._id, payload)(dispatch);
     /**
      *
      * @param {JSON} payload { "image": file, "field": "iconURI" || "bannerURI"}
@@ -111,7 +111,7 @@ export const ProfilesProvider = ({ children }) => {
      *                                  "field": "iconURI" || "bannerURI"}
      *          res{ success: true, "iconURI" || "bannerURI": newVal}
      */
-    const updateImageCaller = (payload) => updateImage(token, state.profile._id, payload)(dispatch, authDispatch);
+    const updateImageCaller = (payload) => updateImage(state.profile._id, payload)(dispatch, authDispatch);
 
     return (<ProfileContext.Provider value={{
         getProfile: getProfileCaller,

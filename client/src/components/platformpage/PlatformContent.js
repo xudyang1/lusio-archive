@@ -105,9 +105,9 @@ export default function PlatformContent(props) {
 
     return (
         <div>
-            <div class="row">
-                <div class="col s12">
-                    <ul class="tabs" ref={tabsref}>
+            <div className="row">
+                <div className="col s12">
+                    <ul className="tabs" ref={tabsref}>
                         <li className="tab col s3"><a style={{ fontSize: "24px" }} onClick={() => { setView("Sections") }}>Front Page</a></li>
                         <li className="tab col s3"><a style={{ fontSize: "24px" }} onClick={() => { setView("Allquizzes") }}>All Quizzes</a></li>
                     </ul>
