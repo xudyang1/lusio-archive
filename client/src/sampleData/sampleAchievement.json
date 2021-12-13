@@ -2,9 +2,9 @@
     "achievements": [
         {
             "id": 1,
-            "title": "Reach Level 2",
+            "title": "Little Rookie",
             "description": "reaching level 2",
-            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6q22-c6936a5b-73d6-409d-b248-0b370494f90f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnEyMi1jNjkzNmE1Yi03M2Q2LTQwOWQtYjI0OC0wYjM3MDQ5NGY5MGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.YO0hLY0-_T-ehy8SwGRMUoi5jUOh0iQ-pCethcaLLK4",
+            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddxs37t-352dc1b9-934b-4fbf-8001-fcec7a09faaa.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4czM3dC0zNTJkYzFiOS05MzRiLTRmYmYtODAwMS1mY2VjN2EwOWZhYWEucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.j2jiTFCdcWciM_SF5CEhCVv2ZiGEske3H8hFM6PpBbE",
             "conditions": {
                 "operation": "ge",
                 "value": "2",
@@ -13,46 +13,200 @@
         },
         {
             "id": 2,
-            "title": "Reach Level 3",
-            "description": "reaching level 3",
-            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6q22-c6936a5b-73d6-409d-b248-0b370494f90f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnEyMi1jNjkzNmE1Yi03M2Q2LTQwOWQtYjI0OC0wYjM3MDQ5NGY5MGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.YO0hLY0-_T-ehy8SwGRMUoi5jUOh0iQ-pCethcaLLK4",
+            "title": "Apprentice",
+            "description": "reaching level 5",
+            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6oo4-541fd7b1-ee09-42a1-9d35-853f909229e6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4Nm9vNC01NDFmZDdiMS1lZTA5LTQyYTEtOWQzNS04NTNmOTA5MjI5ZTYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Uk1QX-Dg9T0YCVTdFrdgnC12JjJClaQENEZQGJsJ3bk",
             "conditions": {
                 "operation": "ge",
-                "value": "3",
+                "value": "5",
                 "stats": "level"
             }
         },
         {
             "id": 3,
-            "title": "Create your first quiz",
-            "description": "create 1 quiz",
-            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6q22-c6936a5b-73d6-409d-b248-0b370494f90f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnEyMi1jNjkzNmE1Yi03M2Q2LTQwOWQtYjI0OC0wYjM3MDQ5NGY5MGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.YO0hLY0-_T-ehy8SwGRMUoi5jUOh0iQ-pCethcaLLK4",
+            "title": "Master",
+            "description": "reaching level 10",
+            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6p5n-41cef865-4a92-47c4-bf13-2e56e11f5ab7.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnA1bi00MWNlZjg2NS00YTkyLTQ3YzQtYmYxMy0yZTU2ZTExZjVhYjcucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.0xWKl9XTV64RTDAfRTzv8Gcy1l2x_dTqPCwfrzFGjNo",
             "conditions": {
                 "operation": "ge",
-                "value": "1",
-                "stats": "quizzesCreated"
+                "value": "10",
+                "stats": "level"
             }
         },
         {
             "id": 4,
-            "title": "Create your second quiz",
-            "description": "create 2 quiz",
-            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6q22-c6936a5b-73d6-409d-b248-0b370494f90f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnEyMi1jNjkzNmE1Yi03M2Q2LTQwOWQtYjI0OC0wYjM3MDQ5NGY5MGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.YO0hLY0-_T-ehy8SwGRMUoi5jUOh0iQ-pCethcaLLK4",
+            "title": "Grandmaster",
+            "description": "reaching level 20",
+            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6pbw-df50a375-a9ab-4ab9-acea-281c6ceab93f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnBidy1kZjUwYTM3NS1hOWFiLTRhYjktYWNlYS0yODFjNmNlYWI5M2YucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.UfunOvrkALQ0M1Aqb5Dxjh4Pap3JX906ptJFVLldlLA",
             "conditions": {
                 "operation": "ge",
-                "value": "2",
-                "stats": "quizzesCreated"
+                "value": "20",
+                "stats": "level"
             }
         },
         {
             "id": 5,
-            "title": "Played 1 quiz",
+            "title": "First Dip",
+            "description": "create your first quiz",
+            "imageURI": "https://1.bp.blogspot.com/-KBKuwyuQK1g/W9DN497lhGI/AAAAAAABJkw/izBB4Ed7H_I4TQvnLGSFg1y1uLfPzD0MgCLcBGAs/s200/3806.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "1",
+                "stats": "quizzesCreated"
+            }
+        },
+        {
+            "id": 6,
+            "title": "Quiz Maker",
+            "description": "create 5 quiz",
+            "imageURI": "https://1.bp.blogspot.com/-qukD_OAghpk/W9DN4z3LXHI/AAAAAAABJks/rduM-o-gqV8HO6GgkVNio6B38hNVlMWSwCLcBGAs/s200/3807.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "5",
+                "stats": "quizzesCreated"
+            }
+        },
+        {
+            "id": 7,
+            "title": "I got Questions",
+            "description": "create 10 quiz",
+            "imageURI": "https://1.bp.blogspot.com/-WJK0qx_z5U8/W9DN421_a0I/AAAAAAABJko/IYKKA34_ZLEQDMh0o4NizEr0DyiHojKiQCLcBGAs/s200/3808.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "10",
+                "stats": "quizzesCreated"
+            }
+        },
+        {
+            "id": 8,
+            "title": "Just Curious",
+            "description": "create 20 quiz",
+            "imageURI": "https://2.bp.blogspot.com/-yJHkRpXo6FI/W9DN5RerL3I/AAAAAAABJk0/mdFAZU_g82smZLlBuUXpLH5aClz-332bgCLcBGAs/s200/3809.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "20",
+                "stats": "quizzesCreated"
+            }
+        },
+        {
+            "id": 9,
+            "title": "I think so",
             "description": "play 1 quiz",
-            "imageURI": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/764bbd9c-6d80-481d-8136-96848f01e843/ddx6q22-c6936a5b-73d6-409d-b248-0b370494f90f.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzc2NGJiZDljLTZkODAtNDgxZC04MTM2LTk2ODQ4ZjAxZTg0M1wvZGR4NnEyMi1jNjkzNmE1Yi03M2Q2LTQwOWQtYjI0OC0wYjM3MDQ5NGY5MGYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.YO0hLY0-_T-ehy8SwGRMUoi5jUOh0iQ-pCethcaLLK4",
+            "imageURI": "https://1.bp.blogspot.com/-JnfcKLxSQyw/XcnJRQBEupI/AAAAAAABbMM/-EoImnkSIQUza-fsEcAcDeU1s0CryIRGgCLcBGAsYHQ/s200/4403.jpg",
             "conditions": {
                 "operation": "ge",
                 "value": "1",
                 "stats": "quizzesTaken"
+            }
+        },
+        {
+            "id": 10,
+            "title": "Quiz King",
+            "description": "play 5 quiz",
+            "imageURI": "https://i.pinimg.com/originals/85/bd/d1/85bdd1c465ac4422c217ca5456998c88.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "5",
+                "stats": "quizzesTaken"
+            }
+        },
+        {
+            "id": 11,
+            "title": "Millionaire",
+            "description": "play 10 quiz",
+            "imageURI": "https://preview.redd.it/03zgwxuscpg41.png?width=300&format=png&auto=webp&s=d8b4fb93bdd3d495dda84d538b51be9e3a41e2c2",
+            "conditions": {
+                "operation": "ge",
+                "value": "10",
+                "stats": "quizzesTaken"
+            }
+        },
+        {
+            "id": 12,
+            "title": "42",
+            "description": "play 42 quiz",
+            "imageURI": "https://64.media.tumblr.com/62c1f68bd1c2ece8285682d61f5259f7/4755a47e0e33b2a4-f6/s400x600/9906a88323c86cebb917ce3a322bbc5079761336.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "42",
+                "stats": "quizzesTaken"
+            }
+        },
+        {
+            "id": 13,
+            "title": "That's Cool",
+            "description": "Like 1 quiz",
+            "imageURI": "https://pbs.twimg.com/tweet_video_thumb/E6RfQwAUYAEdQ7T.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "1",
+                "stats": "likedQuizzes"
+            }
+        },
+        {
+            "id": 14,
+            "title": "I Like it",
+            "description": "Like 5 quiz",
+            "imageURI": "https://i.redd.it/1z7hc789zt351.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "5",
+                "stats": "likedQuizzes"
+            }
+        },
+        {
+            "id": 15,
+            "title": "That's Awesome",
+            "description": "Like 10 quiz",
+            "imageURI": "https://preview.redd.it/hwby1n4eeue51.jpg?auto=webp&s=c5561835dc03acf75a54eb93bfbb4e14222298a8",
+            "conditions": {
+                "operation": "ge",
+                "value": "10",
+                "stats": "likedQuizzes"
+            }
+        },
+        {
+            "id": 16,
+            "title": "I Love it!",
+            "description": "Like 20 quiz",
+            "imageURI": "https://2.bp.blogspot.com/-AFfA8v_5Q8s/WJOK5doIv9I/AAAAAAAAdNU/B4KTaiuBEWk-TVewYYAu3CyCXeV64NwvACLcB/s1600/profileIcon1105.jpg",
+            "conditions": {
+                "operation": "ge",
+                "value": "20",
+                "stats": "quizzesTaken"
+            }
+        },
+        {
+            "id": 17,
+            "title": "News!",
+            "description": "Subscribe 1 Platform",
+            "imageURI": "https://static.wikia.nocookie.net/honkaiimpact3_gamepedia_en/images/9/93/Silver_Rose_Emblem.png",
+            "conditions": {
+                "operation": "ge",
+                "value": "1",
+                "stats": "subscribedPlatforms"
+            }
+        },
+        {
+            "id": 18,
+            "title": "Daily Doseage",
+            "description": "Subscribe 10 Platform",
+            "imageURI": "https://static.wikia.nocookie.net/honkaiimpact3_gamepedia_en/images/e/e7/Golden_Rose_Emblem.png",
+            "conditions": {
+                "operation": "ge",
+                "value": "10",
+                "stats": "subscribedPlatforms"
+            }
+        },
+        {
+            "id": 19,
+            "title": "Hello World??",
+            "description": "Change Description on Profile",
+            "imageURI": "https://cdn.iconscout.com/icon/free/png-256/javascript-2752148-2284965.png",
+            "conditions": {
+                "operation": "ne",
+                "value": "Hello World!",
+                "stats": "description"
             }
         }
     ]

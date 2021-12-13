@@ -105,7 +105,7 @@ export const PlatformProvider = ({ children }) => {
      *
      * @payload  req.header('x-auth-token): JWT token
      *           req.body: 
-     *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
+     *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue || numSubscribers 
      *                                    or quizSections: { _id, sectionName, sectionIndex } } }
      *            Or
      *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }

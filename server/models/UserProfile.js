@@ -14,7 +14,7 @@ const UserProfileSchema = new Schema({
     quizzesCreated: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
     // TODO: uncomment this part after adding report system
     // accountStatus: { type: String, enum: ['active', 'suspended'], default: 'active' },
-    description: { type: String, default: 'Hello, World!' },
+    description: { type: String, default: 'Hello World!' },
     iconURI: {
         type: String,
         default: 'https://cdn.icon-icons.com/icons2/2620/PNG/512/among_us_player_red_icon_156942.png'

@@ -144,6 +144,7 @@ class PlayQuizContent extends Component{
             const profile = await getProfileForQ();
             const qTakenList = profile.quizzesScore;
             const currentExp = profile.currentExp;
+            const maxExp = profile.maxExp;
             const level = profile.level;
 
             console.log("QuizzesTaken are", qTakenList);
@@ -162,10 +163,10 @@ class PlayQuizContent extends Component{
                     mode: "EDIT",
                     profile: {
                         owner: this.props.userId,
-                        currentExp: xp + currentExp + 50
+                        currentExp: xp + currentExp + 100
                     }
                 })
-                xp = xp + 50;
+                xp = xp + 100;
             }
             else if (qtaken){
                 await this.props.updateProfile({
@@ -178,13 +179,13 @@ class PlayQuizContent extends Component{
             }
             console.log("currentExp", xp + currentExp);
             
-            if ((xp + currentExp) > 500) {
+            if ((xp + currentExp) > maxExp) {
                 await this.props.updateProfile({
                     mode: "EDIT",
                     profile: {
                         owner: this.props.userId,
-                        level: level + Math.floor((xp + currentExp)/500),
-                        currentExp: Math.ceil((xp + currentExp)%500)
+                        level: level + Math.floor((xp + currentExp)/maxExp),
+                        currentExp: Math.ceil((xp + currentExp)%maxExp)
                     }
                 })
             } 

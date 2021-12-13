@@ -15,6 +15,7 @@ import { QuizzesProvider } from './context/QuizState';
 import { PlatformProvider } from './context/PlatformState';
 import Footer from './components/common/Footer';
 import AdminControl from './components/frontpage/AdminControl';
+import Suspended from './components/frontpage/Suspended';
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                 <QuizzesProvider>
                     <PlatformProvider>
                         <Switch>
+                            <div className='mainContent'>
                             <Route exact path="/" component={HomePage} />
                             <Route path="/quiz/:id" component={QuizPage} />
                             <Route path="/edit/:id" component={EditQuizPage} />
@@ -33,6 +35,8 @@ function App() {
                             <Route path="/profile/:id" component={ProfilePage} />
                             <Route path="/platform/:id" component={PlatformPage} />
                             <Route path="/admin" component={AdminControl} />
+                            <Route path="/suspended" component={Suspended} />
+                            </div>
                         </Switch>
                     </PlatformProvider>
                 </QuizzesProvider>

@@ -14,3 +14,7 @@
   --weight-semi-bold: 600;
   --weight-regular: 400;
 }
+
+.mainContent{
+  min-height: calc(100vh - 250px);
+}

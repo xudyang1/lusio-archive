@@ -20,7 +20,8 @@ const UserAccountSchema = new Schema({
         required: [true, 'Please add a password'],
         select: false
     },
-    profile: { type: Schema.Types.ObjectId, ref: 'UserProfile' }
+    profile: { type: Schema.Types.ObjectId, ref: 'UserProfile' },
+    status: {type: Number, default: 0}
 }, { timestamps: true });
 
 module.exports = mongoose.model('UserAccount', UserAccountSchema);

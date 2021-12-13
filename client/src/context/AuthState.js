@@ -23,7 +23,8 @@ const initialState = {
         email: null,
         name: null,
         profile: null,
-        iconURI: null
+        iconURI: null,
+        status: 0
     },
     error: {
         msg: null,
