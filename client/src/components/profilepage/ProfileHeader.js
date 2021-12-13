@@ -45,14 +45,24 @@ export default function ProfileHeader(props) {
         console.log("image", image, preview);
         const payload = { image: image, field: "bannerURI" };
         updateImage(payload);
-        M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
     };
+
+    useEffect(() => {
+        if (image || preview)
+            M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+        setImage(null);
+        setPreview(null);
+    }, [props.banner]);
+
     useEffect(() => {
         var elems = document.querySelectorAll('.parallax');
         var instances = M.Parallax.init(elems, {});
-    });
+    }, []);
+
 
     const [changed, setChanged] = useState(false);
+
+
     return (
         <div>
             <h2 className="center">{props.name ? props.name + "'s Home" : ""}</h2>

@@ -117,7 +117,7 @@ exports.addPlatform = async (req, res, next) => {
  * @route PATCH api/platforms/platform/edit/:platformId
  * @access  Private
  * @detail  Client side can only send limited updated content:
- *              edit existing: {owner, name, description, bannerURI, backgroundURI, quizSections}
+ *              edit existing: {owner, name, description, quizSections}
  *              add or delete: {admins, 
  *                              quizzes, 
  *                              quizSections}
@@ -126,7 +126,7 @@ exports.addPlatform = async (req, res, next) => {
  * 
  * @format  req.header('x-auth-token): JWT token 
  *          req.body: 
- *            { mode: "EDIT", platform: { owner || name || description || iconURI || bannerURI: newValue 
+ *            { mode: "EDIT", platform: { owner || name || description: newValue 
  *                                    or quizSections: { _id, sectionName, sectionIndex, sectionQuizzes } } }
  *            Or
  *            { mode: "ADD", platform: { admins || quizzes: {_id} } or quizSections: { sectionName, sectionIndex } }
@@ -135,8 +135,7 @@ exports.addPlatform = async (req, res, next) => {
  *          res.data:
  *            {
  *              success: true,
- *              mode: "EDIT" || "ADD" || "DELETE"
- *              content: { description || ... || quizSections: updated data }
+ *              platform: { description || ... || quizSections: updated data }
  *            }
  */
 exports.updatePlatform = async (req, res, next) => {
@@ -208,8 +207,7 @@ exports.updatePlatform = async (req, res, next) => {
     // success
     return res.status(200).json({
       success: true,
-      mode: MODE,
-      content: updated
+      platform: updated
     });
   } catch (err) {
     console.log(err);
@@ -257,5 +255,38 @@ exports.deletePlatform = async (req, res, next) => {
       return errorHandler(res, 400, messages);
     }
     return errorHandler(res, 500, 'Server Error');
+  }
+};
+
+/**
+ * TODO: 
+ * @desc  Update platform banner
+ * @route POST api/platforms/platform/upload/:platformId
+ * @access  Private
+ * @detail  Image files only applies to bannerURI
+ * @format  req.body: { field： "bannerURI" } 
+ *          req.file： image file
+ *          res.data: {
+ *                      success: true,
+ *                      platform: { bannerURI: newVal }
+ *                    }
+ */
+ exports.updateBanner = async (req, res, next) => {
+  try {
+      if (req.file) {
+          target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
+          updated = await Platform.findByIdAndUpdate(req.params.platformId, target, { new: true }).select(req.body.field);
+          // console.log("doc", updated);
+          const response = {
+              success: true,
+              platform: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
+          };
+
+          return res.status(201).json(response);
+      }
+      else { return res.status(200).json({ success: false }); }
+  } catch (err) {
+      console.log(err);
+      return res.status(400).json({ success: false });
   }
 };

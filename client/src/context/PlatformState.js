@@ -65,7 +65,7 @@ export const PlatformProvider = ({ children }) => {
                     type: GET_PLATFORM_LIST,
                     payload: res.data
                 });
-            return res.data
+            return res.data;
         } catch (err) {
             if (reload)
                 dispatch({
@@ -138,7 +138,7 @@ export const PlatformProvider = ({ children }) => {
                 type: UPDATE_PLATFORM,
                 payload: res.data
             });
-            console.log(res)
+            console.log(res);
         } catch (err) {
             console.log(err);
             dispatch({
@@ -169,6 +169,45 @@ export const PlatformProvider = ({ children }) => {
         });
     };
 
+    /**
+     * 
+     * @param {string || number} platformId platform id
+     * @param {JSON} payload { "image": file, "field": "bannerURI"}
+     * @returns Promise<void>
+     * @format  req.headers{ 'content-type': 'multipart/form-data',
+     *                       'x-auth-token': token}
+     *                       
+     *          req.body (form data): { "image": image file, 
+     *                                  "field": "bannerURI"}
+     *          res{ success: true, platform: {"bannerURI": newVal} }
+     */
+    async function updateBanner(platformId, payload) {
+        const formData = new FormData();
+        Object.entries(payload).forEach(pair => formData.append(pair[0], pair[1]));
+
+        const fileConfig = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'x-auth-token': token
+            }
+        };
+
+        try {
+            const res = await axios.post(`/api/platforms/platform/upload/${platformId}`, formData, fileConfig);
+            console.log("update banner", res);
+            dispatch({
+                type: UPDATE_PLATFORM,
+                payload: res.data
+            });
+        } catch (err) {
+            console.log("platform banner err", err);
+            dispatch({
+                type: GET_ERRORS,
+                payload: { msg: err.response.data.success, status: err.response.status }
+            });
+        }
+    };
+
     return (<PlatformContext.Provider value={{
         getPlatformList,
         getPlatform,
@@ -176,6 +215,7 @@ export const PlatformProvider = ({ children }) => {
         updatePlatform,
         removePlatform,
         clearErrors,
+        updateBanner,
         ...state
     }}>
         {children}

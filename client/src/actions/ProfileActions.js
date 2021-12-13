@@ -109,7 +109,7 @@ export const updateProfile = (token, id, payload) => async (dispatch, errorDispa
  *                       
  *          req.body (form data): { "image": image file, 
  *                                  "field": "iconURI" || "bannerURI"}
- *          res{ success: true, "iconURI" || "bannerURI": newVal}
+ *          res{ success: true, profile: {"iconURI" || "bannerURI": newVal} }
  */
 export const updateImage = (token, id, payload) => async (dispatch, authDispatch, errorDispatch = dispatch) => {
     const formData = new FormData();
