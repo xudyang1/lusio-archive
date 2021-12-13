@@ -21,7 +21,7 @@ export default function AdminControl() {
     };
     const onClickSuspendUser = async (profileId) => {
         try {
-            const res = axios.post(`/api/admin/suspendUser/${profileId}`);
+            const res = await axios.post(`/api/admin/suspendUser/${profileId}`);
             M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
         } catch (err) {
             M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
@@ -29,7 +29,7 @@ export default function AdminControl() {
     };
     const onClickUnsuspendUser = async (profileId) => {
         try {
-            const res = axios.post(`/api/admin/unSuspendUser/${profileId}`);
+            const res = await axios.post(`/api/admin/unSuspendUser/${profileId}`);
             M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
         } catch (err) {
             M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
@@ -38,7 +38,7 @@ export default function AdminControl() {
 
 
     function showPage() {
-
+        // && user.email === "lusioquiz@gmail.com"
         if (isAuthenticated && user.email === "lusioquiz@gmail.com") {
             return (
                 <div className="container">
@@ -69,7 +69,7 @@ export default function AdminControl() {
                             <input placeholder="Suspend User (userID)" id="suspend_user" type="text" ref={suspendUserIDRef} />
                         </div>
                         <div className="input-field col s6">
-                            <a className="waves-effect waves-light btn red" onClick={() => onClickSuspendUser()}>Suspend User</a>
+                            <a className="waves-effect waves-light btn red" onClick={() => onClickSuspendUser(suspendUserIDRef.current.value)}>Suspend User</a>
                         </div>
                     </div>
                     <div className="row">
@@ -77,7 +77,7 @@ export default function AdminControl() {
                             <input placeholder="Unsuspend User (userID)" id="unsuspend_user" type="text" ref={unsuspendUserIDRef} />
                         </div>
                         <div className="input-field col s6">
-                            <a className="waves-effect waves-light btn red" onClick={() => onClickUnsuspendUser()}>Unsuspend User</a>
+                            <a className="waves-effect waves-light btn red" onClick={() => onClickUnsuspendUser(unsuspendUserIDRef.current.value)}>Unsuspend User</a>
                         </div>
                     </div>
                 </div>

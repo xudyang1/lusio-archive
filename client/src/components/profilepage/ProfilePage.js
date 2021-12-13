@@ -31,6 +31,12 @@ export default function ProfilePage() {
     const { profile, getProfile, viewType } = useContext(ProfileContext)
     const { createPlatform, getPlatform } = useContext(PlatformContext)
 
+    useEffect(()=>{
+        console.log(user.status)
+        if(user.status){
+            window.location = '/suspended';
+        }
+    })
 
     async function getQuizzes(items) {
         var templist = []

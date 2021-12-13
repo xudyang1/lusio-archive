@@ -24,6 +24,13 @@ export default function PlatformPage(props) {
             getProfile(user.profile)
     }, [isAuthenticated])
 
+    useEffect(()=>{
+        console.log(user.status)
+        if(user.status){
+            window.location = '/suspended';
+        }
+    })
+
     return (
         <div>
             <div className="container z-depth-3">

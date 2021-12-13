@@ -31,6 +31,14 @@ export default function EditQuizPage(){
   useEffect(()=> {
       checkMode();
   })
+
+  useEffect(()=>{
+    console.log(user.status)
+    if(user.status){
+        window.location = '/suspended';
+    }
+})
+
   return(
     <div>
       {isOwner ? <EditQuizContent updateProfile={updateProfile}/> 
