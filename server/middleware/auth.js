@@ -92,7 +92,7 @@ exports.softAuth = async (req, res, next) => {
         // run next handler
         next();
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         // either no token or token invalid
         req.user = null;
         req.viewType = GUEST_VIEW;
