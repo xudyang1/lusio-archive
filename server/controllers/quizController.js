@@ -218,12 +218,12 @@ exports.deleteQuiz = async (req, res, next) => {
 exports.updateQuizImage = async (req, res, next) => {
     try {
         if (req.file) {
-            target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
+            target = { [req.body.field]: `https://shielded-bayou-49275.herokuapp.com/${req.file.path}` };
             updated = await Quiz.findByIdAndUpdate(req.params.quizId, target, { new: true }).select(req.body.field);
             console.log("doc", updated);
             const response = {
                 success: true,
-                quiz: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
+                quiz: { [req.body.field]: `https://shielded-bayou-49275.herokuapp.com/${req.file.path}` }
             };
 
             return res.status(201).json(response);

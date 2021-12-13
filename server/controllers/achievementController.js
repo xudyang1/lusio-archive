@@ -27,7 +27,7 @@ const { errorHandler, nonNullJson } = require("../utils/jsonTool");
 exports.addBadge = async (req, res, next) => {
     try {
         if (req.file) {
-            imageURI = `http://localhost:5000/${req.file.path}`;
+            imageURI = `https://shielded-bayou-49275.herokuapp.com/${req.file.path}`;
             const { title, description, operation, value, stats } = req.body;
             const conditions = {operation, value, stats};
             const newBadge = new Badge({

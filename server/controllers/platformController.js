@@ -274,12 +274,12 @@ exports.deletePlatform = async (req, res, next) => {
 exports.updateBanner = async (req, res, next) => {
   try {
     if (req.file) {
-      target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
+      target = { [req.body.field]: `https://shielded-bayou-49275.herokuapp.com/${req.file.path}` };
       updated = await Platform.findByIdAndUpdate(req.params.platformId, target, { new: true }).select(req.body.field);
       // console.log("doc", updated);
       const response = {
         success: true,
-        platform: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
+        platform: { [req.body.field]: `https://shielded-bayou-49275.herokuapp.com/${req.file.path}` }
       };
 
       return res.status(201).json(response);

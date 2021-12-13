@@ -164,12 +164,12 @@ exports.updateProfile = async (req, res, next) => {
 exports.updateImage = async (req, res, next) => {
     try {
         if (req.file) {
-            target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
+            target = { [req.body.field]: `https://shielded-bayou-49275.herokuapp.com/${req.file.path}` };
             updated = await UserProfile.findByIdAndUpdate(req.user.profile, target, { new: true }).select(req.body.field);
             // console.log("doc", updated);
             const response = {
                 success: true,
-                profile: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
+                profile: { [req.body.field]: `https://shielded-bayou-49275.herokuapp.com/${req.file.path}` }
             };
 
             return res.status(201).json(response);
