@@ -14,17 +14,18 @@ export default function HomeContent() {
     var tempPlatform = ["MoMA", "Motion Pictures", "NASA", "NYC Dept of Edu", "ABCD"];
     //const { platforms, dailyChallenge, getPlatforms } = useContext(GlobalContext)
     const { getPlatformList, platformList } = useContext(PlatformContext)
-    const {} = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     useEffect(() => {
         getPlatformList();
     }, [])
 
     useEffect(()=>{
-        if(true){
+        console.log(user.status)
+        if(user.status){
             window.location = '/suspended';
         }
-    }, [])
+    })
 
     return (
         <div>

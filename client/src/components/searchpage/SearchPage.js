@@ -4,6 +4,7 @@ import SectionList from '../sections/SectionList';
 import { QUIZ_CARD, SUB_PLAT_CARD } from '../../types/cardTypes';
 import { QuizzesContext } from '../../context/QuizState';
 import { PlatformContext } from '../../context/PlatformState';
+import { AuthContext } from '../../context/AuthState';
 
 // sample data
 // const quiz = [
@@ -22,8 +23,16 @@ import { PlatformContext } from '../../context/PlatformState';
 function SearchPage() {
     const { getQuizzes } = useContext(QuizzesContext)
     const { getPlatformList } = useContext(PlatformContext)
+    const { user } = useContext(AuthContext)
     const [allQuizzes, setAllQuizzes] = useState([])
     const [allPlatforms, setAllPlatforms] = useState([])
+
+    useEffect(()=>{
+        console.log(user.status)
+        if(user.status){
+            window.location = '/suspended';
+        }
+    })
 
     function findPlatformName(a) {
         const platf = allPlatforms.find(b => b.id === a.platform_id);

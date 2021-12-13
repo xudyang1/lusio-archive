@@ -13,6 +13,12 @@ export default function QuizPage(){
     const {updateProfile, getProfile} = useContext(ProfileContext);
     const {getPlatform} = useContext(PlatformContext);
 
+    useEffect(()=>{
+        console.log(user.status)
+        if(user.status){
+            window.location = '/suspended';
+        }
+    })
 
     useEffect(() => {
         var elem = document.querySelector('#reportModal')
