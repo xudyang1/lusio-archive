@@ -6,6 +6,7 @@ import {
     DELETE_ACCOUNT,
     GET_ERRORS,
     CLEAR_ERRORS,
+    UPDATE_SUCCESS,
 } from "../types/actionTypes";
 
 export const authInitialState = {
@@ -56,6 +57,11 @@ export default function AuthReducer(state, { type, payload }) {
         case DELETE_ACCOUNT:
             localStorage.removeItem('token');
             return authInitialState;
+        case UPDATE_SUCCESS:
+            return {
+                ...state,
+                user: { ...state.user, ...payload.user }
+            };
         case GET_ERRORS:
             return {
                 ...state,

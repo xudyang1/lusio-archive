@@ -72,7 +72,7 @@ exports.getProfile = async (req, res, next) => {
  * @route PATCH api/profiles/profile/edit/:profileId
  * @access  Private
  * @detail  Client side can only send limited updated content:
- *              edit existing: {description, iconURI, bannerURI}
+ *              edit existing: {description}
  *              add or delete: {platformsCreated, 
  *                              quizzesCreated, 
  *                              subscribedUsers,
@@ -81,7 +81,7 @@ exports.getProfile = async (req, res, next) => {
  * 
  *              Other fields should not be updated here.
  * 
- * @format  req.body: { mode: "EDIT", profile: description || iconURI || bannerURI: newVal } 
+ * @format  req.body: { mode: "EDIT", profile: {description: newVal} } 
  *                    Or
  *                    {
  *                      mode: "ADD" || "DELETE", 
@@ -90,7 +90,7 @@ exports.getProfile = async (req, res, next) => {
  *          res.data: {
  *                      success: true,
  *                      mode: "EDIT" || "ADD" || "DELETE",
- *                      content: { description || iconURI || ... || fans: updated content }
+ *                      content: { description || ... || fans: updated content }
  *                    }
  */
 exports.updateProfile = async (req, res, next) => {
@@ -100,7 +100,7 @@ exports.updateProfile = async (req, res, next) => {
         if (!req.body.profile) { return errorHandler(res, 400, 'Invalid payload, nothing is updated'); }
 
         // destructure
-        const { description, iconURI, bannerURI, platformsCreated, quizzesCreated, commentsCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
+        const { description, platformsCreated, quizzesCreated, commentsCreated, subscribedUsers, subscribedPlatforms, fans } = req.body.profile;
         const MODE = req.body.mode;
 
         var provided = keys = updated = null;
@@ -110,7 +110,7 @@ exports.updateProfile = async (req, res, next) => {
 
         switch (MODE) {
             case "EDIT":
-                provided = nonNullJson({ description, iconURI, bannerURI });
+                provided = nonNullJson({ description });
                 keys = Object.keys(provided);
                 updated = await UserProfile.findByIdAndUpdate(req.user.profile, provided, options).select(keys);
                 break;
@@ -144,5 +144,39 @@ exports.updateProfile = async (req, res, next) => {
             return errorHandler(res, 400, messages);
         }
         return errorHandler(res, 500, 'Server Error');
+    }
+};
+/**
+ * TODO: might have some change
+ * @desc  Update image fields
+ * @route POST api/profiles/profile/upload/:profileId
+ * @access  Private
+ * @detail  Image files only applies to {iconURI, bannerURI}
+ 
+ * 
+ * @format  req.body: { target： "iconURI" || "bannerURI" } 
+ *          req.file： image file
+ *          res.data: {
+ *                      success: true,
+ *                      content: { iconURI || bannerURI }
+ *                    }
+ */
+exports.updateImage = async (req, res, next) => {
+    try {
+        if (req.file) {
+            target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };
+            updated = await UserProfile.findByIdAndUpdate(req.user.profile, target, { new: true }).select(req.body.field);
+            // console.log("doc", updated);
+            const response = {
+                success: true,
+                profile: { [req.body.field]: `http://localhost:5000/${req.file.path}` }
+            };
+
+            return res.status(201).json(response);
+        }
+        else { return res.status(200).json({ success: false }); }
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ success: false });
     }
 };
