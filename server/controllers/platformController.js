@@ -157,7 +157,7 @@ exports.updatePlatform = async (req, res, next) => {
 
     switch (MODE) {
       case "EDIT":
-        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI, quizSections, numSubscribers });
+        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI, quizSections });
         // transfer ownership require the owner the platform
         if (provided.owner && req.viewType !== 'OWNER_VIEW') { return errorHandler(res, 403, 'No authortization'); }
 
@@ -250,6 +250,7 @@ exports.deletePlatform = async (req, res, next) => {
       platform: deletedPlatform
     });
   } catch (err) {
+      console.log(err)
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map(val => val.message);
       return errorHandler(res, 400, messages);

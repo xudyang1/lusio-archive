@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthState";
 export const Logout = () => {
     const { authDispatch } = useContext(AuthContext);
     return (
-        <a onClick={() => {logout()(authDispatch); window.location='/';}} style={{ fontSize: "1.5em" }} >
+        <a onClick={() => {logout()(authDispatch)}} style={{ fontSize: "1.5em" }} >
             Logout
         </a>
     );

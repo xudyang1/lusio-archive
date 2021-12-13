@@ -126,7 +126,7 @@ export const PlatformProvider = ({ children }) => {
                 type: UPDATE_PLATFORM,
                 payload: res.data
             });
-            console.log(res);
+            console.log("UPDATE PLATFORM", res);
         } catch (err) {
             console.log(err);
             dispatch({
