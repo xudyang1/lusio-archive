@@ -3,6 +3,9 @@ import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
 import { createRef } from 'react';
 import { ImagePreview } from '../common/ImagePreview';
+import axios from 'axios';
+import M from "materialize-css";
+
 
 class EditQuizContent extends Component {
     static contextType = QuizzesContext;
@@ -29,21 +32,24 @@ class EditQuizContent extends Component {
             likes: 0,
             plays: 0,
             isPublished: false,
-            publishText: "PUBLISH"
+            publishText: "PUBLISH",
+            imageFile: null,
+            imagePreview: null
         };
         this.changedImgURI = createRef(this.state.quizImgURI);
+        this.fileInputRef = createRef();
     }
 
     checkURI = (e) => {
         if (this.changedImgURI.current.value.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-            this.setState({quizImgURI: this.changedImgURI.current.value});
+            this.setState({ quizImgURI: this.changedImgURI.current.value });
         }
         else {
-            if (e.key == "Enter"){
+            if (e.key == "Enter") {
                 alert("Type in a correct image URL format (jpeg/jpg/gif/png)");
             }
         }
-    }
+    };
 
     getItem = async (id, getQuizzes) => {
         const setCurrentQuiz = async (id) => {
@@ -58,7 +64,7 @@ class EditQuizContent extends Component {
             return quiz[0];
         };
         const quiz = await setCurrentQuiz(id);
-        if(quiz.isPublished){
+        if (quiz.isPublished) {
             this.setState({
                 id: quiz._id,
                 userId: quiz.userId,
@@ -69,14 +75,14 @@ class EditQuizContent extends Component {
                 timedOption: quiz.timedOption,
                 time: quiz.time,
                 showAnsOption: quiz.showAnsOption,
-                questions: quiz.questions, 
+                questions: quiz.questions,
                 likes: quiz.likes,
                 plays: quiz.plays,
                 isPublished: quiz.isPublished,
                 publishText: "UNPUBLISH"
             });
         }
-        else{
+        else {
             this.setState({
                 id: quiz._id,
                 userId: quiz.userId,
@@ -87,15 +93,15 @@ class EditQuizContent extends Component {
                 timedOption: quiz.timedOption,
                 time: quiz.time,
                 showAnsOption: quiz.showAnsOption,
-                questions: quiz.questions, 
+                questions: quiz.questions,
                 likes: quiz.likes,
                 plays: quiz.plays,
                 isPublished: quiz.isPublished,
                 publishText: "PUBLISH"
             });
         }
-    }
-    
+    };
+
     handleDeleteIndQuiz = async e => {
         e.preventDefault();
         await this.context.deleteQuiz(this.state.id);
@@ -155,18 +161,18 @@ class EditQuizContent extends Component {
     };
     answerHandler = (qi, ai, e) => {
         this.state.questions[qi].choices[ai].content = e;
-    }
+    };
     keypointsHandler = (qi, e) => {
         this.state.questions[qi].keypoints = e;
-    }
+    };
 
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
         this.setState({ timedOption: this.state.timedOption });
     };
     timeHandler = (e) => {
-        if (this.state.timedOption){
-            this.setState({time: e.target.value});
+        if (this.state.timedOption) {
+            this.setState({ time: e.target.value });
         }
         else {
             e.preventDefault();
@@ -175,33 +181,33 @@ class EditQuizContent extends Component {
         }
 
         console.log(this.state.time);
-    }
+    };
     showAnsHandler = () => {
         this.state.showAnsOption = !this.state.showAnsOption;
-        this.setState({showAnsOption: this.state.showAnsOption});
-    }
-    
-    scoreHandler = (qi,e) => {
+        this.setState({ showAnsOption: this.state.showAnsOption });
+    };
+
+    scoreHandler = (qi, e) => {
         e.preventDefault();
-        if (0 <= Number(e.target.value) && Number(e.target.value) <= 10000){
+        if (0 <= Number(e.target.value) && Number(e.target.value) <= 10000) {
             this.state.questions[qi].score = Number(e.target.value);
         }
         else {
             alert("Score should not be smaller than 0/bigger than 10000. It will be saved as default 0.");
             this.state.questions[qi].score = 0;
-            
+
         }
-    }
+    };
     answerKeyHandler = (qi, e) => {
         e.preventDefault();
-        if (1 <= Number(e.target.value) && Number(e.target.value) <= this.state.questions[qi].choices.length){
+        if (1 <= Number(e.target.value) && Number(e.target.value) <= this.state.questions[qi].choices.length) {
             this.state.questions[qi].answerKey = Number(e.target.value);
         }
         else {
             alert("Out of Range. It will be saved as default 1.");
             this.state.questions[qi].answerKey = 1;
         }
-    }
+    };
 
     handleSave = async e => {
         e.preventDefault();
@@ -218,23 +224,23 @@ class EditQuizContent extends Component {
             timedOption: this.state.timedOption,
             time: this.state.time,
             showAnsOption: this.state.showAnsOption,
-            questions: this.state.questions, 
+            questions: this.state.questions,
             likes: this.state.likes,
             plays: this.state.plays,
             isPublished: this.state.isPublished
         };
         updateQuiz(updateFQuiz);
-
+        M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
     };
     handlePublish = (e) => {
         e.preventDefault();
-        if(this.state.isPublished){
-            this.setState({isPublished: false, publishText: "PUBLISH"}, () => this.handleSave(e));
+        if (this.state.isPublished) {
+            this.setState({ isPublished: false, publishText: "PUBLISH" }, () => this.handleSave(e));
         }
-        else{
-            this.setState({isPublished: true, publishText: "UNPUBLISH"}, () => this.handleSave(e));
+        else {
+            this.setState({ isPublished: true, publishText: "UNPUBLISH" }, () => this.handleSave(e));
         }
-    }
+    };
 
     componentDidMount() {
         const id = this.props.match.params.id;
@@ -242,39 +248,93 @@ class EditQuizContent extends Component {
         this.getItem(id, getQuizzes);
         console.log(document.cookie);
     }
+    handleChangeImage = async (e) => {
+        e.preventDefault();
 
-    render(){
-        var {publishText} = this.state;
-            return(
-                <div className="row section" style={{padding: '35px'}}>                
-                    <div className="col s5">
-                        <div className="section input-field">Quiz Name
-                            <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler}/>
-                        </div>
-                        <div className="section input-field">Description
-                            <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
-                        </div>
+        const payload = { image: this.state.imageFile, field: "quizImgURI" };
+        const formData = new FormData();
+        Object.entries(payload).forEach(pair => formData.append(pair[0], pair[1]));
+
+        const fileConfig = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+
+        try {
+            const res = await axios.post(`/api/quizzes/quiz/upload/${this.state.id}`, formData, fileConfig);
+            console.log("update quiz image", res.data.quiz);
+            if (res.data.quiz && res.data.quiz.quizImgURI) {
+                this.setState({ quizImgURI: res.data.quiz.quizImgURI });
+                this.setState({ imageFile: null, imagePreview: null });
+                M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+            }
+        } catch (err) {
+            console.log("quiz img err", err);
+        }
+    };
+
+    render() {
+        var { publishText } = this.state;
+        return (
+            <div className="row section" style={{ padding: '35px' }}>
+                <div className="col s5">
+                    <div className="section input-field">Quiz Name
+                        <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler} />
                     </div>
-                    <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
-                        <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/>
-                        {/*<input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>*/}
-                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} onChange={this.checkURI} onKeyUp={this.checkURI}/>
+                    <div className="section input-field">Description
+                        <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
                     </div>
-                    <div className="col s3" style={{paddingLeft: '100px', paddingTop: '30px'}}>
-                        <form action="#">
-                            <span>
-                                <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
-                                    <span>Timed quiz</span>
-                                    <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
-                                </label>
-                            </span>
-                            <span>
-                                <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnsOption} onClick={this.showAnsHandler}/>
-                                    <span>Show answer after submission</span>
-                                </label>
-                            </span>
+                </div>
+                <div className="col s4" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
+                    <img src={this.state.imagePreview || this.state.quizImgURI} style={{ width: "200px", height: "200px" }} />
+                    <input
+                        type="file"
+                        style={{ display: "none" }}
+                        ref={this.fileInputRef}
+                        accept="image/*"
+                        onChange={(event) => {
+                            const file = event.target.files[0];
+                            console.log("fff", file);
+                            if (file && file.type.substring(0, 5) === "image") {
+                                this.setState({ imageFile: file }, () => {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        this.setState({ imagePreview: reader.result });
+                                    };
+                                    reader.readAsDataURL(this.state.imageFile);
+                                });
+                            } else {
+                                this.setState({ imageFile: null, imagePreview: null });
+                            }
+                        }} />
+                    <div className="btn" style={{ margin: "0.2em" }}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            this.fileInputRef.current.click();
+                        }}>Choose Image</div>
+                    {this.state.imagePreview ? <div className="btn" style={{ margin: "0.2em" }} onClick={this.handleChangeImage}>Save</div> : <></>}
+                    {this.state.imagePreview ? <div className="btn"
+                        onClick={() => { this.setState({ imageFile: null, imagePreview: null }); }}>Cancel</div> : <></>}
+
+                    {/* <input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>
+                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} onChange={this.checkURI} onKeyUp={this.checkURI}/> */}
+                </div>
+                <div className="col s3" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
+                    <form action="#">
+                        <span>
+                            <label>
+                                <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler} />
+                                <span>Timed quiz</span>
+                                <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e) => this.timeHandler(e)} type="number" value={this.state.time} /><div>seconds</div></span>
+                            </label>
+                        </span>
+                        <span>
+                            <label>
+                                <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnsOption} onClick={this.showAnsHandler} />
+                                <span>Show answer after submission</span>
+                            </label>
+                        </span>
                     </form>
                 </div>
 
@@ -284,8 +344,8 @@ class EditQuizContent extends Component {
                             <textarea type="text" style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px' }} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title} />
                             <textarea
                                 type="text"
-                                style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px' }} 
-                                placeholder="Keypoints for players to study or look over after taking the quiz in order to answer this question the next time they take the quiz" 
+                                style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px' }}
+                                placeholder="Keypoints for players to study or look over after taking the quiz in order to answer this question the next time they take the quiz"
                                 onChange={(e) => this.keypointsHandler(qi, e.target.value)}
                                 defaultValue={q.keypoints} />
                             <div className="col s6" style={{ padding: '20px' }}>
