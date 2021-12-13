@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import { getProfile, updateProfile } from '../actions/ProfileActions';
+import { getProfile, updateImage, updateProfile } from '../actions/ProfileActions';
 import { ProfileReducer } from '../reducers/ProfileReducer';
 import { AuthContext } from './AuthState';
 
@@ -38,7 +38,7 @@ const initialState = {
 export const ProfileContext = createContext(initialState);
 
 export const ProfilesProvider = ({ children }) => {
-    const { token } = useContext(AuthContext);
+    const { token, authDispatch } = useContext(AuthContext);
     const [state, dispatch] = useReducer(ProfileReducer, initialState);
 
 
@@ -100,10 +100,23 @@ export const ProfilesProvider = ({ children }) => {
      *                    }
      */
     const updateProfileCaller = (payload) => updateProfile(token, state.profile._id, payload)(dispatch);
+    /**
+     *
+     * @param {JSON} payload { "image": file, "field": "iconURI" || "bannerURI"}
+     * @returns Promise<void>
+     * @format  req.headers{ 'content-type': 'multipart/form-data',
+     *                       'x-auth-token': token}
+     *                       
+     *          req.body (form data): { "image": image file, 
+     *                                  "field": "iconURI" || "bannerURI"}
+     *          res{ success: true, "iconURI" || "bannerURI": newVal}
+     */
+    const updateImageCaller = (payload) => updateImage(token, state.profile._id, payload)(dispatch, authDispatch);
 
     return (<ProfileContext.Provider value={{
         getProfile: getProfileCaller,
         updateProfile: updateProfileCaller,
+        updateImage: updateImageCaller,
         profileDispatch: dispatch,
         ...state
     }}>

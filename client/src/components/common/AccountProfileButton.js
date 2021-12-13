@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../../context/ProfileState";
 import { NavLink } from "react-router-dom";
+import { ImagePreview } from './ImagePreview';
 
 /***
  * @param props Takes props.user
@@ -25,7 +26,8 @@ export default function AccountProfileButton(props) {
     return (
         <div className="valign-wrapper" style={{width: "120px"}}>
             <a href={"/profile/" + userId} style={s}>
-                <img className="circle" src={user.iconURI ? user.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' />
+                {/* <img className="circle" src={user.iconURI ? user.iconURI : "https://static.thenounproject.com/png/363633-200.png"} width='50px' height='50px' /> */}
+                <ImagePreview isCircle={true} imageSrc={user.iconURI} imageWidth='50px' imageHeight='50px' />
             </a>
             {user.name}
         </div>

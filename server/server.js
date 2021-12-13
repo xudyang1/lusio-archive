@@ -18,6 +18,9 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+// use uploads folder to save images
+app.use('/uploads', express.static('uploads'));
+
 
 // TODO: modify this sample later
 // sample tests for backend operations

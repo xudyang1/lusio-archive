@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getProfile, updateProfile, getProfileCards } = require('../../controllers/profileController');
+const { getProfile, updateProfile, getProfileCards, updateImage } = require('../../controllers/profileController');
 const { strictAuth, softAuth } = require('../../middleware/auth');
+const upload = require('../../middleware/upload');
 
 /**
  * @desc  Retrive a list of user profile card information
@@ -31,5 +32,17 @@ router
 router
   .route('/profile/edit/:profileId')
   .patch(strictAuth, updateProfile);
+
+
+/**
+ * @desc  Update image
+ * @route POST api/profiles/profile/upload/:profileId
+ * @access  Private
+ * @middlewares  {strictAuth}: only owner can edit the profile
+ *              {upload}: image upload middleware
+ */
+router
+  .route('/profile/upload/:profileId')
+  .post(strictAuth, upload, updateImage);
 
 module.exports = router;

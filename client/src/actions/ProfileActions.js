@@ -1,4 +1,4 @@
-import { GET_PROFILE_CARDS, GET_PROFILE, UPDATE_PROFILE } from '../types/actionTypes';
+import { GET_PROFILE_CARDS, GET_PROFILE, UPDATE_PROFILE, UPDATE_SUCCESS } from '../types/actionTypes';
 import axios from 'axios';
 import { returnErrors } from './ErrorActions';
 import { tokenConfig } from './AuthActions';
@@ -84,7 +84,7 @@ export const getProfile = (token, id, reload = true) => async (dispatch, errorDi
  *                      content: { description || iconURI || ... || fans: updated content }
  *                    }
  */
-export const updateProfile = (token, id, payload) => async (dispatch, errorDispatch) => {
+export const updateProfile = (token, id, payload) => async (dispatch, errorDispatch = dispatch) => {
     const body = JSON.stringify(payload);
     try {
         const res = await axios.patch(`/api/profiles/profile/edit/${id}`, body, tokenConfig(token));
@@ -93,6 +93,48 @@ export const updateProfile = (token, id, payload) => async (dispatch, errorDispa
             payload: res.data
         });
     } catch (err) {
+        console.log(err);
+        errorDispatch(returnErrors(err));
+    }
+};
+
+/**
+ * 
+ * @param {string} token JWT token
+ * @param {string || number} id profile id
+ * @param {JSON} payload { "image": file, "field": "iconURI" || "bannerURI"}
+ * @returns Promise<void>
+ * @format  req.headers{ 'content-type': 'multipart/form-data',
+ *                       'x-auth-token': token}
+ *                       
+ *          req.body (form data): { "image": image file, 
+ *                                  "field": "iconURI" || "bannerURI"}
+ *          res{ success: true, "iconURI" || "bannerURI": newVal}
+ */
+export const updateImage = (token, id, payload) => async (dispatch, authDispatch, errorDispatch = dispatch) => {
+    const formData = new FormData();
+    Object.entries(payload).forEach(pair => formData.append(pair[0], pair[1]));
+
+    const fileConfig = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'x-auth-token': token
+        }
+    };
+
+    try {
+        const res = await axios.post(`/api/profiles/profile/upload/${id}`, formData, fileConfig);
+        console.log("update image", res);
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+        authDispatch({
+            type: UPDATE_SUCCESS,
+            payload: { user: res.data.profile }
+        });
+    } catch (err) {
+        console.log("image", err);
         errorDispatch(returnErrors(err));
     }
 };

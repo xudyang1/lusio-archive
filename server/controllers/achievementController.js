@@ -1,4 +1,5 @@
 const Badge = require("../models/Badge");
+const UserProfile = require("../models/UserProfile");
 const { errorHandler, nonNullJson } = require("../utils/jsonTool");
 
 /**
@@ -116,3 +117,33 @@ exports.updateBadge = async (req, res, next) => {
         return errorHandler(res, 500, 'Server Error');
     }
 };
+/**
+ * TODO: This should be done in quizController to determine whether 
+ *       the user enters correct answer when playing a quiz (exp based on scores earned)
+ * @desc  Update an user's experience after certain activity
+ * @route PATCH api/achievement/badges/:badgeId
+ * @access  Private
+ * @detail  badge may be returned if level up
+ * @format  req.body: { earnedExp: number }
+ *          res.data: { 
+ *              profile: {...newProfile},
+ *              badge: { _id, title, description, imageURI, requirement } || null
+ *          }
+ */
+// exports.updateExp = (req, res, next) => {
+//     const earnedExp = req.body.earnedExp;
+//     if (!expEarned) { return errorHandler(res, 400, 'Invalid payload'); }
+//     const profile = await UserProfile.findById(req.user.profile);
+    
+//     const { currentExp, maxExp, level } = profile;
+
+//     const remainedExp = currentExp + earnedExp - maxExp;
+
+//     if(remainedExp>=0){
+
+//     }
+//     else{
+
+//     }
+    
+// };
