@@ -45,6 +45,7 @@ exports.addBadge = async (req, res, next) => {
         }
         else { return errorHandler(res, 400, 'No Image File'); }
     } catch (err) {
+        console.log(err)
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);

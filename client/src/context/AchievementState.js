@@ -31,12 +31,12 @@ export const AchievementProvider = ({ children }) => {
      */
     const getAllBadgesCaller = () => getAllBadges()(dispatch);
 
-    return (<AuthContext.Provider value={{
+    return (<AchievementContext.Provider value={{
         getBadgesByIds: getBadgesByIdsCaller,
         getAllBadges: getAllBadgesCaller,
         achievementDispatch: dispatch,
         ...state
     }}>
         {children}
-    </AuthContext.Provider>);
+    </AchievementContext.Provider>);
 };

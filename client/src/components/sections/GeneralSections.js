@@ -18,6 +18,7 @@ import { achievementInitialState, AchievementReducer } from "../../reducers/Achi
 import sampleAchievement from "../../sampleData/sampleAchievement.json"
 import AchievementManager from "../../utils/AchievementManager"
 import { AuthContext } from "../../context/AuthState";
+import { AchievementContext } from "../../context/AchievementState";
 
 /**
  * Return and displays the corresponding card given card type and card information
@@ -93,8 +94,8 @@ export default function GeneralSections(props) {
     const sectionName = createRef();
     const platformID = props.platformID
 
-    const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
-
+    //const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
+    const { getAllBadges, allBadges } = useContext(AchievementContext)
 
     /**
      * @todo Edit Section Name, update SectionQuizzes
@@ -233,7 +234,9 @@ export default function GeneralSections(props) {
     }
 
     useEffect(() => {
+        
         if (props.element) {
+            getAllBadges()
             switch (type) {
                 case QUIZ_CARD: {
                     //console.log("PROPS", props.element)
@@ -243,7 +246,9 @@ export default function GeneralSections(props) {
                 } break;
                 case ACHIEVEMENT_CARD: {
                     AchievementManager.setProfile(profile)
-                    setQuizzesInSection(sampleAchievement.achievements.filter(element =>
+                    console.log(allBadges)
+                    if(allBadges)
+                    setQuizzesInSection(allBadges.filter(element =>
                         AchievementManager.evaluateAchievement(element)
                     ))
 

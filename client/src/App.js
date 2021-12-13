@@ -16,6 +16,7 @@ import { PlatformProvider } from './context/PlatformState';
 import Footer from './components/common/Footer';
 import AdminControl from './components/frontpage/AdminControl';
 import Suspended from './components/frontpage/Suspended';
+import { AchievementProvider } from './context/AchievementState';
 
 function App() {
     return (
@@ -24,23 +25,25 @@ function App() {
                 <AppNavbar />
                 <QuizzesProvider>
                     <PlatformProvider>
-                        <Switch>
-                            <div className='mainContent'>
-                            <Route exact path="/" component={HomePage} />
-                            <Route path="/quiz/:id" component={QuizPage} />
-                            <Route path="/edit/:id" component={EditQuizPage} />
-                            <Route path="/play/:id" component={PlayQuizPage} />
-                            <Route path="/answers/:id" component={QuizAnswersPage} />
-                            <Route path="/search/:key" component={SearchPage} />
-                            <Route path="/profile/:id" component={ProfilePage} />
-                            <Route path="/platform/:id" component={PlatformPage} />
-                            <Route path="/admin" component={AdminControl} />
-                            <Route path="/suspended" component={Suspended} />
-                            </div>
-                        </Switch>
+                        <AchievementProvider>
+                            <Switch>
+                                <div className='mainContent'>
+                                    <Route exact path="/" component={HomePage} />
+                                    <Route path="/quiz/:id" component={QuizPage} />
+                                    <Route path="/edit/:id" component={EditQuizPage} />
+                                    <Route path="/play/:id" component={PlayQuizPage} />
+                                    <Route path="/answers/:id" component={QuizAnswersPage} />
+                                    <Route path="/search/:key" component={SearchPage} />
+                                    <Route path="/profile/:id" component={ProfilePage} />
+                                    <Route path="/platform/:id" component={PlatformPage} />
+                                    <Route path="/admin" component={AdminControl} />
+                                    <Route path="/suspended" component={Suspended} />
+                                </div>
+                            </Switch>
+                        </AchievementProvider>
                     </PlatformProvider>
                 </QuizzesProvider>
-                <Footer/>
+                <Footer />
             </ProfilesProvider>
         </AuthProvider>
     );

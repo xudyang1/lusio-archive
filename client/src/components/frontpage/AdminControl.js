@@ -55,9 +55,10 @@ export default function AdminControl() {
 
             const res = await axios.post('/api/admin/addBadge', formData, fileConfig);
             console.log("JJJJ", res);
-            if(res.data.success)
-                M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });     
+            if (res.data.success)
+                M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
         } catch (err) {
+            console.log("ADMIN", err)
             M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
         }
     };
