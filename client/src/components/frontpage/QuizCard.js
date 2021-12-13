@@ -31,7 +31,7 @@ export default function QuizCard(props) {
                 //console.log("result from quizcard", result)
                 setProfile(result.data.profile)
             })
-    }, [])
+    }, [props.element])
 
     if(quiz.isPublished || quiz.userId == user.profile)
     return (
