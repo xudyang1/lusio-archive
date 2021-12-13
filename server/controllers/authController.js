@@ -100,8 +100,14 @@ exports.register = async (req, res, next) => {
             expiresIn: 3600
         });
 
-        res.status(201).json({
-            token,
+        // set cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 2000000,
+            signed: true
+        });
+        return res.status(201).json({
             user: {
                 // id: updatedUser.id,    NOTE: id should not be sent
                 name: updatedUser.name,
@@ -110,6 +116,7 @@ exports.register = async (req, res, next) => {
                 iconURI: savedProfile.iconURI
             }
         });
+
     } catch (err) {
         //console.log(err);
         if (err.name === 'ValidationError') {
@@ -157,8 +164,14 @@ exports.login = async (req, res, next) => {
 
         const userProfile = await UserProfile.findById(user.profile).select('iconURI');
 
-        res.status(200).json({
-            token,
+        // set cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 2000000,
+            signed: true
+        });
+        return res.status(200).json({
             user: {
                 // id: user._id, not sent
                 name: user.name,
@@ -326,6 +339,12 @@ exports.deleteUser = async (req, res, next) => {
         // remove quizzes created
         const rmQuizzesCounts = await Quiz.deleteMany({ _id: removedProfile.quizzesCreated });
 
+        // set cookie expires 
+        res.cookie("token", "", {
+            httpOnly: true,
+            maxAge: 1
+        });
+
         // TODO: decrease likes and comments?
         res.json({
             user: {
@@ -341,6 +360,24 @@ exports.deleteUser = async (req, res, next) => {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);
         }
+        return errorHandler(res, 500, 'Server Error');
+    }
+};
+
+exports.logout = async (req, res, next) => {
+    try {
+        // set cookie expires 
+        res.cookie("token", "", {
+            httpOnly: true,
+            maxAge: 1
+        });
+        return res.status(200).json({ success: true });
+    } catch (err) {
+        // set cookie expires 
+        res.cookie("token", token, {
+            httpOnly: true,
+            maxAge: 1
+        });
         return errorHandler(res, 500, 'Server Error');
     }
 };

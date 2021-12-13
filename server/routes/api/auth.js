@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { register, login, getUser, deleteUser, updateUser } = require('../../controllers/authController');
-const {strictAuth} = require('../../middleware/auth');
+const { register, login, getUser, deleteUser, updateUser, logout } = require('../../controllers/authController');
+const { strictAuth } = require('../../middleware/auth');
 
 /**
  * @desc  Register new user
@@ -37,9 +37,9 @@ router
  * @access  Private
  * @middleware  {strictAuth}: only owner have acess
  */
- router
- .route('/user/edit')
- .patch(strictAuth, updateUser);
+router
+    .route('/user/edit')
+    .patch(strictAuth, updateUser);
 
 /**
  * @desc  Delete user account data
@@ -47,8 +47,17 @@ router
  * @access  Private
  * @middleware  {strictAuth}: only owner can acess
  */
- router
+router
     .route('/user/delete')
     .delete(strictAuth, deleteUser);
-
+/**
+* @desc  logout; expires cookie
+* @route POST api/auth/user/logout
+* @access  Private
+* @middleware  {strictAuth}: only owner can acess
+*/
+router
+    .route('/user/logout')
+    .post(strictAuth, logout);
+    
 module.exports = router;

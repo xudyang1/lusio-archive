@@ -39,9 +39,9 @@ export const getProfileCards = (ids) => async (dispatch, errorDispatch) => {
  *                      profile: { profile document except 'owner' attribute }         
  *                    }
  */
-export const getProfile = (token, id, reload = true) => async (dispatch, errorDispatch = dispatch) => {
+export const getProfile = (id, reload = true) => async (dispatch, errorDispatch = dispatch) => {
     try {
-        const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig(token));
+        const res = await axios.get(`/api/profiles/profile/${id}`, tokenConfig());
         if (reload)
             dispatch({
                 type: GET_PROFILE,
@@ -84,10 +84,10 @@ export const getProfile = (token, id, reload = true) => async (dispatch, errorDi
  *                      content: { description || iconURI || ... || fans: updated content }
  *                    }
  */
-export const updateProfile = (token, id, payload) => async (dispatch, errorDispatch = dispatch) => {
+export const updateProfile = (id, payload) => async (dispatch, errorDispatch = dispatch) => {
     const body = JSON.stringify(payload);
     try {
-        const res = await axios.patch(`/api/profiles/profile/edit/${id}`, body, tokenConfig(token));
+        const res = await axios.patch(`/api/profiles/profile/edit/${id}`, body, tokenConfig());
         dispatch({
             type: UPDATE_PROFILE,
             payload: res.data
@@ -111,15 +111,15 @@ export const updateProfile = (token, id, payload) => async (dispatch, errorDispa
  *                                  "field": "iconURI" || "bannerURI"}
  *          res{ success: true, profile: {"iconURI" || "bannerURI": newVal} }
  */
-export const updateImage = (token, id, payload) => async (dispatch, authDispatch, errorDispatch = dispatch) => {
+export const updateImage = (id, payload) => async (dispatch, authDispatch, errorDispatch = dispatch) => {
     const formData = new FormData();
     Object.entries(payload).forEach(pair => formData.append(pair[0], pair[1]));
 
     const fileConfig = {
         headers: {
-            'Content-Type': 'multipart/form-data',
-            'x-auth-token': token
-        }
+            'Content-Type': 'multipart/form-data'
+        },
+        credentials: "include"
     };
 
     try {

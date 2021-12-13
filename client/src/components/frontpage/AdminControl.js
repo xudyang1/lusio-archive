@@ -49,7 +49,7 @@ export default function AdminControl() {
                         <div className="input-field col s2">
                             <input placeholder="Condition Stats" id="badge_stat" type="text" ref={conditionState} />
                         </div>
-                        <a class="waves-effect waves-light btn" onClick={() => onClickUploadBadge()}>Upload New Badge to Database</a>
+                        <a className="waves-effect waves-light btn" onClick={() => onClickUploadBadge()}>Upload New Badge to Database</a>
                     </div>
                     <div className="divider"></div>
                     <div className="row">
@@ -57,7 +57,7 @@ export default function AdminControl() {
                             <input placeholder="Suspend User (userID)" id="suspend_user" type="text" ref={suspendUserIDRef} />
                         </div>
                         <div className="input-field col s6">
-                            <a class="waves-effect waves-light btn red" onClick={() => onClickSuspendUser()}>Suspend User</a>
+                            <a className="waves-effect waves-light btn red" onClick={() => onClickSuspendUser()}>Suspend User</a>
                         </div>
                     </div>
                     <div className="row">
@@ -65,7 +65,7 @@ export default function AdminControl() {
                             <input placeholder="Unsuspend User (userID)" id="unsuspend_user" type="text" ref={unsuspendUserIDRef} />
                         </div>
                         <div className="input-field col s6">
-                            <a class="waves-effect waves-light btn red" onClick={() => onClickUnsuspendUser()}>Unsuspend User</a>
+                            <a className="waves-effect waves-light btn red" onClick={() => onClickUnsuspendUser()}>Unsuspend User</a>
                         </div>
                     </div>
                 </div>

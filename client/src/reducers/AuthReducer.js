@@ -9,22 +9,19 @@ import {
     UPDATE_SUCCESS,
 } from "../types/actionTypes";
 
-export function getToken(cookieToken) {
-    const keyval = cookieToken.split(";");
-    console.log(keyval);
-    var token = null;
-    for (let i = 0; i < keyval.length; i++){
-        if (keyval[i].split("=")[0].trim() == "token") {
-            token = keyval[i].split("=")[1];
-        }
-    }
-    return token;
-}
+// export function getToken(cookieToken) {
+//     const keyval = cookieToken.split(";");
+//     console.log("keyval", keyval);
+//     var token = null;
+//     for (let i = 0; i < keyval.length; i++){
+//         if (keyval[i].split("=")[0].trim() == "token") {
+//             token = keyval[i].split("=")[1];
+//         }
+//     }
+//     return token;
+// }
 
 export const authInitialState = {
-    //token: localStorage.getItem('token'),
-    //Get token from cookie
-    token: getToken(document.cookie),
     isAuthenticated: false,
     user: {
         email: null,
@@ -51,31 +48,20 @@ export default function AuthReducer(state, { type, payload }) {
             };
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
-            localStorage.setItem('token', payload.token);
-            //create a cookie with token value
-            //document.cookie = ("token=" + payload.token + "; " + "path=/;" + " secure");
             return {
                 ...state,
                 isAuthenticated: true,
                 user: payload.user,
-                token: payload.token,
                 error: authInitialState.error
             };
         case LOGOUT_SUCCESS:
-            localStorage.removeItem('token');
-            //delete a cookie
-            //document.cookie = ("token=" + "; " + "max-age=0; ");
             return {
                 ...state,
-                token: null,
                 user: authInitialState.user,
                 isAuthenticated: false,
-                error: payload
+                error: authInitialState.error
             };
         case DELETE_ACCOUNT:
-            localStorage.removeItem('token');
-            //delete a cookie
-            //document.cookie = ("token=" + "; " + "max-age=0; ");
             return authInitialState;
         case UPDATE_SUCCESS:
             return {

@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
  * @detail Used for essential requests about sensitive operations 
  */
 exports.strictAuth = (req, res, next) => {
-    const token = req.header('x-auth-token');
+    const token = req.cookies.token;
 
     // check for token
     if (!token)
@@ -38,8 +38,8 @@ exports.ADMIN_VIEW = ADMIN_VIEW;
  *          e.g., Guest view vs. Owner view
  */
 exports.softAuth = async (req, res, next) => {
-    const token = req.header('x-auth-token');
-
+    const token = req.cookies.token;
+    
     try {
         // check for token
         if (!token) {
