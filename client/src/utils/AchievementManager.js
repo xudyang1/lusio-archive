@@ -16,6 +16,8 @@ export default class AchievementManager{
                 return this.getValue(conditions.stats) > conditions.value;
             case "eq":
                 return this.getValue(conditions.stats) == conditions.value;
+            case "ne":
+                return this.getValue(conditions.stats) != conditions.value;
         }
         return false
     }
@@ -25,6 +27,9 @@ export default class AchievementManager{
             case "level" : return this.currentprofile.level;
             case "quizzesCreated" : return this.currentprofile.quizzesCreated.length
             case "quizzesTaken" : return this.currentprofile.quizzesTaken.length
+            case "likedQuizzes" : return this.currentprofile.likedQuizzes.length
+            case "subscribedPlatforms" : return this.currentprofile.subscribedPlatforms.length
+            case "description" : return this.currentprofile.description
         }
     }
 }

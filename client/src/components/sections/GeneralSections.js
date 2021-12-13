@@ -36,7 +36,7 @@ function getCards(t, index, element, userp = null, args = false) {
     if (element)
         switch (t) {
             case ACHIEVEMENT_CARD:
-                return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
+                return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={true} /></div>
             case QUIZ_CARD:
                 if (element.isPublished || element.userId == userp.profile) {
                     return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
