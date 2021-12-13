@@ -50,9 +50,9 @@ export default function AuthReducer(state, { type, payload }) {
             };
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
-            //localStorage.setItem('token', payload.token);
+            localStorage.setItem('token', payload.token);
             //create a cookie with token value
-            document.cookie = ("token=" + payload.token + "; " + "path=/;" + " secure");
+            //document.cookie = ("token=" + payload.token + "; " + "path=/;" + " secure");
             return {
                 ...state,
                 isAuthenticated: true,
@@ -61,9 +61,9 @@ export default function AuthReducer(state, { type, payload }) {
                 error: authInitialState.error
             };
         case LOGOUT_SUCCESS:
-            //localStorage.removeItem('token');
+            localStorage.removeItem('token');
             //delete a cookie
-            document.cookie = ("token=" + "; " + "max-age=0; ");
+            //document.cookie = ("token=" + "; " + "max-age=0; ");
             return {
                 ...state,
                 token: null,
@@ -72,9 +72,9 @@ export default function AuthReducer(state, { type, payload }) {
                 error: payload
             };
         case DELETE_ACCOUNT:
-            //localStorage.removeItem('token');
+            localStorage.removeItem('token');
             //delete a cookie
-            document.cookie = ("token=" + "; " + "max-age=0; ");
+            //document.cookie = ("token=" + "; " + "max-age=0; ");
             return authInitialState;
         case GET_ERRORS:
             return {

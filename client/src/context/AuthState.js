@@ -18,8 +18,8 @@ export function getToken(cookieToken) {
 
 // Initial state
 const initialState = {
-    //token: localStorage.getItem('token'),
-    token: getToken(document.cookie),
+    token: localStorage.getItem('token'),
+    //token: getToken(document.cookie),
     isAuthenticated: false,
     user: {
         email: null,

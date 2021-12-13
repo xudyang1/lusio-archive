@@ -134,21 +134,28 @@ class PlayQuizContent extends Component{
             }
         })
 
-        console.log(this.props.userId);
+        console.log("User Id", this.props.userId);
         if (this.props.userId != null){
             const getProfileForQ = () => { 
                 return (this.props.getProfile(this.props.userId)).then(function (result)
                 {return result.data.profile;});
             }
             const profile = await getProfileForQ();
-            const qTakenList = profile.quizzesTaken;
+            const qTakenList = profile.quizzesScore;
             const currentExp = profile.currentExp;
 
             console.log("QuizzesTaken are", qTakenList);
 
             //If first time taking quiz, increase EXP according to the questions
             //the user answer right
-            if (!qTakenList.includes(this.state.id)){
+            var qtaken = false;
+            for(var i=0; i < qTakenList.length; i++){
+                if (qTakenList[i].split(":")[0] == this.state.id){
+                    qtaken = true;
+                }
+            }
+            console.log(qtaken);
+            if (!qtaken){
                 await this.props.updateProfile({
                     mode: "EDIT",
                     profile: {
@@ -157,6 +164,7 @@ class PlayQuizContent extends Component{
                     }
                 })
             }
+            console.log("currentExp", xp + currentExp);
             
 
             this.setState({score: scoreEval}, () => finishQuiz(this.state.score, xp, (this.state.initialTime - this.state.time)));
@@ -198,12 +206,13 @@ class PlayQuizContent extends Component{
         e.preventDefault();
         //this.clearAll();
     }
-
+    /*
     clearAll = () => {
         document.cookie.split(';').forEach(function(c) {
             document.cookie = c.trim().split('=')[0] + '=;' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC;';
         });
     }
+    */
     render() {
         var questionBase = 0;
         var questionRange = [0];
