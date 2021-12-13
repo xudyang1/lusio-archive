@@ -25,6 +25,7 @@ function App() {
                 <QuizzesProvider>
                     <PlatformProvider>
                         <Switch>
+                            <div className='mainContent'>
                             <Route exact path="/" component={HomePage} />
                             <Route path="/quiz/:id" component={QuizPage} />
                             <Route path="/edit/:id" component={EditQuizPage} />
@@ -35,6 +36,7 @@ function App() {
                             <Route path="/platform/:id" component={PlatformPage} />
                             <Route path="/admin" component={AdminControl} />
                             <Route path="/suspended" component={Suspended} />
+                            </div>
                         </Switch>
                     </PlatformProvider>
                 </QuizzesProvider>

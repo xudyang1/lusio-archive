@@ -1,13 +1,15 @@
-import { createRef, useContext, useEffect, useState } from "react";
+import { createRef, useContext, useEffect, useReducer, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/AuthState";
 import { ProfileContext } from "../../context/ProfileState";
 import { UPDATE_SUCCESS } from "../../types/actionTypes";
 import { ImagePreview } from "../common/ImagePreview";
 import M from 'materialize-css';
+import { updateUser } from "../../actions/AuthActions";
+import { ErrorReducer } from "../../reducers/ErrorReducer";
 
 export default function SettingsPage() {
-    const { deleteAccount, isAuthenticated, updateUser } = useContext(AuthContext);
+    const { deleteAccount, isAuthenticated, authDispatch, user } = useContext(AuthContext);
     const { profile, updateProfile, viewType, updateImage } = useContext(ProfileContext);
     const [name, setName] = useState(null);
     const [pass, setPass] = useState(null);
@@ -18,12 +20,23 @@ export default function SettingsPage() {
     const nameRef = createRef();
     const passwordRef = createRef();
 
-
+    const [error, errorDispatch] = useReducer(ErrorReducer);
+    const [clickedName, setClickedName] = useState(false);
+    useEffect(() => {
+        if (error && error.msg)
+            M.toast({ html: error.msg, classes: 'rounded', inDuration: 500 });
+    }, [error]);
     const onChangeName = (e) => {
-        updateUser({ content: { name: nameRef.current.value } });
-        M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+        updateUser({ content: { name: nameRef.current.value } })(authDispatch, errorDispatch);
+        setClickedName(true);
+        // M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
         // window.location.reload(false);
     };
+    useEffect(() => {
+        if (clickedName)
+            M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+        setClickedName(false);
+    }, [user.name]);
     const onChangePassword = (e) => {
         updateUser({ content: { password: passwordRef.current.value } });
         M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });

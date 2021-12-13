@@ -20,7 +20,7 @@ exports.getQuizzes = async (req, res, next) => {
             msg: 'Server Error'
         });
     }
-}
+};
 
 exports.getQuiz = async (req, res, next) => {
     try {
@@ -40,7 +40,7 @@ exports.getQuiz = async (req, res, next) => {
             msg: 'Server Error'
         });
     }
-}
+};
 
 // TODO: modify this sample later 
 // @desc    Add quiz
@@ -70,7 +70,7 @@ exports.addQuiz = async (req, res, next) => {
 
         const scoreB = [];
         const quizScoreboard = req.body.scoreBoard;
-        quizScoreboard.forEach((u)=> {
+        quizScoreboard.forEach((u) => {
             scoreB.push({
                 userName: u.userName,
                 userScore: u.userScore
@@ -132,7 +132,7 @@ exports.addQuiz = async (req, res, next) => {
     } catch (e) {
         res.status(400).json({ msg: e.message });
     }
-}
+};
 
 exports.updateQuiz = async (req, res, next) => {
     const quiz = await Quiz.findByIdAndUpdate(req.params.id, {
@@ -171,7 +171,7 @@ exports.updateQuiz = async (req, res, next) => {
             msg: 'Server Error'
         });
     }
-}
+};
 
 
 // TODO: modify this sample later 
@@ -201,7 +201,7 @@ exports.deleteQuiz = async (req, res, next) => {
             msg: 'Server Error'
         });
     }
-}
+};
 
 /**
  * TODO: might have some change
@@ -215,7 +215,7 @@ exports.deleteQuiz = async (req, res, next) => {
  *                      quiz: { quizImgURI: newVal }
  *                    }
  */
- exports.updateQuizImage = async (req, res, next) => {
+exports.updateQuizImage = async (req, res, next) => {
     try {
         if (req.file) {
             target = { [req.body.field]: `http://localhost:5000/${req.file.path}` };

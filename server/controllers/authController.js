@@ -112,7 +112,8 @@ exports.register = async (req, res, next) => {
                 name: updatedUser.name,
                 email: updatedUser.email,
                 profile: updatedUser.profile,
-                iconURI: savedProfile.iconURI
+                iconURI: savedProfile.iconURI,
+                status: (updatedUser.status || 0)
             }
         });
 
@@ -175,7 +176,8 @@ exports.login = async (req, res, next) => {
                 name: user.name,
                 email: user.email,
                 profile: user.profile,
-                iconURI: userProfile.iconURI
+                iconURI: userProfile.iconURI,
+                status: user.status
             }
         });
     } catch (err) {
@@ -216,7 +218,8 @@ exports.getUser = async (req, res, next) => {
                 name: user.name,
                 email: user.email,
                 profile: user.profile,
-                iconURI: profile.iconURI
+                iconURI: profile.iconURI,
+                status: user.status
             }
         });
     } catch (err) {
@@ -254,6 +257,8 @@ exports.updateUser = async (req, res, next) => {
         const { name, password, email } = req.body.content;
         var target = null;
         if (name) {
+            const user1 = await UserAccount.findOne({ name });
+            if (user1) { return errorHandler(res, 400, 'Name already exists'); }
             target = { name };
         }
         // TODO: need further validation

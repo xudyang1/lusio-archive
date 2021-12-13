@@ -1,33 +1,45 @@
-import { createRef } from "react"
-
+import { createRef, useContext } from "react";
+import { AuthContext } from "../../context/AuthState";
+import axios from "axios";
+import M from "materialize-css";
 
 export default function AdminControl() {
-    const status = 1
+    const { isAuthenticated, user } = useContext(AuthContext);
 
-    const badgeTitleRef = createRef()
-    const badgeDescRef = createRef()
-    const badgeImgRef = createRef()
-    const conditionOp = createRef()
-    const conditionValue = createRef()
-    const conditionState = createRef()
+    const badgeTitleRef = createRef();
+    const badgeDescRef = createRef();
+    const badgeImgRef = createRef();
+    const conditionOp = createRef();
+    const conditionValue = createRef();
+    const conditionState = createRef();
 
-    const suspendUserIDRef = createRef()
-    const unsuspendUserIDRef = createRef()
+    const suspendUserIDRef = createRef();
+    const unsuspendUserIDRef = createRef();
 
-    function onClickUploadBadge() {
+    const onClickUploadBadge = async () => {
+        
+    };
+    const onClickSuspendUser = async (profileId) => {
+        try {
+            const res = axios.post(`/suspendUser/${profileId}`);
+            M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
+        } catch (err) {
+            M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
+        }
+    };
+    const onClickUnsuspendUser = async (profileId) => {
+        try {
+            const res = axios.post(`/unSuspendUser/${profileId}`);
+            M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
+        } catch (err) {
+            M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
+        }
+    };
 
-    }
-
-    function onClickSuspendUser() {
-
-    }
-
-    function onClickUnsuspendUser() {
-
-    }
 
     function showPage() {
-        if (status) {
+        // && user.email === "lusioquiz@gmail.com"
+        if (isAuthenticated) {
             return (
                 <div className="container">
                     <div className="row">
@@ -69,7 +81,7 @@ export default function AdminControl() {
                         </div>
                     </div>
                 </div>
-            )
+            );
         }
     }
 
@@ -77,5 +89,5 @@ export default function AdminControl() {
         <div>
             {showPage()}
         </div>
-    )
+    );
 }
