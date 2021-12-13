@@ -4,10 +4,17 @@ import { deleteAccount, loadUser, updateUser } from '../actions/AuthActions';
 
 // TODO: USE COOKIES
 export function getToken(cookieToken) {
-    const keyval = cookieToken.split(";")[0];
-    const token = keyval.split("=")[1];
+    const keyval = cookieToken.split(";");
+    console.log(keyval);
+    var token = null;
+    for (let i = 0; i < keyval.length; i++){
+        if (keyval[i].split("=")[0].trim() == "token") {
+            token = keyval[i].split("=")[1];
+        }
+    }
     return token;
 }
+
 
 // Initial state
 const initialState = {

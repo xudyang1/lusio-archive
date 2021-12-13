@@ -236,10 +236,7 @@ class EditQuizContent extends Component {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
-        
-        window.onbeforeunload = function() {
-            return "";
-        };
+        console.log(document.cookie);
     }
 
     render(){

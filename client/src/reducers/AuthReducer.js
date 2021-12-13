@@ -9,8 +9,14 @@ import {
 } from "../types/actionTypes";
 
 export function getToken(cookieToken) {
-    const keyval = cookieToken.split(";")[0];
-    const token = keyval.split("=")[1];
+    const keyval = cookieToken.split(";");
+    console.log(keyval);
+    var token = null;
+    for (let i = 0; i < keyval.length; i++){
+        if (keyval[i].split("=")[0].trim() == "token") {
+            token = keyval[i].split("=")[1];
+        }
+    }
     return token;
 }
 
@@ -57,7 +63,7 @@ export default function AuthReducer(state, { type, payload }) {
         case LOGOUT_SUCCESS:
             //localStorage.removeItem('token');
             //delete a cookie
-            document.cookie = ("token=" + "; " + "max-age=0; " + "path=/");
+            document.cookie = ("token=" + "; " + "max-age=0; ");
             return {
                 ...state,
                 token: null,
@@ -68,7 +74,7 @@ export default function AuthReducer(state, { type, payload }) {
         case DELETE_ACCOUNT:
             //localStorage.removeItem('token');
             //delete a cookie
-            document.cookie = ("token=" + "; " + "max-age=0; " + "path=/");
+            document.cookie = ("token=" + "; " + "max-age=0; ");
             return authInitialState;
         case GET_ERRORS:
             return {
