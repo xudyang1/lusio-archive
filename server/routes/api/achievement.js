@@ -1,5 +1,6 @@
 const express = require('express');
-const { getBadges, addBadge, updateBadge } = require('../../controllers/achievementController');
+const { getBadges, addBadge, updateBadge, /*updateExp*/ } = require('../../controllers/achievementController');
+const { strictAuth } = require('../../middleware/auth')
 const router = express.Router();
 
 /**
@@ -30,5 +31,10 @@ router
 router
     .route('/badges/:badgeId')
     .patch(updateBadge);
+
+
+// router
+//     .route('/exp')
+//     .patch(strictAuth, updateExp);
 
 module.exports = router;

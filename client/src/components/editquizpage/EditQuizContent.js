@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from "../../context/QuizState";
 import { createRef } from 'react';
+import { ImagePreview } from '../common/ImagePreview';
 
 class EditQuizContent extends Component {
     static contextType = QuizzesContext;
@@ -48,14 +49,14 @@ class EditQuizContent extends Component {
         const setCurrentQuiz = async (id) => {
             const quizzes = () => {
                 return getQuizzes()
-                .then(function(result){
-                    return result;
-                })
-            }
+                    .then(function (result) {
+                        return result;
+                    });
+            };
             const quizL = await quizzes();
             const quiz = quizL.data.filter(q => q._id === id);
             return quiz[0];
-        }
+        };
         const quiz = await setCurrentQuiz(id);
         if(quiz.isPublished){
             this.setState({
@@ -99,8 +100,8 @@ class EditQuizContent extends Component {
         e.preventDefault();
         await this.context.deleteQuiz(this.state.id);
         document.location.href = "/";
-    }
-    
+    };
+
     //remove Quiz from userProfile db
     handleDelete = (e) => {
         e.preventDefault();
@@ -108,22 +109,22 @@ class EditQuizContent extends Component {
         //updateProfile = passedFunc 
         this.props.updateProfile({
             mode: "DELETE",
-            profile:{
+            profile: {
                 owner: this.state.userId,
                 quizzesCreated: this.state.id
             }
-        })
+        });
 
         //Delete independent Quiz db
         this.handleDeleteIndQuiz(e);
-    }
+    };
 
     nameHandler = (e) => {
         this.setState({ name: e.target.value });
-    }
+    };
     descriptionHandler = (e) => {
         this.setState({ description: e.target.value });
-    }
+    };
 
     handleAddAnswer = (qi, item) => {
         let list = [...this.state.questions];
@@ -131,27 +132,27 @@ class EditQuizContent extends Component {
         newItem.choices.push({ content: "" });
         list[qi] = newItem;
         this.setState({ questions: list });
-    }
+    };
     handleAnswerRemove = (qi, item) => {
         let list = [...this.state.questions];
         let oldItem = { ...list[qi] };
         oldItem.choices.pop();
         list[qi] = oldItem;
         this.setState({ questions: list });
-    }
+    };
 
 
     handleAddQuestion = () => {
-        this.setState({questions: [...this.state.questions, {title: "", choices: [{content: ""}]}]});
-    }
+        this.setState({ questions: [...this.state.questions, { title: "", choices: [{ content: "" }] }] });
+    };
     handleQuestionRemove = () => {
         const list = [...this.state.questions];
-        if(list.length > 1){ list.splice(list.length-1, 1);}
-        this.setState({questions: list});
-    }
+        if (list.length > 1) { list.splice(list.length - 1, 1); }
+        this.setState({ questions: list });
+    };
     questionHandler = (qi, e) => {
         this.state.questions[qi].title = e;
-    }
+    };
     answerHandler = (qi, ai, e) => {
         this.state.questions[qi].choices[ai].content = e;
     }
@@ -161,18 +162,18 @@ class EditQuizContent extends Component {
 
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
-        this.setState({timedOption: this.state.timedOption});
-    }
+        this.setState({ timedOption: this.state.timedOption });
+    };
     timeHandler = (e) => {
         if (this.state.timedOption){
             this.setState({time: e.target.value});
         }
-        else{
+        else {
             e.preventDefault();
             alert("Select Timed Option first");
-            this.setState({time: 0});
+            this.setState({ time: 0 });
         }
-        
+
         console.log(this.state.time);
     }
     showAnsHandler = () => {
@@ -223,8 +224,8 @@ class EditQuizContent extends Component {
             isPublished: this.state.isPublished
         };
         updateQuiz(updateFQuiz);
-        
-    }
+
+    };
     handlePublish = (e) => {
         e.preventDefault();
         if(this.state.isPublished){
@@ -293,11 +294,11 @@ class EditQuizContent extends Component {
                                         <div className="text-box">
                                             <input name="answer" placeholder="Answer choice" onChange={(e) => this.answerHandler(qi, ai, e.target.value)} defaultValue={q.choices[ai].content} />
                                         </div>
-                                    )
+                                    );
                                 })}
                                 <div className="row">
-                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{ margin: "5px" }} onClick={(item) => { this.handleAddAnswer(qi, item) }}><i className="material-icons">add</i></button>
-                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{ margin: "5px" }} onClick={(item) => { this.handleAnswerRemove(qi, item) }}><i className="material-icons">remove</i></button>
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{ margin: "5px" }} onClick={(item) => { this.handleAddAnswer(qi, item); }}><i className="material-icons">add</i></button>
+                                    <button className="btn-floating btn-small waves-effect waves-light red" style={{ margin: "5px" }} onClick={(item) => { this.handleAnswerRemove(qi, item); }}><i className="material-icons">remove</i></button>
                                 </div>
 
                             </div>
@@ -311,7 +312,7 @@ class EditQuizContent extends Component {
                             </div>
                             <input className="col s1" onChange={(e) => this.answerKeyHandler(qi, e)} type="number"></input>
                         </div>
-                    )
+                    );
                 })
                 }
 
@@ -335,7 +336,7 @@ class EditQuizContent extends Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
