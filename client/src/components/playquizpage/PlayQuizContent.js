@@ -160,6 +160,16 @@ class PlayQuizContent extends Component{
                     mode: "EDIT",
                     profile: {
                         owner: this.props.userId,
+                        currentExp: xp + currentExp + 50
+                    }
+                })
+                xp = xp + 50;
+            }
+            else if (qtaken){
+                await this.props.updateProfile({
+                    mode: "EDIT",
+                    profile: {
+                        owner: this.props.userId,
                         currentExp: xp + currentExp
                     }
                 })
