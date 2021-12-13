@@ -104,7 +104,6 @@ class PlayQuizContent extends Component{
     countDown() {
         //reduce second by 1 by every 1 second 
         let seconds = Number(document.cookie.split(";")[0].split("=")[1]) - 1;
-        //let seconds = this.state.time - 1;
         console.log(document.cookie);
         this.setState({
             quizTime: this.convertTime(seconds),
@@ -186,7 +185,6 @@ class PlayQuizContent extends Component{
                         currentExp: Math.ceil((xp + currentExp)%500)
                     }
                 })
-
             } 
 
             this.setState({score: scoreEval}, () => finishQuiz(this.state.score, xp, (this.state.initialTime - this.state.time)));
