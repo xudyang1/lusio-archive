@@ -12,8 +12,6 @@ const UserProfileSchema = new Schema({
     name: { type: String, required: [true, 'User name is missing'] },
     platformsCreated: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],
     quizzesCreated: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
-    //>>>>>>>>>>>>>>>>>>>>>>ADDONS to be checked
-    commentsCreated: [{type: Schema.Types.ObjectId}],
     // TODO: uncomment this part after adding report system
     // accountStatus: { type: String, enum: ['active', 'suspended'], default: 'active' },
     description: { type: String, default: 'Hello, World!' },
@@ -35,6 +33,11 @@ const UserProfileSchema = new Schema({
                     badge: { type: Schema.Types.ObjectId, ref: 'Badge' } 
                 }],
     quizzesTaken: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
+    //quizzes scores added for personal score db
+    quizzesScore: [{
+        type: String,
+        default: ""
+    }],
     likedQuizzes: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
     subscribedUsers: [{ type: Schema.Types.ObjectId, ref: 'UserProfile' }],
     subscribedPlatforms: [{ type: Schema.Types.ObjectId, ref: 'Platform' }],

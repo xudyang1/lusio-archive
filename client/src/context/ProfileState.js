@@ -20,6 +20,7 @@ const initialState = {
         maxExp: 0,
         achievements: [],
         quizzesTaken: [],
+        quizzesScore: [],
         likedQuizzes: [],
         subscribedUsers: [],
         subscribedPlatforms: [],

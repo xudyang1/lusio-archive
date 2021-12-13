@@ -18,6 +18,7 @@ class EditQuizContent extends Component {
             description: "",
             timedOption: false,
             time: 0,
+            showAnsOption: false,
             questions: [{
                 title: "",
                 choices: [""],
@@ -27,9 +28,20 @@ class EditQuizContent extends Component {
             likes: 0,
             plays: 0,
             isPublished: false,
-            openModal: false
+            publishText: "PUBLISH"
         };
         this.changedImgURI = createRef(this.state.quizImgURI);
+    }
+
+    checkURI = (e) => {
+        if (this.changedImgURI.current.value.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+            this.setState({quizImgURI: this.changedImgURI.current.value});
+        }
+        else {
+            if (e.key == "Enter"){
+                alert("Type in a correct image URL format (jpeg/jpg/gif/png)");
+            }
+        }
     }
 
     getItem = async (id, getQuizzes) => {
@@ -45,23 +57,44 @@ class EditQuizContent extends Component {
             return quiz[0];
         };
         const quiz = await setCurrentQuiz(id);
-        this.setState({
-            id: quiz._id,
-            userId: quiz.userId,
-            name: quiz.name,
-            author: quiz.author,
-            quizImgURI: quiz.quizImgURI,
-            description: quiz.description,
-            timedOption: quiz.timedOption,
-            time: quiz.time,
-            questions: quiz.questions,
-            likes: quiz.likes,
-            plays: quiz.plays,
-            isPublished: quiz.isPublished,
-            openModal: false
-        });
-    };
-
+        if(quiz.isPublished){
+            this.setState({
+                id: quiz._id,
+                userId: quiz.userId,
+                name: quiz.name,
+                author: quiz.author,
+                quizImgURI: quiz.quizImgURI,
+                description: quiz.description,
+                timedOption: quiz.timedOption,
+                time: quiz.time,
+                showAnsOption: quiz.showAnsOption,
+                questions: quiz.questions, 
+                likes: quiz.likes,
+                plays: quiz.plays,
+                isPublished: quiz.isPublished,
+                publishText: "UNPUBLISH"
+            });
+        }
+        else{
+            this.setState({
+                id: quiz._id,
+                userId: quiz.userId,
+                name: quiz.name,
+                author: quiz.author,
+                quizImgURI: quiz.quizImgURI,
+                description: quiz.description,
+                timedOption: quiz.timedOption,
+                time: quiz.time,
+                showAnsOption: quiz.showAnsOption,
+                questions: quiz.questions, 
+                likes: quiz.likes,
+                plays: quiz.plays,
+                isPublished: quiz.isPublished,
+                publishText: "PUBLISH"
+            });
+        }
+    }
+    
     handleDeleteIndQuiz = async e => {
         e.preventDefault();
         await this.context.deleteQuiz(this.state.id);
@@ -129,9 +162,8 @@ class EditQuizContent extends Component {
         this.setState({ timedOption: this.state.timedOption });
     };
     timeHandler = (e) => {
-        if (this.state.timedOption) {
-            this.setState({ time: e.target.value });
-            console.log(e.target.value);
+        if (this.state.timedOption){
+            this.setState({time: e.target.value});
         }
         else {
             e.preventDefault();
@@ -140,44 +172,50 @@ class EditQuizContent extends Component {
         }
 
         console.log(this.state.time);
-    };
-
-    scoreHandler = (qi, e) => {
+    }
+    showAnsHandler = () => {
+        this.state.showAnsOption = !this.state.showAnsOption;
+        this.setState({showAnsOption: this.state.showAnsOption});
+    }
+    
+    scoreHandler = (qi,e) => {
         e.preventDefault();
-        this.state.questions[qi].score = Number(e.target.value);
-    };
+        if (0 <= Number(e.target.value) && Number(e.target.value) <= 10000){
+            this.state.questions[qi].score = Number(e.target.value);
+        }
+        else {
+            alert("Score should not be smaller than 0/bigger than 10000. It will be saved as default 0.");
+            this.state.questions[qi].score = 0;
+            
+        }
+    }
     answerKeyHandler = (qi, e) => {
         e.preventDefault();
-        this.state.questions[qi].answerKey = Number(e.target.value);
-    };
-
-    /*
-    //Wishlist
-    showQHandler = () => {
-        this.state.showQuestion = !this.state.showQuestion;
-        this.setState({showQuestion: this.state.showQuestion});
+        if (1 <= Number(e.target.value) && Number(e.target.value) <= this.state.questions[qi].choices.length){
+            this.state.questions[qi].answerKey = Number(e.target.value);
+        }
+        else {
+            alert("Out of Range. It will be saved as default 1.");
+            this.state.questions[qi].answerKey = 1;
+        }
     }
-    showAHandler = () => {
-        this.state.showAnswer = !this.state.showAnswer;
-        this.setState({showAnswer: this.state.showAnswer});
-    }
-    */
 
     handleSave = async e => {
         e.preventDefault();
         console.log("current quiz publish statement: ", this.state.isPublished);
-
+        console.log(this.state.showAnsOption);
         const { updateQuiz } = this.context;
         const updateFQuiz = {
             id: this.state.id,
             userId: this.state.userId,
             name: this.state.name,
             author: this.state.author,
-            quizImgURI: this.changedImgURI.current.value,
+            quizImgURI: this.state.quizImgURI,
             description: this.state.description,
             timedOption: this.state.timedOption,
             time: this.state.time,
-            questions: this.state.questions,
+            showAnsOption: this.state.showAnsOption,
+            questions: this.state.questions, 
             likes: this.state.likes,
             plays: this.state.plays,
             isPublished: this.state.isPublished
@@ -187,69 +225,56 @@ class EditQuizContent extends Component {
     };
     handlePublish = (e) => {
         e.preventDefault();
-        this.setState({ isPublished: true }, () => this.handleSave(e));
-        console.log("check state update", this.context.quiz);
-    };
-    handleUnpublish = (e) => {
-        e.preventDefault();
-        this.setState({ isPublished: false }, () => this.handleSave(e));
-    };
+        if(this.state.isPublished){
+            this.setState({isPublished: false, publishText: "PUBLISH"}, () => this.handleSave(e));
+        }
+        else{
+            this.setState({isPublished: true, publishText: "UNPUBLISH"}, () => this.handleSave(e));
+        }
+    }
 
-    onOpenModal = e => {
-        e.preventDefault();
-        this.setState({ openModal: true });
-    };
-    onCloseModal = e => {
-        e.preventDefault();
-        this.setState({ openModal: false });
-    };
     componentDidMount() {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
+        
+        window.onbeforeunload = function() {
+            return "";
+        };
     }
 
-    render() {
-        return (
-            <div className="row section" style={{ padding: '35px' }}>
-                <div className="col s5">
-                    <div className="section input-field">Quiz Name
-                        <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler} />
+    render(){
+        var {publishText} = this.state;
+            return(
+                <div className="row section" style={{padding: '35px'}}>                
+                    <div className="col s5">
+                        <div className="section input-field">Quiz Name
+                            <input id="quiz_name" type="text" className="validate" placeholder="Quiz Name" defaultValue={this.state.name} onChange={this.nameHandler}/>
+                        </div>
+                        <div className="section input-field">Description
+                            <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
+                        </div>
                     </div>
-                    <div className="section input-field">Description
-                        <textarea id="textarea1" className="materialize-textarea" placeholder="This is about" defaultValue={this.state.description} onChange={this.descriptionHandler}></textarea>
+                    <div className="col s4" style={{paddingLeft: '100px', paddingTop: '30px'}}>Quiz Image
+                        <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/>
+                        {/*<input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>*/}
+                        <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} onChange={this.checkURI} onKeyUp={this.checkURI}/>
                     </div>
-                </div>
-                <div className="col s4" style={{ paddingLeft: '100px', paddingTop: '30px' }}>Quiz Image
-                    {/* <img src={this.state.quizImgURI} style={{width: "280px", height: "200px"}}/> */}
-                    <ImagePreview editable={true} imageSrc={this.state.quizImgURI} imageWidth="280px" imageHeight="200" />
-                    {/*<input type="file" onChange={this.quizImgHandler} className="filetype" id="group_image"/>*/}
-                    <input type="text" id="quizImageURI" className="form-control" ref={this.changedImgURI} />
-                </div>
-                <div className="col s3" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
-                    <form action="#">
-                        <p>
-                            <label>
-                                <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler} />
-                                <span>Timed quiz</span>
-                                <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e) => this.timeHandler(e)} type="number" value={this.state.time} /><div>seconds</div></span>
-                            </label>
-                        </p>
-                        {/*
-                            //Wishlist
-                            <p>
+                    <div className="col s3" style={{paddingLeft: '100px', paddingTop: '30px'}}>
+                        <form action="#">
+                            <span>
                                 <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showQuestion} onClick={this.showQHandler}/>
-                                    <span>Show questions one at a time</span>
+                                    <input type="checkbox" key={Math.random()} className="filled-in-timed" defaultChecked={this.state.timedOption} onClick={this.timedHandler}/>
+                                    <span>Timed quiz</span>
+                                    <span><input id="quiz_time" defaultValue={this.state.time} onChange={(e)=>this.timeHandler(e)} type="number" value={this.state.time}/><div>seconds</div></span>
                                 </label>
-                            </p>
-                            <p>
+                            </span>
+                            <span>
                                 <label>
-                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnswer} onClick={this.showAHandler}/>
+                                    <input type="checkbox" key={Math.random()} className="filled-in" defaultChecked={this.state.showAnsOption} onClick={this.showAnsHandler}/>
                                     <span>Show answer after submission</span>
                                 </label>
-                            </p>
-                             */}
+                            </span>
                     </form>
                 </div>
 
@@ -275,11 +300,11 @@ class EditQuizContent extends Component {
                             <div className="col s5" style={{ textAlign: 'right', padding: '30px' }}>
                                 Set Score: {this.state.questions[qi].score}
                             </div>
-                            <input className="col s1" onChange={(e) => this.scoreHandler(qi, e)}></input>
+                            <input className="col s1" onChange={(e) => this.scoreHandler(qi, e)} type="number"></input>
                             <div className="col s5" style={{ textAlign: 'right', padding: '30px' }}>
                                 Set Answer: {this.state.questions[qi].answerKey}
                             </div>
-                            <input className="col s1" onChange={(e) => this.answerKeyHandler(qi, e)}></input>
+                            <input className="col s1" onChange={(e) => this.answerKeyHandler(qi, e)} type="number"></input>
                         </div>
                     );
                 })
@@ -287,8 +312,8 @@ class EditQuizContent extends Component {
 
                 <div className="section col s12" style={{ padding: "20px" }}>
                     <div className="col s4">
-                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Undo</a>
-                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Redo</a>
+                        {/* <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Undo</a>
+                        <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }}>Redo</a> */}
                     </div>
                     <div className="col s4">
                         <button className="btn-floating btn-large waves-effect waves-light red" style={{ margin: "5px" }} onClick={this.handleAddQuestion}><i className="material-icons">add</i></button>
@@ -297,8 +322,7 @@ class EditQuizContent extends Component {
                     <div className="col s4">
                         <div className="row">
                             <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handleSave}>Save</a>
-                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handlePublish} >Publish</a>
-                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handleUnpublish} >Unpublish</a>
+                            <a className="waves-effect waves-light btn-small" style={{ margin: "5px" }} onClick={this.handlePublish} >{publishText}</a>
                         </div>
                         <button className="waves-effect waves-light btn-small red" style={{ margin: "5px" }} onClick={this.handleDelete}>
                             Delete

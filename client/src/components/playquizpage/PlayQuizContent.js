@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { QuizzesContext } from '../../context/QuizState';
 import QuizResult from './QuizResult';
-import '../../css/frontpage.css';
+import '../../css/playquizpage.css';
 
 
 class PlayQuizContent extends Component{
@@ -16,8 +16,10 @@ class PlayQuizContent extends Component{
             description: "",
             timedOption: false,
             time: 0,
+            showAnsOption: false,
             questions: [],
             score: 0,
+            timeForCookie: 0,
             quizTime: {},
             initialTime: 0,
             isDisabled: false
@@ -25,16 +27,20 @@ class PlayQuizContent extends Component{
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
-
+        
     }
 
     convertTime(secs){
         let hours = Math.floor(secs / 3600);
-        
+
         let forMinutes = (secs % 3600);
         let minutes = Math.floor(forMinutes / 60);
 
         let seconds = Math.ceil(forMinutes % 60);
+
+        //create a cookie for timer
+        //updates secs after countDown
+        document.cookie = ("totalTime=" + secs + "; path=/play/" + this.state.id);
 
         let timeSet = {
             "h": hours,
@@ -63,8 +69,10 @@ class PlayQuizContent extends Component{
             description: quiz.description,
             timedOption: quiz.timedOption,
             time: quiz.time,
+            showAnsOption: quiz.showAnsOption,
             questions: quiz.questions,
             openModal: false,
+            timeForCookie: quiz.time,
             // After getting Quiz retrieve time attribute
             // convert it into h:m:s
             quizTime: this.convertTime(quiz.time),
@@ -75,11 +83,16 @@ class PlayQuizContent extends Component{
     
     componentDidMount(){
         const id = this.props.match.params.id;
-        const { getQuizzes, playQuiz } = this.context;
+        const { getQuizzes, playQuiz, isPlaying } = this.context;
         this.getItem(id, getQuizzes); 
+
+        playQuiz(id);
         
-        playQuiz();
+        window.onbeforeunload = function() {
+            return "";
+        };
     }
+    
 
     //binded(this) for use of props
     startTimer() {
@@ -90,7 +103,9 @@ class PlayQuizContent extends Component{
     }
     countDown() {
         //reduce second by 1 by every 1 second 
-        let seconds = this.state.time - 1;
+        let seconds = Number(document.cookie.split(";")[0].split("=")[1]) - 1;
+        //let seconds = this.state.time - 1;
+        
         this.setState({
             quizTime: this.convertTime(seconds),
             time: seconds
@@ -99,19 +114,52 @@ class PlayQuizContent extends Component{
         //if no more time left, stop timer
         if (seconds == 0) {
             clearInterval(this.timer);
+            this.setState({isDisabled: true});
+
+            //delete a cookie
+            document.cookie = ("totalTime=" + "; max-age=0" + "; path=/play/" + this.state.id);
         }
     }
     
-    scoreHandler = (userAnswer, quizAnswer) => {
+    scoreHandler = async (userAnswer, quizAnswer) => {
         const { finishQuiz } = this.context;
         var scoreEval = 0;
+        var xp = 0;
         quizAnswer.map((q, qi) => {
             if (q.answerKey == userAnswer[qi]) {
                 scoreEval = scoreEval + q.score;
+                //every time user gets a question right 
+                //earns a 5xp
+                xp = xp + 5;
             }
         })
+
+        console.log(this.props.userId);
         
-        this.setState({score: scoreEval}, () => finishQuiz(this.state.score, (this.state.initialTime - this.state.time)));
+        const getProfileForQ = () => { 
+            return (this.props.getProfile(this.props.userId)).then(function (result)
+             {return result.data.profile;});
+        }
+        const profile = await getProfileForQ();
+        const qTakenList = profile.quizzesTaken;
+        const currentExp = profile.currentExp;
+
+        console.log("QuizzesTaken are", qTakenList);
+
+        //If first time taking quiz, increase EXP according to the questions
+        //the user answer right
+        if (!qTakenList.includes(this.state.id)){
+            await this.props.updateProfile({
+                mode: "EDIT",
+                profile: {
+                    owner: this.props.userId,
+                    currentExp: xp + currentExp
+                }
+            })
+        }
+        
+
+        this.setState({score: scoreEval}, () => finishQuiz(this.state.score, xp, (this.state.initialTime - this.state.time)));
     }
 
     // allow to check only one answer
@@ -129,6 +177,7 @@ class PlayQuizContent extends Component{
     onSubmit = (e) => {
         clearInterval(this.timer);
         console.log(this.state.initialTime - this.state.time);
+        this.setState({isClicked: true});
 
         const checks = document.getElementsByClassName('filled-in');
         const answerCompare = []
@@ -138,8 +187,10 @@ class PlayQuizContent extends Component{
             }
         }
         this.scoreHandler(answerCompare, this.state.questions);
-
         this.setState({isDisabled: true});
+
+        //reset time so that time is reset for another take of quiz
+        document.cookie = ("totalTime=" + this.state.timeForCookie + "; path=/play/" + this.state.id);
         e.preventDefault();
 
     }
@@ -151,38 +202,43 @@ class PlayQuizContent extends Component{
                 <div className="container" style={{ backgroundColor: 'ivory', height: "60px" }}>
                     <div>
                         <h className="quiz">{this.state.name}</h>
-                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.quizTime.h}<b>h</b> {this.state.quizTime.m}<b>m</b> {this.state.quizTime.s}<b>s</b></span> : <span></span>}       
+                        {/* {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {this.state.quizTime.h}<b>h</b> {this.state.quizTime.m}<b>m</b> {this.state.quizTime.s}<b>s</b></span> : <span></span>} */}
+                        {this.state.timedOption? <span id="timer" style={{ paddingLeft: '340px', height: "20px" }}>Time Left: {Math.floor(document.cookie.split(";")[0].split("=")[1]/3600)}<b>h</b> {Math.floor((document.cookie.split(";")[0].split("=")[1]%3600)/60)}<b>m</b> {Math.ceil((document.cookie.split(";")[0].split("=")[1]%3600)%60)}<b>s</b></span> : <span></span>}      
                     </div>
                 </div>
-                <div className="col s12" style={{ paddingLeft: '100px', paddingTop: '30px' }}>
-                    <div className="description"> Quiz Description: {this.state.description}</div>
-                    {this.state.questions.map((q, qi) => {
-                        return (
-                            <div className="question">{q.title}<div className="qpoints" >({q.score}points)</div>
-                            <div style={{visibility: "hidden"}}>
-                                {questionBase = questionBase + q.choices.length}
-                                {questionRange.push(questionBase)}
-                            </div>
-                                {this.state.questions[qi].choices.map((choice, ci) => {
-                                    return (
-                                        <div className="row">
-                                            <label>
-                                                <input type="checkbox" className="filled-in" value={ci+1} onClick={(e)=>this.allowOne(e, questionRange.slice(qi, qi+2))} disabled={this.state.isDisabled}/>
-                                                <span>{choice.content}</span>
-                                            </label>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        )
-                    })}
-                    <div className='row' style={{ textAlign: "right" }}>
-                        <a className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</a>
-                        <QuizResult />
+                <div className="col s12">
+                    <div className="quizcontent" style={{ paddingLeft: "150px", paddingTop: '30px' }}>
+                        <div className="description"> Quiz Description: {this.state.description}</div>
+                        {this.state.questions.map((q, qi) => {
+                            return (
+                                <div className="question" key={qi}>
+                                    <br/>
+                                    <p className="questiontitle">{q.title}</p>
+                                    <div className="qpoints" >({q.score}points)</div>
+                                <div style={{visibility: "hidden"}} key={qi}>
+                                    {questionBase = questionBase + q.choices.length}
+                                    {questionRange.push(questionBase)}
+                                </div>
+                                    {this.state.questions[qi].choices.map((choice, ci) => {
+                                        return (
+                                            <div className="row" key={ci}>
+                                                <label>
+                                                    <input type="checkbox" className="filled-in" value={ci+1} onClick={(e)=>this.allowOne(e, questionRange.slice(qi, qi+2))} disabled={this.state.isDisabled}/>
+                                                    <span className="choices">{choice.content}</span>
+                                                </label>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )
+                        })}
+                        <div className='row' style={{ textAlign: "right" }}>
+                            <div className="waves-effect waves-dark btn-small" onClick={this.onSubmit}>Finish</div>
+                            <QuizResult showAnsOption={this.state.showAnsOption}/>
+                        </div>
                     </div>
                 </div>
             </div>
-
         )
     }
 }

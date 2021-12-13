@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import 'materialize-css';
 import '../../css/frontpage.css';
+import logo from '../../LusioLogo.png'
 import SearchBar from './SearchBar';
 import { LoginModal } from '../auth/LoginModal';
 import { AuthContext } from '../../context/AuthState';
@@ -20,8 +21,9 @@ const AppNavbar = () => {
         <div className="">
             <nav>
                 <div className="nav-wrapper">
-
-                    <NavLink to="/" className="brand-logo" style={{ paddingLeft: '1em' }}>Lusio</NavLink>
+                    <a href="/" className="brand-logo" style={{ paddingLeft: '1em', top: "-20px", left: "10px", position: "absolute" }}>
+                        <img src={logo} style={{maxWidth: "170px", maxHeight: "90px"}} />
+                    </a>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         {isAuthenticated ? (<span><li><AccountProfileButton user={user} userId={user.profile}/></li><li><Logout /></li></span>) :
                             (<span><li><LoginModal /></li><li><RegisterModal /></li></span>)}

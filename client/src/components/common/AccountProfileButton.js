@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from "react";
+import { ProfileContext } from "../../context/ProfileState";
 import { NavLink } from "react-router-dom";
 import { ImagePreview } from './ImagePreview';
 
@@ -7,11 +8,6 @@ import { ImagePreview } from './ImagePreview';
  */
 export default function AccountProfileButton(props) {
 
-    // const { user, isAuthenticated } = useContext(AuthContext);
-    // const { profile, getProfile } = useContext(ProfileContext)
-
-    // const { id } = useParams()
-    // const { url, path } = useRouteMatch()
     const userId = props.userId
 
     const user = props.user ? props.user : {

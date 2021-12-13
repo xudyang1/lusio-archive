@@ -70,6 +70,7 @@ export default function QuizReducer (state, action) {
     case PLAY_QUIZ:
       return {
         ...state,
+        quiz: action.payload,
         isPlaying: true
       };
     case FINISH_QUIZ:
@@ -77,6 +78,7 @@ export default function QuizReducer (state, action) {
         ...state,
         isPlaying: false,
         score: action.payload.score,
+        xp: action.payload.xp,
         timeSpent: action.payload.timeSpent
       };
     default:

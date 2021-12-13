@@ -3,10 +3,16 @@ import AuthReducer from '../reducers/AuthReducer';
 import { deleteAccount, loadUser, updateUser } from '../actions/AuthActions';
 
 // TODO: USE COOKIES
+export function getToken(cookieToken) {
+    const keyval = cookieToken.split(";")[0];
+    const token = keyval.split("=")[1];
+    return token;
+}
 
 // Initial state
 const initialState = {
-    token: localStorage.getItem('token'),
+    //token: localStorage.getItem('token'),
+    token: getToken(document.cookie),
     isAuthenticated: false,
     user: {
         email: null,

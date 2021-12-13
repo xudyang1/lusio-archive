@@ -4,7 +4,12 @@ import ConfirmModal from '../common/ConfirmModal'
 
 export default function AdjustableQuizCard(props) {
     const position = props.position
-    const quiz = props.quizData
+    const quiz = props.quizData? props.quizData : {
+        name: "UNDEF",
+        author: "UNDEF",
+        likes: 0,
+        platform_id: 0
+    }
     const moveUp = props.moveUp
     const moveDown = props.moveDown
 

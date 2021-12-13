@@ -7,6 +7,7 @@ import { ProfileContext } from '../../context/ProfileState';
 export default function PlatformHeader(props) {
     const { id } = useParams();
     const history = useHistory();
+    const { isAuthenticated } = useContext(AuthContext);
     const { viewType, updatePlatform } = useContext(PlatformContext);
     const { profile, updateProfile } = useContext(ProfileContext);
     const [editing, setEditing] = useState(false)
@@ -54,34 +55,49 @@ export default function PlatformHeader(props) {
     }
 
     function onClickSubScribe() {
-        const payload = {
-            mode: "ADD",
-            profile: {
-                subscribedPlatforms: id
+        if (isAuthenticated) {
+            const payload = {
+                mode: "ADD",
+                profile: {
+                    subscribedPlatforms: id
+                }
             }
+            updateProfile(payload)
+            setSubToggle(true)
+
+            // const payload2 = {
+            //     mode: ""
+            // }
+            // updatePlatform(id, payload2)
         }
-        updateProfile(payload)
-        setSubToggle(true)
+        else {
+            alert("please login")
+        }
     }
 
     function onClickUnsubScribe() {
-        const payload = {
-            mode: "DELETE",
-            profile: {
-                subscribedPlatforms: id
+        if (isAuthenticated) {
+            const payload = {
+                mode: "DELETE",
+                profile: {
+                    subscribedPlatforms: id
+                }
             }
+            updateProfile(payload)
+            setSubToggle(false)
         }
-        updateProfile(payload)
-        setSubToggle(false)
+        else {
+            alert("please login")
+        }
     }
 
     function onClickAbout() {
-        if(aboutToggle){
+        if (aboutToggle) {
             history.push(`/platform/${id}`)
             setAboutToggle(false)
             aboutButtonText.current.innerHTML = "About"
         }
-        else{
+        else {
             history.push(`/platform/${id}/About`)
             setAboutToggle(true)
             aboutButtonText.current.innerHTML = "Back"
@@ -94,9 +110,7 @@ export default function PlatformHeader(props) {
     }, [profile.subscribedPlatforms])
 
     function subButton() {
-        if (security > 0)
-            return <div></div>
-        if (subToggle) {
+        if (subToggle && isAuthenticated) {
             return <button className="btn waves-effect waves-light red" onClick={() => onClickUnsubScribe()}>Unsubscribe</button>
         }
         else {

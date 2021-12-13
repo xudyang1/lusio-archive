@@ -12,11 +12,14 @@ import { ProfileContext } from "../../context/ProfileState";
 import { getAllBadges } from "../../actions/AchievementActions";
 import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
+import sampleAchievement from "../../sampleData/sampleAchievement.json"
+import AchievementManager from "../../utils/AchievementManager"
+
 function getCards(t, index, element, args = false) {
-    console.log("ELEMENT", element)
+    //console.log("ELEMENT", element)
     switch (t) {
         case ACHIEVEMENT_CARD:
-            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={args} /></div>
+            return <div className="GSection-Cards center" key={index} id={index}><AchievementCard key={index} element={element} achieved={AchievementManager.evaluateAchievement(element)} /></div>
         case QUIZ_CARD:
             return <div className="GSection-Cards center" key={index} id={index}><QuizCards key={index} element={element} canEdit={args} /></div>
         case SUB_PLAT_CARD:
@@ -29,24 +32,24 @@ function getCards(t, index, element, args = false) {
 export default function SectionList(props) {
 
     const { getPlatformList } = useContext(PlatformContext)
-    const { getQuizzes } = useContext(QuizzesContext)
-    const { viewType } = useContext(ProfileContext)
+    const { getQuizzes, getQuizzesById } = useContext(QuizzesContext)
+    const { viewType, profile } = useContext(ProfileContext)
 
     const name = props.name ? props.name : ""
     const [items, setItems] = useState([])
     const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
 
-    const getQuizList = async (listOfId) => {
-        const quizzes = () => {
-            return getQuizzes()
-                .then(function (result) {
-                    return result;
-                })
-        }
-        const quizL = await quizzes();
-        const quiz = quizL.data.filter(q => listOfId.includes(q._id));
-        return quiz;
-    }
+    // const getQuizList = async (listOfId) => {
+    //     const quizzes = () => {
+    //         return getQuizzes()
+    //             .then(function (result) {
+    //                 return result;
+    //             })
+    //     }
+    //     const quizL = await quizzes();
+    //     const quiz = quizL.data.filter(q => listOfId.includes(q._id));
+    //     return quiz;
+    // }
 
     const getPlatforms = async (listOfId) => {
         const quizzes = () => {
@@ -72,31 +75,47 @@ export default function SectionList(props) {
 
     useEffect(() => {
         if (props.items) {
-            switch (props.type) {
-                case QUIZ_CARD: {
-                    let quizzes = getQuizList(props.items).then(function (result) {
-                        setItems(result)
-                    })
-                } break;
-                case SUB_PLAT_CARD: {
-                    let plats = getPlatforms(props.items).then(function (result) {
-                        console.log(result)
-                        setItems(result)
-                    })
-                } break;
-                case ACHIEVEMENT_CARD: {
-                    getAllBadges()(dispatch)
-                } break;
+            if (props.detailed) {
+                console.log("SETTING ITEMS")
+                console.log(props.items)
+                setItems(props.items)
             }
+            else
+                switch (props.type) {
+                    case QUIZ_CARD: {
+                        let quizzes = getQuizzesById(props.items).then(function (result) {
+                            //console.log("RESULT", result)
+                            setItems(result)
+                        })
+                    } break;
+                    case SUB_PLAT_CARD: {
+                        let plats = getPlatforms(props.items).then(function (result) {
+                            console.log(result)
+                            setItems(result)
+                        })
+                    } break;
+                    case ACHIEVEMENT_CARD: {
+                        //getAllBadges()(dispatch)
+                        AchievementManager.setProfile(profile)
+                        setItems(sampleAchievement.achievements)
+                        console.log(sampleAchievement)
+                    } break;
+                }
         }
     }, [props.items])
 
-    useEffect(()=>{
-        setItems(achievements.allBadges)
-    }, [achievements.allBadges])
+    useEffect(() => {
+        console.log(items)
+    }, [items])
+
+    // useEffect(() => {
+    //     if(props.type == ACHIEVEMENT_CARD)
+    //     setItems(achievements.allBadges)
+    // }, [achievements.allBadges])
 
     function getList(list, type) {
         let res = []
+        //console.log("list", list)
         switch (type) {
             case QUIZ_CARD: {
                 list.map((element, index) => (

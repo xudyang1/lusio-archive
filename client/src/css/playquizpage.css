@@ -1,0 +1,31 @@
+.quiz {
+  font-size: 30px;
+  font-weight: bolder;
+}
+.question {
+  font-size: large;
+  font-weight: 300;
+  font-weight: bold;
+}
+.description {
+  max-width: 800px;
+  overflow-wrap: break-word;
+}
+.questiontitle {
+  max-width: 800px;
+  overflow-wrap: break-word;
+}
+.choices {
+  max-width: 800px;
+  overflow-wrap: break-word;
+}
+.qpoints {
+  padding-left: 850px;
+}
+.likeicon:hover {
+  color: darkgrey;
+}
+#timer {
+  width: 20%;
+  height: 30px;
+}
