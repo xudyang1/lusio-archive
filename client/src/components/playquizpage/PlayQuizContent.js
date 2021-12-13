@@ -22,7 +22,8 @@ class PlayQuizContent extends Component{
             timeForCookie: 0,
             quizTime: {},
             initialTime: 0,
-            isDisabled: false
+            isDisabled: false,
+            isPublished: false
         };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
@@ -76,7 +77,8 @@ class PlayQuizContent extends Component{
             // After getting Quiz retrieve time attribute
             // convert it into h:m:s
             quizTime: this.convertTime(quiz.time),
-            initialTime: quiz.time
+            initialTime: quiz.time,
+            isPublished: quiz.isPublished
         });
         this.startTimer();   
     }
@@ -228,6 +230,10 @@ class PlayQuizContent extends Component{
     }
 
     render() {
+        if(! this.state.isPublished){
+            return <h4>This Quiz Is Private</h4>
+        }
+
         var questionBase = 0;
         var questionRange = [0];
         return (
