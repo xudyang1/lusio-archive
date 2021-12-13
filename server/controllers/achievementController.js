@@ -5,38 +5,47 @@ const { errorHandler, nonNullJson } = require("../utils/jsonTool");
 /**
  * TODO: need to modify
  * @desc  Create a new badge
- * @route POST api/achievement/badges
+ * @route POST api/admin/addBadge
  * @access  Private
  * @detail  only system admins can do this
  * @format  req.body: { 
- *                          badge: {
+ *   
  *                              title: String,
  *                              description: String,
  *                              imageURI: String,
- *                              requirement: [{target_field: String, value: Number}]
- *                          }
+ *                               operation: String,
+ *                               value: Number,
+ *                               stats: String
+ *                              
+ *      
  *                    }
  *          res.data: { 
  *              success: true,
- *              badge: { _id, title, description, imageURI, requirement} (added badge)
+ *              badge: { _id, title, description, imageURI, conditions} (added badge)
  *          }
  */
 exports.addBadge = async (req, res, next) => {
     try {
-        const { title, description, imageURI, requirement } = req.body.badge;
-        const newBadge = new Badge({
-            title,
-            description,
-            imageURI,
-            requirement
-        });
-        const savedBadge = await newBadge.save();
-        if (!savedBadge) { return errorHandler(res, 500, 'Something went wrong saving the badge'); }
-        res.status(201).json({
-            success: true,
-            badge: savedBadge
-        });
+        if (req.file) {
+            imageURI = `http://localhost:5000/${req.file.path}`;
+            const { title, description, operation, value, stats } = req.body;
+            const conditions = {operation, value, stats};
+            const newBadge = new Badge({
+                title,
+                description,
+                imageURI,
+                conditions
+            });
+            const savedBadge = await newBadge.save();
+            if (!savedBadge) { return errorHandler(res, 500, 'Something went wrong saving the badge'); }
+            res.status(201).json({
+                success: true,
+                badge: savedBadge
+            });
+        }
+        else { return errorHandler(res, 400, 'No Image File'); }
     } catch (err) {
+        console.log(err)
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
             return errorHandler(res, 400, messages);

@@ -9,11 +9,11 @@ import PlatformCard from "./PlatformCard";
 import { CreateQuizButton } from "../editquizpage/CreateQuizButton";
 import { ProfileContext } from "../../context/ProfileState";
 
-import { getAllBadges } from "../../actions/AchievementActions";
 import { achievementInitialState, AchievementReducer } from "../../reducers/AchievementReducer";
 
 import sampleAchievement from "../../sampleData/sampleAchievement.json"
 import AchievementManager from "../../utils/AchievementManager"
+import { AchievementContext } from "../../context/AchievementState";
 
 function getCards(t, index, element, args = false) {
     //console.log("ELEMENT", element)
@@ -39,6 +39,8 @@ export default function SectionList(props) {
     const name = props.name ? props.name : ""
     const [items, setItems] = useState([])
     const [achievements, dispatch] = useReducer(AchievementReducer, achievementInitialState)
+
+    const { getAllBadges, allBadges } = useContext(AchievementContext)
 
     // const getQuizList = async (listOfId) => {
     //     const quizzes = () => {
@@ -75,6 +77,7 @@ export default function SectionList(props) {
     }
 
     useEffect(() => {
+        getAllBadges()
         if (props.items) {
             if (props.detailed) {
                 console.log("SETTING ITEMS")
@@ -98,8 +101,8 @@ export default function SectionList(props) {
                     case ACHIEVEMENT_CARD: {
                         //getAllBadges()(dispatch)
                         AchievementManager.setProfile(profile)
-                        setItems(sampleAchievement.achievements)
-                        console.log(sampleAchievement)
+                        setItems(allBadges)
+                        console.log(allBadges)
                     } break;
                 }
         }

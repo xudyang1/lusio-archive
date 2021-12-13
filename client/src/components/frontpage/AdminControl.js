@@ -1,7 +1,8 @@
-import { createRef, useContext } from "react";
+import { createRef, useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthState";
 import axios from "axios";
 import M from "materialize-css";
+import { ImagePreview } from "../common/ImagePreview";
 
 export default function AdminControl() {
     const { isAuthenticated, user } = useContext(AuthContext);
@@ -16,13 +17,54 @@ export default function AdminControl() {
     const suspendUserIDRef = createRef();
     const unsuspendUserIDRef = createRef();
 
+
+
+
+
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
+    const onUploadIcon = (e) => {
+        // console.log("Image file", imageFile)
+        // updateImage({
+        //     image: imageFile,
+        //     field: "iconURI"
+        // });
+        M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+    };
+
     const onClickUploadBadge = async () => {
-        
+        try {
+            const payload = {
+                title: badgeTitleRef.current.value,
+                description: badgeDescRef.current.value,
+                operation: conditionOp.current.value,
+                value: conditionValue.current.value,
+                stats: conditionState.current.value,
+                image: imageFile
+            };
+            const formData = new FormData();
+            Object.entries(payload).forEach(pair => formData.append(pair[0], pair[1]));
+
+            const fileConfig = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                credentials: "include"
+            };
+
+
+            const res = await axios.post('/api/admin/addBadge', formData, fileConfig);
+            console.log("JJJJ", res);
+            if (res.data.success)
+                M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+        } catch (err) {
+            console.log("ADMIN", err)
+            M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
+        }
     };
     const onClickSuspendUser = async (profileId) => {
         try {
             const res = await axios.post(`/api/admin/suspendUser/${profileId}`);
-            console.log("SUSPEND",res)
             M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
         } catch (err) {
             M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
@@ -51,7 +93,9 @@ export default function AdminControl() {
                             <input placeholder="Badge Description" id="badge_description" type="text" ref={badgeDescRef} />
                         </div>
                         <div className="input-field col s6">
-                            <input placeholder="Badge Img URL" id="badge_img" type="text" ref={badgeImgRef} />
+                            <ImagePreview isCircle={false} imageWidth="128px"
+                                imageHeight="128px" editable={true} setImageFile={setImageFile}
+                                setImagePreview={setImagePreview} />
                         </div>
                         <div className="input-field col s2">
                             <input placeholder="Condition Operations" id="badge_op" type="text" ref={conditionOp} />
@@ -81,7 +125,7 @@ export default function AdminControl() {
                             <a className="waves-effect waves-light btn red" onClick={() => onClickUnsuspendUser(unsuspendUserIDRef.current.value)}>Unsuspend User</a>
                         </div>
                     </div>
-                </div>
+                </div >
             );
         }
     }
