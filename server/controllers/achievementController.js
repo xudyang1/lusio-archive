@@ -9,7 +9,7 @@ const { errorHandler, nonNullJson } = require("../utils/jsonTool");
  * @access  Private
  * @detail  only system admins can do this
  * @format  req.body: { 
- *                          badge: {
+ *   
  *                              title: String,
  *                              description: String,
  *                              imageURI: String,
@@ -17,7 +17,7 @@ const { errorHandler, nonNullJson } = require("../utils/jsonTool");
  *                               value: Number,
  *                               stats: String
  *                              
- *                          }
+ *      
  *                    }
  *          res.data: { 
  *              success: true,
@@ -26,20 +26,24 @@ const { errorHandler, nonNullJson } = require("../utils/jsonTool");
  */
 exports.addBadge = async (req, res, next) => {
     try {
-
-        const { title, description, imageURI, operation, value, stats } = req.body.badge;
-        const newBadge = new Badge({
-            title,
-            description,
-            imageURI,
-            conditions
-        });
-        const savedBadge = await newBadge.save();
-        if (!savedBadge) { return errorHandler(res, 500, 'Something went wrong saving the badge'); }
-        res.status(201).json({
-            success: true,
-            badge: savedBadge
-        });
+        if (req.file) {
+            imageURI = `http://localhost:5000/${req.file.path}`;
+            const { title, description, operation, value, stats } = req.body;
+            const conditions = {operation, value, stats};
+            const newBadge = new Badge({
+                title,
+                description,
+                imageURI,
+                conditions
+            });
+            const savedBadge = await newBadge.save();
+            if (!savedBadge) { return errorHandler(res, 500, 'Something went wrong saving the badge'); }
+            res.status(201).json({
+                success: true,
+                badge: savedBadge
+            });
+        }
+        else { return errorHandler(res, 400, 'No Image File'); }
     } catch (err) {
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);
