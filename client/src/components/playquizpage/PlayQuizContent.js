@@ -143,6 +143,7 @@ class PlayQuizContent extends Component{
             const profile = await getProfileForQ();
             const qTakenList = profile.quizzesScore;
             const currentExp = profile.currentExp;
+            const level = profile.level;
 
             console.log("QuizzesTaken are", qTakenList);
 
@@ -176,6 +177,17 @@ class PlayQuizContent extends Component{
             }
             console.log("currentExp", xp + currentExp);
             
+            if ((xp + currentExp) > 500) {
+                await this.props.updateProfile({
+                    mode: "EDIT",
+                    profile: {
+                        owner: this.props.userId,
+                        level: level + Math.floor((xp + currentExp)/500),
+                        currentExp: Math.ceil((xp + currentExp)%500)
+                    }
+                })
+
+            } 
 
             this.setState({score: scoreEval}, () => finishQuiz(this.state.score, xp, (this.state.initialTime - this.state.time)));
         }
