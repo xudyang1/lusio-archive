@@ -193,6 +193,7 @@ export default function QuizResult(){
                 </a>
                 : null}
                 <h6>Your rank is {rank}</h6>
+                <h6>You earned {xp}xp</h6>
                 </div>
             </div> 
             
