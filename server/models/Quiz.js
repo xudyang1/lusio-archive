@@ -38,6 +38,7 @@ const QuestionSchema = new Schema({
             default: ""
         }
     }],
+    keypoints: {type: String, default: ""},
     answerKey: { type: Number, required: [true, 'Answer key must be provided']},
     score: { type: Number, default: 50 }
 });

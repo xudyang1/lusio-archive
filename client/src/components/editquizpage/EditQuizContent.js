@@ -21,6 +21,7 @@ class EditQuizContent extends Component {
             questions: [{
                 title: "",
                 choices: [""],
+                keypoints: "",
                 answerKey: 1,
                 score: 0
             }],
@@ -124,7 +125,6 @@ class EditQuizContent extends Component {
         this.setState({ description: e.target.value });
     }
 
-
     handleAddAnswer = (qi, item) => {
         let list = [...this.state.questions];
         let newItem = { ...list[qi] };
@@ -154,7 +154,10 @@ class EditQuizContent extends Component {
     }
     answerHandler = (qi, ai, e) => {
         this.state.questions[qi].choices[ai].content = e;
-    } 
+    }
+    keypointsHandler = (qi, e) => {
+        this.state.questions[qi].keypoints = e;
+    }
 
     timedHandler = () => {
         this.state.timedOption = !this.state.timedOption;
@@ -236,10 +239,7 @@ class EditQuizContent extends Component {
         const id = this.props.match.params.id;
         const { getQuizzes } = this.context;
         this.getItem(id, getQuizzes);
-        
-        window.onbeforeunload = function() {
-            return "";
-        };
+        console.log(document.cookie);
     }
 
     render(){
@@ -281,6 +281,12 @@ class EditQuizContent extends Component {
                     return (
                         <div className="section col s12" style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '20px', margin: '10px' }}>
                             <textarea type="text" style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px' }} placeholder="Question" onChange={(e) => this.questionHandler(qi, e.target.value)} defaultValue={q.title} />
+                            <textarea
+                                type="text"
+                                style={{ border: '1px solid rgba(0, 0, 0, 1)', padding: '10px', paddingBottom: '70px' }} 
+                                placeholder="Keypoints for players to study or look over after taking the quiz in order to answer this question the next time they take the quiz" 
+                                onChange={(e) => this.keypointsHandler(qi, e.target.value)}
+                                defaultValue={q.keypoints} />
                             <div className="col s6" style={{ padding: '20px' }}>
                                 {this.state.questions[qi].choices.map((a, ai) => {
                                     return (

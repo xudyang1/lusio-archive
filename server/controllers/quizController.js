@@ -62,6 +62,7 @@ exports.addQuiz = async (req, res, next) => {
             dataQ.push({
                 title: q.title,
                 choices: dataA,
+                keypoints: q.keypoints,
                 answerKey: q.answerKey,
                 score: q.score
             });

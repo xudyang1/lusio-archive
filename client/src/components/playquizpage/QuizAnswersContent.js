@@ -63,7 +63,8 @@ class QuizAnswersContent extends Component{
                             return (
                                 <div className="question" key={qi}>
                                     <br/>
-                                    <p className="questiontitle">{q.title}</p>
+                                    <p className="questiontitle">[Question {qi+1}] {q.title}</p>
+                                    <p className="questionkeypoints" style={{fontWeight:"normal", fontSize:"14px"}}>Keypoint: {q.keypoints}</p>
                                     <div className="qpoints" >({q.score}points)</div>
                                     {this.state.questions[qi].choices.map((choice, ci) => {
                                         return (
