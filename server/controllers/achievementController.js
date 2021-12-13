@@ -117,6 +117,8 @@ exports.updateBadge = async (req, res, next) => {
         return errorHandler(res, 500, 'Server Error');
     }
 };
+
+
 /**
  * TODO: This should be done in quizController to determine whether 
  *       the user enters correct answer when playing a quiz (exp based on scores earned)

@@ -35,6 +35,7 @@ const quizRouter = require('./routes/api/quizzes');
 const tmpQuizRouter = require('./routes/api/tmpQuizzes');
 
 const achievementRouter = require('./routes/api/achievement');
+const adminRouter = require('./routes/api/admin');
 // use routes
 app.use('/api/auth', authRouter);
 app.use('/api/profiles', profileRouter);
@@ -43,6 +44,7 @@ app.use('/api/quizzes', quizRouter);
 // TODO: temporary 
 app.use('/api/tmpQuizzes', tmpQuizRouter);
 app.use('/api/achievement', achievementRouter);
+app.use('/api/admin', adminRouter);
 // end of test
 
 

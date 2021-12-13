@@ -157,7 +157,7 @@ exports.updatePlatform = async (req, res, next) => {
 
     switch (MODE) {
       case "EDIT":
-        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI, quizSections });
+        provided = nonNullJson({ owner, name, description, bannerURI, backgroundURI, quizSections, numSubscribers });
         // transfer ownership require the owner the platform
         if (provided.owner && req.viewType !== 'OWNER_VIEW') { return errorHandler(res, 403, 'No authortization'); }
 
@@ -178,7 +178,7 @@ exports.updatePlatform = async (req, res, next) => {
         else {
           updated = await Platform.findByIdAndUpdate(req.params.platformId, provided, options).select(keys);
         }
-        //console.log("updated", updated);
+        console.log("updated", updated);
         break;
       case "ADD":
         provided = nonNullJson({ admins, quizzes, quizSections });
