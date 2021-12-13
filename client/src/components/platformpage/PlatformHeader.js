@@ -64,6 +64,11 @@ export default function PlatformHeader(props) {
             }
             updateProfile(payload)
             setSubToggle(true)
+
+            // const payload2 = {
+            //     mode: ""
+            // }
+            // updatePlatform(id, payload2)
         }
         else {
             alert("please login")
