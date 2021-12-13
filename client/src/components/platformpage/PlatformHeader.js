@@ -9,7 +9,7 @@ export default function PlatformHeader(props) {
     const { id } = useParams();
     const history = useHistory();
     const { isAuthenticated } = useContext(AuthContext);
-    const { viewType, updatePlatform } = useContext(PlatformContext);
+    const { viewType, updatePlatform, updateBanner } = useContext(PlatformContext);
     const { profile, updateProfile } = useContext(ProfileContext);
     const [editing, setEditing] = useState(false);
     const [editImg, setEditImg] = useState(false);
@@ -123,19 +123,16 @@ export default function PlatformHeader(props) {
         }
     }, [image]);
     const handleChangeImage = (e) => {
-        // setEditImg(false);
-        // updatePlatform(id, {
-        //     mode: "EDIT",
-        //     platform: {
-        //         bannerURI: bannerURL.current.value
-        //     }
-        // });
         e.preventDefault();
-        console.log("image", image, preview);
-        // const payload = { image: image, field: "bannerURI" };
-        // updateImage(payload);
-        M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+        const payload = { image: image, field: "bannerURI" };
+        updateBanner(id, payload);
     };
+    useEffect(() => {
+        if (image || preview)
+            M.toast({ html: 'SUCCESS!', classes: 'rounded', inDuration: 500 });
+        setImage(null);
+        setPreview(null);
+    }, [props.banner]);
     return (
         <div>
             <div className="row valign-wrapper">

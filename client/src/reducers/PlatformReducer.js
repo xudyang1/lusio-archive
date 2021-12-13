@@ -15,7 +15,8 @@ const initialState = {
         numSubscribers: 0,
     },
     error: null,
-    loading: true
+    loading: true,
+    viewType: 'GUEST_VIEW'
 };
 export const PlatformReducer = (state, action) => {
     switch (action.type) {
@@ -23,7 +24,7 @@ export const PlatformReducer = (state, action) => {
             return {
                 ...state,
                 platformList: action.payload.platforms
-            }
+            };
         case GET_PLATFORM:
             return {
                 ...state,
@@ -40,8 +41,7 @@ export const PlatformReducer = (state, action) => {
             // TODO: the order matters, check
             return {
                 ...state,
-                platform: { ...state.platform, ...action.payload.content },
-                mode: action.payload.mode
+                platform: { ...state.platform, ...action.payload.platform }
             };
         case DELETE_PLATFORM:
             return initialState;

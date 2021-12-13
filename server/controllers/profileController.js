@@ -90,7 +90,7 @@ exports.getProfile = async (req, res, next) => {
  *          res.data: {
  *                      success: true,
  *                      mode: "EDIT" || "ADD" || "DELETE",
- *                      content: { description || ... || fans: updated content }
+ *                      profile: { description || ... || fans: updated content }
  *                    }
  */
 exports.updateProfile = async (req, res, next) => {
@@ -136,7 +136,7 @@ exports.updateProfile = async (req, res, next) => {
         return res.status(200).json({
             success: true,
             mode: MODE,
-            content: updated
+            profile: updated
         });
     } catch (err) {
         if (err.name === 'ValidationError') {
@@ -154,11 +154,11 @@ exports.updateProfile = async (req, res, next) => {
  * @detail  Image files only applies to {iconURI, bannerURI}
  
  * 
- * @format  req.body: { target： "iconURI" || "bannerURI" } 
+ * @format  req.body: { field: "iconURI" || "bannerURI" } 
  *          req.file： image file
  *          res.data: {
  *                      success: true,
- *                      content: { iconURI || bannerURI }
+ *                      profile: { iconURI || bannerURI }
  *                    }
  */
 exports.updateImage = async (req, res, next) => {
