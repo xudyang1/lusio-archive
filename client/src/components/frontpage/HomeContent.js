@@ -7,15 +7,23 @@ import '../../css/frontpage.css'
 import GeneralSections from "../sections/GeneralSections";
 import { QUIZ_CARD } from "../../types/cardTypes";
 import { PlatformContext } from "../../context/PlatformState";
+import { AuthContext } from "../../context/AuthState";
 
 
 export default function HomeContent() {
     var tempPlatform = ["MoMA", "Motion Pictures", "NASA", "NYC Dept of Edu", "ABCD"];
     //const { platforms, dailyChallenge, getPlatforms } = useContext(GlobalContext)
     const { getPlatformList, platformList } = useContext(PlatformContext)
+    const {} = useContext(AuthContext)
 
     useEffect(() => {
         getPlatformList();
+    }, [])
+
+    useEffect(()=>{
+        if(true){
+            window.location = '/suspended';
+        }
     }, [])
 
     return (
