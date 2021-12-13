@@ -17,11 +17,11 @@ export default function AdminControl() {
     const unsuspendUserIDRef = createRef();
 
     const onClickUploadBadge = async () => {
-        
+
     };
     const onClickSuspendUser = async (profileId) => {
         try {
-            const res = axios.post(`/suspendUser/${profileId}`);
+            const res = axios.post(`/api/admin/suspendUser/${profileId}`);
             M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
         } catch (err) {
             M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
@@ -29,7 +29,7 @@ export default function AdminControl() {
     };
     const onClickUnsuspendUser = async (profileId) => {
         try {
-            const res = axios.post(`/unSuspendUser/${profileId}`);
+            const res = axios.post(`/api/admin/unSuspendUser/${profileId}`);
             M.toast({ html: 'SUCCESS', classes: 'rounded', inDuration: 500 });
         } catch (err) {
             M.toast({ html: err.response.data.msg, classes: 'rounded', inDuration: 500 });
@@ -38,8 +38,8 @@ export default function AdminControl() {
 
 
     function showPage() {
-        // && user.email === "lusioquiz@gmail.com"
-        if (isAuthenticated) {
+
+        if (isAuthenticated && user.email === "lusioquiz@gmail.com") {
             return (
                 <div className="container">
                     <div className="row">
