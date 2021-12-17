@@ -48,6 +48,10 @@ app.use('/api/admin', adminRouter);
 // end of test
 
 
+const imageRouter = require('./routes/api/image'); // location of router
+app.use('/api/img', imageRouter);
+
+
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
     // Set static folder

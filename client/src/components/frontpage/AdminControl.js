@@ -16,6 +16,7 @@ export default function AdminControl() {
 
     const suspendUserIDRef = createRef();
     const unsuspendUserIDRef = createRef();
+    const getImageRef = createRef();
 
 
 
@@ -23,6 +24,9 @@ export default function AdminControl() {
 
     const [imageFile, setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+
+    const [tempImg, setTempImg] = useState(null);
+
     const onUploadIcon = (e) => {
         // console.log("Image file", imageFile)
         // updateImage({
@@ -79,6 +83,19 @@ export default function AdminControl() {
         }
     };
 
+    const getImage = async (filename) => {
+        try {
+            console.log(filename)
+            const res = await axios.get(`/api/img/img/${filename}`).then(function(result){
+                console.log(result.data)
+                setTempImg(result.data.imgurl)
+            })
+            //console.log(res)
+        } catch (err) {
+
+        }
+    }
+
 
     function showPage() {
         // && user.email === "lusioquiz@gmail.com"
@@ -124,6 +141,15 @@ export default function AdminControl() {
                         <div className="input-field col s6">
                             <a className="waves-effect waves-light btn red" onClick={() => onClickUnsuspendUser(unsuspendUserIDRef.current.value)}>Unsuspend User</a>
                         </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <input placeholder="Get Image (filename)" id="getImage" type="text" ref={getImageRef} />
+                        </div>
+                        <div className="input-field col s6">
+                            <a className="waves-effect waves-light btn red" onClick={() => getImage(getImageRef.current.value)}>Get Image</a>
+                        </div>
+                        <img src={tempImg}></img>
                     </div>
                 </div >
             );
